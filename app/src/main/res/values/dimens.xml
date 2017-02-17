@@ -1,0 +1,8 @@
+<resources>
+    <!-- 状态栏高度 -->
+    <dimen name="status_bar_height">0dp</dimen>
+    <!--toolbar高度-->
+    <dimen name="contact_toolbar_h">56dp</dimen>
+    <dimen name="detail_height">300dp</dimen>
+    <dimen name="detail_margin_top">118dp</dimen>
+</resources>

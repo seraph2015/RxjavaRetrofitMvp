@@ -1,0 +1,80 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'com.jakewharton.butterknife'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "org.seraph.mvprxjavaretrofit"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //Jack工具编译（JAVA1.8支持）
+        jackOptions {
+            enabled true
+        }
+    }
+
+//    packagingOptions {
+//        exclude 'META-INF/NOTICE' // will not include NOTICE file
+//        exclude 'META-INF/LICENSE' // will not include LICENSE file
+//    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+greendao {
+    schemaVersion 1
+    daoPackage 'org.seraph.mvprxjavaretrofit.db.gen'
+    targetGenDir 'src/main/java'
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:design:25.1.1'
+    testCompile 'junit:junit:4.12'
+    //greenDao数据库
+    compile 'org.greenrobot:greendao:3.2.0'
+    //rxJava响应式编程
+    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //网络请求框架,添加这个依赖就默认添加了okhttp依赖
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    //retrofit2是基于okhttp，所以使用okhttp log 工具
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    //retrofit2的rxJava2，gson支持
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    //google的json解析
+    compile 'com.google.code.gson:gson:2.8.0'
+    //基于rxJava2的注册绑定对象
+    //    compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
+    //    compile 'com.jakewharton.rxbinding:rxbinding-design:1.0.0'
+    //    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:1.0.0'
+    //    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
+    //    compile 'com.jakewharton.rxbinding:rxbinding-kotlin:1.0.0'
+    //    compile 'com.jakewharton.rxbinding:rxbinding-design-kotlin:1.0.0'
+    //    compile 'com.jakewharton.rxbinding:rxbinding-support-v4-kotlin:1.0.0'
+    //    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:1.0.0'
+    //依赖注入butterknife，dagger2
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    //    compile 'com.google.dagger:dagger:2.9'
+
+}

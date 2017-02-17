@@ -1,0 +1,36 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:actionMenuTextColor">@android:color/white</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- toolbar（actionbar）颜色 -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- 窗口的背景颜色 -->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--Window color-->
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme" parent="AppBaseTheme" />
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <!-- 自定义dialog的样式 -->
+    <style name="CustomDialog">
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">false</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:windowBackground">@drawable/bg_dialog_loading_wx</item><!--背景透明-->
+        <item name="android:backgroundDimEnabled">false</item><!--模糊-->
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+</resources>
