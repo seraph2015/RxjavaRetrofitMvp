@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class HttpMethods{
+class HttpMethods {
 
     /**
      * 30秒超时
@@ -27,7 +27,8 @@ public class HttpMethods{
     private HttpMethods() {
         //手动创建一个OkHttpClient并设置超时时间
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-        httpClientBuilder.addInterceptor(new HttpLoggingInterceptor());
+        //添加请求OkHttp请求日志查看
+        httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
         httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClientBuilder.build())
@@ -44,7 +45,7 @@ public class HttpMethods{
     }
 
     //获取单例
-    public static ApiInterface getApiInterface() {
+    static ApiInterface getApiInterface() {
         return SingletonHolder.INSTANCE.apiInterface;
     }
 
