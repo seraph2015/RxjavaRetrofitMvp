@@ -75,7 +75,7 @@ public class MainPresenter extends BasePresenter {
         userBean.setToken(baseData.token);
         userBean.setName(baseData.data.nickName);
         userBean.setHeadPortrait(baseData.data.headImg);
-        App.getSingleton().getDaoSession().getUserTableDao().save(userBean);
+        App.getDaoSession().getUserTableDao().save(userBean);
         mainView.showSnackBar("保存成功");
     }
 
@@ -83,7 +83,7 @@ public class MainPresenter extends BasePresenter {
      * 查询用户信息
      */
     public void queryUserInfo() {
-        List<UserTable>  list = App.getSingleton().getDaoSession().getUserTableDao().queryBuilder().list();
+        List<UserTable>  list = App.getDaoSession().getUserTableDao().queryBuilder().list();
         StringBuilder stringBuilder = new StringBuilder();
         for (UserTable userTable : list){
             stringBuilder.append("id:"+userTable.get_id()+"\ntoken:"+userTable.getToken()+"\nname:"+userTable.getName()+"\nheadImg:"+userTable.getHeadPortrait()+"\n\n");
@@ -95,7 +95,7 @@ public class MainPresenter extends BasePresenter {
      * 清理数据
      */
     public void cleanUserInfo() {
-        App.getSingleton().getDaoSession().getUserTableDao().deleteAll();
+        App.getDaoSession().getUserTableDao().deleteAll();
         queryUserInfo();
     }
 

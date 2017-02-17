@@ -38,13 +38,13 @@ public class App extends Application {
     /**
      * 初始化数据库
      */
-    private void initDBDaoSession() {
+    private static void initDBDaoSession() {
         mDaoSession = DBGreenDaoHelp.getSingleton().getDaoSession(getSingleton());
     }
     /**
      * 获取操作数据库的对象
      */
-    public DaoSession getDaoSession(){
+    public static DaoSession getDaoSession(){
         if(mDaoSession == null){
             initDBDaoSession();
         }
