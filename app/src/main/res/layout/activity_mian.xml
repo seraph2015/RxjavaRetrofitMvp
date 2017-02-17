@@ -1,18 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ff0000"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_show"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="request"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="request" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ff0000" />
+
+        <Button
+            android:id="@+id/btn_sava_db"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SaveToDB" />
+
+        <Button
+            android:id="@+id/tv_query_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="QueryUserInfo" />
+
+        <Button
+            android:id="@+id/tv_clean_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="cleanUserInfo" />
+
+        <TextView
+            android:id="@+id/tv_db_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ff0000" />
+    </LinearLayout>
+</ScrollView>

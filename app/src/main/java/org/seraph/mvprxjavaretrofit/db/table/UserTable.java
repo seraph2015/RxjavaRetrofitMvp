@@ -11,12 +11,12 @@ import org.greenrobot.greendao.annotation.Generated;
  * mail：417753393@qq.com
  **/
 @Entity
-public class UserBean {
+public class UserTable {
 
     /**
      * id
      */
-    @Id
+    @Id(autoincrement = true)
     private Long _id;
 
     /**
@@ -35,9 +35,8 @@ public class UserBean {
      * 头像
      */
     private String headPortrait;
-
-    @Generated(hash = 116500780)
-    public UserBean(Long _id, String token, String name, String gender,
+    @Generated(hash = 1883399409)
+    public UserTable(Long _id, String token, String name, String gender,
             String headPortrait) {
         this._id = _id;
         this.token = token;
@@ -45,8 +44,8 @@ public class UserBean {
         this.gender = gender;
         this.headPortrait = headPortrait;
     }
-    @Generated(hash = 1203313951)
-    public UserBean() {
+    @Generated(hash = 726134616)
+    public UserTable() {
     }
     public Long get_id() {
         return this._id;
@@ -78,4 +77,5 @@ public class UserBean {
     public void setHeadPortrait(String headPortrait) {
         this.headPortrait = headPortrait;
     }
+
 }

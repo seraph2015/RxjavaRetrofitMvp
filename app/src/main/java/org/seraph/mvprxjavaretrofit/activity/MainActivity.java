@@ -2,7 +2,6 @@ package org.seraph.mvprxjavaretrofit.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
@@ -24,9 +23,8 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @BindView(R.id.tv_content)
     TextView tvContent;
-    @BindView(R.id.btn_show)
-    Button btnShow;
-
+    @BindView(R.id.tv_db_user)
+    TextView tvDbUser;
 
 
     @Override
@@ -45,9 +43,10 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     protected void init(Bundle savedInstanceState) {
         setTitle("主页");
+        toolbar.setLogo(R.mipmap.icon_logo);
     }
 
-    @OnClick(value = {R.id.btn_show, R.id.tv_content})
+    @OnClick(value = {R.id.btn_show, R.id.tv_content, R.id.btn_sava_db, R.id.tv_query_user, R.id.tv_clean_user})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_show:
@@ -56,12 +55,26 @@ public class MainActivity extends BaseActivity implements MainView {
             case R.id.tv_content:
                 mMainPresenter.switchToolBarVisibility();
                 break;
+            case R.id.btn_sava_db:
+                mMainPresenter.saveUserInfo();
+                break;
+            case R.id.tv_query_user:
+                mMainPresenter.queryUserInfo();
+                break;
+            case R.id.tv_clean_user:
+                mMainPresenter.cleanUserInfo();
+                break;
         }
     }
 
     @Override
     public void setTextViewValue(CharSequence charSequence) {
         tvContent.setText(charSequence);
+    }
+
+    @Override
+    public void setUserTextViewValue(CharSequence charSequence) {
+        tvDbUser.setText(charSequence);
     }
 
 }

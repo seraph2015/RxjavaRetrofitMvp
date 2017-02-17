@@ -13,9 +13,14 @@ import org.seraph.mvprxjavaretrofit.db.gen.DaoSession;
  **/
 public class App extends Application {
 
-    private static App app;
+    private static App instance;
 
     private static DaoSession mDaoSession;
+
+    public App() {
+        super();
+        instance = this;
+    }
 
     @Override
     public void onCreate() {
@@ -26,11 +31,8 @@ public class App extends Application {
     /**
      * 获取单例
      */
-    public synchronized App getSingleton(){
-        if (app == null){
-            app = this;
-        }
-        return app;
+    public static synchronized App getSingleton(){
+        return instance;
     }
 
     /**

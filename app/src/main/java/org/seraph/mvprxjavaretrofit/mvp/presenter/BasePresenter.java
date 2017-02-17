@@ -2,6 +2,7 @@ package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
 import android.graphics.Color;
 
+import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 
 /**
@@ -39,10 +40,14 @@ public abstract class BasePresenter {
      * 配置默认可选配置
      */
     public void initBaseDefaultConfig() {
+        //设置背景颜色
+        mView.setBackgroundResource(R.mipmap.bg_app);
         //不使用沉浸模式
         mView.setStatusBarImmersionMode(false);
         //设置状态栏颜色
-        mView.setToolBarBackgroundColor(Color.argb(99, 0, 100, 0));
+        mView.setToolBarBackgroundColor(Color.argb(50, 255, 100, 100));
+
+
     }
 
 
