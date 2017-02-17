@@ -12,7 +12,7 @@ import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
  **/
 public abstract class BasePresenter {
 
-    protected BaseView mView;
+    private BaseView mView;
 
     /**
      * 绑定view
@@ -36,14 +36,13 @@ public abstract class BasePresenter {
     }
 
     /**
-     * 初始化默认配置(可选)
+     * 配置默认可选配置
      */
     public void initBaseDefaultConfig() {
         //不使用沉浸模式
         mView.setStatusBarImmersionMode(false);
         //设置状态栏颜色
         mView.setToolBarBackgroundColor(Color.argb(99, 0, 100, 0));
-        //
     }
 
 

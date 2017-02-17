@@ -19,6 +19,8 @@ public class MainPresenter extends BasePresenter {
 
     private Subscription subscriber;
 
+    private boolean isToolBarShow = true;
+
     @Override
     public void attachView(BaseView mView) {
         super.attachView(mView);
@@ -42,5 +44,17 @@ public class MainPresenter extends BasePresenter {
         if (subscriber != null) {
             subscriber.cancel();
         }
+    }
+
+    /**
+     * 切换状态栏是否显示
+     */
+    public void switchToolBarVisibility() {
+        if (isToolBarShow) {
+            mainView.hideToolBar();
+        } else {
+            mainView.showToolBar();
+        }
+        this.isToolBarShow = !isToolBarShow;
     }
 }

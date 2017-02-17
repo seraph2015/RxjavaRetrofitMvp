@@ -10,6 +10,9 @@ import org.seraph.mvprxjavaretrofit.mvp.presenter.BasePresenter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.MainPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainView;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 /**
  * 主界面
  * date：2017/2/15 11:24
@@ -19,10 +22,12 @@ import org.seraph.mvprxjavaretrofit.mvp.view.MainView;
 public class MainActivity extends BaseActivity implements MainView {
 
 
-   // @BindView(R.id.btn_show)
-    Button btnShow;
-    //@BindView(R.id.tv_content)
+    @BindView(R.id.tv_content)
     TextView tvContent;
+    @BindView(R.id.btn_show)
+    Button btnShow;
+
+
 
     @Override
     protected int getContextView() {
@@ -40,15 +45,16 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     protected void init(Bundle savedInstanceState) {
         setTitle("主页");
-        btnShow = (Button) findViewById(R.id.btn_show);
-        tvContent = (TextView) findViewById(R.id.tv_content);
-        btnShow.setOnClickListener(this::onClick);
     }
 
-    private void onClick(View view) {
+    @OnClick(value = {R.id.btn_show, R.id.tv_content})
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_show:
                 mMainPresenter.getNetWork();
+                break;
+            case R.id.tv_content:
+                mMainPresenter.switchToolBarVisibility();
                 break;
         }
     }

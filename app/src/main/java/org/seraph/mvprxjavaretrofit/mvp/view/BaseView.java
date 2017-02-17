@@ -92,10 +92,6 @@ public interface BaseView {
      */
     boolean isImmersionMode();
 
-    /**
-     * 设置状态栏模式
-     */
-    void setStatusBarImmersionMode(boolean isImmersion);
 
     /**
      * 关闭当前界面
@@ -103,7 +99,12 @@ public interface BaseView {
     void viewFinish();
 
     /**
-     * 初始化Mvp模式的关系绑定
+     * 1.初始化固定配置
      */
-    void initMVPBind();
+     void initConfig();
+
+    /**
+     * 5.设置状态栏模式
+     */
+    void setStatusBarImmersionMode(boolean isImmersion);
 }

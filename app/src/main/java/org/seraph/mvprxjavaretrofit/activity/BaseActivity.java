@@ -10,9 +10,11 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.seraph.mvprxjavaretrofit.R;
@@ -21,6 +23,7 @@ import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 import org.seraph.mvprxjavaretrofit.views.CustomLoadingDialog;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -30,19 +33,26 @@ import butterknife.ButterKnife;
  * mail：417753393@qq.com
  **/
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
+
+    protected abstract int getContextView();
+
+    protected abstract BasePresenter getPresenter();
+
+    protected abstract void init(Bundle savedInstanceState);
+
     /**
      * 最高父布局
      */
-    //@BindView(R.id.fl_root)
+    @BindView(R.id.fl_root)
     FrameLayout flRoot;
-    // @BindView(R.id.appbar)
+    @BindView(R.id.appbar)
     AppBarLayout appBar;
-    // @BindView(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
     /**
      * 添加布局的父布局
      */
-    private FrameLayout contentMain;
+    private LinearLayout contentMain;
 
     //声明基类中的Presenter
     protected BasePresenter mPresenter;
@@ -57,39 +67,36 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base_materal_design);
-        flRoot = ButterKnife.findById(this, R.id.fl_root);
-        appBar = ButterKnife.findById(this, R.id.appbar);
-        toolbar = ButterKnife.findById(this, R.id.toolbar);
-        contentMain = ButterKnife.findById(this, R.id.content_main);
-
-        View contextView = View.inflate(this, getContextView(), null);
-
-        contentMain.addView(contextView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        ButterKnife.bind(this);
-        //初始化界面绑定
-        initMVPBind();
-        //初始化toolbar
-        initToolbarBar();
-        //初始化等待框
-        initLoadingDialog();
-
-        //使用默认配置
+        //固定配置
+        initConfig();
+        //设置可选默认配置
         mPresenter.initBaseDefaultConfig();
         init(savedInstanceState);
     }
 
-
-
-    protected abstract int getContextView();
-
-    protected abstract BasePresenter getPresenter();
-
-    protected abstract void init(Bundle savedInstanceState);
-
-
     @Override
-    public void initMVPBind() {
+    public void initConfig() {
+        initUIBind();
+        initMVPBind();
+        initToolbarBar();
+        initLoadingDialog();
+    }
+
+    /**
+     * 1.绑定界面UI
+     */
+    private void initUIBind() {
+        setContentView(R.layout.activity_base_materal_design);
+        contentMain = ButterKnife.findById(this, R.id.content_main);
+        View view = LayoutInflater.from(this).inflate(getContextView(), contentMain, false);
+        contentMain.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        ButterKnife.bind(this);
+    }
+
+    /**
+     * 2.绑定mvp关系
+     */
+    private void initMVPBind() {
         //获取Presenter持有
         mPresenter = getPresenter();
         //绑定mView
@@ -97,20 +104,20 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     /**
-     * 初始化loadingDialog
-     */
-    private void initLoadingDialog() {
-        loadingDialog = new CustomLoadingDialog(this);
-        loadingDialog.setOnDismissListener(v -> mPresenter.unSubscribe());
-    }
-
-    /**
-     * 初始化toolbar
+     * 3.初始化toolbar状态栏
      */
     private void initToolbarBar() {
         toolbar.setPadding(0, getResources().getDimensionPixelSize(R.dimen.status_bar_height), 0, 0);
         contentMain.setPadding(0, getResources().getDimensionPixelSize(R.dimen.status_bar_height), 0, 0);
         setTitle("");
+    }
+
+    /**
+     * 4.初始化loadingDialog
+     */
+    private void initLoadingDialog() {
+        loadingDialog = new CustomLoadingDialog(this);
+        loadingDialog.setOnDismissListener(v -> mPresenter.unSubscribe());
     }
 
 
