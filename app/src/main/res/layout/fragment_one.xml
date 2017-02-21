@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.seraph.mvprxjavaretrofit.views.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/oScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/contact_toolbar_h">
+
+        <Button
+            android:id="@+id/btn_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="request" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ff0000" />
+
+        <Button
+            android:id="@+id/btn_sava_db"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SaveToDB" />
+
+        <Button
+            android:id="@+id/tv_query_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="QueryUserInfo" />
+
+        <Button
+            android:id="@+id/tv_clean_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="cleanUserInfo" />
+
+        <TextView
+            android:id="@+id/tv_db_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ff0000" />
+    </LinearLayout>
+</org.seraph.mvprxjavaretrofit.views.ObservableScrollView>

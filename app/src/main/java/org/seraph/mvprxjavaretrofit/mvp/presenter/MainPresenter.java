@@ -1,16 +1,18 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
-import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.App;
-import org.seraph.mvprxjavaretrofit.db.table.UserTable;
-import org.seraph.mvprxjavaretrofit.mvp.model.BaseData;
-import org.seraph.mvprxjavaretrofit.mvp.model.UserBean;
-import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
-import org.seraph.mvprxjavaretrofit.mvp.view.MainView;
-import org.seraph.mvprxjavaretrofit.request.ApiService;
-import org.seraph.mvprxjavaretrofit.request.exception.ServerErrorCode;
+import android.graphics.Color;
+import android.support.v4.app.Fragment;
 
-import java.util.List;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.fragment.BaseFragment;
+import org.seraph.mvprxjavaretrofit.fragment.MainOneFragment;
+import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
+import org.seraph.mvprxjavaretrofit.mvp.view.MainActivityView;
+import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
+
+import io.reactivex.Flowable;
 
 /**
  * mian逻辑处理层
@@ -18,42 +20,42 @@ import java.util.List;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainPresenter extends BasePresenter {
+public class MainPresenter extends BaseActivityPresenter {
 
-    private MainView mainView;
-
-    private Subscription subscriber;
-
-    private boolean isToolBarShow = true;
-
-    private BaseData<UserBean> baseData;
+    private MainActivityView mainView;
 
     @Override
     public void attachView(BaseView mView) {
         super.attachView(mView);
-        this.mainView = (MainView) mView;
+        this.mainView = (MainActivityView) mView;
     }
 
-    /**
-     * test网络请求
-     */
-    public void getNetWork() {
-        ApiService.doLogin("15623088767", "123456").doOnSubscribe(subscription -> {
-            this.subscriber = subscription;
-            mainView.showLoading();
-        }).subscribe(baseResponse -> {
-            mainView.hideLoading();
-            baseData = baseResponse.data;
-            UserBean userBean = baseData.data;
-            mainView.setTextViewValue("token->" + baseData.token + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
-        }, e -> ServerErrorCode.errorCodeToMessageShow(e, mainView));
-    }
+    private boolean isToolBarShow = true;
 
+    private FragmentController mFragmentController;
+
+    private String[] tags = new String[]{"one", "two", "three", "four"};
+    //icon
+    private int[] unSelectIconImage = new int[]{R.mipmap.icon_main_logo2, R.mipmap.icon_main_logo2, R.mipmap.icon_main_logo2, R.mipmap.icon_main_logo2};
+    private int[] selectIconImage = new int[]{R.mipmap.icon_main_logo, R.mipmap.icon_main_logo, R.mipmap.icon_main_logo, R.mipmap.icon_main_logo};
+    //bgColor,textColor
+    private int selectedBgColor = Color.parseColor("#3b77db");
+    private int selectedTextColor = Color.parseColor("#ffffff");
+    private int unSelectedBgColor = Color.parseColor("#f8f8f8");
+    private int unSelectedTextColor = Color.parseColor("#666666");
+
+    private int childCount = 0;
+
+    public void initData() {
+        mFragmentController = new FragmentController(mainView.getMainActivity(), R.id.fl_home);
+        mFragmentController.setFragmentTags(tags);
+        childCount = mainView.getMenuChildCount();
+    }
 
     /**
      * 切换状态栏是否显示
      */
-    public void switchToolBarVisibility() {
+    void switchToolBarVisibility() {
         if (isToolBarShow) {
             mainView.hideToolBar();
         } else {
@@ -64,47 +66,83 @@ public class MainPresenter extends BasePresenter {
 
 
     /**
-     * 保存用户信息
+     * 设置选中
      */
-    public void saveUserInfo() {
-        if (baseData == null) {
-            mainView.showSnackBar("没有可保存数据");
-            return;
-        }
-        UserTable userBean = new UserTable();
-        userBean.setToken(baseData.token);
-        userBean.setName(baseData.data.nickName);
-        userBean.setHeadPortrait(baseData.data.headImg);
-        App.getDaoSession().getUserTableDao().save(userBean);
-        mainView.showSnackBar("保存成功");
+    private void setSelectedMenu(int position) {
+        mainView.setMenuItem(position, selectedBgColor, selectIconImage[position], selectedTextColor);
     }
 
     /**
-     * 查询用户信息
+     * 设置未选中
      */
-    public void queryUserInfo() {
-        List<UserTable>  list = App.getDaoSession().getUserTableDao().queryBuilder().list();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (UserTable userTable : list){
-            stringBuilder.append("id:"+userTable.get_id()+"\ntoken:"+userTable.getToken()+"\nname:"+userTable.getName()+"\nheadImg:"+userTable.getHeadPortrait()+"\n\n");
-        }
-        mainView.setUserTextViewValue(stringBuilder.toString());
+    private void setUnSelectedMenu(int position) {
+        mainView.setMenuItem(position, unSelectedBgColor, unSelectIconImage[position], unSelectedTextColor);
+    }
+
+
+    /**
+     * 选中某项，改变状态
+     */
+    public void changeCurrentClickState(int positionIndex) {
+        Flowable.range(0, childCount).subscribe(new Subscriber<Integer>() {
+            Subscription subscription;
+
+            @Override
+            public void onSubscribe(Subscription s) {
+                subscription = s;
+                subscription.request(1);
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                setUnSelectedMenu(integer);
+                subscription.request(1);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+            }
+
+            @Override
+            public void onComplete() {
+                setSelectedMenu(positionIndex);
+                setSelectedFragment(positionIndex);
+            }
+        });
+
     }
 
     /**
-     * 清理数据
+     * 设置选中的碎片,切换主题
      */
-    public void cleanUserInfo() {
-        App.getDaoSession().getUserTableDao().deleteAll();
-        queryUserInfo();
-    }
-
-    @Override
-    public void unSubscribe() {
-        super.unSubscribe();
-        if (subscriber != null) {
-            subscriber.cancel();
+    private void setSelectedFragment(int positionIndex) {
+        Class<? extends Fragment> clazz;
+        String title;
+        switch (positionIndex) {
+            case 0:
+                clazz = MainOneFragment.class;
+                title = "主页";
+                break;
+            case 1:
+                clazz = MainOneFragment.class;
+                title = "TWO";
+                break;
+            case 2:
+                clazz = MainOneFragment.class;
+                title = "THREE";
+                break;
+            case 3:
+                clazz = MainOneFragment.class;
+                title = "FOUR";
+                break;
+            default:
+                clazz = MainOneFragment.class;
+                title = "主页";
+                break;
         }
+        mainView.setTitle(title);
+        BaseFragment fragment = (BaseFragment) mFragmentController.add(clazz, tags[positionIndex], null);
+        fragment.restoreData();
     }
 
 

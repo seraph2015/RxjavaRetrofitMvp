@@ -1,6 +1,5 @@
 package org.seraph.mvprxjavaretrofit.activity;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,8 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.mvp.presenter.BasePresenter;
-import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
+import org.seraph.mvprxjavaretrofit.mvp.presenter.BaseActivityPresenter;
+import org.seraph.mvprxjavaretrofit.mvp.view.BaseActivityView;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 import org.seraph.mvprxjavaretrofit.views.CustomLoadingDialog;
 
@@ -32,14 +31,7 @@ import butterknife.ButterKnife;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class BaseActivity extends AppCompatActivity implements BaseView {
-
-    protected abstract int getContextView();
-
-    protected abstract BasePresenter getPresenter();
-
-    protected abstract void init(Bundle savedInstanceState);
-
+public abstract class BaseActivity extends AppCompatActivity implements BaseActivityView {
     /**
      * 最高父布局
      */
@@ -54,8 +46,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
      */
     private LinearLayout contentMain;
 
+    protected abstract int getContextView();
+
+    protected abstract BaseActivityPresenter getPresenter();
+
+    protected abstract void init(Bundle savedInstanceState);
+
     //声明基类中的Presenter
-    protected BasePresenter mPresenter;
+    protected BaseActivityPresenter mPresenter;
 
     protected CustomLoadingDialog loadingDialog;
 
@@ -71,6 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         initConfig();
         //设置可选默认配置
         mPresenter.initBaseDefaultConfig();
+        //开始界面
         init(savedInstanceState);
     }
 
@@ -93,6 +92,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         ButterKnife.bind(this);
     }
 
+
     /**
      * 2.绑定mvp关系
      */
@@ -102,6 +102,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         //绑定mView
         mPresenter.attachView(this);
     }
+
 
     /**
      * 3.初始化toolbar状态栏
@@ -148,7 +149,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         setBackListener(v -> viewFinish());
         setBackIcon(android.R.drawable.ic_input_delete);
     }
-
 
     @Override
     public void showLoading() {
@@ -258,10 +258,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         }
     }
 
-    @Override
-    public Activity getContext() {
-        return this;
-    }
 
     @Override
     public void viewFinish() {
@@ -277,4 +273,45 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         super.onDestroy();
     }
 
+
+    @Override
+    protected void onStart() {
+        if (mPresenter != null) {
+            mPresenter.onStart();
+        }
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onStop() {
+        if (mPresenter != null) {
+            mPresenter.onStop();
+        }
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        if (mPresenter != null) {
+            mPresenter.onPause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        if (mPresenter != null) {
+            mPresenter.onResume();
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        if (mPresenter != null) {
+            mPresenter.onRestart();
+        }
+        super.onRestart();
+    }
 }

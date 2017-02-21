@@ -1,8 +1,7 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
-import android.graphics.Color;
+import android.content.Context;
 
-import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 
 /**
@@ -11,7 +10,7 @@ import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class BasePresenter {
+public class BasePresenter {
 
     private BaseView mView;
 
@@ -22,6 +21,16 @@ public abstract class BasePresenter {
         this.mView = mView;
     }
 
+
+    /**
+     * 取消订阅
+     */
+    public void unSubscribe() {
+
+    }
+
+    /*接管部分生命周期*/
+
     /**
      * 销毁view,防止内存泄漏
      */
@@ -30,25 +39,27 @@ public abstract class BasePresenter {
         this.mView = null;
     }
 
-    /**
-     * 取消订阅
-     */
-    public void unSubscribe() {
+    public void onStart() {
     }
 
-    /**
-     * 配置默认可选配置
-     */
-    public void initBaseDefaultConfig() {
-        //设置背景颜色
-        mView.setBackgroundResource(R.mipmap.bg_app);
-        //不使用沉浸模式
-        mView.setStatusBarImmersionMode(false);
-        //设置状态栏颜色
-        mView.setToolBarBackgroundColor(Color.argb(50, 255, 100, 100));
-
-
+    public void onStop() {
     }
 
+    public void onPause() {
+    }
 
+    public void onResume() {
+    }
+
+    public void onRestart() {
+    }
+
+    /*fragmentView销毁*/
+    public void onDestroyView() {
+        unSubscribe();
+        this.mView = null;
+    }
+
+    public void onAttach(Context context) {
+    }
 }

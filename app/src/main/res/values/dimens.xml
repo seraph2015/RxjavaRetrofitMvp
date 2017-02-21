@@ -5,4 +5,6 @@
     <dimen name="contact_toolbar_h">56dp</dimen>
     <dimen name="detail_height">300dp</dimen>
     <dimen name="detail_margin_top">118dp</dimen>
+    <!--主界面底部导航高度-->
+    <dimen name="act_main_bottom_height">56dp</dimen>
 </resources>

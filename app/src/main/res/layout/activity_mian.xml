@@ -1,47 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/fl_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/btn_show"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="request" />
-
-        <TextView
-            android:id="@+id/tv_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ff0000" />
-
-        <Button
-            android:id="@+id/btn_sava_db"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SaveToDB" />
-
-        <Button
-            android:id="@+id/tv_query_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="QueryUserInfo" />
-
-        <Button
-            android:id="@+id/tv_clean_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="cleanUserInfo" />
-
-        <TextView
-            android:id="@+id/tv_db_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ff0000" />
-    </LinearLayout>
-</ScrollView>
+    <include layout="@layout/layout_bottom_bar" />
+</LinearLayout>

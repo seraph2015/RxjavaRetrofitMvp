@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_menu"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/act_main_bottom_height"
+    android:background="@drawable/act_main_bottom_bg"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_menu_one"
+        style="@style/menu_item_layout">
+
+        <ImageView
+            style="@style/menu_item_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_main_logo2" />
+
+        <TextView
+            style="@style/menu_item_tv"
+            android:text="one"
+            android:textColor="#666666" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_menu_two"
+        style="@style/menu_item_layout">
+
+        <ImageView
+            style="@style/menu_item_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_main_logo2" />
+
+        <TextView
+            style="@style/menu_item_tv"
+            android:text="two"
+            android:textColor="#666666" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_menu_three"
+        style="@style/menu_item_layout">
+
+        <ImageView
+            style="@style/menu_item_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_main_logo2" />
+
+        <TextView
+            style="@style/menu_item_tv"
+            android:text="three"
+            android:textColor="#666666" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_menu_four"
+        style="@style/menu_item_layout">
+
+        <ImageView
+            style="@style/menu_item_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_main_logo2" />
+
+        <TextView
+            style="@style/menu_item_tv"
+            android:text="four"
+            android:textColor="#666666" />
+    </LinearLayout>
+</LinearLayout>

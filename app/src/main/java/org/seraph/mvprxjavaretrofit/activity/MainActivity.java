@@ -1,13 +1,17 @@
 package org.seraph.mvprxjavaretrofit.activity;
 
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.mvp.presenter.BasePresenter;
+import org.seraph.mvprxjavaretrofit.mvp.presenter.BaseActivityPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.MainPresenter;
-import org.seraph.mvprxjavaretrofit.mvp.view.MainView;
+import org.seraph.mvprxjavaretrofit.mvp.view.MainActivityView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,63 +22,74 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainActivity extends BaseActivity implements MainView {
+public class MainActivity extends BaseActivity implements MainActivityView {
 
 
-    @BindView(R.id.tv_content)
-    TextView tvContent;
-    @BindView(R.id.tv_db_user)
-    TextView tvDbUser;
-
+    @BindView(R.id.layout_menu)
+    public LinearLayout mMenu;
 
     @Override
     protected int getContextView() {
         return R.layout.activity_mian;
     }
 
-    private MainPresenter mMainPresenter;
+    public MainPresenter mMainPresenter;
 
     @Override
-    protected BasePresenter getPresenter() {
+    protected BaseActivityPresenter getPresenter() {
         mMainPresenter = new MainPresenter();
         return mMainPresenter;
     }
 
+
+
     @Override
     protected void init(Bundle savedInstanceState) {
         setTitle("主页");
-        toolbar.setLogo(R.mipmap.icon_logo);
+        toolbar.setLogo(R.mipmap.icon_main_logo);
+        setStatusBarImmersionMode(true);
+        mMainPresenter.initData();
+        mMainPresenter.changeCurrentClickState(0);
     }
 
-    @OnClick(value = {R.id.btn_show, R.id.tv_content, R.id.btn_sava_db, R.id.tv_query_user, R.id.tv_clean_user})
+
+    @OnClick({R.id.ll_menu_one, R.id.ll_menu_two, R.id.ll_menu_three, R.id.ll_menu_four})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_show:
-                mMainPresenter.getNetWork();
+            case R.id.ll_menu_one:
+                mMainPresenter.changeCurrentClickState(0);
                 break;
-            case R.id.tv_content:
-                mMainPresenter.switchToolBarVisibility();
+            case R.id.ll_menu_two:
+                mMainPresenter.changeCurrentClickState(1);
                 break;
-            case R.id.btn_sava_db:
-                mMainPresenter.saveUserInfo();
+            case R.id.ll_menu_three:
+                mMainPresenter.changeCurrentClickState(2);
                 break;
-            case R.id.tv_query_user:
-                mMainPresenter.queryUserInfo();
-                break;
-            case R.id.tv_clean_user:
-                mMainPresenter.cleanUserInfo();
+            case R.id.ll_menu_four:
+                mMainPresenter.changeCurrentClickState(3);
                 break;
         }
     }
 
     @Override
-    public void setTextViewValue(CharSequence charSequence) {
-        tvContent.setText(charSequence);
+    public int getMenuChildCount() {
+        return mMenu.getChildCount();
+    }
+
+
+    @Override
+    public MainActivity getMainActivity() {
+        return this;
     }
 
     @Override
-    public void setUserTextViewValue(CharSequence charSequence) {
-        tvDbUser.setText(charSequence);
+    public void setMenuItem(int position, @ColorInt int bgColor, @DrawableRes int resId,@ColorInt int textColor) {
+        LinearLayout llItem = (LinearLayout) mMenu.getChildAt(position);
+        ImageView imageView = (ImageView) llItem.getChildAt(0);
+        TextView textView = (TextView) llItem.getChildAt(1);
+        llItem.setBackgroundColor(bgColor);
+        imageView.setImageResource(resId);
+        textView.setTextColor(textColor);
     }
 
 }

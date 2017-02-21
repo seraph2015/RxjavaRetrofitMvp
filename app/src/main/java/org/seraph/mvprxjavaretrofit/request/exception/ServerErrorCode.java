@@ -1,6 +1,6 @@
 package org.seraph.mvprxjavaretrofit.request.exception;
 
-import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
+import org.seraph.mvprxjavaretrofit.mvp.view.BaseActivityView;
 
 /**
  * 业务逻辑信息词义
@@ -23,7 +23,7 @@ public class ServerErrorCode {
     /**
      * 显示错误信息
      */
-    public static String errorCodeToMessageShow(Throwable e, BaseView baseView) {
+    public static String errorCodeToMessageShow(Throwable e, BaseActivityView baseView) {
         baseView.hideLoading();
         String message = e.getMessage();
         if (e instanceof ServerErrorException) {
