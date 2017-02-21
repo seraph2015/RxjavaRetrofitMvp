@@ -43,17 +43,14 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
         return fragmentOnePresenter;
     }
 
-    /**
-     * 保存的百分比
-     */
-    private float percentScroll = 0f;
+
 
     @Override
     protected void init(Bundle savedInstanceState) {
         oScrollView.setScrollViewListener(percentScroll -> {
-            this.percentScroll = percentScroll;
             fragmentOnePresenter.upDataToolbarAlpha(percentScroll);
         });
+        fragmentOnePresenter.initData();
     }
 
     @OnClick(value = {R.id.btn_show, R.id.tv_content, R.id.btn_sava_db, R.id.tv_query_user, R.id.tv_clean_user})
@@ -88,11 +85,4 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
         tvDbUser.setText(charSequence);
     }
 
-    @Override
-    public void restoreData() {
-        super.restoreData();
-        if (fragmentOnePresenter != null) {
-            fragmentOnePresenter.upDataToolbarAlpha(percentScroll);
-        }
-    }
 }

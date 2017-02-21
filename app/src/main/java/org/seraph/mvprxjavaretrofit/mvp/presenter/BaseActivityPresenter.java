@@ -16,6 +16,8 @@ public class BaseActivityPresenter extends BasePresenter {
 
     private BaseActivityView mView;
 
+    private boolean isToolBarShow = true;
+
     /**
      * 绑定view
      */
@@ -24,6 +26,29 @@ public class BaseActivityPresenter extends BasePresenter {
         super.attachView(mView);
         this.mView = (BaseActivityView) mView;
     }
+
+    /**
+     * 更新头部背景透明度
+     * @param percentScroll 进度百分比
+     */
+    public void upDataToolbarAlpha(float percentScroll) {
+        //计算透明度，默认透明 50  00FF9D
+        int alpha = (int) (50 + (205 * percentScroll));
+        mView.setToolBarBackgroundColor(Color.argb(alpha, 0x9E, 0x57, 0xFF));
+    }
+
+    /**
+     * 切换状态栏是否显示
+     */
+    void switchToolBarVisibility() {
+        if (isToolBarShow) {
+            mView.hideToolBar();
+        } else {
+            mView.showToolBar();
+        }
+        this.isToolBarShow = !isToolBarShow;
+    }
+
 
     /**
      * 配置默认可选配置

@@ -121,7 +121,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
 
-
     @Override
     public void onDestroyView() {
         if (mPresenter != null) {
@@ -131,8 +130,12 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
 
     /**
-     * 恢复数据
+     * 恢复部分公共数据（解决一个activity中多个碎片共用toolbar问题）
      */
-    public void restoreData(){};
+    public void restoreData() {
+        if (mPresenter != null) {
+            mPresenter.restoreData();
+        }
+    }
 
 }

@@ -62,4 +62,11 @@ public class BasePresenter {
 
     public void onAttach(Context context) {
     }
+
+    /**
+     * 碎片在共用时恢复（部分保存数据使用）
+     */
+    public void restoreData() {
+
+    }
 }

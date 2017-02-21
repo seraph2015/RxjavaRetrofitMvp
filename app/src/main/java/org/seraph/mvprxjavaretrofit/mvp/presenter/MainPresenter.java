@@ -8,6 +8,7 @@ import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.fragment.BaseFragment;
 import org.seraph.mvprxjavaretrofit.fragment.MainOneFragment;
+import org.seraph.mvprxjavaretrofit.fragment.MainTwoFragment;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainActivityView;
 import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
@@ -30,7 +31,6 @@ public class MainPresenter extends BaseActivityPresenter {
         this.mainView = (MainActivityView) mView;
     }
 
-    private boolean isToolBarShow = true;
 
     private FragmentController mFragmentController;
 
@@ -52,17 +52,7 @@ public class MainPresenter extends BaseActivityPresenter {
         childCount = mainView.getMenuChildCount();
     }
 
-    /**
-     * 切换状态栏是否显示
-     */
-    void switchToolBarVisibility() {
-        if (isToolBarShow) {
-            mainView.hideToolBar();
-        } else {
-            mainView.showToolBar();
-        }
-        this.isToolBarShow = !isToolBarShow;
-    }
+
 
 
     /**
@@ -117,30 +107,23 @@ public class MainPresenter extends BaseActivityPresenter {
      */
     private void setSelectedFragment(int positionIndex) {
         Class<? extends Fragment> clazz;
-        String title;
         switch (positionIndex) {
             case 0:
                 clazz = MainOneFragment.class;
-                title = "主页";
                 break;
             case 1:
-                clazz = MainOneFragment.class;
-                title = "TWO";
+                clazz = MainTwoFragment.class;
                 break;
             case 2:
                 clazz = MainOneFragment.class;
-                title = "THREE";
                 break;
             case 3:
                 clazz = MainOneFragment.class;
-                title = "FOUR";
                 break;
             default:
                 clazz = MainOneFragment.class;
-                title = "主页";
                 break;
         }
-        mainView.setTitle(title);
         BaseFragment fragment = (BaseFragment) mFragmentController.add(clazz, tags[positionIndex], null);
         fragment.restoreData();
     }

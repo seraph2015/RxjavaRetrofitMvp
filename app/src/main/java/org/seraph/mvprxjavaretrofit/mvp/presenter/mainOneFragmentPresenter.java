@@ -1,7 +1,6 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
 import android.content.Context;
-import android.graphics.Color;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.App;
@@ -42,6 +41,17 @@ public class MainOneFragmentPresenter extends BasePresenter {
     @Override
     public void onAttach(Context context) {
         mainActivity = (MainActivity) context;
+    }
+    /**
+     * 保存的百分比
+     */
+    private float percentScroll = 0f;
+
+    private String title;
+
+    public void initData() {
+        title = "主页";
+        setTitle(title);
     }
 
     /**
@@ -103,15 +113,17 @@ public class MainOneFragmentPresenter extends BasePresenter {
         }
     }
 
+    public void setTitle(String title){
+        mainActivity.setTitle(title);
+    }
+
     /**
      * 更新头部背景透明度
-     *
      * @param percentScroll 进度百分比
      */
     public void upDataToolbarAlpha(float percentScroll) {
-        //计算透明度，默认透明 50  00FF9D
-        int alpha = (int) (50 + (205 * percentScroll));
-        mainActivity.setToolBarBackgroundColor(Color.argb(alpha, 0x9E, 0x57, 0xFF));
+        this.percentScroll = percentScroll;
+        mainActivity.mMainPresenter.upDataToolbarAlpha(percentScroll);
     }
 
     /**
@@ -119,5 +131,12 @@ public class MainOneFragmentPresenter extends BasePresenter {
      */
     public void switchToolBarVisibility() {
         mainActivity.mMainPresenter.switchToolBarVisibility();
+    }
+
+    @Override
+    public void restoreData() {
+        super.restoreData();
+        setTitle(title);
+        upDataToolbarAlpha(percentScroll);
     }
 }
