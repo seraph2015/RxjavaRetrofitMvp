@@ -1,11 +1,20 @@
 package org.seraph.mvprxjavaretrofit.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BasePresenter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.MainTwoFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainTwoFragmentView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 第二页
@@ -15,6 +24,9 @@ import org.seraph.mvprxjavaretrofit.mvp.view.MainTwoFragmentView;
  **/
 public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView {
 
+
+    @BindView(R.id.lv_images)
+    ListView imageView;
 
     @Override
     protected int getContextView() {
@@ -29,9 +41,49 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
         return mainTwoFragmentPresenter;
     }
 
+    TextView tvCache;
+    Button getCache;
+    Button picassoImage;
+
     @Override
     protected void init(Bundle savedInstanceState) {
+        addListHeadView();
         mainTwoFragmentPresenter.initData();
     }
+
+
+    private void addListHeadView() {
+        View headView = LayoutInflater.from(getActivity()).inflate(R.layout.list_head, imageView, false);
+        tvCache = ButterKnife.findById(headView, R.id.tv_cache);
+        getCache = ButterKnife.findById(headView, R.id.btn_get_cache);
+        picassoImage = ButterKnife.findById(headView, R.id.btn_picasso_image);
+        getCache.setOnClickListener(this::onClick);
+        picassoImage.setOnClickListener(this::onClick);
+        imageView.addHeaderView(headView);
+    }
+
+
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_get_cache:
+                mainTwoFragmentPresenter.getCacheFilePath();
+                break;
+            case R.id.btn_picasso_image:
+                mainTwoFragmentPresenter.startPicassoToImage();
+                break;
+        }
+    }
+
+
+    @Override
+    public void setTextView(CharSequence charSequence) {
+        tvCache.setText(charSequence);
+    }
+
+    @Override
+    public void setImageAdapter(ListAdapter adapter) {
+        imageView.setAdapter(adapter);
+    }
+
 
 }

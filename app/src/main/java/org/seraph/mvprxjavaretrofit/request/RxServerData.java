@@ -33,4 +33,11 @@ class RxServerData {
         });
     }
 
+    /**
+     * 线程切换
+     */
+    static <T> Flowable<T> getDataProcessing(Flowable<T> flowable) {
+        return flowable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
 }

@@ -22,6 +22,8 @@
             android:layout_height="wrap_content"
             android:textColor="#ff0000" />
 
+
+
         <Button
             android:id="@+id/btn_sava_db"
             android:layout_width="match_parent"

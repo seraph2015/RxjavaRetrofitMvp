@@ -76,5 +76,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     //    compile 'com.google.dagger:dagger:2.9'
-
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

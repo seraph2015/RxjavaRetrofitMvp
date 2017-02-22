@@ -42,6 +42,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
     public void onAttach(Context context) {
         mainActivity = (MainActivity) context;
     }
+
     /**
      * 保存的百分比
      */
@@ -62,11 +63,15 @@ public class MainOneFragmentPresenter extends BasePresenter {
             this.subscriber = subscription;
             fragmentOneView.showLoading();
         }).subscribe(baseResponse -> {
-            fragmentOneView.hideLoading();
-            baseData = baseResponse.data;
-            UserBean userBean = baseData.data;
-            fragmentOneView.setTextViewValue("token->" + baseData.token + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
-        }, e -> ServerErrorCode.errorCodeToMessageShow(e, mainActivity));
+                    fragmentOneView.hideLoading();
+                    baseData = baseResponse.data;
+                    UserBean userBean = baseData.data;
+                    fragmentOneView.setTextViewValue("token->" + baseData.token + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
+                }, e -> {
+                    fragmentOneView.hideLoading();
+                    ServerErrorCode.errorCodeToMessageShow(e, mainActivity);
+                }
+        );
     }
 
 
@@ -113,12 +118,13 @@ public class MainOneFragmentPresenter extends BasePresenter {
         }
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         mainActivity.setTitle(title);
     }
 
     /**
      * 更新头部背景透明度
+     *
      * @param percentScroll 进度百分比
      */
     public void upDataToolbarAlpha(float percentScroll) {

@@ -11,4 +11,5 @@ public interface MainOneFragmentView extends BaseView {
     void setTextViewValue(CharSequence charSequence);
 
     void setUserTextViewValue(CharSequence charSequence);
+
 }

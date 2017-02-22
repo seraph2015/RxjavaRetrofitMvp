@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.request;
 
+import org.seraph.mvprxjavaretrofit.mvp.model.BaiduImageBean;
 import org.seraph.mvprxjavaretrofit.mvp.model.BaseResponse;
 import org.seraph.mvprxjavaretrofit.mvp.model.UserBean;
 
@@ -19,6 +20,13 @@ public class ApiService {
     public static Flowable<BaseResponse<UserBean>> doLogin(String... params) {
         //创建请求的类
         return RxServerData.getPublicDataProcessing(HttpMethods.getApiInterface().login(params[0], params[1]));
+    }
+
+    /**
+     * 获取百度图片
+     */
+    public static Flowable<BaiduImageBean> doBaiduImage(String... params) {
+        return RxServerData.getDataProcessing(HttpMethods.getApiInterface("http://image.baidu.com/").doBaiduImageUrl(params[0]));
     }
 
 }

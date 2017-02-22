@@ -54,22 +54,6 @@ public class MainPresenter extends BaseActivityPresenter {
 
 
 
-
-    /**
-     * 设置选中
-     */
-    private void setSelectedMenu(int position) {
-        mainView.setMenuItem(position, selectedBgColor, selectIconImage[position], selectedTextColor);
-    }
-
-    /**
-     * 设置未选中
-     */
-    private void setUnSelectedMenu(int position) {
-        mainView.setMenuItem(position, unSelectedBgColor, unSelectIconImage[position], unSelectedTextColor);
-    }
-
-
     /**
      * 选中某项，改变状态
      */
@@ -100,6 +84,21 @@ public class MainPresenter extends BaseActivityPresenter {
             }
         });
 
+    }
+
+
+    /**
+     * 设置选中
+     */
+    private void setSelectedMenu(int position) {
+        mainView.setMenuItem(position, selectedBgColor, selectIconImage[position], selectedTextColor);
+    }
+
+    /**
+     * 设置未选中
+     */
+    private void setUnSelectedMenu(int position) {
+        mainView.setMenuItem(position, unSelectedBgColor, unSelectIconImage[position], unSelectedTextColor);
     }
 
     /**

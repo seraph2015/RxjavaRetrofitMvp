@@ -4,6 +4,7 @@ import android.app.Application;
 
 import org.seraph.mvprxjavaretrofit.db.DBGreenDaoHelp;
 import org.seraph.mvprxjavaretrofit.db.gen.DaoSession;
+import org.seraph.mvprxjavaretrofit.request.picasso.PicassoFactory;
 
 /**
  * app初始化
@@ -26,12 +27,17 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         initDBDaoSession();
+        initPicasso();
+    }
+
+    private void initPicasso() {
+        PicassoFactory.initPicassoToOkHttp(this);
     }
 
     /**
      * 获取单例
      */
-    public static synchronized App getSingleton(){
+    public static synchronized App getSingleton() {
         return instance;
     }
 
@@ -41,11 +47,12 @@ public class App extends Application {
     private static void initDBDaoSession() {
         mDaoSession = DBGreenDaoHelp.getSingleton().getDaoSession(getSingleton());
     }
+
     /**
      * 获取操作数据库的对象
      */
-    public static DaoSession getDaoSession(){
-        if(mDaoSession == null){
+    public static DaoSession getDaoSession() {
+        if (mDaoSession == null) {
             initDBDaoSession();
         }
         return mDaoSession;

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import org.seraph.mvprxjavaretrofit.db.gen.DaoMaster;
 import org.seraph.mvprxjavaretrofit.db.gen.DaoSession;
+import org.seraph.mvprxjavaretrofit.preference.AppConstant;
 
 /**
  * greenDao数据库帮助类
@@ -15,8 +16,6 @@ import org.seraph.mvprxjavaretrofit.db.gen.DaoSession;
 public class DBGreenDaoHelp {
 
     private DaoSession mDaoSession;
-
-    private String dbName = "xxx-db";
 
     private static DBGreenDaoHelp mDBGreenDaoHelp;
 
@@ -44,7 +43,7 @@ public class DBGreenDaoHelp {
      * 初始化数据库
      */
     private void initDatabase(Context context) {
-        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(context, dbName);
+        DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(context, AppConstant.DB_NAME);
         SQLiteDatabase db = mHelper.getWritableDatabase();
         //该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
         DaoMaster mDaoMaster = new DaoMaster(db);

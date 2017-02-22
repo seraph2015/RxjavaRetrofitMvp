@@ -6,6 +6,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Environment;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -44,6 +45,20 @@ public class Tools {
             return false;
         }
     }
+
+    /**
+     * 检测sdcard是否可用
+     *
+     * @return true为可用，否则为不可用
+     */
+    public static boolean sdCardIsAvailable() {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * 得到应用版本名
@@ -112,6 +127,8 @@ public class Tools {
         String pattern = "^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$";
         return email.matches(pattern);
     }
+
+
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */
@@ -119,8 +136,6 @@ public class Tools {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
-
-
 
 
     /**
@@ -180,4 +195,23 @@ public class Tools {
         }
     }
 
+
+    /**
+     * 百度图片api
+     *
+     * @param key  关键字
+     * @param page 页数
+     */
+    public static String getBaiduImagesUrl(String key, int page) {
+
+        int pageSize = 48;
+        int pageNo = 1;
+        if (page > 1) {
+            pageNo = (page - 1) * pageSize;
+        }
+
+        String base = "search/avatarjson?tn=resultjsonavatarnew&ie=utf-8&word=" + key + "&cg=star&";
+        // 生成api
+        return base + "pn=" + pageNo + "&rn=" + pageSize + "&itg=0&z=0&fr=&width=&height=&lm=-1&ic=0&s=0&st=-1&gsm=3c";
+    }
 }

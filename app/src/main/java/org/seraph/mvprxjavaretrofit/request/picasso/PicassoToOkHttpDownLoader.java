@@ -1,0 +1,56 @@
+package org.seraph.mvprxjavaretrofit.request.picasso;
+
+import android.net.Uri;
+
+import com.squareup.picasso.Downloader;
+import com.squareup.picasso.NetworkPolicy;
+
+import java.io.IOException;
+
+import okhttp3.CacheControl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+
+/**
+ * okhttp下载图片
+ * date：2017/2/22 12:48
+ * author：xiongj
+ * mail：417753393@qq.com
+ **/
+public class PicassoToOkHttpDownLoader implements Downloader {
+
+    private OkHttpClient mClient;
+
+    public PicassoToOkHttpDownLoader(OkHttpClient client) {
+        this.mClient = client;
+    }
+
+    @Override
+    public Response load(Uri uri, int networkPolicy) throws IOException {
+        CacheControl.Builder builder = new CacheControl.Builder();
+        if (networkPolicy != 0) {
+            //判断是否离线
+            if (NetworkPolicy.isOfflineOnly(networkPolicy)) {
+                builder.onlyIfCached();
+            } else {
+                if (!NetworkPolicy.shouldReadFromDiskCache(networkPolicy)) {
+                    builder.noCache();
+                }
+                if (!NetworkPolicy.shouldWriteToDiskCache(networkPolicy)) {
+                    builder.noStore();
+                }
+            }
+        }
+        Request request = new Request.Builder()
+                .cacheControl(builder.build())
+                .url(uri.toString())
+                .build();
+        okhttp3.Response response = mClient.newCall(request).execute();
+        return new Response(response.body().byteStream(),false,response.body().contentLength());
+    }
+
+    @Override
+    public void shutdown() {
+
+    }
+}
