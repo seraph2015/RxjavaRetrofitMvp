@@ -11,7 +11,7 @@
         android:paddingTop="@dimen/contact_toolbar_h">
 
         <Button
-            android:id="@+id/btn_show"
+            android:id="@+id/btn_request"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="request" />

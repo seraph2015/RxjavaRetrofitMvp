@@ -25,7 +25,8 @@
         android:inputType="text"
         android:padding="10dp"
         android:singleLine="true"
-        android:textColor="#ff0000" />
+        android:textColor="#ff0000"
+        android:textColorHint="#0000ff" />
 
     <Button
         android:id="@+id/btn_picasso_image"

@@ -16,7 +16,6 @@ public class ServerErrorCode {
     public static String errorCodeToMessage(String errorCode) {
 
 
-
         return errorCode;
     }
 
@@ -27,8 +26,8 @@ public class ServerErrorCode {
         String message = e.getMessage();
         if (e instanceof ServerErrorException) {
             message = errorCodeToMessage(e.getMessage());
-            baseView.showSnackBar(message);
-            return message;
+        } else if (e instanceof java.net.SocketTimeoutException) {
+            message = "Timeout";
         }
         baseView.showSnackBar(message);
         return message;
