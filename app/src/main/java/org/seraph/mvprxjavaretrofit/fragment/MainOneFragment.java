@@ -10,8 +10,7 @@ import org.seraph.mvprxjavaretrofit.mvp.presenter.MainOneFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainOneFragmentView;
 import org.seraph.mvprxjavaretrofit.views.ObservableScrollView;
 
-import butterknife.BindView;
-import butterknife.OnClick;
+import butterknife.ButterKnife;
 
 /**
  * 主界面
@@ -21,12 +20,9 @@ import butterknife.OnClick;
  **/
 public class MainOneFragment extends BaseFragment implements MainOneFragmentView {
 
-    @BindView(R.id.tv_content)
-    TextView tvContent;
-    @BindView(R.id.tv_db_user)
-    TextView tvDbUser;
-    @BindView(R.id.oScrollView)
-    ObservableScrollView oScrollView;
+    private TextView tvContent;
+    private TextView tvDbUser;
+    private ObservableScrollView oScrollView;
 
 
     @Override
@@ -47,13 +43,21 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        oScrollView.setScrollViewListener(percentScroll -> {
-            fragmentOnePresenter.upDataToolbarAlpha(percentScroll);
-        });
+        tvContent = ButterKnife.findById(rootView,R.id.tv_content);
+        tvDbUser = ButterKnife.findById(rootView,R.id.tv_db_user);
+        oScrollView = ButterKnife.findById(rootView,R.id.oScrollView);
+        tvContent.setOnClickListener(this::onClick);
+        tvDbUser.setOnClickListener(this::onClick);
+
+        ButterKnife.findById(rootView,R.id.btn_show).setOnClickListener(this::onClick);
+        ButterKnife.findById(rootView,R.id.tv_query_user).setOnClickListener(this::onClick);
+        ButterKnife.findById(rootView,R.id.tv_clean_user).setOnClickListener(this::onClick);
+
+        oScrollView.setScrollViewListener(percentScroll -> fragmentOnePresenter.upDataToolbarAlpha(percentScroll));
+
         fragmentOnePresenter.initData();
     }
 
-    @OnClick(value = {R.id.btn_show, R.id.tv_content, R.id.btn_sava_db, R.id.tv_query_user, R.id.tv_clean_user})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_show:

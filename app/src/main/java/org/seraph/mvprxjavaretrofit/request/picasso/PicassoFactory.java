@@ -23,7 +23,10 @@ public class PicassoFactory {
                 .Builder()
                 .cache(new Cache(FileTools.getCacheDirectory(context, null), AppConstant.CACHE_IMAGE_MAX_SIZE))
                 .build();
-        Picasso picasso = new Picasso.Builder(context).downloader(new PicassoToOkHttpDownLoader(client)).build();
+        Picasso picasso = new Picasso
+                .Builder(context)
+                .downloader(new ImageDownLoader(client))
+                .build();
         Picasso.setSingletonInstance(picasso);
     }
 

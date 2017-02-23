@@ -13,8 +13,7 @@ import org.seraph.mvprxjavaretrofit.mvp.presenter.BaseActivityPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.MainPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainActivityView;
 
-import butterknife.BindView;
-import butterknife.OnClick;
+import butterknife.ButterKnife;
 
 /**
  * 主界面
@@ -25,7 +24,6 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity implements MainActivityView {
 
 
-    @BindView(R.id.layout_menu)
     public LinearLayout mMenu;
 
     @Override
@@ -42,18 +40,21 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     }
 
 
-
     @Override
     protected void init(Bundle savedInstanceState) {
         setTitle("主页");
         toolbar.setLogo(R.mipmap.icon_main_logo);
         setStatusBarImmersionMode(true);
+        mMenu = ButterKnife.findById(this,R.id.layout_menu);
+        ButterKnife.findById(this,R.id.ll_menu_one).setOnClickListener(this::onClick);
+        ButterKnife.findById(this,R.id.ll_menu_two).setOnClickListener(this::onClick);
+        ButterKnife.findById(this,R.id.ll_menu_three).setOnClickListener(this::onClick);
+        ButterKnife.findById(this,R.id.ll_menu_four).setOnClickListener(this::onClick);
         mMainPresenter.initData();
         mMainPresenter.changeCurrentClickState(0);
     }
 
 
-    @OnClick({R.id.ll_menu_one, R.id.ll_menu_two, R.id.ll_menu_three, R.id.ll_menu_four})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_menu_one:
@@ -83,7 +84,7 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     }
 
     @Override
-    public void setMenuItem(int position, @ColorInt int bgColor, @DrawableRes int resId,@ColorInt int textColor) {
+    public void setMenuItem(int position, @ColorInt int bgColor, @DrawableRes int resId, @ColorInt int textColor) {
         LinearLayout llItem = (LinearLayout) mMenu.getChildAt(position);
         ImageView imageView = (ImageView) llItem.getChildAt(0);
         TextView textView = (TextView) llItem.getChildAt(1);

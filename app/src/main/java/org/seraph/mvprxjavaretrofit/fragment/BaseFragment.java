@@ -7,11 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.seraph.mvprxjavaretrofit.activity.BaseActivity;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BasePresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
-import org.seraph.mvprxjavaretrofit.views.CustomLoadingDialog;
-
-import butterknife.ButterKnife;
 
 /**
  * frgment基类
@@ -29,9 +27,11 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     protected abstract void init(Bundle savedInstanceState);
 
     //声明基类中的Presenter
-    protected BasePresenter mPresenter;
+    public BasePresenter mPresenter;
 
-    protected CustomLoadingDialog loadingDialog;
+    private BaseActivity baseActivity;
+
+    protected View rootView;
 
     @Override
     public void onAttach(Context context) {
@@ -39,14 +39,16 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         if (mPresenter != null) {
             mPresenter.onAttach(context);
         }
+        if (context instanceof BaseActivity) {
+            baseActivity = (BaseActivity) context;
+        }
         super.onAttach(context);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(getContextView(), container, false);
-        ButterKnife.bind(this, rootView);
-        initLoadingDialog();
+        rootView = inflater.inflate(getContextView(), container, false);
         return rootView;
     }
 
@@ -66,26 +68,19 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         mPresenter.attachView(this);
     }
 
-    /**
-     * 4.初始化loadingDialog
-     */
-    private void initLoadingDialog() {
-        loadingDialog = new CustomLoadingDialog(getActivity());
-        loadingDialog.setOnDismissListener(v -> mPresenter.unSubscribe());
-    }
-
     @Override
     public void showLoading() {
-        if (loadingDialog != null) {
-            loadingDialog.show();
+        if (baseActivity != null) {
+            baseActivity.showLoading();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (loadingDialog != null) {
-            loadingDialog.dismiss();
+        if (baseActivity != null) {
+            baseActivity.hideLoading();
         }
+
     }
 
     @Override

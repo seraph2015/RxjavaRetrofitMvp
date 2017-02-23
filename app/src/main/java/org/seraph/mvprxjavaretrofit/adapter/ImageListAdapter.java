@@ -9,7 +9,7 @@ import com.squareup.picasso.Picasso;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.model.BaiduImageBean;
 import org.seraph.mvprxjavaretrofit.utlis.ViewHolder;
-import org.seraph.mvprxjavaretrofit.views.CustomSelfFitWidthImageView;
+import org.seraph.mvprxjavaretrofit.views.CustomSelfProportionImageView;
 
 import java.util.List;
 
@@ -32,8 +32,14 @@ public class ImageListAdapter extends BaseListAdapter<BaiduImageBean.BaiduImage>
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_image, parent, false);
         }
-        CustomSelfFitWidthImageView imageView = ViewHolder.get(convertView, R.id.image);
-        Picasso.with(context).load(baiduImage.objURL).placeholder(R.mipmap.ic_launcher).centerCrop().resize(baiduImage.width, baiduImage.height).into(imageView);
+        CustomSelfProportionImageView imageView = ViewHolder.get(convertView, R.id.image);
+        imageView.setSize(baiduImage.width, baiduImage.height);
+        Picasso.with(context).load(baiduImage.objURL)
+                .placeholder(R.mipmap.icon_placeholder)
+                .error(R.mipmap.icon_error)
+                .resize(baiduImage.width, baiduImage.height)
+                .centerInside()
+                .into(imageView);
         return convertView;
     }
 }

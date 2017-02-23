@@ -46,6 +46,8 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
     private List<BaiduImageBean.BaiduImage> listImage = new ArrayList<>();
 
+    private int PageNo = 0;
+
     public void initData() {
         title = "第二页";
         setTitle(title);
@@ -79,18 +81,17 @@ public class MainTwoFragmentPresenter extends BasePresenter {
     }
 
     public void startPicassoToImage() {
-
-        if (listImage.size() == 0) {
-            getBaiduImageList();
-        } else {
-            imageListAdapter.notifyDataSetChanged();
+        String searchKeyWord = mainTwoFragmentView.getSearchKeyWord();
+        if (Tools.isNull(searchKeyWord)) {
+            mainActivity.showToast("serach is null!");
+            return;
         }
-
+        getBaiduImageList(searchKeyWord, 1);
     }
 
-    private void getBaiduImageList() {
+    private void getBaiduImageList(String keyWord, int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
-        ApiService.doBaiduImage(Tools.getBaiduImagesUrl("动漫美女", 1)).doOnSubscribe(subscription -> mainTwoFragmentView.showLoading()).map(baiduImageBean -> baiduImageBean.imgs).subscribe(new Subscriber<List<BaiduImageBean.BaiduImage>>() {
+        ApiService.doBaiduImage(Tools.getBaiduImagesUrl(keyWord, requestPageNo)).doOnSubscribe(subscription -> mainTwoFragmentView.showLoading()).map(baiduImageBean -> baiduImageBean.imgs).subscribe(new Subscriber<List<BaiduImageBean.BaiduImage>>() {
 
             Subscription subscription;
 
@@ -103,6 +104,9 @@ public class MainTwoFragmentPresenter extends BasePresenter {
             @Override
             public void onNext(List<BaiduImageBean.BaiduImage> baiduImages) {
                 mainTwoFragmentView.hideLoading();
+                if (requestPageNo == 1) {
+                    listImage.clear();
+                }
                 listImage.addAll(baiduImages);
                 subscription.request(1);
             }

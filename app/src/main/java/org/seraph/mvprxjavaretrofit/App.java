@@ -2,6 +2,8 @@ package org.seraph.mvprxjavaretrofit;
 
 import android.app.Application;
 
+import com.squareup.picasso.Picasso;
+
 import org.seraph.mvprxjavaretrofit.db.DBGreenDaoHelp;
 import org.seraph.mvprxjavaretrofit.db.gen.DaoSession;
 import org.seraph.mvprxjavaretrofit.request.picasso.PicassoFactory;
@@ -32,6 +34,7 @@ public class App extends Application {
 
     private void initPicasso() {
         PicassoFactory.initPicassoToOkHttp(this);
+        Picasso.with(this).setIndicatorsEnabled(true);
     }
 
     /**

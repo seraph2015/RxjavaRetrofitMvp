@@ -13,4 +13,6 @@ public interface MainTwoFragmentView extends BaseView {
     void setTextView(CharSequence charSequence);
 
     void setImageAdapter(ListAdapter adapter);
+
+    String getSearchKeyWord();
 }

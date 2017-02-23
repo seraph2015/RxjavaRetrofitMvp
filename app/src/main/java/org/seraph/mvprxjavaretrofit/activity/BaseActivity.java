@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.activity;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +23,6 @@ import org.seraph.mvprxjavaretrofit.mvp.view.BaseActivityView;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 import org.seraph.mvprxjavaretrofit.views.CustomLoadingDialog;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -35,11 +35,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
     /**
      * 最高父布局
      */
-    @BindView(R.id.fl_root)
+    //@BindView(R.id.fl_root)
     FrameLayout flRoot;
-    @BindView(R.id.appbar)
+    //@BindView(R.id.appbar)
     AppBarLayout appBar;
-    @BindView(R.id.toolbar)
+    //@BindView(R.id.toolbar)
     Toolbar toolbar;
     /**
      * 添加布局的父布局
@@ -89,7 +89,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
         contentMain = ButterKnife.findById(this, R.id.content_main);
         View view = LayoutInflater.from(this).inflate(getContextView(), contentMain, false);
         contentMain.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        ButterKnife.bind(this);
+        flRoot = ButterKnife.findById(this, R.id.fl_root);
+        appBar = ButterKnife.findById(this, R.id.appbar);
+        toolbar = ButterKnife.findById(this, R.id.toolbar);
+
+        //ButterKnife.bind(this);
     }
 
 
@@ -118,7 +122,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
      */
     private void initLoadingDialog() {
         loadingDialog = new CustomLoadingDialog(this);
-        loadingDialog.setOnDismissListener(v -> mPresenter.unSubscribe());
+        loadingDialog.setOnDismissListener((DialogInterface dialog) -> mPresenter.unSubscribe());
     }
 
 

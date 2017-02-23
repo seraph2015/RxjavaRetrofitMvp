@@ -30,7 +30,8 @@ public class MainPresenter extends BaseActivityPresenter {
         super.attachView(mView);
         this.mainView = (MainActivityView) mView;
     }
-
+    //当前选中的界面
+    private BaseFragment fragment;
 
     private FragmentController mFragmentController;
 
@@ -123,9 +124,13 @@ public class MainPresenter extends BaseActivityPresenter {
                 clazz = MainOneFragment.class;
                 break;
         }
-        BaseFragment fragment = (BaseFragment) mFragmentController.add(clazz, tags[positionIndex], null);
+        fragment = (BaseFragment) mFragmentController.add(clazz, tags[positionIndex], null);
         fragment.restoreData();
     }
 
-
+    @Override
+    public void unSubscribe() {
+        super.unSubscribe();
+        fragment.mPresenter.unSubscribe();
+    }
 }
