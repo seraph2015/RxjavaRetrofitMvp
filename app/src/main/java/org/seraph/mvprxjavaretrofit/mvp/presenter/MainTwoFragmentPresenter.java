@@ -10,6 +10,7 @@ import org.seraph.mvprxjavaretrofit.mvp.model.BaiduImageBean;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainTwoFragmentView;
 import org.seraph.mvprxjavaretrofit.request.ApiService;
+import org.seraph.mvprxjavaretrofit.request.exception.ServerErrorCode;
 import org.seraph.mvprxjavaretrofit.utlis.FileTools;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -39,6 +40,8 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         super.attachView(mView);
         mainTwoFragmentView = (MainTwoFragmentView) mView;
     }
+
+    Subscription subscription;
 
     private String title;
 
@@ -93,7 +96,6 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         //获取图片地址 百度图片 标签objURL
         ApiService.doBaiduImage(Tools.getBaiduImagesUrl(keyWord, requestPageNo)).doOnSubscribe(subscription -> mainTwoFragmentView.showLoading()).map(baiduImageBean -> baiduImageBean.imgs).subscribe(new Subscriber<List<BaiduImageBean.BaiduImage>>() {
 
-            Subscription subscription;
 
             @Override
             public void onSubscribe(Subscription s) {
@@ -114,7 +116,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
             @Override
             public void onError(Throwable t) {
                 mainTwoFragmentView.hideLoading();
-                mainActivity.showSnackBar(t.getMessage());
+                ServerErrorCode.errorCodeToMessageShow(t, mainActivity);
             }
 
             @Override
@@ -125,5 +127,11 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         });
     }
 
-
+    @Override
+    public void unSubscribe() {
+        super.unSubscribe();
+        if (subscription != null) {
+            subscription.cancel();
+        }
+    }
 }

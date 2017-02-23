@@ -42,6 +42,8 @@ public class CustomSelfProportionImageView extends ImageView {
     public void setSize(int w, int h) {
         this.w = w;
         this.h = h;
+        //布局改变完成，刷新一下布局
+        requestLayout();
     }
 
 }

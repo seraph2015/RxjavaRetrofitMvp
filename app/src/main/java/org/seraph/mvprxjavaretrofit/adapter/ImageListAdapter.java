@@ -3,6 +3,7 @@ package org.seraph.mvprxjavaretrofit.adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.squareup.picasso.Picasso;
 
@@ -34,6 +35,7 @@ public class ImageListAdapter extends BaseListAdapter<BaiduImageBean.BaiduImage>
         }
         CustomSelfProportionImageView imageView = ViewHolder.get(convertView, R.id.image);
         imageView.setSize(baiduImage.width, baiduImage.height);
+
         Picasso.with(context).load(baiduImage.objURL)
                 .placeholder(R.mipmap.icon_placeholder)
                 .error(R.mipmap.icon_error)
