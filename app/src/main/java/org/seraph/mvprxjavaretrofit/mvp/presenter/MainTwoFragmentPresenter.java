@@ -55,7 +55,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
     private String searchKeyWord;
 
     public void initData() {
-        title = "Search Image";
+        title = " Search Image";
         setTitle(title);
         imageListAdapter = new ImageListAdapter(listImage, mainActivity);
         mainTwoFragmentView.setImageAdapter(imageListAdapter);
