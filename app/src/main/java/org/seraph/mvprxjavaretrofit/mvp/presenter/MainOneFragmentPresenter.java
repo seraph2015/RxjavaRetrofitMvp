@@ -33,9 +33,9 @@ public class MainOneFragmentPresenter extends BasePresenter {
     private MainActivity mainActivity;
 
     @Override
-    public void attachView(BaseView mView) {
-        super.attachView(mView);
-        this.mView = (MainOneFragmentView) mView;
+    public void attachView(BaseView view) {
+        super.attachView(view);
+        this.mView = (MainOneFragmentView) view;
     }
 
     @Override

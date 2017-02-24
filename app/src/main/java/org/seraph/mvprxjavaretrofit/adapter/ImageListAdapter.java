@@ -25,8 +25,8 @@ import java.util.List;
 public class ImageListAdapter extends BaseListAdapter<BaiduImageBean.BaiduImage> {
 
 
-    public ImageListAdapter(List<BaiduImageBean.BaiduImage> data, Context context) {
-        super(data, context);
+    public ImageListAdapter(Context context, List<BaiduImageBean.BaiduImage> data) {
+        super(context, data);
     }
 
     @Override
@@ -38,8 +38,12 @@ public class ImageListAdapter extends BaseListAdapter<BaiduImageBean.BaiduImage>
         CustomSelfProportionImageView imageView = ViewHolder.get(convertView, R.id.image);
         imageView.setSize(baiduImage.width, baiduImage.height);
         TextView textTitle = ViewHolder.get(convertView, R.id.tv_title);
-        textTitle.setText(Html.fromHtml(baiduImage.fromPageTitle));
-
+        textTitle.setText(Html.fromHtml(baiduImage.fromPageTitle + " " + baiduImage.width + "x" + baiduImage.height));
+        if (baiduImage.isShowTitle) {
+            textTitle.setVisibility(View.VISIBLE);
+        } else {
+            textTitle.setVisibility(View.GONE);
+        }
         //按照控件的大小来缩放图片的尺寸
         int width = baiduImage.width;
         int height = baiduImage.height;

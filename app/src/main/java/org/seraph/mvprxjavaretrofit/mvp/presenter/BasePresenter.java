@@ -17,8 +17,8 @@ public class BasePresenter {
     /**
      * 绑定view
      */
-    public void attachView(BaseView mView) {
-        this.mView = mView;
+    public void attachView(BaseView view) {
+        this.mView = view;
     }
 
 

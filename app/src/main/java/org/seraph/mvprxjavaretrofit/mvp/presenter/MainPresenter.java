@@ -28,9 +28,9 @@ public class MainPresenter extends BaseActivityPresenter {
     private MainActivityView mView;
 
     @Override
-    public void attachView(BaseView mView) {
-        super.attachView(mView);
-        this.mView = (MainActivityView) mView;
+    public void attachView(BaseView view) {
+        super.attachView(view);
+        this.mView = (MainActivityView) view;
     }
     //当前选中的界面
     private BaseFragment fragment;

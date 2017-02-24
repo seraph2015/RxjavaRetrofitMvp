@@ -24,5 +24,7 @@ public class BaiduImageBean implements Serializable {
         public int height;
 
         public String fromPageTitle;
+
+        public boolean isShowTitle = false;
     }
 }

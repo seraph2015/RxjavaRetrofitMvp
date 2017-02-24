@@ -22,9 +22,9 @@ public class MainFourFragmentPresenter extends BasePresenter {
     private float percentScroll = 0f;
 
     @Override
-    public void attachView(BaseView mView) {
-        super.attachView(mView);
-        this.mView = (MainFourFragmentView) mView;
+    public void attachView(BaseView view) {
+        super.attachView(view);
+        this.mView = (MainFourFragmentView) view;
     }
 
     @Override

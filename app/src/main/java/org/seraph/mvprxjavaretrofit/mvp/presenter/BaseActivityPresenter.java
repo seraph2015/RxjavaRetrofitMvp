@@ -22,9 +22,9 @@ public class BaseActivityPresenter extends BasePresenter {
      * 绑定view
      */
     @Override
-    public void attachView(BaseView mView) {
-        super.attachView(mView);
-        this.mView = (BaseActivityView) mView;
+    public void attachView(BaseView view) {
+        super.attachView(view);
+        this.mView = (BaseActivityView) view;
     }
 
     /**

@@ -18,10 +18,10 @@ abstract class BaseListAdapter<T> extends BaseAdapter {
     protected List<T> data;
     public Context context;
 
-    BaseListAdapter(List<T> data, Context context) {
+    BaseListAdapter(Context context, List<T> data) {
         inflater = LayoutInflater.from(context);
-        this.data = data;
         this.context = context;
+        this.data = data;
     }
 
     @Override

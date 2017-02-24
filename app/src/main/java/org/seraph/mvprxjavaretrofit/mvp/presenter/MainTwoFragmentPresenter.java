@@ -34,12 +34,12 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         super.onAttach(context);
     }
 
-    private MainTwoFragmentView mainTwoFragmentView;
+    private MainTwoFragmentView mView;
 
     @Override
-    public void attachView(BaseView mView) {
-        super.attachView(mView);
-        mainTwoFragmentView = (MainTwoFragmentView) mView;
+    public void attachView(BaseView view) {
+        super.attachView(view);
+        mView = (MainTwoFragmentView) view;
     }
 
     private Subscription subscription;
@@ -57,8 +57,8 @@ public class MainTwoFragmentPresenter extends BasePresenter {
     public void initData() {
         title = " Search Image";
         setTitle(title);
-        imageListAdapter = new ImageListAdapter(listImage, mainActivity);
-        mainTwoFragmentView.setImageAdapter(imageListAdapter);
+        imageListAdapter = new ImageListAdapter(mainActivity, listImage);
+        mView.setImageAdapter(imageListAdapter);
     }
 
 
@@ -83,11 +83,11 @@ public class MainTwoFragmentPresenter extends BasePresenter {
     }
 
     public void getCacheFilePath() {
-        mainTwoFragmentView.setTextView(FileTools.getCacheDirectory(mainActivity, null).getPath());
+        mView.setTextView(FileTools.getCacheDirectory(mainActivity, null).getPath());
     }
 
     public void startPicassoToImage() {
-        searchKeyWord = mainTwoFragmentView.getSearchKeyWord();
+        searchKeyWord = mView.getSearchKeyWord();
         if (Tools.isNull(searchKeyWord)) {
             mainActivity.showToast("serach is null!");
             return;
@@ -101,7 +101,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
     private void getBaiduImageList(String keyWord, int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
-        ApiService.doBaiduImage(Tools.getBaiduImagesUrl(keyWord, requestPageNo)).doOnSubscribe(subscription -> mainTwoFragmentView.showLoading()).map(baiduImageBean -> baiduImageBean.imgs).subscribe(new Subscriber<List<BaiduImageBean.BaiduImage>>() {
+        ApiService.doBaiduImage(Tools.getBaiduImagesUrl(keyWord, requestPageNo)).doOnSubscribe(subscription -> mView.showLoading()).map(baiduImageBean -> baiduImageBean.imgs).subscribe(new Subscriber<List<BaiduImageBean.BaiduImage>>() {
 
             @Override
             public void onSubscribe(Subscription s) {
@@ -111,16 +111,16 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
             @Override
             public void onNext(List<BaiduImageBean.BaiduImage> baiduImages) {
-                mainTwoFragmentView.hideLoading();
+                mView.hideLoading();
                 if (requestPageNo == 1) {
                     listImage.clear();
                 }
                 listImage.addAll(baiduImages);
                 //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
                 if (baiduImages.size() < 48) {
-                    mainTwoFragmentView.setListFootText(0);
+                    mView.setListFootText(0);
                 } else {
-                    mainTwoFragmentView.setListFootText(1);
+                    mView.setListFootText(1);
                 }
                 pageNo = requestPageNo;
                 subscription.request(1);
@@ -128,13 +128,13 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
             @Override
             public void onError(Throwable t) {
-                mainTwoFragmentView.hideLoading();
+                mView.hideLoading();
                 ServerErrorCode.errorCodeToMessageShow(t, mainActivity);
             }
 
             @Override
             public void onComplete() {
-                mainTwoFragmentView.hideLoading();
+                mView.hideLoading();
                 imageListAdapter.notifyDataSetChanged();
             }
         });
@@ -153,8 +153,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         if (position > listImage.size()) {
             return;
         }
-        BaiduImageBean.BaiduImage baiduImage = listImage.get(position - 1);
-        //重新加载
-        mainActivity.showToast(baiduImage.fromPageTitle);
+        listImage.get(position - 1).isShowTitle = !listImage.get(position - 1).isShowTitle;
+        imageListAdapter.notifyDataSetChanged();
     }
 }
