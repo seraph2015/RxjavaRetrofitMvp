@@ -21,7 +21,7 @@ import java.util.List;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainOneFragmentPresenter extends BasePresenter {
+public class MainOnePresenter extends BasePresenter {
 
 
     private MainOneFragmentView fragmentOneView;
@@ -51,7 +51,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
     private String title;
 
     public void initData() {
-        title = "主页";
+        title = " 主页";
         setTitle(title);
     }
 

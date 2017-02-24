@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BasePresenter;
-import org.seraph.mvprxjavaretrofit.mvp.presenter.MainOneFragmentPresenter;
+import org.seraph.mvprxjavaretrofit.mvp.presenter.MainOnePresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainOneFragmentView;
 import org.seraph.mvprxjavaretrofit.views.ObservableScrollView;
 
@@ -31,11 +31,11 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
     }
 
 
-    MainOneFragmentPresenter fragmentOnePresenter;
+    MainOnePresenter fragmentOnePresenter;
 
     @Override
     protected BasePresenter getPresenter() {
-        fragmentOnePresenter = new MainOneFragmentPresenter();
+        fragmentOnePresenter = new MainOnePresenter();
         return fragmentOnePresenter;
     }
 
