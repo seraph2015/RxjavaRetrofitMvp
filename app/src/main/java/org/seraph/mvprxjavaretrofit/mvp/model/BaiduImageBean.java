@@ -23,5 +23,6 @@ public class BaiduImageBean implements Serializable {
         public int width;
         public int height;
 
+        public String fromPageTitle;
     }
 }

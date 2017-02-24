@@ -199,19 +199,23 @@ public class Tools {
     /**
      * 百度图片api
      *
-     * @param key  关键字
-     * @param page 页数
+     * @param key    关键字
+     * @param pageNo 页数
      */
-    public static String getBaiduImagesUrl(String key, int page) {
+    public static String getBaiduImagesUrl(String key, int pageNo) {
 
-        int pageSize = 48;
-        int pageNo = 1;
-        if (page > 1) {
-            pageNo = (page - 1) * pageSize;
-        }
+        int pageSize = 48;//每次查询数据的条数
+        int start = ((pageNo <= 0 ? 1 : pageNo) - 1) * pageSize + 1; //开始查询的数据
 
         String base = "search/avatarjson?tn=resultjsonavatarnew&ie=utf-8&word=" + key + "&cg=star&";
         // 生成api
-        return base + "pn=" + pageNo + "&rn=" + pageSize + "&itg=0&z=0&fr=&width=&height=&lm=-1&ic=0&s=0&st=-1&gsm=3c";
+        return base + "pn=" + start + "&rn=" + pageSize + "&itg=0&z=0&fr=&width=&height=&lm=-1&ic=0&s=0&st=-1&gsm=3c";
+    }
+
+    /**
+     * 原始宽高，根据新宽度等比返回对应的高度
+     */
+    public static int getNewHeight(int oldWidth, int oldHeight, int newWidth) {
+        return newWidth * oldHeight / oldWidth;
     }
 }

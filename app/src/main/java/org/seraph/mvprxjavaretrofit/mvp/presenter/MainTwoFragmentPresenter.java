@@ -27,6 +27,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
     private MainActivity mainActivity;
 
+
     @Override
     public void onAttach(Context context) {
         mainActivity = (MainActivity) context;
@@ -41,7 +42,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         mainTwoFragmentView = (MainTwoFragmentView) mView;
     }
 
-    Subscription subscription;
+    private Subscription subscription;
 
     private String title;
 
@@ -49,7 +50,9 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
     private List<BaiduImageBean.BaiduImage> listImage = new ArrayList<>();
 
-    private int PageNo = 0;
+    private int pageNo = 0;
+
+    private String searchKeyWord;
 
     public void initData() {
         title = "第二页";
@@ -84,7 +87,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
     }
 
     public void startPicassoToImage() {
-        String searchKeyWord = mainTwoFragmentView.getSearchKeyWord();
+        searchKeyWord = mainTwoFragmentView.getSearchKeyWord();
         if (Tools.isNull(searchKeyWord)) {
             mainActivity.showToast("serach is null!");
             return;
@@ -92,10 +95,13 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         getBaiduImageList(searchKeyWord, 1);
     }
 
+    public void loadMoreImage() {
+        getBaiduImageList(searchKeyWord, ++pageNo);
+    }
+
     private void getBaiduImageList(String keyWord, int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
         ApiService.doBaiduImage(Tools.getBaiduImagesUrl(keyWord, requestPageNo)).doOnSubscribe(subscription -> mainTwoFragmentView.showLoading()).map(baiduImageBean -> baiduImageBean.imgs).subscribe(new Subscriber<List<BaiduImageBean.BaiduImage>>() {
-
 
             @Override
             public void onSubscribe(Subscription s) {
@@ -110,6 +116,13 @@ public class MainTwoFragmentPresenter extends BasePresenter {
                     listImage.clear();
                 }
                 listImage.addAll(baiduImages);
+                //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
+                if (baiduImages.size() < 48) {
+                    mainTwoFragmentView.setListFootText(0);
+                } else {
+                    mainTwoFragmentView.setListFootText(1);
+                }
+                pageNo = requestPageNo;
                 subscription.request(1);
             }
 
@@ -134,4 +147,6 @@ public class MainTwoFragmentPresenter extends BasePresenter {
             subscription.cancel();
         }
     }
+
+
 }

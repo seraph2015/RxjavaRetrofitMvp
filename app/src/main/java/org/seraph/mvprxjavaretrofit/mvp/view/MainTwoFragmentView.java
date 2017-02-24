@@ -15,4 +15,9 @@ public interface MainTwoFragmentView extends BaseView {
     void setImageAdapter(ListAdapter adapter);
 
     String getSearchKeyWord();
+
+    /**
+     * 0是没有更多，1是加载更多
+     */
+    void setListFootText(int type);
 }

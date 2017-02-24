@@ -29,7 +29,7 @@ public class CustomSelfProportionImageView extends ImageView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec) - getPaddingRight() - getPaddingLeft();
         if (width > 0 && w > 0 && h > 0) {
             int newH = (width * h / w);
             setMeasuredDimension(width, newH);
@@ -39,6 +39,9 @@ public class CustomSelfProportionImageView extends ImageView {
 
     }
 
+    /**
+     * 设置宽高比
+     */
     public void setSize(int w, int h) {
         this.w = w;
         this.h = h;
