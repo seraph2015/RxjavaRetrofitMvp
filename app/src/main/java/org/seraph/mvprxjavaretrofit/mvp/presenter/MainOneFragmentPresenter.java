@@ -21,7 +21,7 @@ import java.util.List;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainOnePresenter extends BasePresenter {
+public class MainOneFragmentPresenter extends BasePresenter {
 
 
     private MainOneFragmentView fragmentOneView;
