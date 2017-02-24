@@ -27,9 +27,9 @@ public class ServerErrorCode {
         if (e instanceof ServerErrorException) {
             message = errorCodeToMessage(e.getMessage());
         } else if (e instanceof java.net.SocketTimeoutException) {
-            message = "Timeout";
+            message = "连接服务器超时";
         }
-        baseView.showSnackBar(message);
+        baseView.showToast(message);
         return message;
     }
 

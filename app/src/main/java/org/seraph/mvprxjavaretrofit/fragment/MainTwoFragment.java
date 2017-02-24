@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -33,12 +34,12 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
         return R.layout.fragment_two;
     }
 
-    MainTwoFragmentPresenter mainTwoFragmentPresenter;
+    MainTwoFragmentPresenter mPresenter;
 
     @Override
     protected BasePresenter getPresenter() {
-        mainTwoFragmentPresenter = new MainTwoFragmentPresenter();
-        return mainTwoFragmentPresenter;
+        mPresenter = new MainTwoFragmentPresenter();
+        return mPresenter;
     }
 
     TextView tvCache;
@@ -51,7 +52,8 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
     protected void init(Bundle savedInstanceState) {
         listImageView = ButterKnife.findById(rootView, R.id.lv_images);
         addListHeadView();
-        mainTwoFragmentPresenter.initData();
+        listImageView.setOnItemClickListener(this::onItemClick);
+        mPresenter.initData();
     }
 
     private void addListHeadView() {
@@ -75,17 +77,21 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_get_cache:
-                mainTwoFragmentPresenter.getCacheFilePath();
+                mPresenter.getCacheFilePath();
                 break;
             case R.id.btn_picasso_image:
-                mainTwoFragmentPresenter.startPicassoToImage();
+                mPresenter.startPicassoToImage();
                 break;
             case R.id.tv_more:
                 if (tvMore.getTag() != null && (int) tvMore.getTag() == 1) {
-                    mainTwoFragmentPresenter.loadMoreImage();
+                    mPresenter.loadMoreImage();
                 }
                 break;
         }
+    }
+
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+        mPresenter.onItemClick(position);
     }
 
 

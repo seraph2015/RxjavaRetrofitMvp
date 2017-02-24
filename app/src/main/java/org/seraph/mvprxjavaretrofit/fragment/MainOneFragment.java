@@ -31,12 +31,12 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
     }
 
 
-    MainOneFragmentPresenter fragmentOnePresenter;
+    MainOneFragmentPresenter mPresenter;
 
     @Override
     protected BasePresenter getPresenter() {
-        fragmentOnePresenter = new MainOneFragmentPresenter();
-        return fragmentOnePresenter;
+        mPresenter = new MainOneFragmentPresenter();
+        return mPresenter;
     }
 
 
@@ -53,27 +53,27 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
         ButterKnife.findById(rootView,R.id.tv_query_user).setOnClickListener(this::onClick);
         ButterKnife.findById(rootView,R.id.tv_clean_user).setOnClickListener(this::onClick);
 
-        oScrollView.setScrollViewListener(percentScroll -> fragmentOnePresenter.upDataToolbarAlpha(percentScroll));
+        oScrollView.setScrollViewListener(percentScroll -> mPresenter.upDataToolbarAlpha(percentScroll));
 
-        fragmentOnePresenter.initData();
+        mPresenter.initData();
     }
 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_request:
-                fragmentOnePresenter.getNetWork();
+                mPresenter.getNetWork();
                 break;
             case R.id.tv_content:
-                fragmentOnePresenter.switchToolBarVisibility();
+                mPresenter.switchToolBarVisibility();
                 break;
             case R.id.btn_sava_db:
-                fragmentOnePresenter.saveUserInfo();
+                mPresenter.saveUserInfo();
                 break;
             case R.id.tv_query_user:
-                fragmentOnePresenter.queryUserInfo();
+                mPresenter.queryUserInfo();
                 break;
             case R.id.tv_clean_user:
-                fragmentOnePresenter.cleanUserInfo();
+                mPresenter.cleanUserInfo();
                 break;
         }
     }

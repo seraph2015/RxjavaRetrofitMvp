@@ -35,11 +35,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
     /**
      * 最高父布局
      */
-    //@BindView(R.id.fl_root)
     FrameLayout flRoot;
-    //@BindView(R.id.appbar)
     AppBarLayout appBar;
-    //@BindView(R.id.toolbar)
     Toolbar toolbar;
     /**
      * 添加布局的父布局
@@ -92,8 +89,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
         flRoot = ButterKnife.findById(this, R.id.fl_root);
         appBar = ButterKnife.findById(this, R.id.appbar);
         toolbar = ButterKnife.findById(this, R.id.toolbar);
-
-        //ButterKnife.bind(this);
     }
 
 

@@ -79,7 +79,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
      * @param percentScroll 进度百分比
      */
     private void upDataToolbarAlpha(float percentScroll) {
-        mainActivity.mMainPresenter.upDataToolbarAlpha(percentScroll);
+        mainActivity.mPresenter.upDataToolbarAlpha(percentScroll);
     }
 
     public void getCacheFilePath() {
@@ -149,4 +149,12 @@ public class MainTwoFragmentPresenter extends BasePresenter {
     }
 
 
+    public void onItemClick(int position) {
+        if (position > listImage.size()) {
+            return;
+        }
+        BaiduImageBean.BaiduImage baiduImage = listImage.get(position - 1);
+        //重新加载
+        mainActivity.showToast(baiduImage.fromPageTitle);
+    }
 }

@@ -31,12 +31,12 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         return R.layout.activity_mian;
     }
 
-    public MainPresenter mMainPresenter;
+    public MainPresenter mPresenter;
 
     @Override
     protected BaseActivityPresenter getPresenter() {
-        mMainPresenter = new MainPresenter();
-        return mMainPresenter;
+        mPresenter = new MainPresenter();
+        return mPresenter;
     }
 
 
@@ -50,24 +50,24 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         ButterKnife.findById(this,R.id.ll_menu_two).setOnClickListener(this::onClick);
         ButterKnife.findById(this,R.id.ll_menu_three).setOnClickListener(this::onClick);
         ButterKnife.findById(this,R.id.ll_menu_four).setOnClickListener(this::onClick);
-        mMainPresenter.initData();
-        mMainPresenter.changeCurrentClickState(0);
+        mPresenter.initData();
+        mPresenter.changeCurrentClickState(0);
     }
 
 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_menu_one:
-                mMainPresenter.changeCurrentClickState(0);
+                mPresenter.changeCurrentClickState(0);
                 break;
             case R.id.ll_menu_two:
-                mMainPresenter.changeCurrentClickState(1);
+                mPresenter.changeCurrentClickState(1);
                 break;
             case R.id.ll_menu_three:
-                mMainPresenter.changeCurrentClickState(2);
+                mPresenter.changeCurrentClickState(2);
                 break;
             case R.id.ll_menu_four:
-                mMainPresenter.changeCurrentClickState(3);
+                mPresenter.changeCurrentClickState(3);
                 break;
         }
     }

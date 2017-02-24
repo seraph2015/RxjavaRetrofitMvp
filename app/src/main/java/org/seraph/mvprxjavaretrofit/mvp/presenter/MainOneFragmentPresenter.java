@@ -24,7 +24,7 @@ import java.util.List;
 public class MainOneFragmentPresenter extends BasePresenter {
 
 
-    private MainOneFragmentView fragmentOneView;
+    private MainOneFragmentView mView;
 
     private Subscription subscriber;
 
@@ -35,7 +35,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
     @Override
     public void attachView(BaseView mView) {
         super.attachView(mView);
-        this.fragmentOneView = (MainOneFragmentView) mView;
+        this.mView = (MainOneFragmentView) mView;
     }
 
     @Override
@@ -61,14 +61,14 @@ public class MainOneFragmentPresenter extends BasePresenter {
     public void getNetWork() {
         ApiService.doLogin("15623088767", "123456").doOnSubscribe(subscription -> {
             this.subscriber = subscription;
-            fragmentOneView.showLoading();
+            mView.showLoading();
         }).subscribe(baseResponse -> {
-                    fragmentOneView.hideLoading();
+                    mView.hideLoading();
                     baseData = baseResponse.data;
                     UserBean userBean = baseData.data;
-                    fragmentOneView.setTextViewValue("token->" + baseData.token + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
+                    mView.setTextViewValue("token->" + baseData.token + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
                 }, e -> {
-                    fragmentOneView.hideLoading();
+                    mView.hideLoading();
                     ServerErrorCode.errorCodeToMessageShow(e, mainActivity);
                 }
         );
@@ -100,7 +100,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
         for (UserTable userTable : list) {
             stringBuilder.append("id:" + userTable.get_id() + "\ntoken:" + userTable.getToken() + "\nname:" + userTable.getName() + "\nheadImg:" + userTable.getHeadPortrait() + "\n\n");
         }
-        fragmentOneView.setUserTextViewValue(stringBuilder.toString());
+        mView.setUserTextViewValue(stringBuilder.toString());
     }
 
     /**
@@ -129,14 +129,14 @@ public class MainOneFragmentPresenter extends BasePresenter {
      */
     public void upDataToolbarAlpha(float percentScroll) {
         this.percentScroll = percentScroll;
-        mainActivity.mMainPresenter.upDataToolbarAlpha(percentScroll);
+        mainActivity.mPresenter.upDataToolbarAlpha(percentScroll);
     }
 
     /**
      * 切换状态栏是否显示
      */
     public void switchToolBarVisibility() {
-        mainActivity.mMainPresenter.switchToolBarVisibility();
+        mainActivity.mPresenter.switchToolBarVisibility();
     }
 
     @Override

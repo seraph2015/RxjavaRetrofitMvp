@@ -205,7 +205,7 @@ public class Tools {
     public static String getBaiduImagesUrl(String key, int pageNo) {
 
         int pageSize = 48;//每次查询数据的条数
-        int start = ((pageNo <= 0 ? 1 : pageNo) - 1) * pageSize + 1; //开始查询的数据
+        int start = ((pageNo <= 0 ? 1 : pageNo) - 1) * pageSize; //开始查询的数据
 
         String base = "search/avatarjson?tn=resultjsonavatarnew&ie=utf-8&word=" + key + "&cg=star&";
         // 生成api

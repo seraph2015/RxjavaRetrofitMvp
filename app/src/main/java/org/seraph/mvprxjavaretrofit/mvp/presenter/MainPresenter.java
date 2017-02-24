@@ -7,7 +7,9 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.fragment.BaseFragment;
+import org.seraph.mvprxjavaretrofit.fragment.MainFourFragment;
 import org.seraph.mvprxjavaretrofit.fragment.MainOneFragment;
+import org.seraph.mvprxjavaretrofit.fragment.MainThreeFragment;
 import org.seraph.mvprxjavaretrofit.fragment.MainTwoFragment;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainActivityView;
@@ -23,12 +25,12 @@ import io.reactivex.Flowable;
  **/
 public class MainPresenter extends BaseActivityPresenter {
 
-    private MainActivityView mainView;
+    private MainActivityView mView;
 
     @Override
     public void attachView(BaseView mView) {
         super.attachView(mView);
-        this.mainView = (MainActivityView) mView;
+        this.mView = (MainActivityView) mView;
     }
     //当前选中的界面
     private BaseFragment fragment;
@@ -48,9 +50,9 @@ public class MainPresenter extends BaseActivityPresenter {
     private int childCount = 0;
 
     public void initData() {
-        mFragmentController = new FragmentController(mainView.getMainActivity(), R.id.fl_home);
+        mFragmentController = new FragmentController(mView.getMainActivity(), R.id.fl_home);
         mFragmentController.setFragmentTags(tags);
-        childCount = mainView.getMenuChildCount();
+        childCount = mView.getMenuChildCount();
     }
 
 
@@ -92,14 +94,14 @@ public class MainPresenter extends BaseActivityPresenter {
      * 设置选中
      */
     private void setSelectedMenu(int position) {
-        mainView.setMenuItem(position, selectedBgColor, selectIconImage[position], selectedTextColor);
+        mView.setMenuItem(position, selectedBgColor, selectIconImage[position], selectedTextColor);
     }
 
     /**
      * 设置未选中
      */
     private void setUnSelectedMenu(int position) {
-        mainView.setMenuItem(position, unSelectedBgColor, unSelectIconImage[position], unSelectedTextColor);
+        mView.setMenuItem(position, unSelectedBgColor, unSelectIconImage[position], unSelectedTextColor);
     }
 
     /**
@@ -115,10 +117,10 @@ public class MainPresenter extends BaseActivityPresenter {
                 clazz = MainTwoFragment.class;
                 break;
             case 2:
-                clazz = MainOneFragment.class;
+                clazz = MainThreeFragment.class;
                 break;
             case 3:
-                clazz = MainOneFragment.class;
+                clazz = MainFourFragment.class;
                 break;
             default:
                 clazz = MainOneFragment.class;
