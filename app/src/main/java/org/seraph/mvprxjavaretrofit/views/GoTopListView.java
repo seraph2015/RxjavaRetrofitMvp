@@ -63,10 +63,10 @@ public class GoTopListView extends ListView {
 
 
     /**
-     * 向上滚动
+     * 向上滚动smoothScrollToPosition
      */
     public void onClick(View v) {
-        this.post(() -> smoothScrollToPosition(0));
+        this.post(() -> setSelection(0));
     }
 
     /**
