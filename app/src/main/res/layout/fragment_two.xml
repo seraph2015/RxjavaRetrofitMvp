@@ -3,10 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ListView
+    <org.seraph.mvprxjavaretrofit.views.GoTopListView
         android:id="@+id/lv_images"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <ImageView
+        android:id="@+id/iv_go_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="15dp"
+        android:padding="5dp"
+        android:src="@mipmap/icon_go_top" />
 
 </RelativeLayout>

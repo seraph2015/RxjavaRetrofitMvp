@@ -7,14 +7,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BasePresenter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.MainTwoFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainTwoFragmentView;
+import org.seraph.mvprxjavaretrofit.views.GoTopListView;
 
 import butterknife.ButterKnife;
 
@@ -27,7 +28,9 @@ import butterknife.ButterKnife;
 public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView {
 
 
-    private ListView listImageView;
+    private GoTopListView listImageView;
+
+    private ImageView ivGoTop;
 
     @Override
     protected int getContextView() {
@@ -51,6 +54,8 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
     @Override
     protected void init(Bundle savedInstanceState) {
         listImageView = ButterKnife.findById(rootView, R.id.lv_images);
+        ivGoTop = ButterKnife.findById(rootView, R.id.iv_go_top);
+        listImageView.setScrollListener(ivGoTop);
         addListHeadView();
         listImageView.setOnItemClickListener(this::onItemClick);
         mPresenter.initData();
