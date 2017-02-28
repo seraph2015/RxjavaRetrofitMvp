@@ -93,4 +93,9 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         textView.setTextColor(textColor);
     }
 
+    @Override
+    public void onBackPressed() {
+        mPresenter.onBackPressed();
+
+    }
 }

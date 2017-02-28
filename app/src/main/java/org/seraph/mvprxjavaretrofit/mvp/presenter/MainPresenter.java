@@ -15,7 +15,11 @@ import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainActivityView;
 import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * mian逻辑处理层
@@ -135,4 +139,30 @@ public class MainPresenter extends BaseActivityPresenter {
         super.unSubscribe();
         fragment.mPresenter.unSubscribe();
     }
+
+
+    public void onBackPressed() {
+        doublePressBackToast();
+    }
+
+
+    /**
+     * 判断是否已经点击过一次回退键
+     */
+    private boolean isBackPressed = false;
+
+    private void doublePressBackToast() {
+        if (!isBackPressed) {
+            isBackPressed = true;
+            mView.showToast("再按一次退出程序");
+        } else {
+            mView.viewFinish();
+        }
+        Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread()).subscribe(aLong -> {
+            isBackPressed = false;
+        });
+
+    }
+
+
 }
