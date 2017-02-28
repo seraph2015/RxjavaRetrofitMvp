@@ -21,7 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--图片预览-->
         <activity android:name=".activity.PhotoPreviewActivity" />
+        <!--权限设置-->
+        <activity android:name=".permission.PermissionsActivity" />
+
     </application>
 
 </manifest>

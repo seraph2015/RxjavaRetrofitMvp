@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import org.seraph.mvprxjavaretrofit.adapter.PhotoPreviewAdapter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BaseActivityPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.PhotoPreviewPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.PhotoPreviewView;
+import org.seraph.mvprxjavaretrofit.preference.AppConstant;
 import org.seraph.mvprxjavaretrofit.views.zoom.ImageViewTouchViewPager;
 
 import butterknife.ButterKnife;
@@ -70,7 +72,7 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
     }
 
     @Override
-    public void setMenuClick(){
+    public void setMenuClick() {
         toolbar.setOnMenuItemClickListener(this::onMenuItem);
     }
 
@@ -82,7 +84,6 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
     }
 
 
-
     private boolean onMenuItem(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_save_image:
@@ -92,4 +93,12 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
         return false;
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppConstant.CODE_REQUEST_PERMISSIONS) {
+            mPresenter.onActivityResult(resultCode);
+        }
+    }
 }

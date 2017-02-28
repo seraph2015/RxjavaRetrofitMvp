@@ -1,8 +1,10 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
+import android.Manifest;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -13,6 +15,8 @@ import org.seraph.mvprxjavaretrofit.adapter.PhotoPreviewAdapter;
 import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.PhotoPreviewView;
+import org.seraph.mvprxjavaretrofit.permission.PermissionManagement;
+import org.seraph.mvprxjavaretrofit.permission.PermissionsActivity;
 import org.seraph.mvprxjavaretrofit.preference.AppConstant;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -99,11 +103,19 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
         download();
     }
 
+    String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private void download() {
-        mView.showLoading("正在保存");
-        Picasso.with(mView.getContext()).load(savePhoto.objURL).into(target);
+        //判然系统权限
+        // 缺少权限时, 进入权限配置页面
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionManagement.lacksPermissions(mView.getContext(), permissions)) {
+            PermissionsActivity.startActivityForResult(mActivity, AppConstant.CODE_REQUEST_PERMISSIONS, permissions);
+        } else {
+            mView.showLoading("正在保存");
+            Picasso.with(mView.getContext()).load(savePhoto.objURL).into(target);
+        }
     }
+
 
     private Target target = new Target() {
         @Override
@@ -154,6 +166,20 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
         super.unSubscribe();
         if (subscription != null) {
             subscription.cancel();
+        }
+
+
+    }
+
+    /**
+     * 权限请求返回
+     */
+    public void onActivityResult(int requestCode) {
+        if (requestCode == PermissionsActivity.PERMISSIONS_GRANTED) {
+            mView.showLoading("正在保存");
+            Picasso.with(mView.getContext()).load(savePhoto.objURL).into(target);
+        } else {
+            mView.showToast("权限请求失败，无法保存图片");
         }
     }
 }

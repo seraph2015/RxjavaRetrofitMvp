@@ -11,7 +11,7 @@ public class AppConstant {
     /**
      * 本地数据库名称
      */
-    public static final String DB_NAME = "xxx-db";
+    public static final String DB_NAME = "seraph-db";
 
     /**
      * 网络超时
@@ -21,6 +21,12 @@ public class AppConstant {
      * 图片最大缓存 1G
      */
     public static final long CACHE_IMAGE_MAX_SIZE = 1024 * 1024 * 1024;
-
-    public static final String SAVE_FOLDER_NAME = "Searph";
+    /**
+     * 图片保存文件夹名称
+     */
+    public static final String SAVE_FOLDER_NAME = "Seraph";
+    /**
+     * 权限请求code
+     */
+    public static final int CODE_REQUEST_PERMISSIONS = 1000;
 }

@@ -28,7 +28,12 @@ public class CustomLoadingDialog extends Dialog {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                dismiss();
+                try {
+                    dismiss();
+                }catch (ClassCastException e){
+
+                }
+
                 break;
         }
         return true;

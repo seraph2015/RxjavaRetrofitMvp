@@ -169,16 +169,25 @@ public class Tools {
                 Environment.MEDIA_MOUNTED)) { // 文件可用
             File dirs = new File(Environment.getExternalStorageDirectory(),
                     "/DCIM/" + filePath);
-            if (!dirs.exists()) {
+            if (!dirs.exists())
                 dirs.mkdirs();
-            }
-            return new File(Environment.getExternalStorageDirectory(),
+
+            File file = new File(Environment.getExternalStorageDirectory(),
                     "/DCIM/" + filePath + "/" + imageName);
+            if (!file.exists()) {
+                try {
+                    //在指定的文件夹中创建文件
+                    file.createNewFile();
+                } catch (Exception e) {
+                }
+            }
+            return file;
         } else {
             return null;
         }
 
     }
+
 
 
     /**
