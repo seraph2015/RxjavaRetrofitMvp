@@ -152,6 +152,8 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
     @Override
     public void unSubscribe() {
         super.unSubscribe();
-        subscription.cancel();
+        if (subscription != null) {
+            subscription.cancel();
+        }
     }
 }
