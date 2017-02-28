@@ -17,7 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import org.seraph.mvprxjavaretrofit.R;
 
 /**
- * 权限管理界面
+ * 6.0权限管理界面
  * date：2017/2/28 11:55
  * author：xiongj
  * mail：417753393@qq.com

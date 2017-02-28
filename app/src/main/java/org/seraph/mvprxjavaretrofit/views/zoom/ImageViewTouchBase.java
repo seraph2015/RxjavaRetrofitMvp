@@ -102,9 +102,9 @@ public abstract class ImageViewTouchBase extends ImageView implements IDisposabl
     private boolean mBitmapChanged;
 
     /**
-     *动画时间
+     * 动画时间
      */
-    final protected int DEFAULT_ANIMATION_DURATION = 500;
+    final protected int DEFAULT_ANIMATION_DURATION = 400;
 
     protected RectF mBitmapRect = new RectF();
     protected RectF mCenterRect = new RectF();
@@ -584,7 +584,9 @@ public abstract class ImageViewTouchBase extends ImageView implements IDisposabl
      */
     public float getMinScale() {
         if (mMinZoom == ZOOM_INVALID) {
-            mMinZoom = computeMinZoom();
+            //修改最小为1倍屏幕宽 2017年2月28日16:08:32修改 xiongj
+            mMinZoom = 1f;
+            // mMinZoom = computeMinZoom();
         }
         return mMinZoom;
     }

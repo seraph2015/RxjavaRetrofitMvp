@@ -244,8 +244,7 @@ public class ImageViewTouch extends ImageViewTouchBase {
 				float scale = getScale();
 				float targetScale = scale;
 				targetScale = scale > getMinScale() ? getMinScale() : getMaxScale();
-				targetScale = Math.min(getMaxScale(),
-						Math.max(targetScale, getMinScale()));
+				targetScale = Math.min(getMaxScale(),Math.max(targetScale, getMinScale()));
 				zoomTo(targetScale, e.getX(), e.getY(), DEFAULT_ANIMATION_DURATION);
 				invalidate();
 			}
