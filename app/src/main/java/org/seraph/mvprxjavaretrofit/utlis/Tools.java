@@ -2,10 +2,13 @@ package org.seraph.mvprxjavaretrofit.utlis;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -13,7 +16,11 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.seraph.mvprxjavaretrofit.preference.AppConstant;
+
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -164,16 +171,29 @@ public class Tools {
         return result;
     }
 
-    public static File getDCIMFile(String filePath, String imageName) {
+    /**
+     * bitmap转文件
+     */
+    public static void bitmapToFile(Bitmap mBitmap, File file) throws IOException {
+        // String url = MediaStore.Images.Media.insertImage(mView.getContext().getContentResolver(), bitmap, "title", "description");
+        FileOutputStream outputStream = new FileOutputStream(file);
+        mBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        outputStream.flush();
+        outputStream.close();
+    }
+
+    /**
+     * 获取相册文件路径
+     */
+    public static File getDCIMFile(String imageName) {
         if (Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) { // 文件可用
             File dirs = new File(Environment.getExternalStorageDirectory(),
-                    "/DCIM/" + filePath);
+                    "/DCIM/" + AppConstant.SAVE_FOLDER_NAME);
             if (!dirs.exists())
                 dirs.mkdirs();
-
             File file = new File(Environment.getExternalStorageDirectory(),
-                    "/DCIM/" + filePath + "/" + imageName);
+                    "/DCIM/" + AppConstant.SAVE_FOLDER_NAME + "/" + imageName);
             if (!file.exists()) {
                 try {
                     //在指定的文件夹中创建文件
@@ -185,9 +205,14 @@ public class Tools {
         } else {
             return null;
         }
-
     }
 
+    /**
+     * 扫描相册对应文件
+     */
+    public static void scanAppImageFile(Context context, String fileName) {
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + Environment.getExternalStorageDirectory() + "/DCIM/" + AppConstant.SAVE_FOLDER_NAME+"/"+fileName)));
+    }
 
 
     /**
@@ -270,4 +295,6 @@ public class Tools {
     public static int getNewHeight(int oldWidth, int oldHeight, int newWidth) {
         return newWidth * oldHeight / oldWidth;
     }
+
+
 }

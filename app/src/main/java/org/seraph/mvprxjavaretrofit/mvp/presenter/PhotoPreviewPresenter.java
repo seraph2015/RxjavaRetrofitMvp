@@ -21,7 +21,6 @@ import org.seraph.mvprxjavaretrofit.preference.AppConstant;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 import io.reactivex.Flowable;
@@ -48,18 +47,27 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
         mView = (PhotoPreviewView) view;
     }
 
+    private String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     private PhotoPreviewAdapter mPhotoPreviewAdapter;
 
     private ArrayList<PhotoPreviewBean> mPhotoList;
 
-    public Subscription subscription;
+    private Subscription subscription;
 
     /**
      * 当前第几张照片
      */
     private int currentPosition = 0;
 
+    /**
+     * 保存的图片
+     */
     private PhotoPreviewBean savePhoto;
+    /**
+     * 保存的图片名称
+     */
+    private String saveImageName;
 
     @Override
     public void initBaseDefaultConfig() {
@@ -103,7 +111,6 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
         download();
     }
 
-    String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private void download() {
         //判然系统权限
@@ -116,7 +123,9 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
         }
     }
 
-
+    /**
+     * 保存图片到本地
+     */
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -127,15 +136,12 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
             Flowable.just(bitmap)
                     .subscribeOn(Schedulers.io())
                     .flatMap(mBitmap -> {
-                                String imageName = Tools.getMD5(savePhoto.objURL) + "." + savePhoto.type;
-                                File dcimFile = Tools.getDCIMFile(AppConstant.SAVE_FOLDER_NAME, imageName);
+                                saveImageName = Tools.getMD5(savePhoto.objURL) + "." + savePhoto.type;
+                                File dcimFile = Tools.getDCIMFile(saveImageName);
                                 if (dcimFile.exists() && dcimFile.length() > 0) {
-                                    return Flowable.just("图片已存在");
+                                    return Flowable.just("图片已保存");
                                 }
-                                FileOutputStream outputStream = new FileOutputStream(dcimFile);
-                                mBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                                outputStream.flush();
-                                outputStream.close();
+                                Tools.bitmapToFile(mBitmap, dcimFile);
                                 return Flowable.just("保存成功");
                             }
                     )
@@ -144,6 +150,8 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
                     .subscribe(s -> {
                         mView.hideLoading();
                         mView.showSnackBar(s);
+                        // 最后通知图库更新此图片
+                        Tools.scanAppImageFile(mView.getContext(), saveImageName);
                     }, e -> {
                         mView.hideLoading();
                         mView.showSnackBar("保存失败");
@@ -160,6 +168,7 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
         public void onPrepareLoad(Drawable placeHolderDrawable) {
         }
     };
+
 
     @Override
     public void unSubscribe() {
