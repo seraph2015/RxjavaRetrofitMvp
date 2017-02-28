@@ -25,6 +25,11 @@ public class BaiduImageBean implements Serializable {
 
         public String fromPageTitle;
 
+        /**
+         * 图片类型
+         */
+        public String type;
+
         public boolean isShowTitle = false;
     }
 }

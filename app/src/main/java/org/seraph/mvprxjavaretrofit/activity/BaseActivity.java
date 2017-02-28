@@ -145,21 +145,33 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
 
     @Override
     public void showToolBarNavigation() {
-        setBackListener(v -> viewFinish());
         setBackIcon(android.R.drawable.ic_input_delete);
+        setBackListener(v -> viewFinish());
     }
 
     @Override
-    public void showLoading() {
+    public void showLoading(String str) {
         if (loadingDialog != null) {
+            if (!Tools.isNull(str)) {
+                loadingDialog.setDialogMessage(str);
+            }
             loadingDialog.show();
         }
     }
 
     @Override
+    public void showLoading() {
+        showLoading(null);
+    }
+
+    @Override
     public void hideLoading() {
         if (loadingDialog != null) {
-            loadingDialog.dismiss();
+            try {
+                loadingDialog.dismiss();
+            } catch (ClassCastException e) {
+                mPresenter.unSubscribe();
+            }
         }
     }
 

@@ -14,6 +14,8 @@ public interface BaseView {
      */
     void showLoading();
 
+    void showLoading(String str);
+
     /**
      * 隐藏Loading框
      */

@@ -11,16 +11,15 @@ import java.util.List;
 /**
  * Created by adde on 16/2/23.
  * 适配器全局基类(适用于listview)
- */
-abstract class BaseListAdapter<T> extends BaseAdapter {
+ */public abstract class BaseListAdapter<T> extends BaseAdapter {
 
-    LayoutInflater inflater;
+    protected LayoutInflater inflater;
     protected List<T> data;
-    public Context context;
+    public Context mContext;
 
-    BaseListAdapter(Context context, List<T> data) {
+    public BaseListAdapter(Context context, List<T> data) {
         inflater = LayoutInflater.from(context);
-        this.context = context;
+        this.mContext = context;
         this.data = data;
     }
 

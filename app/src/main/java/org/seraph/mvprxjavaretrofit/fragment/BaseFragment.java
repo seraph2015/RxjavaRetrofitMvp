@@ -70,8 +70,13 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public void showLoading() {
+        showLoading(null);
+    }
+
+    @Override
+    public void showLoading(String str) {
         if (baseActivity != null) {
-            baseActivity.showLoading();
+            baseActivity.showLoading(str);
         }
     }
 
@@ -80,7 +85,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         if (baseActivity != null) {
             baseActivity.hideLoading();
         }
-
     }
 
     @Override

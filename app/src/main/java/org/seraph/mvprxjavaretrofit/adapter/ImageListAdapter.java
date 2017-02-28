@@ -52,7 +52,7 @@ public class ImageListAdapter extends BaseListAdapter<BaiduImageBean.BaiduImage>
             width = imageViewWidth;
             height = Tools.getNewHeight(baiduImage.width, baiduImage.height, imageViewWidth);
         }
-        Picasso.with(context).load(baiduImage.objURL)
+        Picasso.with(mContext).load(baiduImage.objURL)
                 .placeholder(R.mipmap.icon_placeholder)
                 .error(R.mipmap.icon_error)
                 .resize(width, height)

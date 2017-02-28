@@ -13,6 +13,9 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.File;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +138,46 @@ public class Tools {
     public static int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
+    }
+
+    /**
+     * 转md5
+     */
+    public static String getMD5(String url) {
+        String result = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("md5");
+            md.update(url.getBytes());
+            byte[] bytes = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : bytes) {
+                String str = Integer.toHexString(b & 0xFF);
+                if (str.length() == 1) {
+                    sb.append("0");
+                }
+                sb.append(str);
+            }
+            result = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static File getDCIMFile(String filePath, String imageName) {
+        if (Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED)) { // 文件可用
+            File dirs = new File(Environment.getExternalStorageDirectory(),
+                    "/DCIM/" + filePath);
+            if (!dirs.exists()) {
+                dirs.mkdirs();
+            }
+            return new File(Environment.getExternalStorageDirectory(),
+                    "/DCIM/" + filePath + "/" + imageName);
+        } else {
+            return null;
+        }
+
     }
 
 

@@ -1,12 +1,15 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.activity.MainActivity;
+import org.seraph.mvprxjavaretrofit.activity.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.adapter.ImageListAdapter;
 import org.seraph.mvprxjavaretrofit.mvp.model.BaiduImageBean;
+import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainTwoFragmentView;
 import org.seraph.mvprxjavaretrofit.request.ApiService;
@@ -153,7 +156,21 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         if (position > listImage.size()) {
             return;
         }
-        listImage.get(position - 1).isShowTitle = !listImage.get(position - 1).isShowTitle;
-        imageListAdapter.notifyDataSetChanged();
+        ArrayList<PhotoPreviewBean> photoList = new ArrayList<>();
+        for (BaiduImageBean.BaiduImage baiduImage : listImage) {
+            PhotoPreviewBean photoPreviewBean = new PhotoPreviewBean();
+            photoPreviewBean.objURL = baiduImage.objURL;
+            photoPreviewBean.type = baiduImage.type;
+            photoPreviewBean.width = baiduImage.width;
+            photoPreviewBean.height = baiduImage.height;
+            photoList.add(photoPreviewBean);
+        }
+        Intent intent = new Intent(mainActivity, PhotoPreviewActivity.class);
+        intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, photoList);
+        intent.putExtra(PhotoPreviewActivity.CURRENT_POSITION, position - 1);
+        mainActivity.startActivity(intent);
+//        listImage.get(position - 1).isShowTitle = !listImage.get(position - 1).isShowTitle;
+//        imageListAdapter.notifyDataSetChanged();
+
     }
 }

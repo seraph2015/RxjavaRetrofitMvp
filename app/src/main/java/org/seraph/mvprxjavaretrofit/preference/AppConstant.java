@@ -22,4 +22,5 @@ public class AppConstant {
      */
     public static final long CACHE_IMAGE_MAX_SIZE = 1024 * 1024 * 1024;
 
+    public static final String SAVE_FOLDER_NAME = "Searph";
 }
