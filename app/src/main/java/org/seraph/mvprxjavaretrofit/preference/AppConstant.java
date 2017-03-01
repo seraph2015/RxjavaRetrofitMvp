@@ -29,4 +29,13 @@ public class AppConstant {
      * 权限请求code
      */
     public static final int CODE_REQUEST_PERMISSIONS = 1000;
+
+    /**
+     * 是否启用证书
+     */
+    public static boolean IS_ENABLED_CER= true;
+    /**
+     * 使用的证书名称
+     */
+    public static final String HTTPS_CER_NAME = "srca12306.cer";
 }

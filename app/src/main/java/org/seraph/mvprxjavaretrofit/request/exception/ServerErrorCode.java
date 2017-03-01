@@ -28,6 +28,8 @@ public class ServerErrorCode {
             message = errorCodeToMessage(e.getMessage());
         } else if (e instanceof java.net.SocketTimeoutException) {
             message = "连接服务器超时";
+        }else if(e instanceof javax.net.ssl.SSLHandshakeException){
+            message = "缺少https证书";
         }
         baseView.showToast(message);
         return message;

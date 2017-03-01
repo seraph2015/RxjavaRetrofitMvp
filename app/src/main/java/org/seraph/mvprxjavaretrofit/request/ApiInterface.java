@@ -34,4 +34,7 @@ interface ApiInterface {
      */
     @GET
     Flowable<BaiduImageBean> doBaiduImageUrl(@Url String url);
+
+    @GET("otn")
+    Flowable<String> do12306Url();
 }

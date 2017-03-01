@@ -9,4 +9,5 @@ package org.seraph.mvprxjavaretrofit.mvp.view;
 public interface MainThreeFragmentView extends BaseView {
 
 
+    void setTextView(CharSequence charSequence);
 }

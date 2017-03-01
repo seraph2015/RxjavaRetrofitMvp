@@ -29,4 +29,10 @@ public class ApiService {
         return RxServerData.getDataProcessing(HttpMethods.getApiInterface("http://image.baidu.com/").doBaiduImageUrl(params[0]));
     }
 
+    /**
+     * 12306测试https证书
+     */
+    public static Flowable<String> do12306() {
+        return RxServerData.getDataProcessing(HttpMethods.getApiInterface("https://kyfw.12306.cn/").do12306Url());
+    }
 }
