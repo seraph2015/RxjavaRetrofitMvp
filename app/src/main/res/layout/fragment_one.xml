@@ -23,12 +23,17 @@
             android:textColor="#ff0000" />
 
 
-
         <Button
             android:id="@+id/btn_sava_db"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SaveToDB" />
+
+        <Button
+            android:id="@+id/btn_updata_db"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UpDataToDB" />
 
         <Button
             android:id="@+id/tv_query_user"

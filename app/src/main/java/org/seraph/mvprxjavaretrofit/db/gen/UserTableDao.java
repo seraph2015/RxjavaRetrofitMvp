@@ -25,11 +25,14 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
      */
     public static class Properties {
         public final static Property _id = new Property(0, Long.class, "_id", true, "_id");
-        public final static Property Token = new Property(1, String.class, "token", false, "TOKEN");
-        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
-        public final static Property Gender = new Property(3, String.class, "gender", false, "GENDER");
-        public final static Property HeadPortrait = new Property(4, String.class, "headPortrait", false, "HEAD_PORTRAIT");
+        public final static Property Id = new Property(1, int.class, "id", false, "ID");
+        public final static Property Token = new Property(2, String.class, "token", false, "TOKEN");
+        public final static Property Name = new Property(3, String.class, "name", false, "NAME");
+        public final static Property Gender = new Property(4, String.class, "gender", false, "GENDER");
+        public final static Property HeadPortrait = new Property(5, String.class, "headPortrait", false, "HEAD_PORTRAIT");
     }
+
+    private DaoSession daoSession;
 
 
     public UserTableDao(DaoConfig config) {
@@ -38,6 +41,7 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
     
     public UserTableDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -45,10 +49,11 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER_TABLE\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: _id
-                "\"TOKEN\" TEXT," + // 1: token
-                "\"NAME\" TEXT," + // 2: name
-                "\"GENDER\" TEXT," + // 3: gender
-                "\"HEAD_PORTRAIT\" TEXT);"); // 4: headPortrait
+                "\"ID\" INTEGER NOT NULL ," + // 1: id
+                "\"TOKEN\" TEXT," + // 2: token
+                "\"NAME\" TEXT," + // 3: name
+                "\"GENDER\" TEXT," + // 4: gender
+                "\"HEAD_PORTRAIT\" TEXT);"); // 5: headPortrait
     }
 
     /** Drops the underlying database table. */
@@ -65,25 +70,26 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
         if (_id != null) {
             stmt.bindLong(1, _id);
         }
+        stmt.bindLong(2, entity.getId());
  
         String token = entity.getToken();
         if (token != null) {
-            stmt.bindString(2, token);
+            stmt.bindString(3, token);
         }
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(3, name);
+            stmt.bindString(4, name);
         }
  
         String gender = entity.getGender();
         if (gender != null) {
-            stmt.bindString(4, gender);
+            stmt.bindString(5, gender);
         }
  
         String headPortrait = entity.getHeadPortrait();
         if (headPortrait != null) {
-            stmt.bindString(5, headPortrait);
+            stmt.bindString(6, headPortrait);
         }
     }
 
@@ -95,26 +101,33 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
         if (_id != null) {
             stmt.bindLong(1, _id);
         }
+        stmt.bindLong(2, entity.getId());
  
         String token = entity.getToken();
         if (token != null) {
-            stmt.bindString(2, token);
+            stmt.bindString(3, token);
         }
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(3, name);
+            stmt.bindString(4, name);
         }
  
         String gender = entity.getGender();
         if (gender != null) {
-            stmt.bindString(4, gender);
+            stmt.bindString(5, gender);
         }
  
         String headPortrait = entity.getHeadPortrait();
         if (headPortrait != null) {
-            stmt.bindString(5, headPortrait);
+            stmt.bindString(6, headPortrait);
         }
+    }
+
+    @Override
+    protected final void attachEntity(UserTable entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     @Override
@@ -126,10 +139,11 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
     public UserTable readEntity(Cursor cursor, int offset) {
         UserTable entity = new UserTable( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // _id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // token
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // gender
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // headPortrait
+            cursor.getInt(offset + 1), // id
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // token
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // name
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // gender
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // headPortrait
         );
         return entity;
     }
@@ -137,10 +151,11 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
     @Override
     public void readEntity(Cursor cursor, UserTable entity, int offset) {
         entity.set_id(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setToken(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setGender(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setHeadPortrait(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setId(cursor.getInt(offset + 1));
+        entity.setToken(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setGender(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setHeadPortrait(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
      }
     
     @Override

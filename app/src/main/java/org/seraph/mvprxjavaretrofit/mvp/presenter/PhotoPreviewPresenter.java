@@ -161,7 +161,7 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
         @Override
         public void onBitmapFailed(Drawable errorDrawable) {
             mView.hideLoading();
-            mView.showSnackBar("下载失败");
+            mView.showSnackBar("保存失败");
         }
 
         @Override

@@ -50,6 +50,7 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
 
         ButterKnife.findById(rootView,R.id.btn_request).setOnClickListener(this::onClick);
         ButterKnife.findById(rootView,R.id.btn_sava_db).setOnClickListener(this::onClick);
+        ButterKnife.findById(rootView,R.id.btn_updata_db).setOnClickListener(this::onClick);
         ButterKnife.findById(rootView,R.id.tv_query_user).setOnClickListener(this::onClick);
         ButterKnife.findById(rootView,R.id.tv_clean_user).setOnClickListener(this::onClick);
 
@@ -61,7 +62,7 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_request:
-                mPresenter.getNetWork();
+                mPresenter.doLogin();
                 break;
             case R.id.tv_content:
                 mPresenter.switchToolBarVisibility();
@@ -69,6 +70,10 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
             case R.id.btn_sava_db:
                 mPresenter.saveUserInfo();
                 break;
+            case R.id.btn_updata_db:
+                mPresenter.upDataUserInfo();
+                break;
+
             case R.id.tv_query_user:
                 mPresenter.queryUserInfo();
                 break;

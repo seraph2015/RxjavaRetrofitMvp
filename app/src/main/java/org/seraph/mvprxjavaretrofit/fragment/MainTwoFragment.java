@@ -49,6 +49,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
     Button getCache;
     Button picassoImage;
     EditText inputSearch;
+    Button btnSearchHistory;
     TextView tvMore;
 
     @Override
@@ -67,7 +68,10 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
         getCache = ButterKnife.findById(headView, R.id.btn_get_cache);
         picassoImage = ButterKnife.findById(headView, R.id.btn_picasso_image);
         inputSearch = ButterKnife.findById(headView, R.id.et_search_keyword);
+        btnSearchHistory = ButterKnife.findById(headView, R.id.btn_search_history);
+
         getCache.setOnClickListener(this::onClick);
+        btnSearchHistory.setOnClickListener(this::onClick);
         picassoImage.setOnClickListener(this::onClick);
         listImageView.addHeaderView(headView);
     }
@@ -87,6 +91,9 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
             case R.id.btn_picasso_image:
                 mPresenter.startPicassoToImage();
                 break;
+            case R.id.btn_search_history:
+                mPresenter.searchHistory();
+                break;
             case R.id.tv_more:
                 if (tvMore.getTag() != null && (int) tvMore.getTag() == 1) {
                     mPresenter.loadMoreImage();
@@ -95,7 +102,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
         }
     }
 
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         mPresenter.onItemClick(position);
     }
 
@@ -114,6 +121,12 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
     public String getSearchKeyWord() {
         return inputSearch.getText().toString().trim();
     }
+
+    @Override
+    public void setSearchInput(String item) {
+        inputSearch.setText(item);
+    }
+
 
     @Override
     public void setListFootText(int type) {

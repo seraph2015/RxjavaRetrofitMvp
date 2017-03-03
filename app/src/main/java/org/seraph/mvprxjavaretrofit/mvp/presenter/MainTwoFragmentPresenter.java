@@ -1,13 +1,18 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.seraph.mvprxjavaretrofit.App;
 import org.seraph.mvprxjavaretrofit.activity.MainActivity;
 import org.seraph.mvprxjavaretrofit.activity.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.adapter.ImageListAdapter;
+import org.seraph.mvprxjavaretrofit.db.gen.SearchHistoryTableDao;
+import org.seraph.mvprxjavaretrofit.db.table.SearchHistoryTable;
 import org.seraph.mvprxjavaretrofit.mvp.model.BaiduImageBean;
 import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
@@ -57,6 +62,11 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
     private String searchKeyWord;
 
+    /**
+     * 搜索历史
+     */
+    private List<SearchHistoryTable> listSearch;
+
     public void initData() {
         title = " Search Image";
         setTitle(title);
@@ -89,14 +99,49 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         mView.setTextView(FileTools.getCacheDirectory(mainActivity, null).getPath());
     }
 
+    public void searchHistory() {
+        //查询本地数据搜索历史（时间倒叙）
+        listSearch = App.getDaoSession().getSearchHistoryTableDao().queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1)).orderDesc(SearchHistoryTableDao.Properties.SearchTime).list();
+        if (listSearch.size() == 0) {
+            mainActivity.showSnackBar("暂无搜索历史");
+            return;
+        }
+        showSearchHistory();
+    }
+
+
+    /**
+     * 显示选择框
+     */
+    private void showSearchHistory() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
+        final String[] items = new String[listSearch.size() + 1];
+        for (int i = 0; i < listSearch.size(); i++) {
+            items[i] = listSearch.get(i).getSearchKey();
+        }
+        items[listSearch.size()] = "清除历史记录";
+        builder.setItems(items, (DialogInterface dialog, int which) -> {
+            if (which == listSearch.size()) {
+                deleteAllSearchDB();
+            } else {
+                mView.setSearchInput(items[which]);
+            }
+        }).show();
+
+    }
+
+
     public void startPicassoToImage() {
         searchKeyWord = mView.getSearchKeyWord();
         if (Tools.isNull(searchKeyWord)) {
             mainActivity.showToast("serach is null!");
             return;
         }
+        //保存搜索到本地数据库
+        saveSearchToDB();
         getBaiduImageList(searchKeyWord, 1);
     }
+
 
     public void loadMoreImage() {
         getBaiduImageList(searchKeyWord, ++pageNo);
@@ -171,6 +216,37 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         mainActivity.startActivity(intent);
 //        listImage.get(position - 1).isShowTitle = !listImage.get(position - 1).isShowTitle;
 //        imageListAdapter.notifyDataSetChanged();
+
+    }
+
+    /**
+     * 保存到数据库
+     */
+    private void saveSearchToDB() {
+        //清理之前在同一用户种同一类型的重复的key
+        SearchHistoryTableDao searchHistoryTableDao = App.getDaoSession().getSearchHistoryTableDao();
+        List<SearchHistoryTable> historyTableList = searchHistoryTableDao.queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1), SearchHistoryTableDao.Properties.Type.eq("Search Image"), SearchHistoryTableDao.Properties.SearchKey.eq(searchKeyWord)).list();
+        for (SearchHistoryTable searchHistoryTable : historyTableList) {
+            searchHistoryTableDao.delete(searchHistoryTable);
+        }
+        SearchHistoryTable searchHistoryTable = new SearchHistoryTable();
+        searchHistoryTable.setSearchKey(searchKeyWord);
+        searchHistoryTable.setSearchTime(System.currentTimeMillis());
+        searchHistoryTable.setType("Search Image");
+        searchHistoryTable.setUserId(-1);
+        App.getDaoSession().getSearchHistoryTableDao().save(searchHistoryTable);
+    }
+
+
+    /**
+     * 清理当前用户search image类型历史数据库
+     */
+    private void deleteAllSearchDB() {
+        SearchHistoryTableDao searchHistoryTableDao = App.getDaoSession().getSearchHistoryTableDao();
+        List<SearchHistoryTable> historyTableList = searchHistoryTableDao.queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1), SearchHistoryTableDao.Properties.Type.eq("Search Image")).list();
+        for (SearchHistoryTable searchHistoryTable : historyTableList) {
+            searchHistoryTableDao.delete(searchHistoryTable);
+        }
 
     }
 }

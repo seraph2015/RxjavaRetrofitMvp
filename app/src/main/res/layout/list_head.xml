@@ -17,16 +17,30 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/holo_red_dark" />
 
-    <EditText
-        android:id="@+id/et_search_keyword"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="search image"
-        android:inputType="text"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="#ff0000"
-        android:textColorHint="#0000ff" />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_search_keyword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="search image"
+            android:inputType="text"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="#ff0000"
+            android:textColorHint="#0000ff" />
+
+        <Button
+            android:id="@+id/btn_search_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="历史搜索" />
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/btn_picasso_image"

@@ -20,4 +20,9 @@ public interface MainTwoFragmentView extends BaseView {
      * 0是没有更多，1是加载更多
      */
     void setListFootText(int type);
+
+    /**
+     * 设置搜索关键字
+     */
+    void setSearchInput(String item);
 }

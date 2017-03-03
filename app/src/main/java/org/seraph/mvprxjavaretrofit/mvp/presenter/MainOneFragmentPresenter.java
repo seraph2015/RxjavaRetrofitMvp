@@ -5,6 +5,7 @@ import android.content.Context;
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.App;
 import org.seraph.mvprxjavaretrofit.activity.MainActivity;
+import org.seraph.mvprxjavaretrofit.db.gen.UserTableDao;
 import org.seraph.mvprxjavaretrofit.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.mvp.model.BaseData;
 import org.seraph.mvprxjavaretrofit.mvp.model.UserBean;
@@ -58,7 +59,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
     /**
      * test网络请求
      */
-    public void getNetWork() {
+    public void doLogin() {
         ApiService.doLogin("15623088767", "123456").doOnSubscribe(subscription -> {
             this.subscriber = subscription;
             mView.showLoading();
@@ -66,7 +67,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
                     mView.hideLoading();
                     baseData = baseResponse.data;
                     UserBean userBean = baseData.data;
-                    mView.setTextViewValue("token->" + baseData.token + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
+                    mView.setTextViewValue("token->" + baseData.token + "\nuserId->" + userBean.id + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
                 }, e -> {
                     mView.hideLoading();
                     ServerErrorCode.errorCodeToMessageShow(e, mainActivity);
@@ -84,11 +85,30 @@ public class MainOneFragmentPresenter extends BasePresenter {
             return;
         }
         UserTable userBean = new UserTable();
+        userBean.setId(baseData.data.id);
         userBean.setToken(baseData.token);
         userBean.setName(baseData.data.nickName);
         userBean.setHeadPortrait(baseData.data.headImg);
         App.getDaoSession().getUserTableDao().save(userBean);
         mainActivity.showSnackBar("保存成功");
+    }
+
+    /**
+     * 更新用户id与网络请求数据id相同的信息
+     */
+    public void upDataUserInfo() {
+        List<UserTable> listAll = App.getDaoSession().getUserTableDao().queryBuilder().where(UserTableDao.Properties.Id.eq(baseData.data.id)).list();
+        if (listAll.size() == 0) {
+            mainActivity.showSnackBar("没有可更新的数据");
+            return;
+        }
+        for(UserTable searchUser : listAll){
+            //更新token
+            searchUser.setToken(baseData.token);
+            App.getDaoSession().getUserTableDao().update(searchUser);
+        }
+
+        queryUserInfo();
     }
 
     /**
@@ -98,7 +118,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
         List<UserTable> list = App.getDaoSession().getUserTableDao().queryBuilder().list();
         StringBuilder stringBuilder = new StringBuilder();
         for (UserTable userTable : list) {
-            stringBuilder.append("id:" + userTable.get_id() + "\ntoken:" + userTable.getToken() + "\nname:" + userTable.getName() + "\nheadImg:" + userTable.getHeadPortrait() + "\n\n");
+            stringBuilder.append("_id:" + userTable.get_id() + "\nid:" + userTable.getId() + "\ntoken:" + userTable.getToken() + "\nname:" + userTable.getName() + "\nheadImg:" + userTable.getHeadPortrait() + "\n\n");
         }
         mView.setUserTextViewValue(stringBuilder.toString());
     }
@@ -145,4 +165,5 @@ public class MainOneFragmentPresenter extends BasePresenter {
         setTitle(title);
         upDataToolbarAlpha(percentScroll);
     }
+
 }
