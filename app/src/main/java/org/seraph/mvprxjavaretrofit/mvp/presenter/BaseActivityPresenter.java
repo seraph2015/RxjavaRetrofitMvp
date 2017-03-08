@@ -18,6 +18,7 @@ public class BaseActivityPresenter extends BasePresenter {
 
     private boolean isToolBarShow = true;
 
+
     /**
      * 绑定view
      */
@@ -40,7 +41,7 @@ public class BaseActivityPresenter extends BasePresenter {
     /**
      * 切换状态栏是否显示
      */
-    void switchToolBarVisibility() {
+    public void switchToolBarVisibility() {
         if (isToolBarShow) {
             mView.hideToolBar();
         } else {

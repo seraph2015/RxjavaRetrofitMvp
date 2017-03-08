@@ -10,4 +10,12 @@ public interface MainThreeFragmentView extends BaseView {
 
 
     void setTextView(CharSequence charSequence);
+
+    String getInputValue();
+
+    void showEmojiValue(CharSequence tempInput);
+
+    void setTitle(String title);
+
+    void upDataToolbarAlpha(float percentScroll);
 }

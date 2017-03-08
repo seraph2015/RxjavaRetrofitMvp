@@ -2,6 +2,10 @@ package org.seraph.mvprxjavaretrofit.mvp.view;
 
 import android.widget.ListAdapter;
 
+import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
+
+import java.util.ArrayList;
+
 /**
  * 第2页的v
  * date：2017/2/21 17:08
@@ -25,4 +29,16 @@ public interface MainTwoFragmentView extends BaseView {
      * 设置搜索关键字
      */
     void setSearchInput(String item);
+
+    void setTitle(String title);
+
+    /**
+     * 更新头部toolbar透明度百分比
+     */
+    void upDataToolbarAlpha(int i);
+
+    /**
+     * 跳转图片预览
+     */
+    void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position);
 }

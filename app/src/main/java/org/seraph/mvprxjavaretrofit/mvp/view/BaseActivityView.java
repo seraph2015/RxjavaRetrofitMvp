@@ -12,12 +12,7 @@ import android.view.View;
  **/
 public interface BaseActivityView extends BaseView {
 
-    /**
-     * 显示toast
-     */
-    void showToast(String str);
 
-    void showToast(int strId);
 
     /**
      * 显示SnackBar

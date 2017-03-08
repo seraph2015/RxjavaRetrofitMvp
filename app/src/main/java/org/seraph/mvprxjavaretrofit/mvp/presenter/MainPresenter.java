@@ -36,6 +36,7 @@ public class MainPresenter extends BaseActivityPresenter {
         super.attachView(view);
         this.mView = (MainActivityView) view;
     }
+
     //当前选中的界面
     private BaseFragment fragment;
 
@@ -54,11 +55,10 @@ public class MainPresenter extends BaseActivityPresenter {
     private int childCount = 0;
 
     public void initData() {
-        mFragmentController = new FragmentController(mView.getMainActivity(), R.id.fl_home);
+        mFragmentController = mView.getFragmentController();
         mFragmentController.setFragmentTags(tags);
         childCount = mView.getMenuChildCount();
     }
-
 
 
     /**

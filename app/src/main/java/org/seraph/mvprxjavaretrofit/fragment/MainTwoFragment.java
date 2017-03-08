@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,10 +13,15 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.activity.MainActivity;
+import org.seraph.mvprxjavaretrofit.activity.PhotoPreviewActivity;
+import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BasePresenter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.MainTwoFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainTwoFragmentView;
 import org.seraph.mvprxjavaretrofit.views.GoTopListView;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
@@ -45,6 +51,8 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
         return mPresenter;
     }
 
+    MainActivity mainActivity;
+
     TextView tvCache;
     Button getCache;
     Button picassoImage;
@@ -59,6 +67,8 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
         listImageView.setScrollListener(ivGoTop);
         addListHeadView();
         listImageView.setOnItemClickListener(this::onItemClick);
+        mainActivity = (MainActivity) getActivity();
+
         mPresenter.initData();
     }
 
@@ -86,7 +96,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_get_cache:
-                mPresenter.getCacheFilePath();
+                mPresenter.showCacheFilePath();
                 break;
             case R.id.btn_picasso_image:
                 mPresenter.startPicassoToImage();
@@ -125,6 +135,24 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
     @Override
     public void setSearchInput(String item) {
         inputSearch.setText(item);
+    }
+
+    @Override
+    public void setTitle(String title) {
+        mainActivity.setTitle(title);
+    }
+
+    @Override
+    public void upDataToolbarAlpha(int i) {
+        mainActivity.mPresenter.upDataToolbarAlpha(i);
+    }
+
+    @Override
+    public void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position) {
+        Intent intent = new Intent(getActivity(), PhotoPreviewActivity.class);
+        intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, photoList);
+        intent.putExtra(PhotoPreviewActivity.CURRENT_POSITION, position - 1);
+        startActivity(intent);
     }
 
 

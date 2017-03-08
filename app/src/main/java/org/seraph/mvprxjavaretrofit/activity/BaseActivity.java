@@ -35,9 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
     /**
      * 最高父布局
      */
-    FrameLayout flRoot;
-    AppBarLayout appBar;
-    Toolbar toolbar;
+    protected FrameLayout flRoot;
+    protected AppBarLayout appBar;
+    protected Toolbar toolbar;
     /**
      * 添加布局的父布局
      */
@@ -167,11 +167,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
     @Override
     public void hideLoading() {
         if (loadingDialog != null) {
-            try {
-                loadingDialog.dismiss();
-            } catch (ClassCastException e) {
-                mPresenter.unSubscribe();
-            }
+            loadingDialog.dismiss();
         }
     }
 

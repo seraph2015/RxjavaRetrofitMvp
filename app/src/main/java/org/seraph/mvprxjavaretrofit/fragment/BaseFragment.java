@@ -1,15 +1,17 @@
 package org.seraph.mvprxjavaretrofit.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import org.seraph.mvprxjavaretrofit.activity.BaseActivity;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BasePresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
+import org.seraph.mvprxjavaretrofit.views.CustomLoadingDialog;
 
 /**
  * frgment基类
@@ -29,18 +31,15 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     //声明基类中的Presenter
     public BasePresenter mPresenter;
 
-    private BaseActivity baseActivity;
-
     protected View rootView;
+
+    protected CustomLoadingDialog loadingDialog;
 
     @Override
     public void onAttach(Context context) {
         initMVPBind();
         if (mPresenter != null) {
             mPresenter.onAttach(context);
-        }
-        if (context instanceof BaseActivity) {
-            baseActivity = (BaseActivity) context;
         }
         super.onAttach(context);
 
@@ -55,6 +54,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initLoadingDialog();
         init(savedInstanceState);
     }
 
@@ -68,6 +68,15 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         mPresenter.attachView(this);
     }
 
+    private void initLoadingDialog() {
+        loadingDialog = new CustomLoadingDialog(getActivity());
+        loadingDialog.setOnDismissListener((DialogInterface dialog) -> {
+            if (mPresenter != null) {
+                mPresenter.unSubscribe();
+            }
+        });
+    }
+
     @Override
     public void showLoading() {
         showLoading(null);
@@ -75,16 +84,27 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public void showLoading(String str) {
-        if (baseActivity != null) {
-            baseActivity.showLoading(str);
+        if (loadingDialog != null) {
+            loadingDialog.setDialogMessage(str);
         }
     }
 
     @Override
     public void hideLoading() {
-        if (baseActivity != null) {
-            baseActivity.hideLoading();
+        if (loadingDialog != null) {
+            loadingDialog.dismiss();
         }
+    }
+
+
+    @Override
+    public void showToast(String str) {
+        Toast.makeText(getActivity(), str, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showToast(int strId) {
+        Toast.makeText(getActivity(), strId, Toast.LENGTH_SHORT).show();
     }
 
     @Override

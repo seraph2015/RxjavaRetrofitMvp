@@ -1,9 +1,6 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
-import android.content.Context;
-
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.activity.MainActivity;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainThreeFragmentView;
 import org.seraph.mvprxjavaretrofit.request.ApiService;
@@ -19,19 +16,12 @@ public class MainThreeFragmentPresenter extends BasePresenter {
 
     private MainThreeFragmentView mView;
 
-    private MainActivity mainActivity;
-
     private float percentScroll = 0;
 
     @Override
     public void attachView(BaseView view) {
         super.attachView(view);
         this.mView = (MainThreeFragmentView) view;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        mainActivity = (MainActivity) context;
     }
 
 
@@ -41,30 +31,15 @@ public class MainThreeFragmentPresenter extends BasePresenter {
 
     public void initData() {
         title = " Three";
-        setTitle(title);
-    }
-
-
-    public void setTitle(String title) {
-        mainActivity.setTitle(title);
-    }
-
-    /**
-     * 更新头部背景透明度
-     *
-     * @param percentScroll 进度百分比
-     */
-    public void upDataToolbarAlpha(float percentScroll) {
-        this.percentScroll = percentScroll;
-        mainActivity.mPresenter.upDataToolbarAlpha(percentScroll);
+        mView.setTitle(title);
     }
 
 
     @Override
     public void restoreData() {
         super.restoreData();
-        setTitle(title);
-        upDataToolbarAlpha(percentScroll);
+        mView.setTitle(title);
+        mView.upDataToolbarAlpha(0);
     }
 
     public void post12306Https() {
@@ -79,5 +54,12 @@ public class MainThreeFragmentPresenter extends BasePresenter {
             }
         });
 
+    }
+
+    public void showEmoji() {
+        String tempInput = mView.getInputValue();
+        //把输入的表情进行转义成16进制
+        mView.showEmojiValue(tempInput + "------> " + tempInput.codePointCount(0, tempInput.length()) + "===" + new String(Character.toChars(0x1f602)));
+        mView.getContext();
     }
 }

@@ -1,8 +1,9 @@
 package org.seraph.mvprxjavaretrofit.mvp.view;
 
-import android.content.Context;
-
 import org.seraph.mvprxjavaretrofit.adapter.PhotoPreviewAdapter;
+import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
+
+import java.util.List;
 
 /**
  * 图片预览
@@ -12,12 +13,24 @@ import org.seraph.mvprxjavaretrofit.adapter.PhotoPreviewAdapter;
  **/
 public interface PhotoPreviewView extends BaseActivityView{
 
-    Context getContext();
-
     void setPagerAdapter(PhotoPreviewAdapter mPhotoPreviewAdapter);
 
     void setCurrentItem(int currentPosition);
 
     void setMenuClick();
 
+    /**
+     * 获取照片列表
+     */
+    List<PhotoPreviewBean> getPhotoList();
+
+    /**
+     * 当前第几张照片
+     */
+    int getCurrentPosition();
+
+    /**
+     * 跳转授权
+     */
+    void startPermissionsActivity(String[] permissions);
 }

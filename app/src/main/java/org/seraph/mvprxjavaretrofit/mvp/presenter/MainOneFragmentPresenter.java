@@ -1,10 +1,7 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
-import android.content.Context;
-
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.App;
-import org.seraph.mvprxjavaretrofit.activity.MainActivity;
 import org.seraph.mvprxjavaretrofit.db.gen.UserTableDao;
 import org.seraph.mvprxjavaretrofit.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.mvp.model.BaseData;
@@ -31,17 +28,11 @@ public class MainOneFragmentPresenter extends BasePresenter {
 
     private BaseData<UserBean> baseData;
 
-    private MainActivity mainActivity;
 
     @Override
     public void attachView(BaseView view) {
         super.attachView(view);
         this.mView = (MainOneFragmentView) view;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        mainActivity = (MainActivity) context;
     }
 
     /**
@@ -53,7 +44,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
 
     public void initData() {
         title = " 主页";
-        setTitle(title);
+        mView.setTitle(title);
     }
 
     /**
@@ -70,7 +61,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
                     mView.setTextViewValue("token->" + baseData.token + "\nuserId->" + userBean.id + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
                 }, e -> {
                     mView.hideLoading();
-                    ServerErrorCode.errorCodeToMessageShow(e, mainActivity);
+                    mView.showToast(ServerErrorCode.errorCodeToMessageShow(e));
                 }
         );
     }
@@ -81,7 +72,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
      */
     public void saveUserInfo() {
         if (baseData == null) {
-            mainActivity.showSnackBar("没有可保存数据");
+            mView.showToast("没有可保存数据");
             return;
         }
         UserTable userBean = new UserTable();
@@ -90,7 +81,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
         userBean.setName(baseData.data.nickName);
         userBean.setHeadPortrait(baseData.data.headImg);
         App.getDaoSession().getUserTableDao().save(userBean);
-        mainActivity.showSnackBar("保存成功");
+        mView.showToast("保存成功");
     }
 
     /**
@@ -99,10 +90,10 @@ public class MainOneFragmentPresenter extends BasePresenter {
     public void upDataUserInfo() {
         List<UserTable> listAll = App.getDaoSession().getUserTableDao().queryBuilder().where(UserTableDao.Properties.Id.eq(baseData.data.id)).list();
         if (listAll.size() == 0) {
-            mainActivity.showSnackBar("没有可更新的数据");
+            mView.showToast("没有可更新的数据");
             return;
         }
-        for(UserTable searchUser : listAll){
+        for (UserTable searchUser : listAll) {
             //更新token
             searchUser.setToken(baseData.token);
             App.getDaoSession().getUserTableDao().update(searchUser);
@@ -138,32 +129,23 @@ public class MainOneFragmentPresenter extends BasePresenter {
         }
     }
 
-    public void setTitle(String title) {
-        mainActivity.setTitle(title);
-    }
 
     /**
-     * 更新头部背景透明度
+     * 更新头部背景透明度并且保存
      *
      * @param percentScroll 进度百分比
      */
-    public void upDataToolbarAlpha(float percentScroll) {
+    public void upDataSaveToolbarAlpha(float percentScroll) {
         this.percentScroll = percentScroll;
-        mainActivity.mPresenter.upDataToolbarAlpha(percentScroll);
+        mView.upDataToolbarAlpha(percentScroll);
     }
 
-    /**
-     * 切换状态栏是否显示
-     */
-    public void switchToolBarVisibility() {
-        mainActivity.mPresenter.switchToolBarVisibility();
-    }
 
     @Override
     public void restoreData() {
         super.restoreData();
-        setTitle(title);
-        upDataToolbarAlpha(percentScroll);
+        mView.setTitle(title);
+        mView.upDataToolbarAlpha(percentScroll);
     }
 
 }

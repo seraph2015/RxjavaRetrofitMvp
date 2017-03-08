@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.activity.MainActivity;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BasePresenter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.MainOneFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainOneFragmentView;
@@ -39,22 +40,24 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
         return mPresenter;
     }
 
-
+    private MainActivity mMainActivity;
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        tvContent = ButterKnife.findById(rootView,R.id.tv_content);
-        tvDbUser = ButterKnife.findById(rootView,R.id.tv_db_user);
-        oScrollView = ButterKnife.findById(rootView,R.id.oScrollView);
+        tvContent = ButterKnife.findById(rootView, R.id.tv_content);
+        tvDbUser = ButterKnife.findById(rootView, R.id.tv_db_user);
+        oScrollView = ButterKnife.findById(rootView, R.id.oScrollView);
         tvContent.setOnClickListener(this::onClick);
 
-        ButterKnife.findById(rootView,R.id.btn_request).setOnClickListener(this::onClick);
-        ButterKnife.findById(rootView,R.id.btn_sava_db).setOnClickListener(this::onClick);
-        ButterKnife.findById(rootView,R.id.btn_updata_db).setOnClickListener(this::onClick);
-        ButterKnife.findById(rootView,R.id.tv_query_user).setOnClickListener(this::onClick);
-        ButterKnife.findById(rootView,R.id.tv_clean_user).setOnClickListener(this::onClick);
+        ButterKnife.findById(rootView, R.id.btn_request).setOnClickListener(this::onClick);
+        ButterKnife.findById(rootView, R.id.btn_sava_db).setOnClickListener(this::onClick);
+        ButterKnife.findById(rootView, R.id.btn_updata_db).setOnClickListener(this::onClick);
+        ButterKnife.findById(rootView, R.id.tv_query_user).setOnClickListener(this::onClick);
+        ButterKnife.findById(rootView, R.id.tv_clean_user).setOnClickListener(this::onClick);
 
-        oScrollView.setScrollViewListener(percentScroll -> mPresenter.upDataToolbarAlpha(percentScroll));
+        mMainActivity = (MainActivity) getActivity();
+
+        oScrollView.setScrollViewListener(percentScroll -> mPresenter.upDataSaveToolbarAlpha(percentScroll));
 
         mPresenter.initData();
     }
@@ -65,7 +68,9 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
                 mPresenter.doLogin();
                 break;
             case R.id.tv_content:
-                mPresenter.switchToolBarVisibility();
+                if(mMainActivity!=null){
+                    mMainActivity.mPresenter.switchToolBarVisibility();
+                }
                 break;
             case R.id.btn_sava_db:
                 mPresenter.saveUserInfo();
@@ -73,7 +78,6 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
             case R.id.btn_updata_db:
                 mPresenter.upDataUserInfo();
                 break;
-
             case R.id.tv_query_user:
                 mPresenter.queryUserInfo();
                 break;
@@ -94,6 +98,19 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
         tvDbUser.setText(charSequence);
     }
 
+    @Override
+    public void setTitle(String title) {
+        if (mMainActivity != null) {
+            mMainActivity.setTitle(title);
+        }
+    }
+
+    @Override
+    public void upDataToolbarAlpha(float percentScroll) {
+        if (mMainActivity != null) {
+            mMainActivity.mPresenter.upDataToolbarAlpha(percentScroll);
+        }
+    }
 
 
 }

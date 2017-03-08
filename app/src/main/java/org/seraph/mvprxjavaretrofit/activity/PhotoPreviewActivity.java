@@ -2,17 +2,24 @@ package org.seraph.mvprxjavaretrofit.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.adapter.PhotoPreviewAdapter;
+import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BaseActivityPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.PhotoPreviewPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.PhotoPreviewView;
+import org.seraph.mvprxjavaretrofit.permission.PermissionsActivity;
 import org.seraph.mvprxjavaretrofit.preference.AppConstant;
 import org.seraph.mvprxjavaretrofit.views.zoom.ImageViewTouchViewPager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -45,14 +52,25 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
         return mPresenter;
     }
 
+    private ArrayList<PhotoPreviewBean> mPhotoList;
+    /**
+     * 当前第几张照片
+     */
+    private int currentPosition = 0;
+
     @Override
     protected void init(Bundle savedInstanceState) {
         mPhotoPreview = ButterKnife.findById(this, R.id.vp_photo_preview);
         mPhotoPreview.setOnPageSelectedListener(this::onPageSelected);
+
+        mPhotoList = (ArrayList<PhotoPreviewBean>) getIntent().getSerializableExtra(PhotoPreviewActivity.PHOTO_LIST);
+        currentPosition = getIntent().getIntExtra(PhotoPreviewActivity.CURRENT_POSITION, 0);
+
         mPresenter.initData();
     }
 
     private void onPageSelected(int position) {
+        //翻页并且保存页码
         mPresenter.onPageSelected(position);
     }
 
@@ -69,11 +87,28 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
     @Override
     public void setCurrentItem(int currentPosition) {
         mPhotoPreview.setCurrentItem(currentPosition);
+        this.currentPosition = currentPosition;
     }
 
     @Override
     public void setMenuClick() {
         toolbar.setOnMenuItemClickListener(this::onMenuItem);
+    }
+
+    @Override
+    public List<PhotoPreviewBean> getPhotoList() {
+        return mPhotoList;
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void startPermissionsActivity(String[] permissions) {
+        PermissionsActivity.startActivityForResult(this, AppConstant.CODE_REQUEST_PERMISSIONS, permissions);
     }
 
 

@@ -1,15 +1,11 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.App;
-import org.seraph.mvprxjavaretrofit.activity.MainActivity;
-import org.seraph.mvprxjavaretrofit.activity.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.adapter.ImageListAdapter;
 import org.seraph.mvprxjavaretrofit.db.gen.SearchHistoryTableDao;
 import org.seraph.mvprxjavaretrofit.db.table.SearchHistoryTable;
@@ -33,14 +29,6 @@ import java.util.List;
  **/
 public class MainTwoFragmentPresenter extends BasePresenter {
 
-    private MainActivity mainActivity;
-
-
-    @Override
-    public void onAttach(Context context) {
-        mainActivity = (MainActivity) context;
-        super.onAttach(context);
-    }
 
     private MainTwoFragmentView mView;
 
@@ -67,10 +55,11 @@ public class MainTwoFragmentPresenter extends BasePresenter {
      */
     private List<SearchHistoryTable> listSearch;
 
+
     public void initData() {
         title = " Search Image";
-        setTitle(title);
-        imageListAdapter = new ImageListAdapter(mainActivity, listImage);
+        mView.setTitle(title);
+        imageListAdapter = new ImageListAdapter(mView.getContext(), listImage);
         mView.setImageAdapter(imageListAdapter);
     }
 
@@ -78,32 +67,20 @@ public class MainTwoFragmentPresenter extends BasePresenter {
     @Override
     public void restoreData() {
         super.restoreData();
-        setTitle(title);
-        upDataToolbarAlpha(0);
+        mView.setTitle(title);
+        mView.upDataToolbarAlpha(0);
     }
 
-    public void setTitle(String title) {
-        mainActivity.setTitle(title);
-    }
 
-    /**
-     * 更新头部背景透明度
-     *
-     * @param percentScroll 进度百分比
-     */
-    private void upDataToolbarAlpha(float percentScroll) {
-        mainActivity.mPresenter.upDataToolbarAlpha(percentScroll);
-    }
-
-    public void getCacheFilePath() {
-        mView.setTextView(FileTools.getCacheDirectory(mainActivity, null).getPath());
+    public void showCacheFilePath() {
+        mView.setTextView(FileTools.getCacheDirectory(mView.getContext(), null).getPath());
     }
 
     public void searchHistory() {
         //查询本地数据搜索历史（时间倒叙）
         listSearch = App.getDaoSession().getSearchHistoryTableDao().queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1)).orderDesc(SearchHistoryTableDao.Properties.SearchTime).list();
         if (listSearch.size() == 0) {
-            mainActivity.showSnackBar("暂无搜索历史");
+            mView.showToast("暂无搜索历史");
             return;
         }
         showSearchHistory();
@@ -114,7 +91,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
      * 显示选择框
      */
     private void showSearchHistory() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mView.getContext());
         final String[] items = new String[listSearch.size() + 1];
         for (int i = 0; i < listSearch.size(); i++) {
             items[i] = listSearch.get(i).getSearchKey();
@@ -134,7 +111,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
     public void startPicassoToImage() {
         searchKeyWord = mView.getSearchKeyWord();
         if (Tools.isNull(searchKeyWord)) {
-            mainActivity.showToast("serach is null!");
+            mView.showToast("serach is null!");
             return;
         }
         //保存搜索到本地数据库
@@ -177,7 +154,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
             @Override
             public void onError(Throwable t) {
                 mView.hideLoading();
-                ServerErrorCode.errorCodeToMessageShow(t, mainActivity);
+                mView.showToast(ServerErrorCode.errorCodeToMessageShow(t));
             }
 
             @Override
@@ -210,10 +187,8 @@ public class MainTwoFragmentPresenter extends BasePresenter {
             photoPreviewBean.height = baiduImage.height;
             photoList.add(photoPreviewBean);
         }
-        Intent intent = new Intent(mainActivity, PhotoPreviewActivity.class);
-        intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, photoList);
-        intent.putExtra(PhotoPreviewActivity.CURRENT_POSITION, position - 1);
-        mainActivity.startActivity(intent);
+        mView.startPhotoPreview(photoList, position);
+
 //        listImage.get(position - 1).isShowTitle = !listImage.get(position - 1).isShowTitle;
 //        imageListAdapter.notifyDataSetChanged();
 

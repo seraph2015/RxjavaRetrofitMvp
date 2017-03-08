@@ -172,6 +172,9 @@ public class WeiBoGridView extends GridView {
                 convertView = inflater.inflate(R.layout.item_feed_photo, parent, false);
             }
             CustomSquareImageView photo = ViewHolder.get(convertView, R.id.iv_photo);
+            ViewGroup.LayoutParams params = photo.getLayoutParams();
+            params.width = mColumnWidth;
+            photo.setLayoutParams(params);
             Picasso.with(mContext).load(imageUrl).placeholder(R.mipmap.icon_placeholder).error(R.mipmap.icon_error).resize(mColumnWidth, mColumnWidth).centerCrop().into(photo);
             return convertView;
         }

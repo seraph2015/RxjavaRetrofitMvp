@@ -1,7 +1,5 @@
 package org.seraph.mvprxjavaretrofit.request.exception;
 
-import org.seraph.mvprxjavaretrofit.mvp.view.BaseActivityView;
-
 /**
  * 业务逻辑信息词义
  * date：2017/2/17 09:48
@@ -22,7 +20,7 @@ public class ServerErrorCode {
     /**
      * 显示错误信息
      */
-    public static String errorCodeToMessageShow(Throwable e, BaseActivityView baseView) {
+    public static String errorCodeToMessageShow(Throwable e) {
         String message = e.getMessage();
         if (e instanceof ServerErrorException) {
             message = errorCodeToMessage(e.getMessage());
@@ -31,7 +29,6 @@ public class ServerErrorCode {
         }else if(e instanceof javax.net.ssl.SSLHandshakeException){
             message = "缺少https证书";
         }
-        baseView.showToast(message);
         return message;
     }
 

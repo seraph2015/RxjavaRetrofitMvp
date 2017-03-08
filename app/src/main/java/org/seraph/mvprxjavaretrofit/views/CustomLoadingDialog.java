@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 /**
  * 透明的等待dialog
@@ -28,12 +29,7 @@ public class CustomLoadingDialog extends Dialog {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                try {
-                    dismiss();
-                }catch (ClassCastException e){
-
-                }
-
+                dismiss();
                 break;
         }
         return true;
@@ -42,7 +38,8 @@ public class CustomLoadingDialog extends Dialog {
 
     public void setDialogMessage(String message) {
         show();
-        ((TextView)findViewById(R.id.tv_content)).setText(message);
-
+        if (!Tools.isNull(message)) {
+            ((TextView) findViewById(R.id.tv_content)).setText(message);
+        }
     }
 }

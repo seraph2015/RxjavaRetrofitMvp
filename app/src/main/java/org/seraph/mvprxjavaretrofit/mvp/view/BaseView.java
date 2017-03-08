@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit.mvp.view;
 
+import android.content.Context;
+
 /**
  * MVP中View的全局接口
  * date：2017/2/15 09:24
@@ -21,5 +23,13 @@ public interface BaseView {
      */
     void hideLoading();
 
+    /**
+     * 显示toast
+     */
+    void showToast(String str);
+
+    void showToast(int strId);
+
+    Context getContext();
 
 }

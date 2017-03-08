@@ -3,7 +3,7 @@ package org.seraph.mvprxjavaretrofit.mvp.view;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 
-import org.seraph.mvprxjavaretrofit.activity.MainActivity;
+import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
 /**
  * 主界面view
@@ -12,8 +12,6 @@ import org.seraph.mvprxjavaretrofit.activity.MainActivity;
  * mail：417753393@qq.com
  **/
 public interface MainActivityView extends BaseActivityView {
-
-    MainActivity getMainActivity();
 
     /**
      * * 设置导航栏元素属性
@@ -29,4 +27,8 @@ public interface MainActivityView extends BaseActivityView {
      */
     int getMenuChildCount();
 
+    /**
+     * 获取碎片管理器
+     */
+    FragmentController getFragmentController();
 }

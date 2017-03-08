@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
@@ -12,6 +13,7 @@ import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BaseActivityPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.MainPresenter;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainActivityView;
+import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
 import butterknife.ButterKnife;
 
@@ -45,11 +47,11 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         setTitle("主页");
         toolbar.setLogo(R.mipmap.icon_main_logo);
         setStatusBarImmersionMode(true);
-        mMenu = ButterKnife.findById(this,R.id.layout_menu);
-        ButterKnife.findById(this,R.id.ll_menu_one).setOnClickListener(this::onClick);
-        ButterKnife.findById(this,R.id.ll_menu_two).setOnClickListener(this::onClick);
-        ButterKnife.findById(this,R.id.ll_menu_three).setOnClickListener(this::onClick);
-        ButterKnife.findById(this,R.id.ll_menu_four).setOnClickListener(this::onClick);
+        mMenu = ButterKnife.findById(this, R.id.layout_menu);
+        ButterKnife.findById(this, R.id.ll_menu_one).setOnClickListener(this::onClick);
+        ButterKnife.findById(this, R.id.ll_menu_two).setOnClickListener(this::onClick);
+        ButterKnife.findById(this, R.id.ll_menu_three).setOnClickListener(this::onClick);
+        ButterKnife.findById(this, R.id.ll_menu_four).setOnClickListener(this::onClick);
         mPresenter.initData();
         mPresenter.changeCurrentClickState(0);
     }
@@ -79,9 +81,10 @@ public class MainActivity extends BaseActivity implements MainActivityView {
 
 
     @Override
-    public MainActivity getMainActivity() {
-        return this;
+    public FragmentController getFragmentController() {
+        return new FragmentController(this, R.id.fl_home);
     }
+
 
     @Override
     public void setMenuItem(int position, @ColorInt int bgColor, @DrawableRes int resId, @ColorInt int textColor) {
@@ -97,5 +100,10 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     public void onBackPressed() {
         mPresenter.onBackPressed();
 
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }
