@@ -5,6 +5,7 @@ import org.seraph.mvprxjavaretrofit.App;
 import org.seraph.mvprxjavaretrofit.db.gen.UserTableDao;
 import org.seraph.mvprxjavaretrofit.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.mvp.model.BaseData;
+import org.seraph.mvprxjavaretrofit.mvp.model.BaseResponse;
 import org.seraph.mvprxjavaretrofit.mvp.model.UserBean;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainOneFragmentView;
@@ -12,6 +13,8 @@ import org.seraph.mvprxjavaretrofit.request.ApiService;
 import org.seraph.mvprxjavaretrofit.request.exception.ServerErrorCode;
 
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * FragmentOne逻辑处理层
@@ -24,7 +27,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
 
     private MainOneFragmentView mView;
 
-    private Subscription subscriber;
+    private Subscription mSubscriber;
 
     private BaseData<UserBean> baseData;
 
@@ -51,18 +54,28 @@ public class MainOneFragmentPresenter extends BasePresenter {
      * test网络请求
      */
     public void doLogin() {
-        ApiService.doLogin("15623088767", "123456").doOnSubscribe(subscription -> {
-            this.subscriber = subscription;
-            mView.showLoading();
-        }).subscribe(baseResponse -> {
-                    mView.hideLoading();
-                    baseData = baseResponse.data;
-                    UserBean userBean = baseData.data;
-                    mView.setTextViewValue("token->" + baseData.token + "\nuserId->" + userBean.id + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
-                }, e -> {
-                    mView.hideLoading();
-                    mView.showToast(ServerErrorCode.errorCodeToMessageShow(e));
-                }
+        ApiService.doLogin("15623088767", "123456").doOnSubscribe(new Consumer<Subscription>() {
+            @Override
+            public void accept(Subscription subscription) throws Exception {
+                mSubscriber = subscription;
+                mView.showLoading();
+            }
+        }).subscribe(new Consumer<BaseResponse<UserBean>>() {
+                         @Override
+                         public void accept(BaseResponse<UserBean> baseResponse) throws Exception {
+                             mView.hideLoading();
+                             baseData = baseResponse.data;
+                             UserBean userBean = baseData.data;
+                             mView.setTextViewValue("token->" + baseData.token + "\nuserId->" + userBean.id + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
+
+                         }
+                     }, new Consumer<Throwable>() {
+                         @Override
+                         public void accept(Throwable throwable) throws Exception {
+                             mView.hideLoading();
+                             mView.showToast(ServerErrorCode.errorCodeToMessageShow(throwable));
+                         }
+                     }
         );
     }
 
@@ -124,8 +137,8 @@ public class MainOneFragmentPresenter extends BasePresenter {
 
     @Override
     public void unSubscribe() {
-        if (subscriber != null) {
-            subscriber.cancel();
+        if (mSubscriber != null) {
+            mSubscriber.cancel();
         }
     }
 

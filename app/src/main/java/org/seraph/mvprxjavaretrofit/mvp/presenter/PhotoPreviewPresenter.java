@@ -22,6 +22,8 @@ import java.io.File;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -31,7 +33,7 @@ import io.reactivex.schedulers.Schedulers;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class PhotoPreviewPresenter extends BaseActivityPresenter {
+public class PhotoPreviewPresenter extends BaseActivityPresenter implements PhotoPreviewAdapter.OnImageClickListener {
 
     private PhotoPreviewView mView;
 
@@ -47,7 +49,7 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
     private PhotoPreviewAdapter mPhotoPreviewAdapter;
 
 
-    private Subscription subscription;
+    private Subscription mSubscription;
 
     /**
      * 保存的图片
@@ -66,14 +68,14 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
     }
 
     public void initData() {
-        mPhotoPreviewAdapter = new PhotoPreviewAdapter(mView.getContext(),mView.getPhotoList());
-        mPhotoPreviewAdapter.setOnImageClickListener(this::onImageClick);
+        mPhotoPreviewAdapter = new PhotoPreviewAdapter(mView.getContext(), mView.getPhotoList());
+        mPhotoPreviewAdapter.setOnImageClickListener(this);
         mView.setPagerAdapter(mPhotoPreviewAdapter);
 
         onPageSelected(mView.getCurrentPosition());
     }
 
-    private void onImageClick(int i) {
+    public void onImageClick(int i) {
         switchToolBarVisibility();
     }
 
@@ -100,7 +102,7 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
         //判然系统权限
         // 缺少权限时, 进入权限配置页面
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionManagement.lacksPermissions(mView.getContext(), permissions)) {
-           mView.startPermissionsActivity(permissions);
+            mView.startPermissionsActivity(permissions);
         } else {
             mView.showLoading("正在保存");
             Picasso.with(mView.getContext()).load(savePhoto.objURL).into(target);
@@ -119,27 +121,41 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
         private void saveFileToDisk(Bitmap bitmap) {
             Flowable.just(bitmap)
                     .subscribeOn(Schedulers.io())
-                    .flatMap(mBitmap -> {
-                                saveImageName = Tools.getMD5(savePhoto.objURL) + "." + savePhoto.type;
-                                File dcimFile = Tools.getDCIMFile(saveImageName);
-                                if (dcimFile.exists() && dcimFile.length() > 0) {
-                                    return Flowable.just("图片已保存");
-                                }
-                                Tools.bitmapToFile(mBitmap, dcimFile);
-                                return Flowable.just("保存成功");
+                    .flatMap(new Function<Bitmap, Flowable<String>>() {
+                        @Override
+                        public Flowable<String> apply(Bitmap bitmap) throws Exception {
+                            saveImageName = Tools.getMD5(savePhoto.objURL) + "." + savePhoto.type;
+                            File dcimFile = Tools.getDCIMFile(saveImageName);
+                            if (dcimFile.exists() && dcimFile.length() > 0) {
+                                return Flowable.just("图片已保存");
                             }
-                    )
+                            Tools.bitmapToFile(bitmap, dcimFile);
+                            return Flowable.just("保存成功");
+                        }
+                    })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe(s -> subscription = s)
-                    .subscribe(s -> {
-                        mView.hideLoading();
-                        mView.showSnackBar(s);
-                        // 最后通知图库更新此图片
-                        Tools.scanAppImageFile(mView.getContext(), saveImageName);
-                    }, e -> {
-                        mView.hideLoading();
-                        mView.showSnackBar("保存失败");
+                    .doOnSubscribe(new Consumer<Subscription>() {
+                        @Override
+                        public void accept(Subscription subscription) throws Exception {
+                            mSubscription = subscription;
+                        }
+                    })
+                    .subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(String s) throws Exception {
+                            mView.hideLoading();
+                            mView.showSnackBar(s);
+                            // 最后通知图库更新此图片
+                            Tools.scanAppImageFile(mView.getContext(), saveImageName);
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+                            mView.hideLoading();
+                            mView.showSnackBar("保存失败");
+                        }
                     });
+
         }
 
         @Override
@@ -157,8 +173,8 @@ public class PhotoPreviewPresenter extends BaseActivityPresenter {
     @Override
     public void unSubscribe() {
         super.unSubscribe();
-        if (subscription != null) {
-            subscription.cancel();
+        if (mSubscription != null) {
+            mSubscription.cancel();
         }
 
 

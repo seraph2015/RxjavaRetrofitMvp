@@ -64,7 +64,12 @@ public class GoTopScrollView extends ScrollView implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        this.post(() -> smoothScrollTo(0, 0));
+        this.post(new Runnable() {
+            @Override
+            public void run() {
+                smoothScrollTo(0, 0);
+            }
+        });
     }
 
     /**

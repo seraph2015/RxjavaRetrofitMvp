@@ -5,6 +5,7 @@ import org.seraph.mvprxjavaretrofit.request.exception.ServerErrorException;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -25,11 +26,14 @@ class RxServerData {
      * 线程处理和部分业务处理
      */
     static <T> Flowable<BaseResponse<T>> getPublicDataProcessing(Flowable<BaseResponse<T>> flowable) {
-        return flowable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).flatMap(baseResponse -> {
-            if (baseResponse.status != SUCCESS_STATUS) { //业务逻辑失败
-                Flowable.error(new ServerErrorException(baseResponse.msg));
+        return flowable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).flatMap(new Function<BaseResponse<T>, Flowable<BaseResponse<T>>>() {
+            @Override
+            public Flowable<BaseResponse<T>> apply(BaseResponse<T> tBaseResponse) throws Exception {
+                if (tBaseResponse.status != SUCCESS_STATUS) { //业务逻辑失败
+                    Flowable.error(new ServerErrorException(tBaseResponse.msg));
+                }
+                return Flowable.just(tBaseResponse).subscribeOn(AndroidSchedulers.mainThread());
             }
-            return Flowable.just(baseResponse).subscribeOn(AndroidSchedulers.mainThread());
         });
     }
 

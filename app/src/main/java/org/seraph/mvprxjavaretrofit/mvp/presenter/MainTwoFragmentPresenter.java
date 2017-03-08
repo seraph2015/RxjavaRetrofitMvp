@@ -3,7 +3,6 @@ package org.seraph.mvprxjavaretrofit.mvp.presenter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
-import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.App;
 import org.seraph.mvprxjavaretrofit.adapter.ImageListAdapter;
@@ -20,6 +19,9 @@ import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * 第二页P
@@ -38,7 +40,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         mView = (MainTwoFragmentView) view;
     }
 
-    private Subscription subscription;
+    private Subscription mSubscription;
 
     private String title;
 
@@ -97,11 +99,14 @@ public class MainTwoFragmentPresenter extends BasePresenter {
             items[i] = listSearch.get(i).getSearchKey();
         }
         items[listSearch.size()] = "清除历史记录";
-        builder.setItems(items, (DialogInterface dialog, int which) -> {
-            if (which == listSearch.size()) {
-                deleteAllSearchDB();
-            } else {
-                mView.setSearchInput(items[which]);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == listSearch.size()) {
+                    deleteAllSearchDB();
+                } else {
+                    mView.setSearchInput(items[which]);
+                }
             }
         }).show();
 
@@ -124,52 +129,53 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         getBaiduImageList(searchKeyWord, ++pageNo);
     }
 
-    private void getBaiduImageList(String keyWord, int requestPageNo) {
+    private void getBaiduImageList(String keyWord, final int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
-        ApiService.doBaiduImage(Tools.getBaiduImagesUrl(keyWord, requestPageNo)).doOnSubscribe(subscription -> mView.showLoading()).map(baiduImageBean -> baiduImageBean.imgs).subscribe(new Subscriber<List<BaiduImageBean.BaiduImage>>() {
-
-            @Override
-            public void onSubscribe(Subscription s) {
-                subscription = s;
-                subscription.request(1);
-            }
-
-            @Override
-            public void onNext(List<BaiduImageBean.BaiduImage> baiduImages) {
-                mView.hideLoading();
-                if (requestPageNo == 1) {
-                    listImage.clear();
-                }
-                listImage.addAll(baiduImages);
-                //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
-                if (baiduImages.size() < 48) {
-                    mView.setListFootText(0);
-                } else {
-                    mView.setListFootText(1);
-                }
-                pageNo = requestPageNo;
-                subscription.request(1);
-            }
-
-            @Override
-            public void onError(Throwable t) {
-                mView.hideLoading();
-                mView.showToast(ServerErrorCode.errorCodeToMessageShow(t));
-            }
-
-            @Override
-            public void onComplete() {
-                mView.hideLoading();
-                imageListAdapter.notifyDataSetChanged();
-            }
-        });
+        ApiService.doBaiduImage(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
+                .doOnSubscribe(new Consumer<Subscription>() {
+                    @Override
+                    public void accept(Subscription subscription) throws Exception {
+                        mSubscription = subscription;
+                        mView.showLoading();
+                    }
+                })
+                .map(new Function<BaiduImageBean, List<BaiduImageBean.BaiduImage>>() {
+                    @Override
+                    public List<BaiduImageBean.BaiduImage> apply(BaiduImageBean baiduImageBean) throws Exception {
+                       return baiduImageBean.imgs;
+                    }
+                })
+                .subscribe(new Consumer<List<BaiduImageBean.BaiduImage>>() {
+                    @Override
+                    public void accept(List<BaiduImageBean.BaiduImage> baiduImages) throws Exception {
+                        mView.hideLoading();
+                        if (requestPageNo == 1) {
+                            listImage.clear();
+                        }
+                        listImage.addAll(baiduImages);
+                        //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
+                        if (baiduImages.size() < 48) {
+                            mView.setListFootText(0);
+                        } else {
+                            mView.setListFootText(1);
+                        }
+                        imageListAdapter.notifyDataSetChanged();
+                        pageNo = requestPageNo;
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        mView.hideLoading();
+                        mView.showToast(ServerErrorCode.errorCodeToMessageShow(throwable));
+                    }
+                });
     }
 
     @Override
     public void unSubscribe() {
         super.unSubscribe();
-        if (subscription != null) {
-            subscription.cancel();
+        if (mSubscription != null) {
+            mSubscription.cancel();
         }
     }
 

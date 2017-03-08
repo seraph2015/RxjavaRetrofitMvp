@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainOneFragment extends BaseFragment implements MainOneFragmentView {
+public class MainOneFragment extends BaseFragment implements MainOneFragmentView, View.OnClickListener {
 
     private TextView tvContent;
     private TextView tvDbUser;
@@ -47,17 +47,22 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
         tvContent = ButterKnife.findById(rootView, R.id.tv_content);
         tvDbUser = ButterKnife.findById(rootView, R.id.tv_db_user);
         oScrollView = ButterKnife.findById(rootView, R.id.oScrollView);
-        tvContent.setOnClickListener(this::onClick);
+        tvContent.setOnClickListener(this);
 
-        ButterKnife.findById(rootView, R.id.btn_request).setOnClickListener(this::onClick);
-        ButterKnife.findById(rootView, R.id.btn_sava_db).setOnClickListener(this::onClick);
-        ButterKnife.findById(rootView, R.id.btn_updata_db).setOnClickListener(this::onClick);
-        ButterKnife.findById(rootView, R.id.tv_query_user).setOnClickListener(this::onClick);
-        ButterKnife.findById(rootView, R.id.tv_clean_user).setOnClickListener(this::onClick);
+        ButterKnife.findById(rootView, R.id.btn_request).setOnClickListener(this);
+        ButterKnife.findById(rootView, R.id.btn_sava_db).setOnClickListener(this);
+        ButterKnife.findById(rootView, R.id.btn_updata_db).setOnClickListener(this);
+        ButterKnife.findById(rootView, R.id.tv_query_user).setOnClickListener(this);
+        ButterKnife.findById(rootView, R.id.tv_clean_user).setOnClickListener(this);
 
         mMainActivity = (MainActivity) getActivity();
 
-        oScrollView.setScrollViewListener(percentScroll -> mPresenter.upDataSaveToolbarAlpha(percentScroll));
+        oScrollView.setScrollViewListener(new ObservableScrollView.ScrollViewListener() {
+            @Override
+            public void onScrollChanged(float percentScroll) {
+                mPresenter.upDataSaveToolbarAlpha(percentScroll);
+            }
+        });
 
         mPresenter.initData();
     }
@@ -68,7 +73,7 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
                 mPresenter.doLogin();
                 break;
             case R.id.tv_content:
-                if(mMainActivity!=null){
+                if (mMainActivity != null) {
                     mMainActivity.mPresenter.switchToolBarVisibility();
                 }
                 break;

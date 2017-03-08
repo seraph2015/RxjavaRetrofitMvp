@@ -117,7 +117,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
      */
     private void initLoadingDialog() {
         loadingDialog = new CustomLoadingDialog(this);
-        loadingDialog.setOnDismissListener((DialogInterface dialog) -> mPresenter.unSubscribe());
+        loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mPresenter.unSubscribe();
+            }
+        });
     }
 
 
@@ -146,7 +151,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
     @Override
     public void showToolBarNavigation() {
         setBackIcon(android.R.drawable.ic_input_delete);
-        setBackListener(v -> viewFinish());
+        setBackListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewFinish();
+            }
+        });
     }
 
     @Override

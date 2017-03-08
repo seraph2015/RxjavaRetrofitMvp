@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView {
+public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView, AdapterView.OnItemClickListener, View.OnClickListener {
 
 
     private GoTopListView listImageView;
@@ -66,7 +66,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
         ivGoTop = ButterKnife.findById(rootView, R.id.iv_go_top);
         listImageView.setScrollListener(ivGoTop);
         addListHeadView();
-        listImageView.setOnItemClickListener(this::onItemClick);
+        listImageView.setOnItemClickListener(this);
         mainActivity = (MainActivity) getActivity();
 
         mPresenter.initData();
@@ -80,16 +80,16 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
         inputSearch = ButterKnife.findById(headView, R.id.et_search_keyword);
         btnSearchHistory = ButterKnife.findById(headView, R.id.btn_search_history);
 
-        getCache.setOnClickListener(this::onClick);
-        btnSearchHistory.setOnClickListener(this::onClick);
-        picassoImage.setOnClickListener(this::onClick);
+        getCache.setOnClickListener(this);
+        btnSearchHistory.setOnClickListener(this);
+        picassoImage.setOnClickListener(this);
         listImageView.addHeaderView(headView);
     }
 
     private void addListFootView() {
         View footView = LayoutInflater.from(getActivity()).inflate(R.layout.list_foot_view, listImageView, false);
         tvMore = ButterKnife.findById(footView, R.id.tv_more);
-        tvMore.setOnClickListener(this::onClick);
+        tvMore.setOnClickListener(this);
         listImageView.addFooterView(footView);
     }
 

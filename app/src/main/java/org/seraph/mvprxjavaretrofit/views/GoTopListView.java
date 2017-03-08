@@ -17,7 +17,7 @@ import org.seraph.mvprxjavaretrofit.R;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class GoTopListView extends ListView {
+public class GoTopListView extends ListView implements View.OnClickListener {
 
     private View goTopBtn;
 
@@ -43,7 +43,7 @@ public class GoTopListView extends ListView {
 
     public void setScrollListener(View goTopBtn) {
         this.goTopBtn = goTopBtn;
-        this.goTopBtn.setOnClickListener(this::onClick);
+        this.goTopBtn.setOnClickListener(this);
 
         showAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.go_top_gone_to_show);
         goneAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.go_top_show_to_gone);
@@ -66,7 +66,12 @@ public class GoTopListView extends ListView {
      * 向上滚动smoothScrollToPosition
      */
     public void onClick(View v) {
-        this.post(() -> setSelection(0));
+        this.post(new Runnable() {
+            @Override
+            public void run() {
+                setSelection(0);
+            }
+        });
     }
 
     /**

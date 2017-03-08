@@ -70,8 +70,9 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     private void initLoadingDialog() {
         loadingDialog = new CustomLoadingDialog(getActivity());
-        loadingDialog.setOnDismissListener((DialogInterface dialog) -> {
-            if (mPresenter != null) {
+        loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
                 mPresenter.unSubscribe();
             }
         });

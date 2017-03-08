@@ -5,6 +5,8 @@ import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainThreeFragmentView;
 import org.seraph.mvprxjavaretrofit.request.ApiService;
 
+import io.reactivex.functions.Consumer;
+
 /**
  * FragmentThee逻辑处理层
  * date：2017/2/15 11:27
@@ -25,7 +27,7 @@ public class MainThreeFragmentPresenter extends BasePresenter {
     }
 
 
-    private Subscription subscription;
+    private Subscription mSubscription;
 
     private String title;
 
@@ -43,14 +45,27 @@ public class MainThreeFragmentPresenter extends BasePresenter {
     }
 
     public void post12306Https() {
-        ApiService.do12306().doOnSubscribe(subscription -> mView.showLoading()).subscribe(s -> {
-        }, e -> {
-            mView.hideLoading();
-            //访问的为12306网站测试证书，所以无法用gson解析
-            if (e instanceof javax.net.ssl.SSLHandshakeException) {
-                mView.setTextView("缺少https证书");
-            } else if (e instanceof com.google.gson.stream.MalformedJsonException) {
-                mView.setTextView("访问成功");
+        ApiService.do12306().doOnSubscribe(new Consumer<Subscription>() {
+            @Override
+            public void accept(Subscription subscription) throws Exception {
+                mSubscription = subscription;
+                mView.showLoading();
+            }
+        }).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                mView.hideLoading();
+                //访问的为12306网站测试证书，所以无法用gson解析
+                if (throwable instanceof javax.net.ssl.SSLHandshakeException) {
+                    mView.setTextView("缺少https证书");
+                } else if (throwable instanceof com.google.gson.stream.MalformedJsonException) {
+                    mView.setTextView("访问成功");
+                }
             }
         });
 
@@ -61,5 +76,13 @@ public class MainThreeFragmentPresenter extends BasePresenter {
         //把输入的表情进行转义成16进制
         mView.showEmojiValue(tempInput + "------> " + tempInput.codePointCount(0, tempInput.length()) + "===" + new String(Character.toChars(0x1f602)));
         mView.getContext();
+    }
+
+    @Override
+    public void unSubscribe() {
+        super.unSubscribe();
+        if (mSubscription != null) {
+            mSubscription.cancel();
+        }
     }
 }

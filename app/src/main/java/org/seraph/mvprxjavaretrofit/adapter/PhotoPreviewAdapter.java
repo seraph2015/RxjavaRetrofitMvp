@@ -50,16 +50,19 @@ public class PhotoPreviewAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         ImageViewTouch imageView = new ImageViewTouch(mContext, null);
         imageView.setTag(ImageViewTouchViewPager.VIEW_PAGER_OBJECT_TAG + position);
         imageView.setMaxScale(3.0f);
         imageView.setMinScale(1.0f);
         imageView.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         if (onImageClickListener != null) {
-            imageView.setSingleTapListener(() ->
-                    onImageClickListener.onImageClick(position)
-            );
+            imageView.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
+                @Override
+                public void onSingleTapConfirmed() {
+                    onImageClickListener.onImageClick(position);
+                }
+            });
         }
         Picasso.with(mContext)
                 .load(listData.get(position).objURL)

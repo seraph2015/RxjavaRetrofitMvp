@@ -15,12 +15,12 @@ import org.seraph.mvprxjavaretrofit.mvp.view.MainThreeFragmentView;
 import butterknife.ButterKnife;
 
 /**
- * 主界面
+ * 第三页
  * date：2017/2/20 16:38
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainThreeFragment extends BaseFragment implements MainThreeFragmentView {
+public class MainThreeFragment extends BaseFragment implements MainThreeFragmentView, View.OnClickListener {
 
     private TextView httpsValue;
     private EditText etInput;
@@ -51,14 +51,14 @@ public class MainThreeFragment extends BaseFragment implements MainThreeFragment
         etInput = ButterKnife.findById(rootView, R.id.et_input);
         emojiValue = ButterKnife.findById(rootView, R.id.tv_emoji_show);
         httpsValue = ButterKnife.findById(rootView, R.id.tv_https_value);
-        btnHttps.setOnClickListener(this::onClick);
-        btnEmoji.setOnClickListener(this::onClick);
+        btnHttps.setOnClickListener(this);
+        btnEmoji.setOnClickListener(this);
 
         mainActivity = (MainActivity) getActivity();
         mPresenter.initData();
     }
 
-    private void onClick(View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_emoji:
                 mPresenter.showEmoji();

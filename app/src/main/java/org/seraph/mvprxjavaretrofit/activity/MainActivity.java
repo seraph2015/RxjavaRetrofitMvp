@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainActivity extends BaseActivity implements MainActivityView {
+public class MainActivity extends BaseActivity implements MainActivityView, View.OnClickListener {
 
 
     public LinearLayout mMenu;
@@ -48,10 +48,10 @@ public class MainActivity extends BaseActivity implements MainActivityView {
         toolbar.setLogo(R.mipmap.icon_main_logo);
         setStatusBarImmersionMode(true);
         mMenu = ButterKnife.findById(this, R.id.layout_menu);
-        ButterKnife.findById(this, R.id.ll_menu_one).setOnClickListener(this::onClick);
-        ButterKnife.findById(this, R.id.ll_menu_two).setOnClickListener(this::onClick);
-        ButterKnife.findById(this, R.id.ll_menu_three).setOnClickListener(this::onClick);
-        ButterKnife.findById(this, R.id.ll_menu_four).setOnClickListener(this::onClick);
+        ButterKnife.findById(this, R.id.ll_menu_one).setOnClickListener(this);
+        ButterKnife.findById(this, R.id.ll_menu_two).setOnClickListener(this);
+        ButterKnife.findById(this, R.id.ll_menu_three).setOnClickListener(this);
+        ButterKnife.findById(this, R.id.ll_menu_four).setOnClickListener(this);
         mPresenter.initData();
         mPresenter.changeCurrentClickState(0);
     }
@@ -99,7 +99,6 @@ public class MainActivity extends BaseActivity implements MainActivityView {
     @Override
     public void onBackPressed() {
         mPresenter.onBackPressed();
-
     }
 
     @Override

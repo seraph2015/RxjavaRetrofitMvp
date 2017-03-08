@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 /**
  * mian逻辑处理层
@@ -64,7 +65,7 @@ public class MainPresenter extends BaseActivityPresenter {
     /**
      * 选中某项，改变状态
      */
-    public void changeCurrentClickState(int positionIndex) {
+    public void changeCurrentClickState(final int positionIndex) {
         Flowable.range(0, childCount).subscribe(new Subscriber<Integer>() {
             Subscription subscription;
 
@@ -158,8 +159,11 @@ public class MainPresenter extends BaseActivityPresenter {
         } else {
             mView.viewFinish();
         }
-        Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread()).subscribe(aLong -> {
-            isBackPressed = false;
+        Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Exception {
+                isBackPressed = false;
+            }
         });
 
     }

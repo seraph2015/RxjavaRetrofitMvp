@@ -14,6 +14,8 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -72,28 +74,38 @@ class HttpMethods {
      * 构建ApiInterface
      */
 
-    private static ApiInterface buildRetrofitToApiInterface(String apiBaseUrl) {
+    private static ApiInterface buildRetrofitToApiInterface(final String apiBaseUrl) {
 
         final ApiInterface[] apiInterface = new ApiInterface[1];
 
-        Observable.just(AppConstant.IS_ENABLED_CER).map(aBoolean -> {
-            if (aBoolean) {
-                return AppConstant.HTTPS_CER_NAME;
+        Observable.just(AppConstant.IS_ENABLED_CER).map(new Function<Boolean, String>() {
+
+            @Override
+            public String apply(Boolean aBoolean) throws Exception {
+                if (aBoolean) {
+                    return AppConstant.HTTPS_CER_NAME;
+                }
+                return "";
             }
-            return "";
-        }).map(s -> {
-            if (!Tools.isNull(s)) {
-                InputStream inputStream = App.getSingleton().getAssets().open(AppConstant.HTTPS_CER_NAME);
-                X509TrustManager x509TrustManager = HTTPS.getX509TrustManager(inputStream);
-                SSLSocketFactory sslSocketFactory = HTTPS.getSSLSocketFactory(x509TrustManager);
-                return httpClientBuilder.sslSocketFactory(sslSocketFactory, x509TrustManager).build();
+        }).map(new Function<String, OkHttpClient>() {
+            @Override
+            public OkHttpClient apply(String s) throws Exception {
+                if (!Tools.isNull(s)) {
+                    InputStream inputStream = App.getSingleton().getAssets().open(AppConstant.HTTPS_CER_NAME);
+                    X509TrustManager x509TrustManager = HTTPS.getX509TrustManager(inputStream);
+                    SSLSocketFactory sslSocketFactory = HTTPS.getSSLSocketFactory(x509TrustManager);
+                    return httpClientBuilder.sslSocketFactory(sslSocketFactory, x509TrustManager).build();
+                }
+                return httpClientBuilder.build();
             }
-            return httpClientBuilder.build();
-        }).subscribe(okHttpClient -> {
-            apiInterface[0] = new Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .baseUrl(apiBaseUrl).client(okHttpClient).build().create(ApiInterface.class);
+        }).subscribe(new Consumer<OkHttpClient>() {
+            @Override
+            public void accept(OkHttpClient okHttpClient) throws Exception {
+                apiInterface[0] = new Retrofit.Builder()
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .baseUrl(apiBaseUrl).client(okHttpClient).build().create(ApiInterface.class);
+            }
         });
 
         return apiInterface[0];

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -27,7 +28,7 @@ import butterknife.ButterKnife;
 /**
  * 图片查看器
  */
-public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewView {
+public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewView, ImageViewTouchViewPager.OnPageSelectedListener, Toolbar.OnMenuItemClickListener {
 
     private ImageViewTouchViewPager mPhotoPreview;
 
@@ -61,7 +62,7 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
     @Override
     protected void init(Bundle savedInstanceState) {
         mPhotoPreview = ButterKnife.findById(this, R.id.vp_photo_preview);
-        mPhotoPreview.setOnPageSelectedListener(this::onPageSelected);
+        mPhotoPreview.setOnPageSelectedListener(this);
 
         mPhotoList = (ArrayList<PhotoPreviewBean>) getIntent().getSerializableExtra(PhotoPreviewActivity.PHOTO_LIST);
         currentPosition = getIntent().getIntExtra(PhotoPreviewActivity.CURRENT_POSITION, 0);
@@ -69,7 +70,7 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
         mPresenter.initData();
     }
 
-    private void onPageSelected(int position) {
+    public void onPageSelected(int position) {
         //翻页并且保存页码
         mPresenter.onPageSelected(position);
     }
@@ -92,7 +93,7 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
 
     @Override
     public void setMenuClick() {
-        toolbar.setOnMenuItemClickListener(this::onMenuItem);
+        toolbar.setOnMenuItemClickListener(this);
     }
 
     @Override
@@ -119,16 +120,6 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
     }
 
 
-    private boolean onMenuItem(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.action_save_image:
-                mPresenter.saveImage();
-                break;
-        }
-        return false;
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -138,4 +129,13 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
     }
 
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save_image:
+                mPresenter.saveImage();
+                break;
+        }
+        return false;
+    }
 }
