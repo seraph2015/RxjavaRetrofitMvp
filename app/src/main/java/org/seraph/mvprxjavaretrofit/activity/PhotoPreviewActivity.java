@@ -136,4 +136,6 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
             mPresenter.onActivityResult(resultCode);
         }
     }
+
+
 }

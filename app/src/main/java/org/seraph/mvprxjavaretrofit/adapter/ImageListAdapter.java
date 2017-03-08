@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class ImageListAdapter extends BaseListAdapter<BaiduImageBean.BaiduImage>
                 .placeholder(R.mipmap.icon_placeholder)
                 .error(R.mipmap.icon_error)
                 .resize(width, height)
+                .config(Bitmap.Config.RGB_565) //对于不透明的图片可以使用RGB_565来优化内存。RGB_565呈现结果与ARGB_8888接近
                 .centerInside()
                 .into(imageView);
         return convertView;

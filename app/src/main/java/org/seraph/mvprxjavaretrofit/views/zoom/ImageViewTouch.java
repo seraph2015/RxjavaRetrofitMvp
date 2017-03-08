@@ -318,4 +318,12 @@ public class ImageViewTouch extends ImageViewTouchBase {
 	public interface OnImageViewTouchSingleTapListener {
 		void onSingleTapConfirmed();
 	}
+
+
+	//修改时间：2017-3-8 19:47:05 重写ImageView的onDetachedFromWindow方法，在它从屏幕中消失时回调，去掉drawable引用，能加快内存的回收。
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		setImageDrawable(null);
+	}
 }
