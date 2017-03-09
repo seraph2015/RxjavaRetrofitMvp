@@ -7,7 +7,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "org.seraph.mvprxjavaretrofit"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -56,20 +56,22 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     //google的json解析
     compile 'com.google.code.gson:gson:2.8.0'
-    //基于rxJava2的注册绑定对象
-    //    compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
-    //    compile 'com.jakewharton.rxbinding:rxbinding-design:1.0.0'
-    //    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:1.0.0'
-    //    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
-    //    compile 'com.jakewharton.rxbinding:rxbinding-kotlin:1.0.0'
-    //    compile 'com.jakewharton.rxbinding:rxbinding-design-kotlin:1.0.0'
-    //    compile 'com.jakewharton.rxbinding:rxbinding-support-v4-kotlin:1.0.0'
-    //    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:1.0.0'
+
     //依赖注入butterknife，dagger2
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    //    compile 'com.google.dagger:dagger:2.9'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    //相册选择，图片查看
-    //  compile 'cn.finalteam.rxgalleryfinal:library:0.0.3'
+    //基于rxJava2的注册绑定对象
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-leanback-v17-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-leanback-v17:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-design-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
 }

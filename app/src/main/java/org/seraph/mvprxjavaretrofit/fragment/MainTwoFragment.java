@@ -5,12 +5,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+
+import com.jakewharton.rxbinding2.widget.RxAdapterView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.activity.MainActivity;
@@ -24,6 +26,7 @@ import org.seraph.mvprxjavaretrofit.views.GoTopListView;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 
 /**
  * 第二页
@@ -31,7 +34,7 @@ import butterknife.ButterKnife;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView, AdapterView.OnItemClickListener, View.OnClickListener {
+public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView, View.OnClickListener {
 
 
     private GoTopListView listImageView;
@@ -62,12 +65,30 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        mainActivity = (MainActivity) getActivity();
         listImageView = ButterKnife.findById(rootView, R.id.lv_images);
         ivGoTop = ButterKnife.findById(rootView, R.id.iv_go_top);
         listImageView.setScrollListener(ivGoTop);
         addListHeadView();
-        listImageView.setOnItemClickListener(this);
-        mainActivity = (MainActivity) getActivity();
+        RxTextView.textChanges(inputSearch).subscribe(new Consumer<CharSequence>() {
+            @Override
+            public void accept(CharSequence charSequence) throws Exception {
+                if (charSequence.length() > 0) {
+                    picassoImage.setEnabled(true);
+                } else {
+                    picassoImage.setEnabled(false);
+                }
+
+            }
+        });
+
+        RxAdapterView.itemClicks(listImageView).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) throws Exception {
+                mPresenter.onItemClick(integer);
+            }
+        });
+
 
         mPresenter.initData();
     }
@@ -79,12 +100,12 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
         picassoImage = ButterKnife.findById(headView, R.id.btn_picasso_image);
         inputSearch = ButterKnife.findById(headView, R.id.et_search_keyword);
         btnSearchHistory = ButterKnife.findById(headView, R.id.btn_search_history);
-
         getCache.setOnClickListener(this);
         btnSearchHistory.setOnClickListener(this);
         picassoImage.setOnClickListener(this);
         listImageView.addHeaderView(headView);
     }
+
 
     private void addListFootView() {
         View footView = LayoutInflater.from(getActivity()).inflate(R.layout.list_foot_view, listImageView, false);
@@ -110,10 +131,6 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
                 }
                 break;
         }
-    }
-
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mPresenter.onItemClick(position);
     }
 
 
