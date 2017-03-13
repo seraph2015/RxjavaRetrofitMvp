@@ -63,15 +63,9 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     //基于rxJava2的注册绑定对象
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-leanback-v17-kotlin:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-leanback-v17:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-design-kotlin:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
 }

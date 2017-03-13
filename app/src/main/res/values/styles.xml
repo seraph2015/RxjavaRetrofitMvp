@@ -22,16 +22,14 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-
-    <!-- 自定义dialog的样式 -->
-    <style name="CustomDialog">
-        <item name="android:windowFrame">@null</item><!--边框-->
-        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
-        <item name="android:windowIsTranslucent">false</item><!--半透明-->
-        <item name="android:windowNoTitle">true</item><!--无标题-->
-        <item name="android:windowBackground">@drawable/bg_dialog_loading_wx</item><!--背景透明-->
-        <item name="android:backgroundDimEnabled">false</item><!--模糊-->
-        <item name="android:backgroundDimAmount">0.6</item>
+    <style name="progress_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <!-- 主页菜单按钮布局样式 -->

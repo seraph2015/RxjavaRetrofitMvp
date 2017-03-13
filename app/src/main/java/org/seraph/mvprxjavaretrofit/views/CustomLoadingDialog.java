@@ -2,8 +2,8 @@ package org.seraph.mvprxjavaretrofit.views;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
@@ -16,12 +16,10 @@ public class CustomLoadingDialog extends Dialog {
 
 
     public CustomLoadingDialog(Context context) {
-        super(context, R.style.CustomDialog);
-        setContentView(R.layout.dialog_loading_view);
+        super(context, R.style.progress_dialog);
+        setContentView(R.layout.dialog_loading);
         setCanceledOnTouchOutside(true);
-        WindowManager.LayoutParams attributes = getWindow().getAttributes();
-        attributes.alpha = 0.9f;
-        getWindow().setAttributes(attributes);
+        getWindow().getAttributes().gravity = Gravity.CENTER;
         setCancelable(false);
     }
 
@@ -39,7 +37,7 @@ public class CustomLoadingDialog extends Dialog {
     public void setDialogMessage(String message) {
         show();
         if (!Tools.isNull(message)) {
-            ((TextView) findViewById(R.id.tv_content)).setText(message);
+            ((TextView) findViewById(R.id.tv_loading_msg)).setText(message);
         }
     }
 }
