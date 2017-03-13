@@ -88,7 +88,7 @@ public class FileTools {
      * 注：该方法获取的目录是能供当前应用自己使用，外部应用没有读写权限，如 系统相机应用
      */
     private static File getInternalCacheDirectory(Context context, String type) {
-        File appCacheDir = null;
+        File appCacheDir;
         if (TextUtils.isEmpty(type)) {
             appCacheDir = context.getCacheDir();// /data/data/app_package_name/cache
         } else {
