@@ -10,7 +10,7 @@ import org.seraph.mvprxjavaretrofit.mvp.model.UserBean;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainOneFragmentView;
 import org.seraph.mvprxjavaretrofit.request.ApiService;
-import org.seraph.mvprxjavaretrofit.request.exception.ServerErrorCode;
+import org.seraph.mvprxjavaretrofit.request.BaseNetWorkSubscriber;
 
 import java.util.List;
 
@@ -60,23 +60,21 @@ public class MainOneFragmentPresenter extends BasePresenter {
                 mSubscriber = subscription;
                 mView.showLoading();
             }
-        }).subscribe(new Consumer<BaseResponse<UserBean>>() {
-                         @Override
-                         public void accept(BaseResponse<UserBean> baseResponse) throws Exception {
-                             mView.hideLoading();
-                             baseData = baseResponse.data;
-                             UserBean userBean = baseData.data;
-                             mView.setTextViewValue("token->" + baseData.token + "\nuserId->" + userBean.id + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
+        }).subscribe(new BaseNetWorkSubscriber<BaseResponse<UserBean>>(mView) {
+            @Override
+            public void onSuccess(BaseResponse<UserBean> baseResponse) {
+                baseData = baseResponse.data;
+                UserBean userBean = baseData.data;
+                mView.setTextViewValue("token->" + baseData.token + "\nuserId->" + userBean.id + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
+            }
 
-                         }
-                     }, new Consumer<Throwable>() {
-                         @Override
-                         public void accept(Throwable throwable) throws Exception {
-                             mView.hideLoading();
-                             mView.showToast(ServerErrorCode.errorCodeToMessageShow(throwable));
-                         }
-                     }
-        );
+            @Override
+            public void onError(String errStr) {
+                mView.showToast(errStr);
+            }
+
+
+        });
     }
 
 

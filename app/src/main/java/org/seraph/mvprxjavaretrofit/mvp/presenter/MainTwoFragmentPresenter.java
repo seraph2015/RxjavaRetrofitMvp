@@ -13,7 +13,7 @@ import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainTwoFragmentView;
 import org.seraph.mvprxjavaretrofit.request.ApiService;
-import org.seraph.mvprxjavaretrofit.request.exception.ServerErrorCode;
+import org.seraph.mvprxjavaretrofit.request.BaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.utlis.FileTools;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -142,13 +142,12 @@ public class MainTwoFragmentPresenter extends BasePresenter {
                 .map(new Function<BaiduImageBean, List<BaiduImageBean.BaiduImage>>() {
                     @Override
                     public List<BaiduImageBean.BaiduImage> apply(BaiduImageBean baiduImageBean) throws Exception {
-                       return baiduImageBean.imgs;
+                        return baiduImageBean.imgs;
                     }
                 })
-                .subscribe(new Consumer<List<BaiduImageBean.BaiduImage>>() {
+                .subscribe(new BaseNetWorkSubscriber<List<BaiduImageBean.BaiduImage>>(mView) {
                     @Override
-                    public void accept(List<BaiduImageBean.BaiduImage> baiduImages) throws Exception {
-                        mView.hideLoading();
+                    public void onSuccess(List<BaiduImageBean.BaiduImage> baiduImages) {
                         if (requestPageNo == 1) {
                             listImage.clear();
                         }
@@ -162,12 +161,12 @@ public class MainTwoFragmentPresenter extends BasePresenter {
                         imageListAdapter.notifyDataSetChanged();
                         pageNo = requestPageNo;
                     }
-                }, new Consumer<Throwable>() {
+
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        mView.hideLoading();
-                        mView.showToast(ServerErrorCode.errorCodeToMessageShow(throwable));
+                    public void onError(String errStr) {
+                        mView.showToast(errStr);
                     }
+
                 });
     }
 
