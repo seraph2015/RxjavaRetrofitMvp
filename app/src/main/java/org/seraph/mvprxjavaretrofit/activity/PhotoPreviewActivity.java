@@ -63,7 +63,7 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewVi
     protected void init(Bundle savedInstanceState) {
         mPhotoPreview = ButterKnife.findById(this, R.id.vp_photo_preview);
         mPhotoPreview.setOnPageSelectedListener(this);
-
+        mPhotoPreview.setOffscreenPageLimit(5);
         mPhotoList = (ArrayList<PhotoPreviewBean>) getIntent().getSerializableExtra(PhotoPreviewActivity.PHOTO_LIST);
         currentPosition = getIntent().getIntExtra(PhotoPreviewActivity.CURRENT_POSITION, 0);
 
