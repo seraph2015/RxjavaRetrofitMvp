@@ -150,7 +150,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseActi
 
     @Override
     public void showToolBarNavigation() {
-        setBackIcon(android.R.drawable.ic_input_delete);
+        setBackIcon(R.drawable.ic_arrow_back_black_24dp);
         setBackListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
