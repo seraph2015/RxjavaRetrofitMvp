@@ -1,8 +1,6 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
-import android.content.Context;
-
-import org.seraph.mvprxjavaretrofit.activity.MainActivity;
+import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainFourFragmentView;
 
@@ -17,9 +15,8 @@ public class MainFourFragmentPresenter extends BasePresenter {
 
     private MainFourFragmentView mView;
 
-    private MainActivity mainActivity;
-
     private float percentScroll = 0f;
+
 
     @Override
     public void attachView(BaseView view) {
@@ -27,23 +24,16 @@ public class MainFourFragmentPresenter extends BasePresenter {
         this.mView = (MainFourFragmentView) view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        mainActivity = (MainActivity) context;
-    }
-
 
     private String title;
+    private int logoIcon;
 
     public void initData() {
-        title = " Four";
-        setTitle(title);
+        title = " 其它测试";
+        logoIcon = R.drawable.ic_assignment_ind_black_24dp;
+        mView.setTitleAndLogo(title,logoIcon);
     }
 
-
-    public void setTitle(String title) {
-        mainActivity.setTitle(title);
-    }
 
     /**
      * 更新头部背景透明度
@@ -52,14 +42,14 @@ public class MainFourFragmentPresenter extends BasePresenter {
      */
     public void upDataToolbarAlpha(float percentScroll) {
         this.percentScroll = percentScroll;
-        mainActivity.mPresenter.upDataToolbarAlpha(percentScroll);
+        mView.upDataToolbarAlpha(percentScroll);
     }
 
 
     @Override
     public void restoreData() {
         super.restoreData();
-        setTitle(title);
-        upDataToolbarAlpha(percentScroll);
+        mView.setTitleAndLogo(title,logoIcon);
+        mView.upDataToolbarAlpha(percentScroll);
     }
 }

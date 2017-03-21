@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.App;
+import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.adapter.ImageListAdapter;
 import org.seraph.mvprxjavaretrofit.db.gen.SearchHistoryTableDao;
 import org.seraph.mvprxjavaretrofit.db.table.SearchHistoryTable;
@@ -34,15 +35,17 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
     private MainTwoFragmentView mView;
 
+
     @Override
     public void attachView(BaseView view) {
         super.attachView(view);
         mView = (MainTwoFragmentView) view;
     }
 
-    private Subscription mSubscription;
-
     private String title;
+    private int logoIcon;
+
+    private Subscription mSubscription;
 
     private ImageListAdapter imageListAdapter;
 
@@ -52,6 +55,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
     private String searchKeyWord;
 
+
     /**
      * 搜索历史
      */
@@ -59,8 +63,10 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
 
     public void initData() {
-        title = " Search Image";
-        mView.setTitle(title);
+        title = " 图片搜索";
+        logoIcon = R.drawable.ic_search_black_24dp;
+        mView.setTitleAndLogo(title,logoIcon);
+
         imageListAdapter = new ImageListAdapter(mView.getContext(), listImage);
         mView.setImageAdapter(imageListAdapter);
     }
@@ -69,7 +75,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
     @Override
     public void restoreData() {
         super.restoreData();
-        mView.setTitle(title);
+        mView.setTitleAndLogo(title,logoIcon);
         mView.upDataToolbarAlpha(0);
     }
 

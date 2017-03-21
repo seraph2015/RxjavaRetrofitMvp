@@ -32,29 +32,4 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <!-- 主页菜单按钮布局样式 -->
-    <style name="menu_item_layout">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">#f8f8f8</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-    <!-- 主页菜单按钮布局图片样式 -->
-    <style name="menu_item_iv">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center</item>
-    </style>
-    <!-- 主页菜单按钮布局字体样式 -->
-    <style name="menu_item_tv">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">5dp</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">#666666</item>
-    </style>
 </resources>

@@ -2,12 +2,11 @@ package org.seraph.mvprxjavaretrofit.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.support.design.widget.BottomNavigationView;
+import android.view.MenuItem;
+
+import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.presenter.BaseActivityPresenter;
@@ -16,6 +15,7 @@ import org.seraph.mvprxjavaretrofit.mvp.view.MainActivityView;
 import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
 import butterknife.ButterKnife;
+import io.reactivex.functions.Consumer;
 
 /**
  * 主界面
@@ -23,10 +23,10 @@ import butterknife.ButterKnife;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainActivity extends BaseActivity implements MainActivityView, View.OnClickListener {
+public class MainActivity extends BaseActivity implements MainActivityView {
 
 
-    public LinearLayout mMenu;
+    BottomNavigationView bnvMain;
 
     @Override
     protected int getContextView() {
@@ -44,41 +44,15 @@ public class MainActivity extends BaseActivity implements MainActivityView, View
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        setTitle("主页");
-        toolbar.setLogo(R.mipmap.icon_main_logo);
         setStatusBarImmersionMode(true);
-        mMenu = ButterKnife.findById(this, R.id.layout_menu);
-        ButterKnife.findById(this, R.id.ll_menu_one).setOnClickListener(this);
-        ButterKnife.findById(this, R.id.ll_menu_two).setOnClickListener(this);
-        ButterKnife.findById(this, R.id.ll_menu_three).setOnClickListener(this);
-        ButterKnife.findById(this, R.id.ll_menu_four).setOnClickListener(this);
+        bnvMain = ButterKnife.findById(this, R.id.bnv_main);
         mPresenter.initData();
-        mPresenter.changeCurrentClickState(0);
+        RxBottomNavigationView.itemSelections(bnvMain).subscribe(bottomNavigationConsumer);
     }
 
-
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.ll_menu_one:
-                mPresenter.changeCurrentClickState(0);
-                break;
-            case R.id.ll_menu_two:
-                mPresenter.changeCurrentClickState(1);
-                break;
-            case R.id.ll_menu_three:
-                mPresenter.changeCurrentClickState(2);
-                break;
-            case R.id.ll_menu_four:
-                mPresenter.changeCurrentClickState(3);
-                break;
-        }
+    public void setTooBarLogo(@DrawableRes int resId){
+        toolbar.setLogo(resId);
     }
-
-    @Override
-    public int getMenuChildCount() {
-        return mMenu.getChildCount();
-    }
-
 
     @Override
     public FragmentController getFragmentController() {
@@ -86,15 +60,26 @@ public class MainActivity extends BaseActivity implements MainActivityView, View
     }
 
 
-    @Override
-    public void setMenuItem(int position, @ColorInt int bgColor, @DrawableRes int resId, @ColorInt int textColor) {
-        LinearLayout llItem = (LinearLayout) mMenu.getChildAt(position);
-        ImageView imageView = (ImageView) llItem.getChildAt(0);
-        TextView textView = (TextView) llItem.getChildAt(1);
-        llItem.setBackgroundColor(bgColor);
-        imageView.setImageResource(resId);
-        textView.setTextColor(textColor);
-    }
+    private Consumer<MenuItem> bottomNavigationConsumer = new Consumer<MenuItem>() {
+        @Override
+        public void accept(MenuItem menuItem) throws Exception {
+            switch (menuItem.getItemId()) {
+                case R.id.item_one:
+                    mPresenter.setSelectedFragment(0);
+                    break;
+                case R.id.item_two:
+                    mPresenter.setSelectedFragment(1);
+                    break;
+                case R.id.item_three:
+                    mPresenter.setSelectedFragment(2);
+                    break;
+                case R.id.item_four:
+                    mPresenter.setSelectedFragment(3);
+                    break;
+            }
+        }
+    };
+
 
     @Override
     public void onBackPressed() {
@@ -105,4 +90,6 @@ public class MainActivity extends BaseActivity implements MainActivityView, View
     public Context getContext() {
         return this;
     }
+
+
 }

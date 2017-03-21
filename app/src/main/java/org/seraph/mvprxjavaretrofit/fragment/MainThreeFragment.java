@@ -42,7 +42,7 @@ public class MainThreeFragment extends BaseFragment implements MainThreeFragment
         return mPresenter;
     }
 
-    private MainActivity mainActivity;
+    private MainActivity mMainActivity;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class MainThreeFragment extends BaseFragment implements MainThreeFragment
         btnHttps.setOnClickListener(this);
         btnEmoji.setOnClickListener(this);
 
-        mainActivity = (MainActivity) getActivity();
+        mMainActivity = (MainActivity) getActivity();
         mPresenter.initData();
     }
 
@@ -86,12 +86,15 @@ public class MainThreeFragment extends BaseFragment implements MainThreeFragment
     }
 
     @Override
-    public void setTitle(String title) {
-        mainActivity.setTitle(title);
+    public void setTitleAndLogo(String title, int logoIcon) {
+        if (mMainActivity != null) {
+            mMainActivity.setTitle(title);
+            mMainActivity.setTooBarLogo(logoIcon);
+        }
     }
 
     @Override
     public void upDataToolbarAlpha(float percentScroll) {
-        mainActivity.mPresenter.upDataToolbarAlpha(percentScroll);
+        mMainActivity.mPresenter.upDataToolbarAlpha(percentScroll);
     }
 }

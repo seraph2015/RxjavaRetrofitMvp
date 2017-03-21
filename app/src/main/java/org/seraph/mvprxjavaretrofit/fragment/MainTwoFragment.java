@@ -54,7 +54,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
         return mPresenter;
     }
 
-    MainActivity mainActivity;
+    MainActivity mMainActivity;
 
     TextView tvCache;
     Button getCache;
@@ -65,7 +65,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        mainActivity = (MainActivity) getActivity();
+        mMainActivity = (MainActivity) getActivity();
         listImageView = ButterKnife.findById(rootView, R.id.lv_images);
         ivGoTop = ButterKnife.findById(rootView, R.id.iv_go_top);
         listImageView.setScrollListener(ivGoTop);
@@ -155,13 +155,16 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentView
     }
 
     @Override
-    public void setTitle(String title) {
-        mainActivity.setTitle(title);
+    public void setTitleAndLogo(String title, int logoIcon) {
+        if (mMainActivity != null) {
+            mMainActivity.setTitle(title);
+            mMainActivity.setTooBarLogo(logoIcon);
+        }
     }
 
     @Override
     public void upDataToolbarAlpha(int i) {
-        mainActivity.mPresenter.upDataToolbarAlpha(i);
+        mMainActivity.mPresenter.upDataToolbarAlpha(i);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
 import org.reactivestreams.Subscription;
+import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainThreeFragmentView;
 import org.seraph.mvprxjavaretrofit.request.ApiService;
@@ -18,7 +19,6 @@ public class MainThreeFragmentPresenter extends BasePresenter {
 
     private MainThreeFragmentView mView;
 
-    private float percentScroll = 0;
 
     @Override
     public void attachView(BaseView view) {
@@ -31,16 +31,21 @@ public class MainThreeFragmentPresenter extends BasePresenter {
 
     private String title;
 
+    private float percentScroll = 0;
+    private int logoIcon;
+
+
     public void initData() {
-        title = " Three";
-        mView.setTitle(title);
+        title = " HTTPS TEST";
+        logoIcon = R.drawable.ic_signal_cellular_connected_no_internet_4_bar_black_24dp;
+        mView.setTitleAndLogo(title,logoIcon);
     }
 
 
     @Override
     public void restoreData() {
         super.restoreData();
-        mView.setTitle(title);
+        mView.setTitleAndLogo(title,logoIcon);
         mView.upDataToolbarAlpha(0);
     }
 

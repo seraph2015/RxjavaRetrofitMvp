@@ -9,4 +9,8 @@ package org.seraph.mvprxjavaretrofit.mvp.view;
 public interface MainFourFragmentView extends BaseView {
 
 
+    void setTitleAndLogo(String title, int logoIcon);
+
+    void upDataToolbarAlpha(float percentScroll);
+
 }

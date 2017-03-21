@@ -13,12 +13,9 @@ public interface MainOneFragmentView extends BaseView {
     void setUserTextViewValue(CharSequence charSequence);
 
     /**
-     * 设置标题头
-     */
-    void setTitle(String title);
-
-    /**
      * 更新toolbar透明度
      */
     void upDataToolbarAlpha(float percentScroll);
+
+    void setTitleAndLogo(String title, int logoIcon);
 }

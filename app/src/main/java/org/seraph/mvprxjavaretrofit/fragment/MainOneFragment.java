@@ -103,17 +103,19 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentView
         tvDbUser.setText(charSequence);
     }
 
-    @Override
-    public void setTitle(String title) {
-        if (mMainActivity != null) {
-            mMainActivity.setTitle(title);
-        }
-    }
 
     @Override
     public void upDataToolbarAlpha(float percentScroll) {
         if (mMainActivity != null) {
             mMainActivity.mPresenter.upDataToolbarAlpha(percentScroll);
+        }
+    }
+
+    @Override
+    public void setTitleAndLogo(String title, int logoIcon) {
+        if (mMainActivity != null) {
+            mMainActivity.setTitle(title);
+            mMainActivity.setTooBarLogo(logoIcon);
         }
     }
 

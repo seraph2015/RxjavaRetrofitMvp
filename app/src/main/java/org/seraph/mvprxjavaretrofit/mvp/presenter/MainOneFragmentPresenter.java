@@ -2,6 +2,7 @@ package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.App;
+import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.db.gen.UserTableDao;
 import org.seraph.mvprxjavaretrofit.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.mvp.model.BaseData;
@@ -32,6 +33,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
     private BaseData<UserBean> baseData;
 
 
+
     @Override
     public void attachView(BaseView view) {
         super.attachView(view);
@@ -44,10 +46,12 @@ public class MainOneFragmentPresenter extends BasePresenter {
     private float percentScroll = 0f;
 
     private String title;
+    private int logoIcon;
 
     public void initData() {
         title = " 主页";
-        mView.setTitle(title);
+        logoIcon = R.drawable.ic_home_black_24dp;
+        mView.setTitleAndLogo(title,logoIcon);
     }
 
     /**
@@ -155,7 +159,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
     @Override
     public void restoreData() {
         super.restoreData();
-        mView.setTitle(title);
+        mView.setTitleAndLogo(title,logoIcon);
         mView.upDataToolbarAlpha(percentScroll);
     }
 

@@ -30,8 +30,6 @@ public interface MainTwoFragmentView extends BaseView {
      */
     void setSearchInput(String item);
 
-    void setTitle(String title);
-
     /**
      * 更新头部toolbar透明度百分比
      */
@@ -41,4 +39,6 @@ public interface MainTwoFragmentView extends BaseView {
      * 跳转图片预览
      */
     void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position);
+
+    void setTitleAndLogo(String title, int resIcon);
 }

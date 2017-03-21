@@ -15,7 +15,7 @@ public interface MainThreeFragmentView extends BaseView {
 
     void showEmojiValue(CharSequence tempInput);
 
-    void setTitle(String title);
-
     void upDataToolbarAlpha(float percentScroll);
+
+    void setTitleAndLogo(String title, int logoIcon);
 }
