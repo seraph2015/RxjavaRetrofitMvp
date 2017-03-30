@@ -8,7 +8,7 @@
     android:padding="10dp">
 
 
-    <org.seraph.mvprxjavaretrofit.views.ProgressWheel
+    <org.seraph.mvprxjavaretrofit.ui.views.ProgressWheel
         android:id="@+id/progress_wheel"
         android:layout_width="30dp"
         android:layout_height="30dp"

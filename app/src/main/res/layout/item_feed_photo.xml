@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <org.seraph.mvprxjavaretrofit.views.CustomSquareImageView
+    <org.seraph.mvprxjavaretrofit.ui.views.CustomSquareImageView
         android:id="@+id/iv_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

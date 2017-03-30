@@ -10,13 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bnv_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        app:elevation="5dp"
         app:itemBackground="@drawable/main_bottom_bg"
         app:itemIconTint="@color/main_bottom_icon_color"
         app:itemTextColor="@color/main_bottom_text_color"

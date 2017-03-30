@@ -1,7 +1,7 @@
 package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.App;
+import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.db.gen.UserTableDao;
 import org.seraph.mvprxjavaretrofit.db.table.UserTable;
@@ -10,8 +10,8 @@ import org.seraph.mvprxjavaretrofit.mvp.model.BaseResponse;
 import org.seraph.mvprxjavaretrofit.mvp.model.UserBean;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainOneFragmentView;
-import org.seraph.mvprxjavaretrofit.request.ApiService;
-import org.seraph.mvprxjavaretrofit.request.BaseNetWorkSubscriber;
+import org.seraph.mvprxjavaretrofit.io.ApiService;
+import org.seraph.mvprxjavaretrofit.io.BaseNetWorkSubscriber;
 
 import java.util.List;
 
@@ -95,7 +95,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
         userBean.setToken(baseData.token);
         userBean.setName(baseData.data.nickName);
         userBean.setHeadPortrait(baseData.data.headImg);
-        App.getDaoSession().getUserTableDao().save(userBean);
+        AppApplication.getDaoSession().getUserTableDao().save(userBean);
         mView.showToast("保存成功");
     }
 
@@ -103,7 +103,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
      * 更新用户id与网络请求数据id相同的信息
      */
     public void upDataUserInfo() {
-        List<UserTable> listAll = App.getDaoSession().getUserTableDao().queryBuilder().where(UserTableDao.Properties.Id.eq(baseData.data.id)).list();
+        List<UserTable> listAll = AppApplication.getDaoSession().getUserTableDao().queryBuilder().where(UserTableDao.Properties.Id.eq(baseData.data.id)).list();
         if (listAll.size() == 0) {
             mView.showToast("没有可更新的数据");
             return;
@@ -111,7 +111,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
         for (UserTable searchUser : listAll) {
             //更新token
             searchUser.setToken(baseData.token);
-            App.getDaoSession().getUserTableDao().update(searchUser);
+            AppApplication.getDaoSession().getUserTableDao().update(searchUser);
         }
 
         queryUserInfo();
@@ -121,7 +121,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
      * 查询用户信息
      */
     public void queryUserInfo() {
-        List<UserTable> list = App.getDaoSession().getUserTableDao().queryBuilder().list();
+        List<UserTable> list = AppApplication.getDaoSession().getUserTableDao().queryBuilder().list();
         StringBuilder stringBuilder = new StringBuilder();
         for (UserTable userTable : list) {
             stringBuilder.append("_id:" + userTable.get_id() + "\nid:" + userTable.getId() + "\ntoken:" + userTable.getToken() + "\nname:" + userTable.getName() + "\nheadImg:" + userTable.getHeadPortrait() + "\n\n");
@@ -133,7 +133,7 @@ public class MainOneFragmentPresenter extends BasePresenter {
      * 清理数据
      */
     public void cleanUserInfo() {
-        App.getDaoSession().getUserTableDao().deleteAll();
+        AppApplication.getDaoSession().getUserTableDao().deleteAll();
         queryUserInfo();
     }
 

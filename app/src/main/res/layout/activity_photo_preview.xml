@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <org.seraph.mvprxjavaretrofit.views.zoom.ImageViewTouchViewPager
+    <org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager
         android:id="@+id/vp_photo_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

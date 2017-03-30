@@ -1,6 +1,6 @@
 package org.seraph.mvprxjavaretrofit.mvp.view;
 
-import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
+import org.seraph.mvprxjavaretrofit.utli.FragmentController;
 
 /**
  * 主界面view

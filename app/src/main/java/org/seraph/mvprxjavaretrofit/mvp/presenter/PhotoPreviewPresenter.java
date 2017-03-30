@@ -10,13 +10,13 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.adapter.PhotoPreviewAdapter;
+import org.seraph.mvprxjavaretrofit.ui.adapter.PhotoPreviewAdapter;
 import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.PhotoPreviewView;
 import org.seraph.mvprxjavaretrofit.permission.PermissionManagement;
 import org.seraph.mvprxjavaretrofit.permission.PermissionsActivity;
-import org.seraph.mvprxjavaretrofit.utlis.Tools;
+import org.seraph.mvprxjavaretrofit.utli.Tools;
 
 import java.io.File;
 

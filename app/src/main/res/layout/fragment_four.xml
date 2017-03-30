@@ -19,11 +19,11 @@
         app:srcCompat="@mipmap/icon_placeholder"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        android:layout_marginRight="24dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintHorizontal_bias="1.0" />
@@ -75,4 +75,7 @@
         android:orientation="horizontal"
         tools:layout_editor_absoluteY="296dp"
         tools:layout_editor_absoluteX="0dp" />
+
+
+
 </android.support.constraint.ConstraintLayout>

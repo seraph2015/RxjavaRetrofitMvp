@@ -4,7 +4,7 @@ import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainThreeFragmentView;
-import org.seraph.mvprxjavaretrofit.request.ApiService;
+import org.seraph.mvprxjavaretrofit.io.ApiService;
 
 import io.reactivex.functions.Consumer;
 

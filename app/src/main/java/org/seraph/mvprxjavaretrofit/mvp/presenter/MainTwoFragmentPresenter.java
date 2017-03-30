@@ -4,19 +4,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.App;
+import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.adapter.ImageListAdapter;
+import org.seraph.mvprxjavaretrofit.ui.adapter.ImageListAdapter;
 import org.seraph.mvprxjavaretrofit.db.gen.SearchHistoryTableDao;
 import org.seraph.mvprxjavaretrofit.db.table.SearchHistoryTable;
 import org.seraph.mvprxjavaretrofit.mvp.model.BaiduImageBean;
 import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainTwoFragmentView;
-import org.seraph.mvprxjavaretrofit.request.ApiService;
-import org.seraph.mvprxjavaretrofit.request.BaseNetWorkSubscriber;
-import org.seraph.mvprxjavaretrofit.utlis.FileTools;
-import org.seraph.mvprxjavaretrofit.utlis.Tools;
+import org.seraph.mvprxjavaretrofit.io.ApiService;
+import org.seraph.mvprxjavaretrofit.io.BaseNetWorkSubscriber;
+import org.seraph.mvprxjavaretrofit.utli.FileTools;
+import org.seraph.mvprxjavaretrofit.utli.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +86,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
 
     public void searchHistory() {
         //查询本地数据搜索历史（时间倒叙）
-        listSearch = App.getDaoSession().getSearchHistoryTableDao().queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1)).orderDesc(SearchHistoryTableDao.Properties.SearchTime).list();
+        listSearch = AppApplication.getDaoSession().getSearchHistoryTableDao().queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1)).orderDesc(SearchHistoryTableDao.Properties.SearchTime).list();
         if (listSearch.size() == 0) {
             mView.showToast("暂无搜索历史");
             return;
@@ -210,7 +210,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
      */
     private void saveSearchToDB() {
         //清理之前在同一用户种同一类型的重复的key
-        SearchHistoryTableDao searchHistoryTableDao = App.getDaoSession().getSearchHistoryTableDao();
+        SearchHistoryTableDao searchHistoryTableDao = AppApplication.getDaoSession().getSearchHistoryTableDao();
         List<SearchHistoryTable> historyTableList = searchHistoryTableDao.queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1), SearchHistoryTableDao.Properties.Type.eq("Search Image"), SearchHistoryTableDao.Properties.SearchKey.eq(searchKeyWord)).list();
         for (SearchHistoryTable searchHistoryTable : historyTableList) {
             searchHistoryTableDao.delete(searchHistoryTable);
@@ -220,7 +220,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
         searchHistoryTable.setSearchTime(System.currentTimeMillis());
         searchHistoryTable.setType("Search Image");
         searchHistoryTable.setUserId(-1);
-        App.getDaoSession().getSearchHistoryTableDao().save(searchHistoryTable);
+        AppApplication.getDaoSession().getSearchHistoryTableDao().save(searchHistoryTable);
     }
 
 
@@ -228,7 +228,7 @@ public class MainTwoFragmentPresenter extends BasePresenter {
      * 清理当前用户search image类型历史数据库
      */
     private void deleteAllSearchDB() {
-        SearchHistoryTableDao searchHistoryTableDao = App.getDaoSession().getSearchHistoryTableDao();
+        SearchHistoryTableDao searchHistoryTableDao = AppApplication.getDaoSession().getSearchHistoryTableDao();
         List<SearchHistoryTable> historyTableList = searchHistoryTableDao.queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1), SearchHistoryTableDao.Properties.Type.eq("Search Image")).list();
         for (SearchHistoryTable searchHistoryTable : historyTableList) {
             searchHistoryTableDao.delete(searchHistoryTable);

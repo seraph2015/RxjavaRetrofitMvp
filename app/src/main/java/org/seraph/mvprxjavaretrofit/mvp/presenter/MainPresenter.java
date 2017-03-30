@@ -2,14 +2,14 @@ package org.seraph.mvprxjavaretrofit.mvp.presenter;
 
 import android.support.v4.app.Fragment;
 
-import org.seraph.mvprxjavaretrofit.fragment.BaseFragment;
-import org.seraph.mvprxjavaretrofit.fragment.MainFourFragment;
-import org.seraph.mvprxjavaretrofit.fragment.MainOneFragment;
-import org.seraph.mvprxjavaretrofit.fragment.MainThreeFragment;
-import org.seraph.mvprxjavaretrofit.fragment.MainTwoFragment;
+import org.seraph.mvprxjavaretrofit.ui.fragment.BaseFragment;
+import org.seraph.mvprxjavaretrofit.ui.fragment.MainFourFragment;
+import org.seraph.mvprxjavaretrofit.ui.fragment.MainOneFragment;
+import org.seraph.mvprxjavaretrofit.ui.fragment.MainThreeFragment;
+import org.seraph.mvprxjavaretrofit.ui.fragment.MainTwoFragment;
 import org.seraph.mvprxjavaretrofit.mvp.view.BaseView;
 import org.seraph.mvprxjavaretrofit.mvp.view.MainActivityView;
-import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
+import org.seraph.mvprxjavaretrofit.utli.FragmentController;
 
 import java.util.concurrent.TimeUnit;
 

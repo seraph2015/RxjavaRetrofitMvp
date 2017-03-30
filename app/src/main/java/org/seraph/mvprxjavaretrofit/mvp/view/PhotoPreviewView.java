@@ -1,6 +1,6 @@
 package org.seraph.mvprxjavaretrofit.mvp.view;
 
-import org.seraph.mvprxjavaretrofit.adapter.PhotoPreviewAdapter;
+import org.seraph.mvprxjavaretrofit.ui.adapter.PhotoPreviewAdapter;
 import org.seraph.mvprxjavaretrofit.mvp.model.PhotoPreviewBean;
 
 import java.util.List;
