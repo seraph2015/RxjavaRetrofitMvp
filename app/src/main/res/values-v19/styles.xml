@@ -1,9 +1,11 @@
 <resources>
 
-
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- 状态栏是否透明 -->
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+    </style>
 
+    <style name="AppTheme.NoStatusBar" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>

@@ -7,8 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/contact_toolbar_h">
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/btn_request"
@@ -21,7 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#ff0000" />
-
 
         <Button
             android:id="@+id/btn_sava_db"

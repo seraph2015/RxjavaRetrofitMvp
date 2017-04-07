@@ -3,8 +3,8 @@ package org.seraph.mvprxjavaretrofit.ui.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import org.seraph.mvprxjavaretrofit.R;
 
@@ -13,7 +13,7 @@ import org.seraph.mvprxjavaretrofit.R;
  * 自定义尺寸比例ImageView(宽为基准)
  */
 @SuppressLint("NewApi")
-public class CustomSelfProportionImageView extends ImageView {
+public class CustomSelfProportionImageView extends AppCompatImageView {
 
     private int w = 1; // 宽比例
     private int h = 1; // 高比例

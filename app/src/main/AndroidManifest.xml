@@ -9,13 +9,13 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="org.seraph.mvprxjavaretrofit.AppApplication"
+        android:name=".AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon_placeholder"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.MainActivity">
+        <activity android:name=".ui.module.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,9 +23,11 @@
             </intent-filter>
         </activity>
         <!--图片预览 android:process=":picture" -->
-        <activity android:name=".ui.activity.PhotoPreviewActivity" />
+        <activity
+            android:name=".ui.module.common.photopreview.PhotoPreviewActivity"
+            android:theme="@style/AppTheme.NoStatusBar" />
         <!--权限设置-->
-        <activity android:name=".permission.PermissionsActivity" />
+        <activity android:name=".ui.module.common.permission.PermissionsActivity" />
 
     </application>
 

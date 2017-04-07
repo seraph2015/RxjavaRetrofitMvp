@@ -2,9 +2,12 @@ package org.seraph.mvprxjavaretrofit;
 
 import android.app.Application;
 
-import org.seraph.mvprxjavaretrofit.db.DBGreenDaoHelp;
-import org.seraph.mvprxjavaretrofit.db.gen.DaoSession;
-import org.seraph.mvprxjavaretrofit.io.picasso.PicassoFactory;
+import com.squareup.picasso.Picasso;
+
+import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoFactory;
+import org.seraph.mvprxjavaretrofit.di.component.AppComponent;
+import org.seraph.mvprxjavaretrofit.di.component.DaggerAppComponent;
+import org.seraph.mvprxjavaretrofit.di.module.AppModule;
 
 /**
  * app初始化
@@ -14,51 +17,25 @@ import org.seraph.mvprxjavaretrofit.io.picasso.PicassoFactory;
  **/
 public class AppApplication extends Application {
 
-    private static AppApplication instance;
-
-    private static DaoSession mDaoSession;
-
-    public AppApplication() {
-        super();
-        instance = this;
-    }
+   private static AppComponent appComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        initDBDaoSession();
         initPicasso();
+        initDagger2();
+    }
+
+    private void initDagger2() {
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
     }
 
     private void initPicasso() {
         PicassoFactory.initPicassoToOkHttp(this);
-       // Picasso.with(this).setIndicatorsEnabled(true);
+        Picasso.with(this).setIndicatorsEnabled(AppConfig.DEBUG);
     }
 
-    /**
-     * 获取单例
-     */
-    public static synchronized AppApplication getSingleton() {
-        return instance;
+    public static AppComponent getAppComponent() {
+        return appComponent;
     }
-
-    /**
-     * 初始化数据库
-     */
-    private static void initDBDaoSession() {
-        mDaoSession = DBGreenDaoHelp.getSingleton().getDaoSession(getSingleton());
-    }
-
-    /**
-     * 获取操作数据库的对象
-     */
-    public static DaoSession getDaoSession() {
-        if (mDaoSession == null) {
-            initDBDaoSession();
-        }
-        return mDaoSession;
-    }
-
-
-
 }

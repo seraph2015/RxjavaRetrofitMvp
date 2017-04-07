@@ -5,7 +5,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
 
-import org.seraph.mvprxjavaretrofit.utli.Tools;
+import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 /**
  * 增加了滑动监听接口

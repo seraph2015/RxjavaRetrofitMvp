@@ -2,8 +2,8 @@ package org.seraph.mvprxjavaretrofit.ui.views;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 /**
  * 根据图片宽度自适应高度的ImageView
@@ -11,7 +11,7 @@ import android.widget.ImageView;
  * @since 2015-03-19
  * 
  */
-public class CustomSelfFitWidthImageView extends ImageView {
+public class CustomSelfFitWidthImageView extends AppCompatImageView {
 
 	public CustomSelfFitWidthImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);

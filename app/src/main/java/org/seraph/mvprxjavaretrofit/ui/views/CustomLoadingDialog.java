@@ -7,14 +7,16 @@ import android.view.KeyEvent;
 import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.utli.Tools;
+import org.seraph.mvprxjavaretrofit.utlis.Tools;
+
+import javax.inject.Inject;
 
 /**
  * 透明的等待dialog
  */
 public class CustomLoadingDialog extends Dialog {
 
-
+    @Inject
     public CustomLoadingDialog(Context context) {
         super(context, R.style.progress_dialog);
         setContentView(R.layout.dialog_loading);

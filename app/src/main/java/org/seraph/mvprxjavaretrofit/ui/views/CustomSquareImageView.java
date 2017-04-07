@@ -1,13 +1,13 @@
 package org.seraph.mvprxjavaretrofit.ui.views;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 /**
  * 正方形的ImageView
  */
-public class CustomSquareImageView extends ImageView {
+public class CustomSquareImageView extends AppCompatImageView {
 
 	public CustomSquareImageView(Context context) {
 		super(context);
