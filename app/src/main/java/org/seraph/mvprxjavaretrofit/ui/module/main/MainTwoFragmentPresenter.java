@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
@@ -27,7 +28,7 @@ import io.reactivex.functions.Function;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter{
+class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
 
     private MainTwoFragmentContract.View mView;
 
@@ -40,8 +41,11 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter{
 
     private DaoSession mDaoSession;
 
+    private Activity mActivity;
+
     @Inject
-    MainTwoFragmentPresenter(ApiManager apiManager, DaoSession daoSession) {
+    MainTwoFragmentPresenter(Activity activity, ApiManager apiManager, DaoSession daoSession) {
+        this.mActivity = activity;
         this.mApiManager = apiManager;
         this.mDaoSession = daoSession;
     }
@@ -63,7 +67,7 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter{
 
     @Override
     public void start() {
-        imageListBaiduAdapter = new ImageListBaiduAdapter(mView.getContext(), listImage);
+        imageListBaiduAdapter = new ImageListBaiduAdapter(mActivity, listImage);
         mView.setImageAdapter(imageListBaiduAdapter);
     }
 
@@ -139,7 +143,7 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter{
                         return imageBaiduBean.imgs;
                     }
                 })
-                .subscribe(new BaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>,MainTwoFragmentContract.View>(mView) {
+                .subscribe(new BaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>, MainTwoFragmentContract.View>(mView) {
                     @Override
                     public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
                         if (requestPageNo == 1) {

@@ -71,7 +71,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
     @Override
     public void setupActivityComponent() {
-        DaggerMainActivityComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(getContext())).build().inject(this);
+        DaggerMainActivityComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(getActivity())).build().inject(this);
     }
 
     @Override
@@ -82,6 +82,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
         initListener();
         mPresenter.setView(this);
         mPresenter.start();
+
     }
 
     protected void rxBinding() {

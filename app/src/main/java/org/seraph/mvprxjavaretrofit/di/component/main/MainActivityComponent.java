@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.di.component.main;
 
+import android.app.Activity;
 import android.content.Context;
 
 import org.seraph.mvprxjavaretrofit.data.network.ApiManager;

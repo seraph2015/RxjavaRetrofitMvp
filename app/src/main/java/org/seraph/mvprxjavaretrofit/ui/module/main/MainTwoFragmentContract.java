@@ -18,6 +18,7 @@ interface MainTwoFragmentContract {
 
     interface Presenter extends IBasePresenter<View> {
 
+
         void showCacheFilePath();
 
         void searchHistory();

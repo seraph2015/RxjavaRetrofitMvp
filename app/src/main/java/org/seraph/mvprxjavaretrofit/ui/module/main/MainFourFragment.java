@@ -30,7 +30,7 @@ public class MainFourFragment extends BaseFragment implements MainFourFragmentCo
 
     @Override
     public void setupActivityComponent() {
-        DaggerMainActivityComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(getContext())).build().inject(this);
+        DaggerMainActivityComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(getActivity())).build().inject(this);
     }
 
     @Override

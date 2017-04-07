@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.di.module;
 
+import android.app.Activity;
 import android.content.Context;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
@@ -16,16 +17,22 @@ import dagger.Provides;
 @Module
 public class ActivityModule {
 
-    private final Context mContext;
+    private final Activity mActivity;
 
-    public ActivityModule(Context context) {
-        this.mContext = context;
+    public ActivityModule(Activity activity) {
+        this.mActivity = activity;
     }
 
     @Provides
     @ActivityScope
-    Context provideContextActivity() {
-        return mContext;
+    Activity provideContextActivity() {
+        return mActivity;
+    }
+
+    @Provides
+    @ActivityScope
+    Context provideContext() {
+        return mActivity;
     }
 
 }

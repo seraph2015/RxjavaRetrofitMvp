@@ -15,7 +15,7 @@ import java.util.List;
 
     protected LayoutInflater inflater;
     protected List<T> data;
-    public Context mContext;
+    protected Context mContext;
 
     public BaseListAdapter(Context context, List<T> data) {
         inflater = LayoutInflater.from(context);

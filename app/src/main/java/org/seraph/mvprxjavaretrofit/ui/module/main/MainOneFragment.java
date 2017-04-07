@@ -41,7 +41,7 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentCont
 
     @Override
     public void setupActivityComponent() {
-        DaggerMainActivityComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(getContext())).build().inject(this);
+        DaggerMainActivityComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(getActivity())).build().inject(this);
     }
 
 

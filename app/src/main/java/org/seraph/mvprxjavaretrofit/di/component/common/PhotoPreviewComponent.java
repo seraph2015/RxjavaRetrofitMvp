@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.di.component.common;
 
+import android.app.Activity;
 import android.content.Context;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
@@ -21,5 +22,8 @@ public interface PhotoPreviewComponent {
 
     void inject(PhotoPreviewActivity photoPreviewActivity);
 
+    Activity activity();
+
     Context context();
+
 }
