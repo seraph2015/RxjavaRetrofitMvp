@@ -1,12 +1,11 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
-import android.widget.ListAdapter;
-
-import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBasePresenter;
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseView;
+import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 第2页的契约类
@@ -36,8 +35,6 @@ interface MainTwoFragmentContract {
 
         void setTextView(CharSequence charSequence);
 
-        void setImageAdapter(ListAdapter adapter);
-
         String getSearchKeyWord();
 
         /**
@@ -55,5 +52,6 @@ interface MainTwoFragmentContract {
          */
         void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position);
 
+        void requestData(List<ImageBaiduBean.BaiduImage> listImage);
     }
 }

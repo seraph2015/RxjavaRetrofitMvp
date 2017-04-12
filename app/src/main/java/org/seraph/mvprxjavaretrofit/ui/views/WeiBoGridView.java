@@ -14,7 +14,7 @@ import android.widget.ListAdapter;
 import com.squareup.picasso.Picasso;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseListAdapter;
+import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.utlis.ViewHolder;
 
 import java.util.ArrayList;

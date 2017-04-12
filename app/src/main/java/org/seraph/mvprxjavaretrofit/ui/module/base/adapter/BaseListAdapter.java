@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.ui.module.base;
+package org.seraph.mvprxjavaretrofit.ui.module.base.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

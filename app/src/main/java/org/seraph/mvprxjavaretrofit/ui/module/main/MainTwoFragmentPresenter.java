@@ -1,15 +1,14 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.SearchHistoryTableDao;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
+import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
+import org.seraph.mvprxjavaretrofit.ui.module.base.BaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.utlis.FileTools;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
@@ -41,18 +40,14 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
 
     private DaoSession mDaoSession;
 
-    private Activity mActivity;
-
     @Inject
-    MainTwoFragmentPresenter(Activity activity, ApiManager apiManager, DaoSession daoSession) {
-        this.mActivity = activity;
+    MainTwoFragmentPresenter(ApiManager apiManager, DaoSession daoSession) {
         this.mApiManager = apiManager;
         this.mDaoSession = daoSession;
     }
 
     private Subscription mSubscription;
 
-    private ImageListBaiduAdapter imageListBaiduAdapter;
 
     private List<ImageBaiduBean.BaiduImage> listImage = new ArrayList<>();
     /**
@@ -67,8 +62,7 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
 
     @Override
     public void start() {
-        imageListBaiduAdapter = new ImageListBaiduAdapter(mActivity, listImage);
-        mView.setImageAdapter(imageListBaiduAdapter);
+
     }
 
     @Override
@@ -156,8 +150,9 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
                         } else {
                             mView.setListFootText(1);
                         }
-                        imageListBaiduAdapter.notifyDataSetChanged();
                         pageNo = requestPageNo;
+
+                        mView.requestData(listImage);
                     }
 
                     @Override

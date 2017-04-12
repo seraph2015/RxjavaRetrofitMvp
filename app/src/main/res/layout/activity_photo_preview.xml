@@ -15,14 +15,14 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/photo_preview_statusbar_h"
         android:theme="@style/AppTheme.AppBarOverlay">
         <!--v19以上去掉了状态栏。所以v19需要加上24dp-->
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/photo_preview_toolbar_h"
             android:background="?attr/colorPrimary"
+            android:paddingTop="@dimen/photo_preview_statusbar_h"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="图片预览" />
 

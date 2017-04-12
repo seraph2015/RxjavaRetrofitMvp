@@ -28,6 +28,11 @@
             android:theme="@style/AppTheme.NoStatusBar" />
         <!--权限设置-->
         <activity android:name=".ui.module.common.permission.PermissionsActivity" />
+        <!--Design布局测试-->
+        <activity
+            android:name=".ui.module.test.DesignLayoutTestActivity"
+            android:theme="@style/AppTheme.NoStatusBar" />
+
 
     </application>
 

@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.widget.RxAdapterView;
@@ -18,14 +17,16 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainActivityComponent;
-import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
-import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
+import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentTwoComponent;
+import org.seraph.mvprxjavaretrofit.di.module.MainFragmentTwoModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
 import org.seraph.mvprxjavaretrofit.ui.views.GoTopListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -63,6 +64,9 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     @Inject
     MainTwoFragmentPresenter mPresenter;
 
+    @Inject
+    ImageListBaiduAdapter mImageListBaiduAdapter;
+
 
     @Override
     public int getContentView() {
@@ -71,11 +75,13 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
     @Override
     public void setupActivityComponent() {
-        DaggerMainActivityComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(getActivity())).build().inject(this);
+        DaggerMainFragmentTwoComponent.builder().appComponent(AppApplication.getAppComponent()).mainFragmentTwoModule(new MainFragmentTwoModule(this)).build().inject(this);
     }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
+        lvImages.setAdapter(mImageListBaiduAdapter);
+
         lvImages.setScrollListener(ivGoTop);
         addListHeadView();
         rxBinding();
@@ -121,7 +127,6 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     }
 
 
-
     private void addListFootView() {
         View footView = LayoutInflater.from(getActivity()).inflate(R.layout.list_foot_view, lvImages, false);
         tvMore = ButterKnife.findById(footView, R.id.tv_more);
@@ -134,10 +139,6 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
         tvCache.setText(charSequence);
     }
 
-    @Override
-    public void setImageAdapter(ListAdapter adapter) {
-        lvImages.setAdapter(adapter);
-    }
 
     @Override
     public String getSearchKeyWord() {
@@ -156,6 +157,12 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
         intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, photoList);
         intent.putExtra(PhotoPreviewActivity.CURRENT_POSITION, position - 1);
         startActivity(intent);
+    }
+
+    @Override
+    public void requestData(List<ImageBaiduBean.BaiduImage> listImage) {
+        //请求的数据
+        mImageListBaiduAdapter.setListData(listImage);
     }
 
 
@@ -187,7 +194,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     private View.OnClickListener headClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.btn_get_cache:
                     mPresenter.showCacheFilePath();
                     break;

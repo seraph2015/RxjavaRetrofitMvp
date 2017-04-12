@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView;
 
@@ -30,8 +29,6 @@ import io.reactivex.functions.Consumer;
 public class MainActivity extends BaseActivity implements MainActivityContract.View {
 
 
-    @BindView(R.id.fl_home)
-    FrameLayout flHome;
     @BindView(R.id.bnv_main)
     BottomNavigationView bnvMain;
     @BindView(R.id.toolbar)
@@ -39,7 +36,7 @@ public class MainActivity extends BaseActivity implements MainActivityContract.V
 
     @Override
     public int getContextView() {
-        return R.layout.activity_mian;
+        return R.layout.activity_main;
     }
 
     @Inject

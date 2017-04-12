@@ -1,27 +1,23 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.text.Html;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseListAdapter;
+import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
+import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSelfProportionImageView;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 import org.seraph.mvprxjavaretrofit.utlis.ViewHolder;
 
 import java.util.List;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * 图片列表
@@ -29,11 +25,11 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class ImageListBaiduAdapter extends BaseListAdapter<ImageBaiduBean.BaiduImage> {
+public class ImageListBaiduAdapter extends BaseListAdapter<ImageBaiduBean.BaiduImage> {
 
     private int screenWidth;
 
-    ImageListBaiduAdapter(Activity context, List<ImageBaiduBean.BaiduImage> data) {
+    public ImageListBaiduAdapter(Activity context, List<ImageBaiduBean.BaiduImage> data) {
         super(context, data);
         Display display = context.getWindowManager().getDefaultDisplay();
         Point outPoint = new Point();
@@ -60,7 +56,7 @@ class ImageListBaiduAdapter extends BaseListAdapter<ImageBaiduBean.BaiduImage> {
         int width = baiduImage.width;
         int height = baiduImage.height;
         //直接使用屏幕宽
-      //  int imageViewWidth = imageView.getMeasuredWidth();
+        //  int imageViewWidth = imageView.getMeasuredWidth();
         if (width != 0) {
             height = Tools.getNewHeight(width, height, screenWidth);
             width = screenWidth;
@@ -78,5 +74,13 @@ class ImageListBaiduAdapter extends BaseListAdapter<ImageBaiduBean.BaiduImage> {
                 .centerInside()
                 .into(imageView);
     }
+
+
+    public void setListData(List<ImageBaiduBean.BaiduImage> newListData) {
+        data.clear();
+        data.addAll(newListData);
+        notifyDataSetChanged();
+    }
+
 
 }
