@@ -30,7 +30,7 @@ class RxServerData {
             @Override
             public Flowable<BaseDataResponse<T>> apply(BaseDataResponse<T> tBaseDataResponse) throws Exception {
                 if (tBaseDataResponse.status != SUCCESS_STATUS) { //业务逻辑失败
-                    Flowable.error(new ServerErrorException(tBaseDataResponse.msg));
+                    return Flowable.error(new ServerErrorException(tBaseDataResponse.msg));
                 }
                 return Flowable.just(tBaseDataResponse).subscribeOn(AndroidSchedulers.mainThread());
             }
