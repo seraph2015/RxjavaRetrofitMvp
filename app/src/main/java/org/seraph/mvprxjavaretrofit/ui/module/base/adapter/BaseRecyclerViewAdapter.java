@@ -34,6 +34,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
 
     @Override
     public void onBindViewHolder(BaseRecyclerViewHolder holder, int position) {
+        holder.setViewPosition(position);
         convert(holder, mDataList.get(position));
     }
 
@@ -50,6 +51,10 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
         mDataList.clear();
         mDataList.addAll(dataList);
         notifyDataSetChanged();
+    }
+
+    public List<T> getDataList() {
+        return mDataList;
     }
 
 }

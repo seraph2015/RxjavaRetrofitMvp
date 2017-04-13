@@ -1,5 +1,8 @@
 <resources>
-    <dimen name="photo_preview_statusbar_h">0dp</dimen>
+    <!--可侵入状态栏高度-->
+    <dimen name="statusbar_h">0dp</dimen>
     <!--toolbar高度-->
-    <dimen name="photo_preview_toolbar_h">56dp</dimen>
+    <dimen name="toolbar_h">56dp</dimen>
+    <!--FloatingActionButton的margin-->
+    <dimen name="fab_margin">0dp</dimen>
 </resources>

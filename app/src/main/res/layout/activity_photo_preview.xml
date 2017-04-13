@@ -20,9 +20,9 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/photo_preview_toolbar_h"
+            android:layout_height="@dimen/toolbar_h"
             android:background="?attr/colorPrimary"
-            android:paddingTop="@dimen/photo_preview_statusbar_h"
+            android:paddingTop="@dimen/statusbar_h"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="图片预览" />
 

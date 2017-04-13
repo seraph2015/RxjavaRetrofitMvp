@@ -1,5 +1,6 @@
 <resources>
-    <dimen name="photo_preview_statusbar_h">24dp</dimen>
-    <!--toolbar高度 + 状态栏高度 24dp-->
-    <dimen name="photo_preview_toolbar_h">80dp</dimen>
+    <!--可侵入状态栏高度-->
+    <dimen name="statusbar_h">24dp</dimen>
+    <!--toolbar高度 + 可侵入状态栏高度 24dp-->
+    <dimen name="toolbar_h">80dp</dimen>
 </resources>

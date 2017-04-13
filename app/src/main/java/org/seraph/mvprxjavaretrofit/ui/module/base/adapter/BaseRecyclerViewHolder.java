@@ -22,6 +22,8 @@ public class BaseRecyclerViewHolder extends RecyclerView.ViewHolder {
 
     private View mConvertView;
 
+    private int position;
+
     private BaseRecyclerViewHolder(Context context, View itemView, ViewGroup parent) {
         super(itemView);
         mConvertView = itemView;
@@ -65,4 +67,11 @@ public class BaseRecyclerViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    public void setViewPosition(int position) {
+        this.position = position;
+    }
+
+    public int getViewPosition() {
+        return position;
+    }
 }
