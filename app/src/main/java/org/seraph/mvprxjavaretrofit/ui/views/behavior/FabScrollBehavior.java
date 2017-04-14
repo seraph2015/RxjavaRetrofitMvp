@@ -58,7 +58,7 @@ public class FabScrollBehavior extends FloatingActionButton.Behavior {
     @Override
     public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-        Log.i(TAG, "onNestedScroll:" + "dyConsumed:" + dyConsumed + "-----dyUnconsumed" + dyUnconsumed);
+       // Log.i(TAG, "onNestedScroll:" + "dyConsumed:" + dyConsumed + "-----dyUnconsumed" + dyUnconsumed);
         //dyUnconsumed 代表没有移动的距离
         //改变方向之后，重置预改变的方向
         if (dyConsumed > 0 && mDySinceDirectionChange < 0 || dyConsumed < 0 && mDySinceDirectionChange > 0) {

@@ -30,26 +30,22 @@ public class DesignLayoutAdapter extends BaseRecyclerViewAdapter<ImageBaiduBean.
 
     private OnItemClickListener onItemClickListener;
 
-    private PicassoTool mPicassoTool;
-
     @Inject
-    DesignLayoutAdapter(PicassoTool picassoTool, Context mContext) {
-        this(mContext, picassoTool, null);
+    DesignLayoutAdapter(Context mContext) {
+        this(mContext, null);
     }
 
-    DesignLayoutAdapter(Context mContext, PicassoTool picassoTool, OnItemClickListener onItemClickListener) {
+    DesignLayoutAdapter(Context mContext, OnItemClickListener onItemClickListener) {
         super(mContext, R.layout.item_design);
         targetWidth = Tools.dip2px(mContext, 200);
         targetHeight = Tools.dip2px(mContext, 150);
-        this.mPicassoTool = picassoTool;
         this.onItemClickListener = onItemClickListener;
     }
 
     @Override
     protected void convert(final BaseRecyclerViewHolder holder, ImageBaiduBean.BaiduImage baiduImage) {
         ImageView imageView = holder.getView(R.id.imageView);
-        mPicassoTool.loadNoCache(baiduImage.objURL, imageView, targetWidth, targetHeight);
-
+        PicassoTool.loadNoCache(mContext, baiduImage.objURL, imageView, targetWidth, targetHeight);
         holder.setOnClickListener(R.id.imageView, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

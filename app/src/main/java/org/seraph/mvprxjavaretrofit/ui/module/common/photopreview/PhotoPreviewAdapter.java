@@ -28,22 +28,19 @@ class PhotoPreviewAdapter extends PagerAdapter {
 
     private Context mContext;
 
-    private PicassoTool mPicassoTool;
-
-    private List<PhotoPreviewBean> mlistData;
+    private List<PhotoPreviewBean> mListData;
 
 
     private OnImageClickListener onImageClickListener;
 
     @Inject
-    PhotoPreviewAdapter(Context context, PicassoTool picassoTool) {
+    PhotoPreviewAdapter(Context context) {
         this.mContext = context;
-        this.mPicassoTool = picassoTool;
     }
 
     @Override
     public int getCount() {
-        return mlistData == null ? 0 : mlistData.size();
+        return mListData == null ? 0 : mListData.size();
     }
 
     @Override
@@ -66,7 +63,7 @@ class PhotoPreviewAdapter extends PagerAdapter {
                 }
             });
         }
-        mPicassoTool.loadNoCache(mlistData.get(position).objURL, imageView);
+        PicassoTool.loadNoCache(mContext,mListData.get(position).objURL, imageView);
         container.addView(imageView, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
         return imageView;
     }
@@ -88,8 +85,8 @@ class PhotoPreviewAdapter extends PagerAdapter {
      * 设置数据
      */
      void setListData(List<PhotoPreviewBean> listData) {
-        if (mlistData == null) {
-            mlistData = listData;
+        if (mListData == null) {
+            mListData = listData;
         }
         notifyDataSetChanged();
 

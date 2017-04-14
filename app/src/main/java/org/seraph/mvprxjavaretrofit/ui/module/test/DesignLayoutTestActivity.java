@@ -68,9 +68,6 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
     @Inject
     DesignLayoutTestPresenter mPresenter;
 
-    @Inject
-    PicassoTool mPicassoTool;
-
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         toolbar.setTitle("Tomia相册");
@@ -138,7 +135,7 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
         } else {
             listMoreView.setVisibility(View.GONE);
         }
-        mPicassoTool.loadNoCache(baiduImages.get((int) (Math.random() * baiduImages.size())).objURL,appBarImage);
+        PicassoTool.loadNoCache(this,baiduImages.get((int) (Math.random() * baiduImages.size())).objURL,appBarImage);
         mDesignLayoutAdapter.addDataList(baiduImages);
     }
 

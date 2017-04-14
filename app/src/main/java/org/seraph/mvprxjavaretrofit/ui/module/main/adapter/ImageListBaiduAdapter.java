@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSelfProportionImageView;
@@ -61,7 +62,9 @@ public class ImageListBaiduAdapter extends BaseListAdapter<ImageBaiduBean.BaiduI
             height = Tools.getNewHeight(width, height, screenWidth);
             width = screenWidth;
         }
-        loadingImage(imageView, baiduImage.objURL, width, height);
+        PicassoTool.loadNoCache(mContext, baiduImage.objURL, imageView, width, height);
+
+       // loadingImage(imageView, baiduImage.objURL, width, height);
         return convertView;
     }
 
