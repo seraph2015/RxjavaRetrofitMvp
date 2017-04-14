@@ -2,6 +2,7 @@ package org.seraph.mvprxjavaretrofit;
 
 import android.app.Application;
 
+import com.blankj.utilcode.util.Utils;
 import com.squareup.picasso.Picasso;
 
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoFactory;
@@ -17,13 +18,14 @@ import org.seraph.mvprxjavaretrofit.di.module.AppModule;
  **/
 public class AppApplication extends Application {
 
-   private static AppComponent appComponent;
+    private static AppComponent appComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
         initPicasso();
         initDagger2();
+        Utils.init(this);
     }
 
     private void initDagger2() {

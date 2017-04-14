@@ -30,7 +30,7 @@ import io.reactivex.schedulers.Schedulers;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class PhotoPreviewPresenter implements PhotoPreviewAdapter.OnImageClickListener, PhotoPreviewContract.Presenter {
+class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
 
     private PhotoPreviewContract.View mView;
 
@@ -52,7 +52,7 @@ class PhotoPreviewPresenter implements PhotoPreviewAdapter.OnImageClickListener,
     /**
      * 保存的图片
      */
-    private PhotoPreviewBean savePhoto;
+    private PhotoPreviewBean mSavePhoto;
     /**
      * 保存的图片名称
      */
@@ -61,15 +61,7 @@ class PhotoPreviewPresenter implements PhotoPreviewAdapter.OnImageClickListener,
 
     @Override
     public void start() {
-        PhotoPreviewAdapter mPhotoPreviewAdapter = new PhotoPreviewAdapter(mView.getContext(), mView.getPhotoList());
-        mPhotoPreviewAdapter.setOnImageClickListener(this);
-        mView.setPagerAdapter(mPhotoPreviewAdapter);
-        mView.onPageSelected(mView.getCurrentPosition());
-    }
 
-    @Override
-    public void onImageClick(int i) {
-        mView.switchToolBarVisibility();
     }
 
 
@@ -77,27 +69,28 @@ class PhotoPreviewPresenter implements PhotoPreviewAdapter.OnImageClickListener,
      * 保存当前图片
      */
     @Override
-    public void saveImage() {
-        savePhoto = mView.getPhotoList().get(mView.getCurrentPosition());
-        download();
+    public void saveImage(PhotoPreviewBean savePhoto) {
+        this.mSavePhoto = savePhoto;
+        imageDownload();
     }
 
-
-    private void download() {
+    private void imageDownload() {
         //判然系统权限
         // 缺少权限时, 进入权限配置页面
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionManagement.lacksPermissions(mView.getContext(), permissions)) {
             mView.startPermissionsActivity(permissions);
         } else {
             mView.showLoading("正在保存");
-            Picasso.with(mView.getContext()).load(savePhoto.objURL).into(target);
+            Picasso.with(mView.getContext()).load(mSavePhoto.objURL).into(target);
         }
     }
+
 
     /**
      * 保存图片到本地
      */
     private Target target = new Target() {
+
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             saveFileToDisk(bitmap);
@@ -109,7 +102,7 @@ class PhotoPreviewPresenter implements PhotoPreviewAdapter.OnImageClickListener,
                     .flatMap(new Function<Bitmap, Flowable<String>>() {
                         @Override
                         public Flowable<String> apply(Bitmap bitmap) throws Exception {
-                            saveImageName = Tools.getMD5(savePhoto.objURL) + "." + savePhoto.type;
+                            saveImageName = Tools.getMD5(mSavePhoto.objURL) + "." + mSavePhoto.type;
                             File dcimFile = Tools.getDCIMFile(saveImageName);
                             if (dcimFile.exists() && dcimFile.length() > 0) {
                                 return Flowable.just("图片已保存");
@@ -169,8 +162,7 @@ class PhotoPreviewPresenter implements PhotoPreviewAdapter.OnImageClickListener,
     @Override
     public void onActivityResult(int requestCode) {
         if (requestCode == PermissionsActivity.PERMISSIONS_GRANTED) {
-            mView.showLoading("正在保存");
-            Picasso.with(mView.getContext()).load(savePhoto.objURL).into(target);
+            imageDownload();
         } else {
             mView.showToast("权限请求失败，无法保存图片");
         }

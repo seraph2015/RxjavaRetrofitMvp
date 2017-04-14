@@ -3,8 +3,6 @@ package org.seraph.mvprxjavaretrofit.ui.module.base.adapter;
 import android.content.Context;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 /**
  * 多类型的通用适配器
  * date：2017/4/12 11:41
@@ -15,8 +13,8 @@ public abstract class BaseMultiItemRecyclerViewAdapter<T> extends BaseRecyclerVi
 
     protected MultiItemTypeSupport<T> mMultiItemTypeSupport;
 
-    public BaseMultiItemRecyclerViewAdapter(Context mContext, List<T> mDataList, MultiItemTypeSupport<T> multiItemTypeSupport) {
-        super(mContext, -1, mDataList);
+    public BaseMultiItemRecyclerViewAdapter(Context mContext, MultiItemTypeSupport<T> multiItemTypeSupport) {
+        super(mContext, -1);
         this.mMultiItemTypeSupport = multiItemTypeSupport;
     }
 

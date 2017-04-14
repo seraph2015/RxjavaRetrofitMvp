@@ -100,5 +100,17 @@ public class ExampleUnitTest {
         });
     }
 
+    @Test
+    public void testRandom() throws Exception {
+        for (int i = 1; i <= 100; i++) {
+            if(i % 10 == 0){
+                System.out.println((int)(Math.random() * 48));
+            }else {
+                System.out.print((int)(Math.random() * 48) + " - ");
+            }
+
+        }
+    }
+
 
 }

@@ -1,6 +1,5 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -25,7 +24,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActiv
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,7 +34,7 @@ import io.reactivex.functions.Consumer;
 /**
  * 图片查看器
  */
-public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewContract.View, ImageViewTouchViewPager.OnPageSelectedListener {
+public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewContract.View {
 
     @BindView(R.id.vp_photo_preview)
     ImageViewTouchViewPager vpPhotoPreview;
@@ -45,10 +43,21 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
     @BindView(R.id.appbar)
     AppBarLayout appbar;
 
+
     @Override
     public int getContextView() {
         return R.layout.activity_photo_preview;
     }
+
+    /**
+     * 图片列表数据
+     */
+    public final static String PHOTO_LIST = "photoList";
+    /**
+     * 当前选中的图片
+     */
+    public final static String CURRENT_POSITION = "currentPosition";
+
 
     @Override
     public void setupActivityComponent() {
@@ -58,14 +67,9 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
 
     @Inject
     PhotoPreviewPresenter mPresenter;
-    /**
-     * 图片列表数据
-     */
-    public final static String PHOTO_LIST = "photoList";
-    /**
-     * 当前选中的图片
-     */
-    public final static String CURRENT_POSITION = "currentPosition";
+
+    @Inject
+    PhotoPreviewAdapter mPhotoPreviewAdapter;
 
 
     private ArrayList<PhotoPreviewBean> mPhotoList;
@@ -79,15 +83,38 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
     public void initCreate(@Nullable Bundle savedInstanceState) {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
-        mPhotoList = (ArrayList<PhotoPreviewBean>) getIntent().getSerializableExtra(PhotoPreviewActivity.PHOTO_LIST);
-        currentPosition = getIntent().getIntExtra(PhotoPreviewActivity.CURRENT_POSITION, 0);
-        vpPhotoPreview.setOnPageSelectedListener(this);
-        vpPhotoPreview.setOffscreenPageLimit(5);
-        initListener();
         rxBinding();
+        mPhotoList = (ArrayList<PhotoPreviewBean>) getIntent().getSerializableExtra(PhotoPreviewActivity.PHOTO_LIST);
+        if (mPhotoList == null || mPhotoList.size() == 0) {
+            showToast("没有可预览的图片");
+            finish();
+            return;
+        }
+        currentPosition = getIntent().getIntExtra(PhotoPreviewActivity.CURRENT_POSITION, 0);
+        initViewPager();
+        initListener();
         mPresenter.setView(this);
         mPresenter.start();
+    }
 
+    private void initViewPager() {
+        vpPhotoPreview.setOnPageSelectedListener(new ImageViewTouchViewPager.OnPageSelectedListener() {
+            @Override
+            public void onPageSelected(int position) {
+                savePageSelected(position);
+            }
+        });
+        vpPhotoPreview.setOffscreenPageLimit(5);
+        mPhotoPreviewAdapter.setListData(mPhotoList);
+        mPhotoPreviewAdapter.setOnImageClickListener(new PhotoPreviewAdapter.OnImageClickListener() {
+            @Override
+            public void onImageClick(int position) {
+                switchToolBarVisibility();
+            }
+        });
+        vpPhotoPreview.setAdapter(mPhotoPreviewAdapter);
+        //显示指定位置图片
+        savePageSelected(currentPosition);
     }
 
     private void initListener() {
@@ -105,7 +132,7 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
             public void accept(MenuItem menuItem) throws Exception {
                 switch (menuItem.getItemId()) {
                     case R.id.action_save_image:
-                        mPresenter.saveImage();
+                        mPresenter.saveImage(mPhotoList.get(currentPosition));
                         break;
                 }
             }
@@ -119,50 +146,15 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
     }
 
 
-    @Override
-    public void showToast(String str) {
-        super.showToast(str);
-    }
-
-    @Override
-    public void showLoading(String str) {
-        super.showLoading(str);
-    }
-
-    @Override
-    public void hideLoading() {
-        super.hideLoading();
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
-    public void setPagerAdapter(PhotoPreviewAdapter mPhotoPreviewAdapter) {
-        vpPhotoPreview.setAdapter(mPhotoPreviewAdapter);
-    }
-
     /**
      * 跳转到指定页和保存当前
      */
-    @Override
-    public void onPageSelected(int position) {
-        toolbar.setTitle("图片预览" + "（" + (position + 1) + "/" + getPhotoList().size() + "）");
+    public void savePageSelected(int position) {
+        toolbar.setTitle("图片预览" + "（" + (position + 1) + "/" + mPhotoList.size() + "）");
         vpPhotoPreview.setCurrentItem(position);
         this.currentPosition = position;
     }
 
-    @Override
-    public List<PhotoPreviewBean> getPhotoList() {
-        return mPhotoList;
-    }
-
-    @Override
-    public int getCurrentPosition() {
-        return currentPosition;
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -170,7 +162,6 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
         PermissionsActivity.startActivityForResult(this, AppConfig.CODE_REQUEST_PERMISSIONS, permissions);
     }
 
-    @Override
     public void switchToolBarVisibility() {
         //切换头部的隐藏和显示
         if (appbar.getVisibility() == View.GONE) {

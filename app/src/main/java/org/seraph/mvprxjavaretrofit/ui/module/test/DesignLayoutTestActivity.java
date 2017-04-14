@@ -2,7 +2,6 @@ package org.seraph.mvprxjavaretrofit.ui.module.test;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -12,21 +11,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
-import com.squareup.picasso.Picasso;
 
-import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
+import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.di.component.test.DaggerDesignLayoutComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
-import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +33,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 /**
  * Design风格布局效果测试
@@ -44,7 +40,7 @@ import io.reactivex.functions.Function;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class DesignLayoutTestActivity extends BaseActivity implements DesignLayoutAdapter.OnItemClickListener {
+public class DesignLayoutTestActivity extends BaseActivity implements DesignLayoutTestContract.View, DesignLayoutAdapter.OnItemClickListener {
 
     @BindView(R.id.app_bar_image)
     ImageView appBarImage;
@@ -57,20 +53,23 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
     @BindView(R.id.nsv)
     NestedScrollView scrollView;
 
+    @BindView(R.id.ll_more_view)
+    LinearLayout listMoreView;
+
 
     @Override
     public int getContextView() {
         return R.layout.test_design_layout;
     }
 
-
     @Inject
     DesignLayoutAdapter mDesignLayoutAdapter;
 
     @Inject
-    ApiManager mApiManager;
+    DesignLayoutTestPresenter mPresenter;
 
-    private Subscription mSubscription;
+    @Inject
+    PicassoTool mPicassoTool;
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
@@ -89,41 +88,11 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
         mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                if (mSubscription != null) {
-                    mSubscription.cancel();
-                }
+                mPresenter.unSubscription();
             }
         });
-
-        mApiManager.doBaiduImage(Tools.getBaiduImagesUrl("tomia", 1)).doOnSubscribe(new Consumer<Subscription>() {
-            @Override
-            public void accept(Subscription subscription) throws Exception {
-                mSubscription = subscription;
-                showLoading("正在获取数据");
-            }
-        }).map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
-            @Override
-            public List<ImageBaiduBean.BaiduImage> apply(ImageBaiduBean imageBaiduBean) throws Exception {
-                return imageBaiduBean.imgs;
-            }
-        }).subscribe(new Consumer<List<ImageBaiduBean.BaiduImage>>() {
-            @Override
-            public void accept(List<ImageBaiduBean.BaiduImage> baiduImages) throws Exception {
-                mLoadingDialog.dismiss();
-                mDesignLayoutAdapter.addDataList(baiduImages);
-                Picasso.with(getContext()).load(baiduImages.get(31).objURL)
-                        .placeholder(R.mipmap.icon_placeholder)
-                        .error(R.mipmap.icon_error)
-                        .config(Bitmap.Config.RGB_565) //对于不透明的图片可以使用RGB_565来优化内存。RGB_565呈现结果与ARGB_8888接近
-                        .into(appBarImage);
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                mLoadingDialog.dismiss();
-            }
-        });
-
+        mPresenter.setView(this);
+        mPresenter.start();
     }
 
     @Override
@@ -131,11 +100,14 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
         DaggerDesignLayoutComponent.builder().appComponent(AppApplication.getAppComponent()).designLayoutModule(new DesignLayoutModule(this)).build().inject(this);
     }
 
-    @OnClick(value = {R.id.fab})
+    @OnClick(value = {R.id.fab, R.id.tv_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
                 scrollView.smoothScrollTo(0, 0);
+                break;
+            case R.id.tv_more:
+                mPresenter.requestNextPage();
                 break;
         }
     }
@@ -151,10 +123,23 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
             photoPreviewBean.objURL = baiduImage.objURL;
             photoPreviewBean.height = baiduImage.height;
             photoPreviewBean.width = baiduImage.width;
+            photoPreviewBean.type = baiduImage.type;
             photoList.add(photoPreviewBean);
         }
         intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, photoList);
         intent.putExtra(PhotoPreviewActivity.CURRENT_POSITION, position);
         startActivity(intent);
     }
+
+    @Override
+    public void setImageListData(List<ImageBaiduBean.BaiduImage> baiduImages, boolean isMore) {
+        if (isMore) {
+            listMoreView.setVisibility(View.VISIBLE);
+        } else {
+            listMoreView.setVisibility(View.GONE);
+        }
+        mPicassoTool.loadNoCache(baiduImages.get((int) (Math.random() * baiduImages.size())).objURL,appBarImage);
+        mDesignLayoutAdapter.addDataList(baiduImages);
+    }
+
 }

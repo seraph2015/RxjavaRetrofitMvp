@@ -112,7 +112,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     }
 
     private void addListHeadView() {
-        View headView = LayoutInflater.from(getActivity()).inflate(R.layout.list_head, lvImages, false);
+        View headView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_two_list_head, lvImages, false);
         btnGetCache = ButterKnife.findById(headView, R.id.btn_get_cache);
         tvCache = ButterKnife.findById(headView, R.id.tv_cache);
         etSearchKeyword = ButterKnife.findById(headView, R.id.et_search_keyword);
@@ -128,7 +128,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
 
     private void addListFootView() {
-        View footView = LayoutInflater.from(getActivity()).inflate(R.layout.list_foot_view, lvImages, false);
+        View footView = LayoutInflater.from(getActivity()).inflate(R.layout.list_foot_more, lvImages, false);
         tvMore = ButterKnife.findById(footView, R.id.tv_more);
         tvMore.setOnClickListener(footClick);
         lvImages.addFooterView(footView);

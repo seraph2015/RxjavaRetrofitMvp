@@ -17,9 +17,8 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
 
     private int mLayoutId;
 
-    public BaseRecyclerViewAdapter(Context mContext, int layoutId, List<T> mDataList) {
+    public BaseRecyclerViewAdapter(Context mContext, int layoutId) {
         this.mContext = mContext;
-        this.mDataList = mDataList;
         this.mLayoutId = layoutId;
     }
 
@@ -41,15 +40,17 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
 
     @Override
     public int getItemCount() {
-        return mDataList.size();
+        return mDataList == null ? 0 : mDataList.size();
     }
 
     /**
      * 添加数据（默认替换数据）
      */
     public void addDataList(List<T> dataList) {
-        mDataList.clear();
-        mDataList.addAll(dataList);
+        //如果没有使用的数据的内存，则直接使用此数据源地址（之后直接刷即可）
+        if (mDataList == null) {
+            mDataList = dataList;
+        }
         notifyDataSetChanged();
     }
 

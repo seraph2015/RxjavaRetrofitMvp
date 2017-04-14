@@ -1,21 +1,19 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
-
-import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouch;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchBase;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 
 /**
@@ -23,24 +21,29 @@ import java.util.List;
  */
 class PhotoPreviewAdapter extends PagerAdapter {
 
-    private Context mContext;
-    private List<PhotoPreviewBean> listData;
 
     interface OnImageClickListener {
         void onImageClick(int position);
     }
 
+    private Context mContext;
+
+    private PicassoTool mPicassoTool;
+
+    private List<PhotoPreviewBean> mlistData;
+
+
     private OnImageClickListener onImageClickListener;
 
-
-    PhotoPreviewAdapter(Context context, List<PhotoPreviewBean> list) {
+    @Inject
+    PhotoPreviewAdapter(Context context, PicassoTool picassoTool) {
         this.mContext = context;
-        this.listData = list;
+        this.mPicassoTool = picassoTool;
     }
 
     @Override
     public int getCount() {
-        return listData.size();
+        return mlistData == null ? 0 : mlistData.size();
     }
 
     @Override
@@ -63,18 +66,11 @@ class PhotoPreviewAdapter extends PagerAdapter {
                 }
             });
         }
-        Picasso.with(mContext)
-                .load(listData.get(position).objURL)
-                .placeholder(R.mipmap.icon_placeholder)
-                .error(R.mipmap.icon_error)
-                .config(Bitmap.Config.RGB_565) //对于不透明的图片可以使用RGB_565来优化内存。RGB_565呈现结果与ARGB_8888接近
-                //Picasso默认会使用设备的15%的内存作为内存图片缓存，且现有的api无法清空内存缓存。我们可以在查看大图时放弃使用内存缓存，图片从网络下载完成后会缓存到磁盘中，加载会从磁盘中加载，这样可以加速内存的回收。
-                //NO_CACHE是指图片加载时放弃在内存缓存中查找，NO_STORE是指图片加载完不缓存在内存中。
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .into(imageView);
+        mPicassoTool.loadNoCache(mlistData.get(position).objURL, imageView);
         container.addView(imageView, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
         return imageView;
     }
+
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
@@ -86,5 +82,16 @@ class PhotoPreviewAdapter extends PagerAdapter {
 
     void setOnImageClickListener(OnImageClickListener onImageClickListener) {
         this.onImageClickListener = onImageClickListener;
+    }
+
+    /**
+     * 设置数据
+     */
+     void setListData(List<PhotoPreviewBean> listData) {
+        if (mlistData == null) {
+            mlistData = listData;
+        }
+        notifyDataSetChanged();
+
     }
 }
