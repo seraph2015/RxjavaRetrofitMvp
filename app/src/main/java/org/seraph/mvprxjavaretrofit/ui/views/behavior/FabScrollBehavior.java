@@ -5,9 +5,7 @@ import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -19,8 +17,6 @@ import android.view.View;
 public class FabScrollBehavior extends FloatingActionButton.Behavior {
 
     private final String TAG = "FabScrollBehavior#";
-
-    private FastOutSlowInInterpolator INTERPOLATOR = new FastOutSlowInInterpolator();
 
     /**
      * 预改变的距离
@@ -67,7 +63,7 @@ public class FabScrollBehavior extends FloatingActionButton.Behavior {
         }
         mDySinceDirectionChange += dyConsumed;
         //如果预改变的方向向下,而且改变距离大于当前控件的高度，则隐藏（此高度可以自己定义）
-        if (mDySinceDirectionChange > child.getHeight() && child.isShown()) {
+        if (mDySinceDirectionChange > 200 && child.isShown()) {
             hide(child);
         } else if (mDySinceDirectionChange < 0 && !child.isShown()) {
             show(child);
