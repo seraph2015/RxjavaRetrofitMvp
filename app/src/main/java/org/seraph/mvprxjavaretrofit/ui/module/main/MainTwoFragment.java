@@ -128,7 +128,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
 
     private void addListFootView() {
-        View footView = LayoutInflater.from(getActivity()).inflate(R.layout.list_foot_more, lvImages, false);
+        View footView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_two_list_foot, lvImages, false);
 
         tvMore = ButterKnife.findById(footView, R.id.tv_more);
         tvMore.setOnClickListener(footClick);

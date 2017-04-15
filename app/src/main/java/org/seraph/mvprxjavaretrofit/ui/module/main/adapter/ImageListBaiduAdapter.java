@@ -1,14 +1,10 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.adapter;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
@@ -62,21 +58,11 @@ public class ImageListBaiduAdapter extends BaseListAdapter<ImageBaiduBean.BaiduI
             height = Tools.getNewHeight(width, height, screenWidth);
             width = screenWidth;
         }
-        PicassoTool.loadNoCache(mContext, baiduImage.objURL, imageView, width, height);
+        PicassoTool.loadCache(mContext, baiduImage.objURL, imageView, width, height);
 
-       // loadingImage(imageView, baiduImage.objURL, width, height);
         return convertView;
     }
 
-    private void loadingImage(ImageView imageView, String imageUrl, int imageWidth, int imageHeight) {
-        Picasso.with(mContext).load(imageUrl)
-                .placeholder(R.mipmap.icon_placeholder)
-                .error(R.mipmap.icon_error)
-                .resize(imageWidth, imageHeight)
-                .config(Bitmap.Config.RGB_565) //对于不透明的图片可以使用RGB_565来优化内存。RGB_565呈现结果与ARGB_8888接近
-                .centerInside()
-                .into(imageView);
-    }
 
 
     public void setListData(List<ImageBaiduBean.BaiduImage> newListData) {

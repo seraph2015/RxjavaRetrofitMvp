@@ -19,7 +19,7 @@ public class CustomLoadingDialog extends Dialog {
     @Inject
     public CustomLoadingDialog(Context context) {
         super(context, R.style.progress_dialog);
-        setContentView(R.layout.dialog_loading);
+        setContentView(R.layout.default_dialog_loading);
         setCanceledOnTouchOutside(true);
         getWindow().getAttributes().gravity = Gravity.CENTER;
         setCancelable(false);

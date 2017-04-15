@@ -37,13 +37,13 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
     private int pageNo = 0;
 
     @Inject
-    public DesignLayoutTestPresenter(ApiManager mApiManager) {
+    DesignLayoutTestPresenter(ApiManager mApiManager) {
         this.mApiManager = mApiManager;
     }
 
     @Override
     public void start() {
-        doBaiduImages(1);
+
     }
 
     @Override
@@ -53,7 +53,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
 
     @Override
     public void requestRefresh() {
-        doBaiduImages(++pageNo);
+        doBaiduImages(1);
     }
 
     private void doBaiduImages(final int tempNo) {
@@ -61,7 +61,6 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
             @Override
             public void accept(Subscription subscription) throws Exception {
                 mSubscription = subscription;
-                mView.showLoading("正在获取数据");
             }
         }).map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
             @Override
@@ -72,7 +71,6 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
 
             @Override
             public void accept(List<ImageBaiduBean.BaiduImage> baiduImages) throws Exception {
-                mView.hideLoading();
                 if (tempNo == 1) {
                     mBaiduImages.clear();
                 }
@@ -83,7 +81,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                mView.hideLoading();
+                mView.showToast("网络异常");
             }
         });
     }
