@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="20dp"
-        android:text="正在加载数据..."
+        android:text="正在加载数据"
         android:textColor="#193DFF"
         android:textSize="14sp" />
 

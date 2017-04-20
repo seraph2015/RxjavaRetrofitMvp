@@ -6,6 +6,9 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.data.network.https.HTTPS;
+import org.seraph.mvprxjavaretrofit.data.network.service.Api12306Service;
+import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
+import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,7 +73,7 @@ class ApiBuild {
     /**
      * 构建ApiInterface
      */
-    private ApiService buildApiInterface(String apiBaseUrl) {
+    private <T> T buildApiInterface(String apiBaseUrl, Class<T> service) {
         OkHttpClient.Builder builder = builder();
         //判断是否启用证书
         if (AppConfig.IS_ENABLED_CER && sslSocketFactory != null && x509TrustManager != null) {
@@ -81,19 +84,20 @@ class ApiBuild {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(apiBaseUrl)
                 .client(builder.build()).build()
-                .create(ApiService.class);
+                .create(service);
     }
+
 
     ApiService apiService() {
-        return buildApiInterface(ApiService.BASE_URL);
+        return buildApiInterface(ApiService.BASE_URL, ApiService.class);
     }
 
-    ApiService apiBaiduService() {
-        return buildApiInterface(ApiService.BASE_URL_BAIDU);
+    ApiBaiduService apiBaiduService() {
+        return buildApiInterface(ApiBaiduService.BASE_URL_BAIDU, ApiBaiduService.class);
     }
 
-    ApiService api12306Service() {
-        return buildApiInterface(ApiService.BASE_URL_12306);
+    Api12306Service api12306Service() {
+        return buildApiInterface(Api12306Service.BASE_URL_12306, Api12306Service.class);
     }
 
 }

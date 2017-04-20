@@ -57,7 +57,7 @@ class MainOneFragmentPresenter implements MainOneFragmentContract.Presenter {
      */
     @Override
     public void doLoginTest() {
-        mApiManager.doLogin("15623088767", "123456").doOnSubscribe(new Consumer<Subscription>() {
+        mApiManager.doLogin("15172311067", "123456").doOnSubscribe(new Consumer<Subscription>() {
             @Override
             public void accept(Subscription subscription) throws Exception {
                 mSubscriber = subscription;

@@ -20,5 +20,4 @@ public class BaseDataResponse<T> {
     /* 总数据结构 */
     public BaseData<T> data;
 
-
 }
