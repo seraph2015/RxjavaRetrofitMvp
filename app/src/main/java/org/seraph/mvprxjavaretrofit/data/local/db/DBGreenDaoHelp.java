@@ -3,9 +3,12 @@ package org.seraph.mvprxjavaretrofit.data.local.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoMaster;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
+
+import javax.inject.Inject;
 
 /**
  * greenDao数据库帮助类
@@ -15,39 +18,29 @@ import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
  **/
 public class DBGreenDaoHelp {
 
-    private DaoSession mDaoSession;
+    private Context mContext;
 
-    private static DBGreenDaoHelp mDBGreenDaoHelp;
-
-    public static DBGreenDaoHelp getSingleton() {
-        if (mDBGreenDaoHelp == null) {
-            mDBGreenDaoHelp = new DBGreenDaoHelp();
-        }
-        return mDBGreenDaoHelp;
-    }
-
-    private DBGreenDaoHelp() {
+    @Inject
+    DBGreenDaoHelp(AppApplication context) {
+        mContext = context.getApplicationContext();
     }
 
     /**
      * 获取操作数据库的Session
      */
-    public DaoSession getDaoSession(Context context) {
-        if (mDaoSession == null) {
-            initDatabase(context);
-        }
-        return mDaoSession;
+    public DaoSession getDaoSession() {
+        return initDatabase(mContext);
     }
 
     /**
      * 初始化数据库
      */
-    private void initDatabase(Context context) {
+    private DaoSession initDatabase(Context context) {
         DaoMaster.DevOpenHelper mHelper = new DaoMaster.DevOpenHelper(context, AppConfig.DB_NAME);
         SQLiteDatabase db = mHelper.getWritableDatabase();
         //该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
         DaoMaster mDaoMaster = new DaoMaster(db);
-        mDaoSession = mDaoMaster.newSession();
+        return mDaoMaster.newSession();
     }
 
 }

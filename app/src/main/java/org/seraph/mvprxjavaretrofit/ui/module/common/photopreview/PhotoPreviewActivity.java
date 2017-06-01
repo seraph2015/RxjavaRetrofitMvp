@@ -1,24 +1,20 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-
-import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
+import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.common.DaggerPhotoPreviewComponent;
-import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
+import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
+import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActivity;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
@@ -28,7 +24,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import io.reactivex.functions.Consumer;
+import butterknife.OnClick;
 
 
 /**
@@ -38,16 +34,23 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
 
     @BindView(R.id.vp_photo_preview)
     ImageViewTouchViewPager vpPhotoPreview;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.appbar)
-    AppBarLayout appbar;
+
+    @BindView(R.id.tv_progress)
+    TextView tvProgress;
+    @BindView(R.id.tv_save)
+    TextView tvSave;
 
 
     @Override
     public int getContextView() {
-        return R.layout.activity_photo_preview;
+        return R.layout.common_activity_photo_preview;
     }
+
+
+    public static final String IMAGE_TYPE = "image_type";
+    public static final String IMAGE_TYPE_LOCAL = "image_type_local";
+
+    public static final String IMAGE_TYPE_NETWORK = "image_type_network";
 
     /**
      * 图片列表数据
@@ -61,7 +64,7 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
 
     @Override
     public void setupActivityComponent() {
-        DaggerPhotoPreviewComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(this)).build().inject(this);
+        DaggerCommonComponent.builder().appComponent(AppApplication.getAppComponent()).commonModule(new CommonModule(this)).build().inject(this);
     }
 
 
@@ -72,49 +75,52 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
     PhotoPreviewAdapter mPhotoPreviewAdapter;
 
 
-    private ArrayList<PhotoPreviewBean> mPhotoList;
     /**
-     * 当前第几张照片
+     * 图片预览
+     *
+     * @param imageList<T>    数据源IMAGE_TYPE_NETWORK对应PhotoPreviewBean，IMAGE_TYPE_LOCAL对应String
+     * @param currentPosition 当前第几个
+     * @param imageType       数据类型 { PhotoPreviewActivity.IMAGE_TYPE_LOCAL, PhotoPreviewActivity.IMAGE_TYPE_NETWORK}
      */
-    private int currentPosition = 0;
-
+    public static <T> void startPhotoPreview(Activity activity, ArrayList<T> imageList, int currentPosition, String imageType) {
+        Intent intent = new Intent(activity, PhotoPreviewActivity.class);
+        intent.putExtra(IMAGE_TYPE, imageType);
+        intent.putExtra(PHOTO_LIST, imageList);
+        intent.putExtra(CURRENT_POSITION, currentPosition);
+        activity.startActivity(intent);
+    }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-        setSupportActionBar(toolbar);
-        rxBinding();
-        mPhotoList = (ArrayList<PhotoPreviewBean>) getIntent().getSerializableExtra(PhotoPreviewActivity.PHOTO_LIST);
-        if (mPhotoList == null || mPhotoList.size() == 0) {
-            showToast("没有可预览的图片");
-            finish();
-            return;
-        }
-        currentPosition = getIntent().getIntExtra(PhotoPreviewActivity.CURRENT_POSITION, 0);
-        initViewPager();
+        initBar();
         initListener();
+        initViewPager();
         mPresenter.setView(this);
+        mPresenter.setIntent(getIntent());
         mPresenter.start();
+    }
+
+    private void initBar() {
+
+
     }
 
     private void initViewPager() {
         vpPhotoPreview.setOnPageSelectedListener(new ImageViewTouchViewPager.OnPageSelectedListener() {
             @Override
             public void onPageSelected(int position) {
-                savePageSelected(position);
+                mPresenter.upDataCurrentPosition(position);
             }
         });
         vpPhotoPreview.setOffscreenPageLimit(5);
-        mPhotoPreviewAdapter.setListData(mPhotoList);
         mPhotoPreviewAdapter.setOnImageClickListener(new PhotoPreviewAdapter.OnImageClickListener() {
             @Override
             public void onImageClick(int position) {
-                switchToolBarVisibility();
+                //关闭当前界面
+                finish();
             }
         });
         vpPhotoPreview.setAdapter(mPhotoPreviewAdapter);
-        //显示指定位置图片
-        savePageSelected(currentPosition);
     }
 
     private void initListener() {
@@ -126,66 +132,44 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
         });
     }
 
-    private void rxBinding() {
-        RxToolbar.itemClicks(toolbar).subscribe(new Consumer<MenuItem>() {
-            @Override
-            public void accept(MenuItem menuItem) throws Exception {
-                switch (menuItem.getItemId()) {
-                    case R.id.action_save_image:
-                        mPresenter.saveImage(mPhotoList.get(currentPosition));
-                        break;
-                }
-            }
-        });
-        RxToolbar.navigationClicks(toolbar).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                finish();
-            }
-        });
-    }
-
-
-    /**
-     * 跳转到指定页和保存当前
-     */
-    public void savePageSelected(int position) {
-        toolbar.setTitle("图片预览" + "（" + (position + 1) + "/" + mPhotoList.size() + "）");
-        vpPhotoPreview.setCurrentItem(position);
-        this.currentPosition = position;
-    }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void startPermissionsActivity(String[] permissions) {
-        PermissionsActivity.startActivityForResult(this, AppConfig.CODE_REQUEST_PERMISSIONS, permissions);
+        PermissionsActivity.startActivityForResult(this, AppConfig.PERMISSIONS_CODE_REQUEST_1, permissions);
     }
-
-    public void switchToolBarVisibility() {
-        //切换头部的隐藏和显示
-        if (appbar.getVisibility() == View.GONE) {
-            appbar.setVisibility(View.VISIBLE);
-        } else {
-            appbar.setVisibility(View.GONE);
-        }
-    }
-
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.act_photo_preview, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void setPhotoList(ArrayList<PhotoPreviewBean> mPhotoList) {
+        mPhotoPreviewAdapter.setListData(mPhotoList);
+    }
+
+    /**
+     * 跳转到指定页
+     */
+    @Override
+    public void showPageSelected(int position, int size) {
+        tvProgress.setText((position + 1) + "/" + size);
+        vpPhotoPreview.setCurrentItem(position);
+    }
+
+    @Override
+    public void hideSaveBtn() {
+        tvSave.setVisibility(View.GONE);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppConfig.CODE_REQUEST_PERMISSIONS) {
+        if (requestCode == AppConfig.PERMISSIONS_CODE_REQUEST_1) {
             mPresenter.onActivityResult(resultCode);
         }
     }
 
 
+    @OnClick(R.id.tv_save)
+    public void onViewClicked() {
+        mPresenter.saveImage();
+    }
 }

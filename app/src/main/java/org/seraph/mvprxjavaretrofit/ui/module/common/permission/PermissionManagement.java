@@ -15,11 +15,14 @@ import android.support.annotation.NonNull;
 @TargetApi(Build.VERSION_CODES.M)
 public class PermissionManagement {
 
-
     /**
      * 判断权限集合,检查是否有缺少的权限
      */
     public static boolean lacksPermissions(Context context, String[] permissions) {
+        //然后手机在6.0之下。默认有全部权限
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return false;
+        }
         for (String permission : permissions) {
             if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_DENIED) {
                 //如果有缺少的权限返回

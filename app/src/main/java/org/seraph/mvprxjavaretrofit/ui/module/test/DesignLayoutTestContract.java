@@ -25,6 +25,5 @@ interface DesignLayoutTestContract {
 
         void requestRefresh();
 
-        void unSubscription();
     }
 }

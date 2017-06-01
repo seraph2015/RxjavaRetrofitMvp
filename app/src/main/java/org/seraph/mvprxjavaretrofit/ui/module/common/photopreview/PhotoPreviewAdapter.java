@@ -6,11 +6,14 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.StringUtils;
+
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouch;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchBase;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
 
+import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -63,7 +66,12 @@ class PhotoPreviewAdapter extends PagerAdapter {
                 }
             });
         }
-        PicassoTool.loadNoCache(mContext,mListData.get(position).objURL, imageView);
+        PhotoPreviewBean previewBean = mListData.get(position);
+        if (StringUtils.equals(previewBean.fromType, PhotoPreviewActivity.IMAGE_TYPE_LOCAL)) {
+            PicassoTool.loadNoCache(mContext, new File(mListData.get(position).objURL), imageView);
+        } else {
+            PicassoTool.loadNoCache(mContext, mListData.get(position).objURL, imageView);
+        }
         container.addView(imageView, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
         return imageView;
     }
@@ -84,7 +92,7 @@ class PhotoPreviewAdapter extends PagerAdapter {
     /**
      * 设置数据
      */
-     void setListData(List<PhotoPreviewBean> listData) {
+    void setListData(List<PhotoPreviewBean> listData) {
         if (mListData == null) {
             mListData = listData;
         }

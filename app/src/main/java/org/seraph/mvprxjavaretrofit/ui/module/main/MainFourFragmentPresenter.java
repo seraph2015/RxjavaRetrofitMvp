@@ -23,6 +23,11 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
     }
 
     @Override
+    public void unSubscribe() {
+
+    }
+
+    @Override
     public void setView(MainFourFragmentContract.View view) {
         this.mView = view;
     }

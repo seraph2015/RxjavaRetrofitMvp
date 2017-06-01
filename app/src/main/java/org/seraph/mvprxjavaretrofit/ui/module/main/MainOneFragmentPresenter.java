@@ -27,7 +27,7 @@ class MainOneFragmentPresenter implements MainOneFragmentContract.Presenter {
 
     private MainOneFragmentContract.View mView;
 
-    private Subscription mSubscriber;
+    private Subscription mSubscription;
 
     private BaseData<UserBean> baseData;
 
@@ -47,6 +47,13 @@ class MainOneFragmentPresenter implements MainOneFragmentContract.Presenter {
     }
 
     @Override
+    public void unSubscribe() {
+        if (mSubscription != null) {
+            mSubscription.cancel();
+        }
+    }
+
+    @Override
     public void setView(MainOneFragmentContract.View view) {
        this.mView = view;
     }
@@ -60,7 +67,7 @@ class MainOneFragmentPresenter implements MainOneFragmentContract.Presenter {
         mApiManager.doLogin("15172311067", "123456").doOnSubscribe(new Consumer<Subscription>() {
             @Override
             public void accept(Subscription subscription) throws Exception {
-                mSubscriber = subscription;
+                mSubscription = subscription;
                 mView.showLoading("正在登陆...");
             }
         }).subscribe(new BaseNetWorkSubscriber<BaseDataResponse<UserBean>,MainOneFragmentContract.View>(mView) {
@@ -139,13 +146,6 @@ class MainOneFragmentPresenter implements MainOneFragmentContract.Presenter {
     public void cleanUserInfo() {
         mDaoSession.getUserTableDao().deleteAll();
         queryUserInfo();
-    }
-
-    @Override
-    public void unSubscriber() {
-        if (mSubscriber != null) {
-            mSubscriber.cancel();
-        }
     }
 
 

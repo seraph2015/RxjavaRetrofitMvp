@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit;
 
+import android.Manifest;
+
 /**
  * app的一些常量设置
  * date：2017/2/22 09:47
@@ -48,4 +50,19 @@ public class AppConfig {
      * 使用的证书名称
      */
     public static final String HTTPS_CER_NAME = "srca12306.cer";
+
+    /**
+     * 权限请求code1
+     */
+    public static final int PERMISSIONS_CODE_REQUEST_1 = 1000;
+    /**
+     * 权限请求code2
+     */
+    public static final int PERMISSIONS_CODE_REQUEST_2 = 1001;
+
+    /**
+     * 读写SD卡权限
+     */
+    public static final String[] PERMISSIONS_SDCARD = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+
 }

@@ -1,19 +1,22 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
-import android.Manifest;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.reactivestreams.Subscription;
+import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionManagement;
 import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActivity;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -44,8 +47,6 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
 
     }
 
-    private String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
 
     private Subscription mSubscription;
 
@@ -59,9 +60,70 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
     private String saveImageName;
 
 
+    private ArrayList<PhotoPreviewBean> mPhotoList;
+
+
+    /**
+     * 当前第几张照片
+     */
+    private int currentPosition = 0;
+
+    private String imageType;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void setIntent(Intent intent) {
+        if (intent == null || !intent.hasExtra(PhotoPreviewActivity.IMAGE_TYPE)) {
+            throw new RuntimeException("PhotoPreviewActivity需要使用静态startPhotoPreview方法启动!");
+        }
+        imageType = intent.getStringExtra(PhotoPreviewActivity.IMAGE_TYPE);
+        switch (imageType) {
+            case PhotoPreviewActivity.IMAGE_TYPE_LOCAL:
+                //处理成统一格式
+                mPhotoList = initPhotoListData(intent.getStringArrayListExtra(PhotoPreviewActivity.PHOTO_LIST));
+                mView.hideSaveBtn();
+                break;
+            case PhotoPreviewActivity.IMAGE_TYPE_NETWORK:
+                mPhotoList = (ArrayList<PhotoPreviewBean>) intent.getSerializableExtra(PhotoPreviewActivity.PHOTO_LIST);
+                break;
+        }
+        if (mPhotoList == null || mPhotoList.size() == 0) {
+            mView.showToast("没有可预览的图片");
+            mView.finish();
+            return;
+        }
+        currentPosition = intent.getIntExtra(PhotoPreviewActivity.CURRENT_POSITION, 0);
+    }
+
+    /**
+     * 处理成统一格式
+     */
+    private ArrayList<PhotoPreviewBean> initPhotoListData(ArrayList<String> mLocalPhotoList) {
+        if (mLocalPhotoList == null) {
+            return null;
+        }
+        ArrayList<PhotoPreviewBean> arrayList = new ArrayList<>();
+        for (String photoPath : mLocalPhotoList) {
+            PhotoPreviewBean previewBean = new PhotoPreviewBean();
+            previewBean.objURL = photoPath;
+            previewBean.fromType = PhotoPreviewActivity.IMAGE_TYPE_LOCAL;
+            arrayList.add(previewBean);
+        }
+        return arrayList;
+    }
+
     @Override
     public void start() {
+        mView.setPhotoList(mPhotoList);
+        //显示指定位置图片
+        upDataCurrentPosition(currentPosition);
+    }
 
+
+    @Override
+    public void upDataCurrentPosition(int position) {
+        this.currentPosition = position;
+        mView.showPageSelected(position, mPhotoList.size());
     }
 
 
@@ -69,16 +131,18 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
      * 保存当前图片
      */
     @Override
-    public void saveImage(PhotoPreviewBean savePhoto) {
-        this.mSavePhoto = savePhoto;
-        imageDownload();
+    public void saveImage() {
+        if (StringUtils.equals(imageType, PhotoPreviewActivity.IMAGE_TYPE_NETWORK)) {
+            mSavePhoto = mPhotoList.get(currentPosition);
+            imageDownload();
+        }
     }
 
     private void imageDownload() {
         //判然系统权限
         // 缺少权限时, 进入权限配置页面
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionManagement.lacksPermissions(mView.getContext(), permissions)) {
-            mView.startPermissionsActivity(permissions);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionManagement.lacksPermissions(mView.getContext(), AppConfig.PERMISSIONS_SDCARD)) {
+            mView.startPermissionsActivity(AppConfig.PERMISSIONS_SDCARD);
         } else {
             mView.showLoading("正在保存");
             Picasso.with(mView.getContext()).load(mSavePhoto.objURL).into(target);
@@ -102,7 +166,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
                     .flatMap(new Function<Bitmap, Flowable<String>>() {
                         @Override
                         public Flowable<String> apply(Bitmap bitmap) throws Exception {
-                            saveImageName = Tools.getMD5(mSavePhoto.objURL) + "." + mSavePhoto.type;
+                            saveImageName = Tools.getMD5(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
                             File dcimFile = Tools.getDCIMFile(saveImageName);
                             if (dcimFile.exists() && dcimFile.length() > 0) {
                                 return Flowable.just("图片已保存");
@@ -155,6 +219,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         }
 
     }
+
 
     /**
      * 权限请求返回

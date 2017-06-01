@@ -1,6 +1,5 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -117,7 +116,7 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
         mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-               mPresenter.requestNextPage();
+                mPresenter.requestNextPage();
             }
         });
 
@@ -139,7 +138,6 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
 
 
     private void startPhotoPreview(int position) {
-        Intent intent = new Intent(this, PhotoPreviewActivity.class);
         ArrayList<PhotoPreviewBean> photoList = new ArrayList<>();
         List<ImageBaiduBean.BaiduImage> list = mDesignLayoutAdapter.getDatas();
         for (ImageBaiduBean.BaiduImage baiduImage : list) {
@@ -150,15 +148,13 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
             photoPreviewBean.type = baiduImage.type;
             photoList.add(photoPreviewBean);
         }
-        intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, photoList);
-        intent.putExtra(PhotoPreviewActivity.CURRENT_POSITION, position);
-        startActivity(intent);
+        PhotoPreviewActivity.startPhotoPreview(this, photoList, position, PhotoPreviewActivity.IMAGE_TYPE_NETWORK);
     }
 
     @Override
     public void setImageListData(List<ImageBaiduBean.BaiduImage> baiduImages, boolean isMore) {
         PicassoTool.loadNoCache(this, baiduImages.get((int) (Math.random() * baiduImages.size())).objURL, appBarImage);
-        mDesignLayoutAdapter.setListData(baiduImages);
+        mDesignLayoutAdapter.addAllListData(baiduImages);
         mLoadMoreWrapper.notifyDataSetChanged();
     }
 

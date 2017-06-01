@@ -66,6 +66,13 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
     }
 
     @Override
+    public void unSubscribe() {
+        if (mSubscription != null) {
+            mSubscription.cancel();
+        }
+    }
+
+    @Override
     public void showCacheFilePath() {
         mView.setTextView(FileTools.getCacheDirectory(mView.getContext(), null).getPath());
     }
@@ -163,12 +170,7 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
                 });
     }
 
-    @Override
-    public void unSubscriber() {
-        if (mSubscription != null) {
-            mSubscription.cancel();
-        }
-    }
+
 
     @Override
     public void onItemClick(int position) {

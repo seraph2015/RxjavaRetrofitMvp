@@ -31,7 +31,5 @@ interface MainOneFragmentContract {
 
         void cleanUserInfo();
 
-        void unSubscriber();
-
     }
 }

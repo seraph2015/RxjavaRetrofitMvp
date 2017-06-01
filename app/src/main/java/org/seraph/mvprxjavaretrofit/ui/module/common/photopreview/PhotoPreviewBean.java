@@ -23,5 +23,8 @@ public class PhotoPreviewBean implements Serializable{
      */
     public String type;
 
-
+    /**
+     * 图片的来源类型（本地或者网络）默认网络
+     */
+    public String fromType;
 }

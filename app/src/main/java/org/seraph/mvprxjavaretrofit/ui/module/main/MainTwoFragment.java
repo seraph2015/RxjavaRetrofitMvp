@@ -1,7 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -154,16 +153,13 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
     @Override
     public void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position) {
-        Intent intent = new Intent(getActivity(), PhotoPreviewActivity.class);
-        intent.putExtra(PhotoPreviewActivity.PHOTO_LIST, photoList);
-        intent.putExtra(PhotoPreviewActivity.CURRENT_POSITION, position - 1);
-        startActivity(intent);
+        PhotoPreviewActivity.startPhotoPreview(getActivity(), photoList, position - 1, PhotoPreviewActivity.IMAGE_TYPE_NETWORK);
     }
 
     @Override
     public void requestData(List<ImageBaiduBean.BaiduImage> listImage) {
         //请求的数据
-        mImageListBaiduAdapter.setListData(listImage);
+        mImageListBaiduAdapter.addAllListData(listImage);
     }
 
 
@@ -186,7 +182,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
         mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                mPresenter.unSubscriber();
+                mPresenter.unSubscribe();
             }
         });
     }

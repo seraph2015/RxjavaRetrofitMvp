@@ -17,6 +17,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
@@ -31,12 +32,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class ApiBuild {
+public class ApiBuild {
 
     private X509TrustManager x509TrustManager;
     private SSLSocketFactory sslSocketFactory;
 
-    private ApiBuild(Context context) {
+    @Inject
+    public ApiBuild(Context context) {
         if (AppConfig.IS_ENABLED_CER) {
             try {
                 InputStream inputStream = context.getAssets().open(AppConfig.HTTPS_CER_NAME);
@@ -54,9 +56,6 @@ class ApiBuild {
         }
     }
 
-    public static ApiBuild build(Context context) {
-        return new ApiBuild(context);
-    }
 
     private OkHttpClient.Builder builder() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();

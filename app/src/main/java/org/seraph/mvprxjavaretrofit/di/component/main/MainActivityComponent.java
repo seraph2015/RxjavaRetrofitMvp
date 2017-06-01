@@ -2,9 +2,6 @@ package org.seraph.mvprxjavaretrofit.di.component.main;
 
 import android.content.Context;
 
-import org.seraph.mvprxjavaretrofit.data.local.PreferencesManager;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
-import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.component.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
@@ -35,10 +32,10 @@ public interface MainActivityComponent {
 
     Context context();
 
-    ApiManager apiManager();
-
-    PreferencesManager preferencesManager();
-
-    DaoSession daoSession();
+//    ApiManager apiManager();
+//
+//    PreferencesManager preferencesManager();
+//
+//    DaoSession daoSession();
 
 }

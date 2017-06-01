@@ -4,11 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
-import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainTwoFragment;
-import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
-
-import java.util.ArrayList;
 
 import dagger.Module;
 import dagger.Provides;
@@ -38,12 +34,6 @@ public class MainFragmentTwoModule {
     @ActivityScope
     Context provideContext() {
         return context;
-    }
-
-    @Provides
-    @ActivityScope
-    ImageListBaiduAdapter provideImageListBaiduAdapter() {
-        return new ImageListBaiduAdapter(context, new ArrayList<ImageBaiduBean.BaiduImage>());
     }
 
 }

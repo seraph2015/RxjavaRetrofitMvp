@@ -1,8 +1,6 @@
 package org.seraph.mvprxjavaretrofit.di.module;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
-import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
-import org.seraph.mvprxjavaretrofit.data.local.PreferencesManager;
 import org.seraph.mvprxjavaretrofit.data.local.db.DBGreenDaoHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
 
@@ -32,20 +30,12 @@ public class AppModule {
         return application;
     }
 
-    @Provides
-    @Singleton
-    PreferencesManager provideSharedPreferences() {
-        return new PreferencesManager(application);
-    }
 
     @Provides
     @Singleton
-    DaoSession provideDaoSession() {
-        return DBGreenDaoHelp.getSingleton().getDaoSession(application);
+    DaoSession provideDaoSession(DBGreenDaoHelp dbGreenDaoHelp) {
+        return dbGreenDaoHelp.getDaoSession();
     }
 
-    @Provides
-    ApiManager provideApiManager() {
-        return ApiManager.build(application);
-    }
+
 }

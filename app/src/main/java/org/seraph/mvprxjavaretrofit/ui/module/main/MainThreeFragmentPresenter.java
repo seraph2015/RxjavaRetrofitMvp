@@ -34,6 +34,13 @@ class MainThreeFragmentPresenter implements MainThreeFragmentContract.Presenter 
     }
 
     @Override
+    public void unSubscribe() {
+        if (mSubscription != null) {
+            mSubscription.cancel();
+        }
+    }
+
+    @Override
     public void setView(MainThreeFragmentContract.View view) {
         this.mView = view;
     }

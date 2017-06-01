@@ -47,6 +47,13 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
     }
 
     @Override
+    public void unSubscribe() {
+        if (mSubscription != null) {
+            mSubscription.cancel();
+        }
+    }
+
+    @Override
     public void requestNextPage() {
         doBaiduImages(++pageNo);
     }
@@ -87,11 +94,5 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
     }
 
 
-    @Override
-    public void unSubscription() {
-        if (mSubscription != null) {
-            mSubscription.cancel();
-        }
-    }
 
 }

@@ -28,7 +28,6 @@ interface MainTwoFragmentContract {
 
         void onItemClick(int position);
 
-        void unSubscriber();
     }
 
     interface View extends IBaseView {

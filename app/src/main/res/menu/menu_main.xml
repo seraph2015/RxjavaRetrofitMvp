@@ -13,7 +13,7 @@
     <item
         android:id="@+id/item_three"
         android:checked="true"
-        android:icon="@drawable/ic_signal_cellular_connected_no_internet_4_bar_black_24dp"
+        android:icon="@drawable/ic_bar_black_24dp"
         android:title="HTTPS" />
     <item
         android:id="@+id/item_four"

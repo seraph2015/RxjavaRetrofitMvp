@@ -8,6 +8,9 @@ package org.seraph.mvprxjavaretrofit.ui.module.base;
  **/
 public interface IBasePresenter<T> {
 
-    void start();
     void setView(T t);
+
+    void start();
+
+    void unSubscribe();
 }

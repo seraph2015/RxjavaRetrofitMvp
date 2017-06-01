@@ -1,10 +1,10 @@
 package org.seraph.mvprxjavaretrofit.data.network;
 
-import android.content.Context;
-
-import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
+import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
+
+import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 
@@ -16,14 +16,11 @@ import io.reactivex.Flowable;
  **/
 public class ApiManager {
 
-    private ApiBuild apiBuild;
+    private ApiBuild mApiBuild;
 
-    private ApiManager(Context context) {
-        apiBuild = ApiBuild.build(context);
-    }
-
-    public static ApiManager build(Context context) {
-        return new ApiManager(context);
+    @Inject
+    ApiManager(ApiBuild apiBuild) {
+        mApiBuild = apiBuild;
     }
 
     /**
@@ -31,20 +28,20 @@ public class ApiManager {
      */
     public Flowable<BaseDataResponse<UserBean>> doLogin(String... params) {
         //创建请求的类
-        return RxServerData.getPublicDataProcessing(apiBuild.apiService().login(params[0], params[1]));
+        return RxServerData.getPublicDataProcessing(mApiBuild.apiService().login(params[0], params[1]));
     }
 
     /**
      * 获取百度图片 http://image.baidu.com/
      */
     public Flowable<ImageBaiduBean> doBaiduImage(String... params) {
-        return RxServerData.getDataProcessing(apiBuild.apiBaiduService().doBaiduImageUrl(params[0]));
+        return RxServerData.getDataProcessing(mApiBuild.apiBaiduService().doBaiduImageUrl(params[0]));
     }
 
     /**
      * 12306测试https证书   https://kyfw.12306.cn/
      */
     public Flowable<String> do12306() {
-        return RxServerData.getDataProcessing(apiBuild.api12306Service().do12306Url());
+        return RxServerData.getDataProcessing(mApiBuild.api12306Service().do12306Url());
     }
 }

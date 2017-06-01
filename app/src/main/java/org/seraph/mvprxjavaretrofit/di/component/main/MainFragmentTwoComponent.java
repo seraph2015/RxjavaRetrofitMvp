@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
-import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.component.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.MainFragmentTwoModule;
@@ -27,8 +26,6 @@ public interface MainFragmentTwoComponent {
     Activity activity();
 
     Context context();
-
-    ApiManager apiManager();
 
     DaoSession daoSession();
 }

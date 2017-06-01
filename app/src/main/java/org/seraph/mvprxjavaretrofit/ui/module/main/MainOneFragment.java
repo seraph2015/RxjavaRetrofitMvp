@@ -57,7 +57,7 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentCont
         mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                mPresenter.unSubscriber();
+                mPresenter.unSubscribe();
             }
         });
     }

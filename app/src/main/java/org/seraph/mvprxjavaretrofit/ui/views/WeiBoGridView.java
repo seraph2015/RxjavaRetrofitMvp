@@ -11,11 +11,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 
-import com.squareup.picasso.Picasso;
-
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
-import org.seraph.mvprxjavaretrofit.utlis.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +24,8 @@ import java.util.List;
  */
 public class WeiBoGridView extends GridView {
 
+
+    //  android:stretchMode="none"
 
     /**
      * 重写该方法，达到使GridView适应ScrollView的效果
@@ -44,14 +44,17 @@ public class WeiBoGridView extends GridView {
 
     public WeiBoGridView(Context context) {
         super(context);
+        setStretchMode(GridView.NO_STRETCH);
     }
 
     public WeiBoGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setStretchMode(GridView.NO_STRETCH);
         TypedArray array = getContext().obtainStyledAttributes(attrs,
                 R.styleable.WeiBoGridView);
         mHorizontalSpacing = array.getDimensionPixelSize(R.styleable.WeiBoGridView_hSpacing, 0);
         mVerticalSpacing = array.getDimensionPixelSize(R.styleable.WeiBoGridView_vSpacing, 0);
+        setStretchMode(GridView.NO_STRETCH);
         array.recycle();
     }
 
@@ -161,22 +164,18 @@ public class WeiBoGridView extends GridView {
         private int mColumnWidth;
 
         FeedPhotoAdapter(Context context, List<String> mData, int width) {
-            super(context, mData);
+            super(context, R.layout.item_feed_photo,mData);
             this.mColumnWidth = width;
         }
 
+
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            String imageUrl = data.get(position);
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_feed_photo, parent, false);
-            }
-            CustomSquareImageView photo = ViewHolder.get(convertView, R.id.iv_photo);
+        public void bindView(int position, ViewHolder viewHolder, String imageUrl) {
+            CustomSquareImageView photo = viewHolder.getView(R.id.iv_photo);
             ViewGroup.LayoutParams params = photo.getLayoutParams();
             params.width = mColumnWidth;
             photo.setLayoutParams(params);
-            Picasso.with(mContext).load(imageUrl).placeholder(R.mipmap.icon_placeholder).error(R.mipmap.icon_error).resize(mColumnWidth, mColumnWidth).centerCrop().into(photo);
-            return convertView;
+            PicassoTool.loadCache(mContext,imageUrl,photo,mColumnWidth,mColumnWidth);
         }
     }
 }
