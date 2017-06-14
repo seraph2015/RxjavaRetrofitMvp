@@ -23,7 +23,6 @@ import java.util.List;
 public abstract class BaseRvListAdapter<T> extends RecyclerView.Adapter<ViewHolderRv> {
 
 
-
     public interface OnItemClickListener {
         void onItemClick(View view, RecyclerView.ViewHolder holder, int position);
 
@@ -49,13 +48,20 @@ public abstract class BaseRvListAdapter<T> extends RecyclerView.Adapter<ViewHold
     private ProgressBar pbMore;
     protected List<T> mDatas;
 
+    private boolean mIsAutoLoad = true;
 
-    public BaseRvListAdapter(Context context, final int layoutId) {
+    //默认显示加载更多
+    public BaseRvListAdapter(Context context, int layoutId) {
+        this(context, layoutId, true);
+    }
+
+    //默认显示加载更多
+    public BaseRvListAdapter(Context context, final int layoutId, boolean isAutoLoad) {
         mContext = context;
         mDatas = new ArrayList<>();
         mInflater = LayoutInflater.from(context);
         mLayoutId = layoutId;
-
+        mIsAutoLoad = isAutoLoad;
     }
 
 
@@ -64,14 +70,14 @@ public abstract class BaseRvListAdapter<T> extends RecyclerView.Adapter<ViewHold
         if (mDatas.size() == 0) {
             return 0;
         } else {
-            return mDatas.size() + 1;
+            return mIsAutoLoad ? mDatas.size() + 1 : mDatas.size();
         }
     }
 
     @Override
     public int getItemViewType(int position) {
         //添加自动加载更多view
-        if (position == mDatas.size()) {
+        if (position == mDatas.size() && mIsAutoLoad) {
             return ITEM_FOOT_VIEW;
         } else {
             return ITEM_DATA_VIEW;

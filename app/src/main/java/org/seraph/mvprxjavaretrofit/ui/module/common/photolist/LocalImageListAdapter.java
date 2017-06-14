@@ -30,7 +30,7 @@ class LocalImageListAdapter extends BaseRvListAdapter<LocalImageBean> {
 
     @Inject
     LocalImageListAdapter(Context context) {
-        super(context, R.layout.common_activity_loacl_image_item);
+        super(context, R.layout.common_activity_loacl_image_item, false);
         size = SizeUtils.dp2px(120);
     }
 
