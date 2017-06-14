@@ -64,9 +64,9 @@ public class MainFourFragment extends BaseFragment implements MainFourFragmentCo
     private void initListener() {
         mAddImageView.setOnClickPicListener(new CustomImageViewGroup.OnClickPicListener() {
             @Override
-            public void OnPicClick(View v, int position) {
+            public void onPicClick(View v, int position) {
                 switch ((int) v.getTag()) {
-                    case 0:
+                    case 0: //add
                         mAlertDialogUtils.createHeadSelectedDialog(mAddImageView, new AlertDialogUtils.SelectedItemListener() {
                             @Override
                             public void onSelectedItem(int position) {
@@ -81,12 +81,7 @@ public class MainFourFragment extends BaseFragment implements MainFourFragmentCo
                             }
                         });
                         break;
-                    case 1:
-                        CustomImageLayout layout = (CustomImageLayout) v;
-                        if (layout.getDeleteMode()) {
-                            mAddImageView.resetLongClick(position);
-                            return;
-                        }
+                    case 1: //点击
                         mPresenter.photoPreview(position);
                         break;
                 }

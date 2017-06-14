@@ -157,15 +157,20 @@ public class CustomImageViewGroup extends ViewGroup implements OnLongClickListen
 
         @Override
         public void onClick(View v) {
+            //取消所有抖动
+            if(resetAllLongClick()){
+                return;
+            }
             if (onClickPicListener != null) {
-                onClickPicListener.OnPicClick(v, position);
+                onClickPicListener.onPicClick(v, position);
             }
         }
 
     }
 
+
     public interface OnClickPicListener {
-        void OnPicClick(View v, int position);
+        void onPicClick(View v, int position);
     }
 
     public void setOnClickPicListener(OnClickPicListener listener) {
@@ -182,6 +187,8 @@ public class CustomImageViewGroup extends ViewGroup implements OnLongClickListen
 
     @Override
     public boolean onLongClick(View v) {
+        //先清理其它所有view的动画
+        resetAllLongClick();
         if (onClickPicListener != null) {
             CustomImageLayout layout = (CustomImageLayout) v;
             layout.showDeleteIcon();
@@ -194,6 +201,24 @@ public class CustomImageViewGroup extends ViewGroup implements OnLongClickListen
         }
         return true; // 此处返回true表示事件不再向下传递,否则会出发onClick事件
     }
+
+
+    private boolean resetAllLongClick() {
+        for (int i = 0; i < getChildCount(); i++) {
+            View view = getChildAt(i);
+            if (view instanceof CustomImageLayout) {
+                CustomImageLayout layout = (CustomImageLayout) view;
+                if (layout.getDeleteMode()) {
+                    layout.clearAnimation();
+                    layout.cancelDelete();
+                    layout.setDeleteMode(false);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     public void resetLongClick(int position) {
         CustomImageLayout layout = (CustomImageLayout) getChildAt(position);
