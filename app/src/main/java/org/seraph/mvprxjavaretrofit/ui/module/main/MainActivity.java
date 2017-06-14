@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity implements MainActivityContract.V
 
     @Override
     public int getContextView() {
-        return R.layout.activity_main;
+        return R.layout.test_activity_main;
     }
 
     @Inject

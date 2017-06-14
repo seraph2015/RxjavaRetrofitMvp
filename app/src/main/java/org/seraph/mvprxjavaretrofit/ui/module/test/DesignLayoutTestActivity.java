@@ -6,13 +6,10 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
-import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
-import com.zhy.adapter.recyclerview.wrapper.LoadMoreWrapper;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
@@ -20,6 +17,7 @@ import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.di.component.test.DaggerDesignLayoutComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
@@ -65,9 +63,6 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
     @Inject
     DesignLayoutAdapter mDesignLayoutAdapter;
 
-    private LoadMoreWrapper mLoadMoreWrapper;
-
-
     @Override
     public void setupActivityComponent() {
         DaggerDesignLayoutComponent.builder().appComponent(AppApplication.getAppComponent())
@@ -86,8 +81,25 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
             }
         });
         mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mDesignLayoutAdapter);
 
-        mDesignLayoutAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+        initListener();
+
+        mPresenter.setView(this);
+        mPresenter.start();
+    }
+
+    /**
+     * 初始化加载更多
+     */
+    public void initListener() {
+        mDesignLayoutAdapter.setLoadMoreListener(new BaseRvListAdapter.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                mPresenter.requestNextPage();
+            }
+        });
+        mDesignLayoutAdapter.setOnItemClickListener(new BaseRvListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 startPhotoPreview(position);
@@ -98,29 +110,6 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
                 return false;
             }
         });
-
-        initLoadMore();
-
-        mPresenter.setView(this);
-        mPresenter.start();
-    }
-
-    /**
-     * 初始化加载更多
-     */
-    public void initLoadMore() {
-        mLoadMoreWrapper = new LoadMoreWrapper(mDesignLayoutAdapter);
-
-        mLoadMoreWrapper.setLoadMoreView(LayoutInflater.from(this).inflate(R.layout.default_foot_more_loading, mRecyclerView, false));
-
-        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                mPresenter.requestNextPage();
-            }
-        });
-
-        mRecyclerView.setAdapter(mLoadMoreWrapper);
     }
 
 
@@ -155,7 +144,6 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
     public void setImageListData(List<ImageBaiduBean.BaiduImage> baiduImages, boolean isMore) {
         PicassoTool.loadNoCache(this, baiduImages.get((int) (Math.random() * baiduImages.size())).objURL, appBarImage);
         mDesignLayoutAdapter.addAllListData(baiduImages);
-        mLoadMoreWrapper.notifyDataSetChanged();
     }
 
 }

@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.adapter;
 
 import android.app.Activity;
+import android.view.View;
 
 import com.blankj.utilcode.util.ScreenUtils;
 
@@ -10,8 +11,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSelfProportionImageView;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
-
-import java.util.ArrayList;
+import org.seraph.mvprxjavaretrofit.utlis.ViewHolder;
 
 import javax.inject.Inject;
 
@@ -27,13 +27,13 @@ public class ImageListBaiduAdapter extends BaseListAdapter<ImageBaiduBean.BaiduI
 
     @Inject
     public ImageListBaiduAdapter(Activity context) {
-        super(context, R.layout.item_image, new ArrayList<ImageBaiduBean.BaiduImage>());
+        super(context, R.layout.test_item_image);
         screenWidth = ScreenUtils.getScreenWidth();
     }
 
     @Override
-    public void bindView(int position, ViewHolder viewHolder, ImageBaiduBean.BaiduImage baiduImage) {
-        CustomSelfProportionImageView imageView = viewHolder.getView(R.id.image);
+    public void bindView(int position, View view, ImageBaiduBean.BaiduImage baiduImage) {
+        CustomSelfProportionImageView imageView = ViewHolder.get(view,R.id.image);
         imageView.setSize(baiduImage.width, baiduImage.height);
         //按照控件的大小来缩放图片的尺寸
         int width = baiduImage.width;

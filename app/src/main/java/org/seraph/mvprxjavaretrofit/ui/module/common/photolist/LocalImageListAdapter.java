@@ -6,12 +6,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SizeUtils;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSquareImageView;
+import org.seraph.mvprxjavaretrofit.utlis.ViewHolderRv;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ class LocalImageListAdapter extends BaseRvListAdapter<LocalImageBean> {
 
 
     @Override
-    protected void bindData(ViewHolder holder, final LocalImageBean localImageBean, final int position) {
+    protected void bindData(ViewHolderRv holder, final LocalImageBean localImageBean, final int position) {
         CustomSquareImageView imageView = holder.getView(R.id.iv_image_item);
         final ImageView tagView = holder.getView(R.id.iv_image_item_tag);
         PicassoTool.loadCache(mContext, new File(localImageBean.path), imageView, size, size);
@@ -55,7 +55,7 @@ class LocalImageListAdapter extends BaseRvListAdapter<LocalImageBean> {
                     }
                     tagView.setVisibility(View.GONE);
                 } else {
-                    if (mSelectedPathList.size() >= 1) {
+                    if (mSelectedPathList.size() >= 9) {
                         Toast.makeText(mContext, "最多选择9张图片！", Toast.LENGTH_SHORT).show();
                         return;
                     }

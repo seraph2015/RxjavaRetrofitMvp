@@ -13,7 +13,7 @@ import java.io.File;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class FileTools {
+public class FileUtils {
 
     /**
      * 获取应用专属缓存目录

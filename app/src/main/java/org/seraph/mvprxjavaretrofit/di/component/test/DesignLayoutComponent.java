@@ -2,7 +2,6 @@ package org.seraph.mvprxjavaretrofit.di.component.test;
 
 import android.content.Context;
 
-import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.component.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
@@ -24,5 +23,4 @@ public interface DesignLayoutComponent {
 
     Context context();
 
-    ApiManager apiManager();
 }

@@ -31,7 +31,7 @@ public class MainThreeFragment extends BaseFragment implements MainThreeFragment
 
     @Override
     public int getContentView() {
-        return R.layout.fragment_three;
+        return R.layout.test_fragment_three;
     }
 
     @Override

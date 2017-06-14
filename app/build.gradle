@@ -4,7 +4,7 @@ apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "org.seraph.mvprxjavaretrofit"
         minSdkVersion 17
@@ -27,7 +27,6 @@ android {
     }
 
 }
-
 
 
 greendao {
@@ -77,6 +76,8 @@ dependencies {
     compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
     //工具集
     compile 'com.blankj:utilcode:1.3.7'
-    //Adapter for RecyclerView 支持多种Item类型
-    compile 'com.zhy:base-rvadapter:3.0.3'
+
+}
+repositories {
+    mavenCentral()
 }

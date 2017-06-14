@@ -10,7 +10,7 @@ import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
 import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
-import org.seraph.mvprxjavaretrofit.utlis.FileTools;
+import org.seraph.mvprxjavaretrofit.utlis.FileUtils;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
 
     @Override
     public void showCacheFilePath() {
-        mView.setTextView(FileTools.getCacheDirectory(mView.getContext(), null).getPath());
+        mView.setTextView(FileUtils.getCacheDirectory(mView.getContext(), null).getPath());
     }
 
     @Override
@@ -120,6 +120,7 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
         }
         //保存搜索到本地数据库
         saveSearchToDB();
+        mView.showLoading("正在搜索");
         getBaiduImageList(searchKeyWord, 1);
     }
 
@@ -135,7 +136,6 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
                     @Override
                     public void accept(Subscription subscription) throws Exception {
                         mSubscription = subscription;
-                        mView.showLoading("正在搜索");
                     }
                 })
                 .map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
@@ -153,9 +153,7 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
                         listImage.addAll(baiduImages);
                         //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
                         if (baiduImages.size() < 48) {
-                            mView.setListFootText(0);
-                        } else {
-                            mView.setListFootText(1);
+                            mView.noMoreData();
                         }
                         pageNo = requestPageNo;
 

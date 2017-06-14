@@ -5,7 +5,7 @@ import android.content.Context;
 import com.squareup.picasso.Picasso;
 
 import org.seraph.mvprxjavaretrofit.AppConfig;
-import org.seraph.mvprxjavaretrofit.utlis.FileTools;
+import org.seraph.mvprxjavaretrofit.utlis.FileUtils;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -21,7 +21,7 @@ public class PicassoFactory {
     public static void initPicassoToOkHttp(Context context) {
         OkHttpClient client = new OkHttpClient
                 .Builder()
-                .cache(new Cache(FileTools.getCacheDirectory(context, null), AppConfig.CACHE_IMAGE_MAX_SIZE))
+                .cache(new Cache(FileUtils.getCacheDirectory(context, null), AppConfig.CACHE_IMAGE_MAX_SIZE))
                 .build();
         Picasso picasso = new Picasso
                 .Builder(context)

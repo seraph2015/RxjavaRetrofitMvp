@@ -37,9 +37,9 @@ interface MainTwoFragmentContract {
         String getSearchKeyWord();
 
         /**
-         * 0是没有更多，1是加载更多
+         * 没有更多数据
          */
-        void setListFootText(int type);
+        void noMoreData();
 
         /**
          * 设置搜索关键字

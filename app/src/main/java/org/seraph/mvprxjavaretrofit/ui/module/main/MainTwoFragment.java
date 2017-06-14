@@ -1,7 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -19,6 +18,7 @@ import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentTwoComponent;
 import org.seraph.mvprxjavaretrofit.di.module.MainFragmentTwoModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseFragment;
+import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
@@ -47,7 +47,6 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     @BindView(R.id.iv_go_top)
     ImageView ivGoTop;
 
-
     Button btnGetCache;
 
     TextView tvCache;
@@ -58,8 +57,6 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
     Button btnPicassoImage;
 
-    TextView tvMore;
-
     @Inject
     MainTwoFragmentPresenter mPresenter;
 
@@ -69,7 +66,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
     @Override
     public int getContentView() {
-        return R.layout.fragment_two;
+        return R.layout.test_fragment_two;
     }
 
     @Override
@@ -80,7 +77,6 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         lvImages.setAdapter(mImageListBaiduAdapter);
-
         lvImages.setScrollListener(ivGoTop);
         addListHeadView();
         rxBinding();
@@ -111,7 +107,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     }
 
     private void addListHeadView() {
-        View headView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_two_list_head, lvImages, false);
+        View headView = LayoutInflater.from(getActivity()).inflate(R.layout.test_fragment_two_list_head, lvImages, false);
         btnGetCache = ButterKnife.findById(headView, R.id.btn_get_cache);
         tvCache = ButterKnife.findById(headView, R.id.tv_cache);
         etSearchKeyword = ButterKnife.findById(headView, R.id.et_search_keyword);
@@ -125,15 +121,6 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
         lvImages.addHeaderView(headView);
     }
 
-
-    private void addListFootView() {
-        View footView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_two_list_foot, lvImages, false);
-
-        tvMore = ButterKnife.findById(footView, R.id.tv_more);
-        tvMore.setOnClickListener(footClick);
-        lvImages.addFooterView(footView);
-    }
-
     @Override
     public void setTextView(CharSequence charSequence) {
         tvCache.setText(charSequence);
@@ -143,6 +130,11 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     @Override
     public String getSearchKeyWord() {
         return etSearchKeyword.getText().toString().trim();
+    }
+
+    @Override
+    public void noMoreData() {
+        mImageListBaiduAdapter.onNoMoreData();
     }
 
     @Override
@@ -163,26 +155,17 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     }
 
 
-    @Override
-    public void setListFootText(int type) {
-        if (lvImages.getFooterViewsCount() == 0) {
-            addListFootView();
-        }
-        if (type == 1) {
-            tvMore.setTextColor(Color.parseColor("#193DFF"));
-            tvMore.setText("加载更多");
-        } else {
-            tvMore.setTextColor(Color.parseColor("#cccccc"));
-            tvMore.setText("没有更多");
-        }
-        tvMore.setTag(type);
-    }
-
     private void initListener() {
         mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 mPresenter.unSubscribe();
+            }
+        });
+        mImageListBaiduAdapter.setLoadMoreListener(new BaseListAdapter.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                mPresenter.loadMoreImage();
             }
         });
     }
@@ -204,15 +187,5 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
             }
         }
     };
-
-    private View.OnClickListener footClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (tvMore.getTag() != null && (int) tvMore.getTag() == 1) {
-                mPresenter.loadMoreImage();
-            }
-        }
-    };
-
 
 }

@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.utlis;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -15,6 +16,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import org.seraph.mvprxjavaretrofit.AppConfig;
 
@@ -26,6 +28,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 通用工具类
@@ -293,6 +297,46 @@ public class Tools {
     public static int getNewHeight(int oldWidth, int oldHeight, int newWidth) {
         return newWidth * oldHeight / oldWidth;
     }
+
+    /**
+     * 使用java正则表达式去掉多余的.与0
+     */
+    public static String subZeroAndDot(float s) {
+        String tempS = String.valueOf(s);
+        if (tempS.indexOf(".") > 0) {
+            tempS = tempS.replaceAll("0+?$", "");//去掉多余的0
+            tempS = tempS.replaceAll("[.]$", "");//如最后一位是.则去掉
+        }
+        return tempS;
+    }
+
+    /**
+     * 设置蒙层的透明度
+     *
+     * @param alpha 0-1之间
+     */
+    public static void setWindowAlpha(Activity activity, float alpha) {
+        // 1. 设置半透明主题
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        // 2. 设置window的alpha值 (0.0 - 1.0)
+        if (alpha < 0) {
+            alpha = 0;
+        } else if (alpha > 1) {
+            alpha = 1;
+        }
+        lp.alpha = alpha;
+        activity.getWindow().setAttributes(lp);
+    }
+
+    /**
+     * 判断此str是否只有数字
+     */
+    public static boolean stringIsNumeric(String str) {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        return isNum.matches();
+    }
+
 
 
 }

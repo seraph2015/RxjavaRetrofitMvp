@@ -36,4 +36,9 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <style name="common_pop_head_selected">
+        <item name="android:windowEnterAnimation">@anim/slide_in_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
+    </style>
+
 </resources>

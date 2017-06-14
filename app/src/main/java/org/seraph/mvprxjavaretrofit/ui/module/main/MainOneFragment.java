@@ -33,7 +33,7 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentCont
 
     @Override
     public int getContentView() {
-        return R.layout.fragment_one;
+        return R.layout.test_fragment_one;
     }
 
     @Inject

@@ -43,7 +43,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
 
     @Override
     public void start() {
-
+        requestRefresh();
     }
 
     @Override

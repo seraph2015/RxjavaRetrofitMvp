@@ -14,6 +14,7 @@ import android.widget.ListAdapter;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
+import org.seraph.mvprxjavaretrofit.utlis.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,8 +171,8 @@ public class WeiBoGridView extends GridView {
 
 
         @Override
-        public void bindView(int position, ViewHolder viewHolder, String imageUrl) {
-            CustomSquareImageView photo = viewHolder.getView(R.id.iv_photo);
+        public void bindView(int position, View view, String imageUrl) {
+            CustomSquareImageView photo =  ViewHolder.get(view,R.id.iv_photo);
             ViewGroup.LayoutParams params = photo.getLayoutParams();
             params.width = mColumnWidth;
             photo.setLayoutParams(params);

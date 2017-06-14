@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_dialog_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_option0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_dialog_item_bg"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="小视频"
+            android:textColor="#666666" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#FFD9D9D9" />
+
+        <TextView
+            android:id="@+id/tv_option1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_dialog_item_bg"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="拍照"
+            android:textColor="#666666" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#FFD9D9D9" />
+
+        <TextView
+            android:id="@+id/tv_option2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_dialog_item_bg"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="从手机相册选择"
+            android:textColor="#666666" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/common_dialog_item_bg"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="取消"
+        android:textColor="#666666"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
