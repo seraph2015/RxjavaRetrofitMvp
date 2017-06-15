@@ -49,6 +49,7 @@ public abstract class BaseRvListAdapter<T> extends RecyclerView.Adapter<ViewHold
     protected List<T> mDatas;
 
     private boolean mIsAutoLoad = true;
+    private boolean mIsMoreData = true;
 
     //默认显示加载更多
     public BaseRvListAdapter(Context context, int layoutId) {
@@ -98,8 +99,6 @@ public abstract class BaseRvListAdapter<T> extends RecyclerView.Adapter<ViewHold
                 ViewHolderRv mFooterHolder = ViewHolderRv.createViewHolder(mContext, parent, R.layout.default_foot_more_loading);
                 tvMore = mFooterHolder.getView(R.id.tv_more);
                 pbMore = mFooterHolder.getView(R.id.pb_more);
-                tvMore.setText("正在加载更多");
-                pbMore.setVisibility(View.VISIBLE);
                 return mFooterHolder;
         }
         return null;
@@ -139,7 +138,7 @@ public abstract class BaseRvListAdapter<T> extends RecyclerView.Adapter<ViewHold
                 bindData(holder, mDatas.get(position), position);
                 break;
             case ITEM_FOOT_VIEW: //底部
-                if (loadMoreListener != null) {
+                if (loadMoreListener != null && mIsMoreData) {
                     loadMoreListener.onLoadMore();
                 }
                 break;
@@ -171,12 +170,16 @@ public abstract class BaseRvListAdapter<T> extends RecyclerView.Adapter<ViewHold
     }
 
 
-    public void onNoMoreData() {
-        if (tvMore != null) {
-            tvMore.setText("没有更多");
-        }
-        if (pbMore != null) {
-            pbMore.setVisibility(View.GONE);
+    public void setIsMoreData(boolean isMoreData) {
+        if (tvMore != null && pbMore != null) {
+            mIsMoreData = isMoreData;
+            if (mIsMoreData) {
+                tvMore.setText("正在加载更多");
+                pbMore.setVisibility(View.VISIBLE);
+            } else {
+                tvMore.setText("没有更多");
+                pbMore.setVisibility(View.GONE);
+            }
         }
     }
 }

@@ -29,32 +29,39 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
     private TextView tvMore;
 
     protected LayoutInflater inflater;
-    protected List<T> data;
+    protected List<T> mDatas;
     protected Context mContext;
     protected int mLayoutId;
 
     protected final int ITEM_DATA_VIEW = 0;
     protected final int ITEM_FOOT_VIEW = 1;
 
-
+    private boolean mIsAutoLoad = true;
+    private boolean mIsMoreData = true;
 
     public BaseListAdapter(Context context, int layoutId) {
-        this(context,layoutId,new ArrayList<T>());
+        this(context, layoutId, new ArrayList<T>());
     }
 
-    public BaseListAdapter(Context context,  int layoutId,List<T> data) {
+    public BaseListAdapter(Context context, int layoutId, List<T> data) {
+        this(context, layoutId, data, true);
+    }
+
+    public BaseListAdapter(Context context, int layoutId, List<T> data, boolean isAutoLoad) {
         inflater = LayoutInflater.from(context);
         this.mContext = context;
-        this.data = data;
+        this.mDatas = data;
         this.mLayoutId = layoutId;
+        mIsAutoLoad = isAutoLoad;
     }
+
 
     @Override
     public int getCount() {
-        if (null == data || data.size() == 0) {
+        if (null == mDatas || mDatas.size() == 0) {
             return 0;
         } else {
-            return data.size() + 1;
+            return mIsAutoLoad ? mDatas.size() + 1 : mDatas.size();
         }
     }
 
@@ -62,7 +69,7 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         //添加自动加载更多view
-        if (position == data.size()) {
+        if (position == mDatas.size() && mIsAutoLoad) {
             return ITEM_FOOT_VIEW;
         } else {
             return ITEM_DATA_VIEW;
@@ -76,10 +83,10 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
 
     @Override
     public T getItem(int position) {
-        if (position == data.size()) {
+        if (position == mDatas.size()) {
             return null;
         }
-        return data.get(position);
+        return mDatas.get(position);
     }
 
     @Override
@@ -104,9 +111,7 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
                 }
                 tvMore = (TextView) convertView.findViewById(R.id.tv_more);
                 pbMore = (ProgressBar) convertView.findViewById(R.id.pb_more);
-                pbMore.setVisibility(View.VISIBLE);
-                tvMore.setText("正在加载更多");
-                if (loadMoreListener != null) {
+                if (loadMoreListener != null && mIsMoreData) {
                     loadMoreListener.onLoadMore();
                 }
                 break;
@@ -119,12 +124,12 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
 
 
     public void addAllListData(List<T> list) {
-        data.clear();
+        mDatas.clear();
         addListData(list);
     }
 
     public void addListData(List<T> list) {
-        data.addAll(list);
+        mDatas.addAll(list);
         notifyDataSetChanged();
     }
 
@@ -132,12 +137,16 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
         this.loadMoreListener = loadMoreListener;
     }
 
-    public void onNoMoreData() {
-        if (tvMore != null) {
-            tvMore.setText("没有更多");
-        }
-        if (pbMore != null) {
-            pbMore.setVisibility(View.GONE);
+    public void setIsMoreData(boolean isMoreData) {
+        if (tvMore != null && pbMore != null) {
+            mIsMoreData = isMoreData;
+            if (mIsMoreData) {
+                tvMore.setText("正在加载更多");
+                pbMore.setVisibility(View.VISIBLE);
+            } else {
+                tvMore.setText("没有更多");
+                pbMore.setVisibility(View.GONE);
+            }
         }
     }
 }
