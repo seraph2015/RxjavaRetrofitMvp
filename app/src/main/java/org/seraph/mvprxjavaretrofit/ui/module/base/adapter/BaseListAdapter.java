@@ -14,7 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by adde on 16/2/23.
+ * baseListView适配器(添加自动加载更多)
+ * date：2017/5/8 09:31
+ * author：xiongj
+ * mail：417753393@qq.com
  * 适配器全局基类(适用于listview)
  */
 public abstract class BaseListAdapter<T> extends BaseAdapter {
