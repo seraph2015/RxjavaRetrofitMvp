@@ -43,6 +43,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
 
     @Override
     public void start() {
+        mView.showLoading("正在请求相册数据");
         requestRefresh();
     }
 
@@ -78,6 +79,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
 
             @Override
             public void accept(List<ImageBaiduBean.BaiduImage> baiduImages) throws Exception {
+                mView.hideLoading();
                 if (tempNo == 1) {
                     mBaiduImages.clear();
                 }
@@ -88,6 +90,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
         }, new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
+                mView.hideLoading();
                 mView.showToast("网络异常");
             }
         });
