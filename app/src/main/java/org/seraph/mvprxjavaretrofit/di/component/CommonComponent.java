@@ -7,6 +7,7 @@ import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity2;
 
 import dagger.Component;
 
@@ -21,7 +22,7 @@ import dagger.Component;
 public interface CommonComponent {
 
     void inject(PhotoPreviewActivity photoPreviewActivity);
-
+    void inject(PhotoPreviewActivity2 photoPreviewActivity2);
     void inject(LocalImageListActivity localImageListActivity);
 
     Activity activity();

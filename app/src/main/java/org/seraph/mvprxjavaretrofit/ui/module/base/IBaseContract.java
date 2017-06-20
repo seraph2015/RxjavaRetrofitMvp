@@ -28,7 +28,7 @@ public interface IBaseContract {
     /**
      * p层
      */
-    interface IBasePresenter<V> {
+    interface IBasePresenter<V extends IBaseView> {
 
         void setView(V v);
 
