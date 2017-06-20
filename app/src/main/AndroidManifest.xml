@@ -29,6 +29,9 @@
         <activity
             android:name=".ui.module.common.photopreview.PhotoPreviewActivity"
           />
+        <activity
+            android:name=".ui.module.common.photopreview.PhotoPreviewActivity2"
+            />
         <!--权限设置-->
         <activity android:name=".ui.module.common.permission.PermissionsActivity" />
         <!--通用获取本地图片-->

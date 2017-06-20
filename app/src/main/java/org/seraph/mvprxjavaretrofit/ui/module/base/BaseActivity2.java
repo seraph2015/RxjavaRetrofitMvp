@@ -38,9 +38,9 @@ public abstract class BaseActivity2<V extends IBaseContract.IBaseView, P extends
         setContentView(getContextView());
         ButterKnife.bind(this);
         setupActivityComponent();
-        initCreate(savedInstanceState);
         initMVP();
         p.setView(v);
+        initCreate(savedInstanceState);
     }
 
     protected void initMVP() {

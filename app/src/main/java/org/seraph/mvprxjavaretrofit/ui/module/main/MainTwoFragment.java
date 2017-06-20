@@ -20,6 +20,7 @@ import org.seraph.mvprxjavaretrofit.di.module.MainFragmentTwoModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity2;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
@@ -159,7 +160,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
     @Override
     public void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position) {
-        PhotoPreviewActivity.startPhotoPreview(getActivity(), photoList, position - 1, PhotoPreviewActivity.IMAGE_TYPE_NETWORK);
+        PhotoPreviewActivity2.startPhotoPreview(getActivity(), photoList, position - 1, PhotoPreviewActivity.IMAGE_TYPE_NETWORK);
     }
 
     @Override
