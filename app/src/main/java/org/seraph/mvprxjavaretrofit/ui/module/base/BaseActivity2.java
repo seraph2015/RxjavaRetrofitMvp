@@ -28,9 +28,8 @@ public abstract class BaseActivity2<V extends IBaseContract.IBaseView, P extends
 
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
 
-    protected V v;
-
-    protected P p;
+    //在base里面初始化和设置一些通用操作
+    private P p;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,13 +38,12 @@ public abstract class BaseActivity2<V extends IBaseContract.IBaseView, P extends
         ButterKnife.bind(this);
         setupActivityComponent();
         initMVP();
-        p.setView(v);
         initCreate(savedInstanceState);
     }
 
     protected void initMVP() {
-        this.v = getMVPView();
         this.p = getMVPPresenter();
+        p.setView(getMVPView());
     }
 
     protected abstract P getMVPPresenter();
