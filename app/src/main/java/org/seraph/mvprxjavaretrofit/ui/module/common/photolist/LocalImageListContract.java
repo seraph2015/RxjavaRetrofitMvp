@@ -2,8 +2,7 @@ package org.seraph.mvprxjavaretrofit.ui.module.common.photolist;
 
 import android.content.Intent;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBasePresenter;
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseView;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public interface LocalImageListContract {
+public interface LocalImageListContract extends IBaseContract {
 
 
     interface View extends IBaseView {

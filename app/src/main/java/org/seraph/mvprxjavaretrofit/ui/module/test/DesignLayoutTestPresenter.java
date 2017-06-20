@@ -2,7 +2,7 @@ package org.seraph.mvprxjavaretrofit.ui.module.test;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
-import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.util.ArrayList;

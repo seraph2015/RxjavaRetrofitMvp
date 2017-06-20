@@ -1,7 +1,6 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBasePresenter;
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseView;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
 /**
@@ -10,7 +9,7 @@ import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-interface MainActivityContract {
+public interface MainActivityContract extends IBaseContract {
 
     interface View extends IBaseView {
 

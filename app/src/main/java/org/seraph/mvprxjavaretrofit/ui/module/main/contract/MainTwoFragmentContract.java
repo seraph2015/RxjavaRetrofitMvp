@@ -1,8 +1,8 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBasePresenter;
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseView;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-interface MainTwoFragmentContract {
+public interface MainTwoFragmentContract extends IBaseContract {
 
     interface Presenter extends IBasePresenter<View> {
 
@@ -37,11 +37,6 @@ interface MainTwoFragmentContract {
         String getSearchKeyWord();
 
         /**
-         * 没有更多数据
-         */
-        void noMoreData();
-
-        /**
          * 设置搜索关键字
          */
         void setSearchInput(String item);
@@ -51,6 +46,6 @@ interface MainTwoFragmentContract {
          */
         void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position);
 
-        void requestData(List<ImageBaiduBean.BaiduImage> listImage);
+        void requestData(List<ImageBaiduBean.BaiduImage> listImage, boolean isMore);
     }
 }

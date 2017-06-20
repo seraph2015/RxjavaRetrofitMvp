@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
-import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 import org.seraph.mvprxjavaretrofit.utlis.ViewHolderRv;
 

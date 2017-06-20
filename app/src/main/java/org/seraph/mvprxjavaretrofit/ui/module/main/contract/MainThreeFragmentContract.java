@@ -1,7 +1,6 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBasePresenter;
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseView;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 
 /**
  * 第3个界面
@@ -9,7 +8,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseView;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-interface MainThreeFragmentContract {
+public interface MainThreeFragmentContract extends IBaseContract {
 
 
     interface View extends IBaseView {

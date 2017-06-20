@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.model;
 
 import java.io.Serializable;
 import java.util.List;

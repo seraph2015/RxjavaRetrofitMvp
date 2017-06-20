@@ -1,9 +1,10 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import android.content.Intent;
 import android.net.Uri;
 
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainFourFragmentContract;
 import org.seraph.mvprxjavaretrofit.utlis.TakePhoto;
 
 import java.util.ArrayList;

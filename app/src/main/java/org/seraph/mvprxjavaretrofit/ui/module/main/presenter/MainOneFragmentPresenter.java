@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
@@ -8,6 +8,7 @@ import org.seraph.mvprxjavaretrofit.data.local.db.gen.UserTableDao;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseData;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
+import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
 
 import java.util.List;
@@ -22,7 +23,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class MainOneFragmentPresenter implements MainOneFragmentContract.Presenter {
+public class MainOneFragmentPresenter implements MainOneFragmentContract.Presenter {
 
 
     private MainOneFragmentContract.View mView;

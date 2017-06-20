@@ -2,8 +2,8 @@ package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
 import android.content.Intent;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBasePresenter;
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseView;
+
+import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-interface PhotoPreviewContract{
+interface PhotoPreviewContract extends IBaseContract{
 
     /**
      * 操作ui

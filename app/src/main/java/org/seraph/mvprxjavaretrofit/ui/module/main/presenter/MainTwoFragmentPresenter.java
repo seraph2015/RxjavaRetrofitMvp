@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,6 +10,8 @@ import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
 import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
 import org.seraph.mvprxjavaretrofit.utlis.FileUtils;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -27,7 +29,7 @@ import io.reactivex.functions.Function;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
+public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
 
     private MainTwoFragmentContract.View mView;
 
@@ -126,7 +128,7 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
 
     @Override
     public void loadMoreImage() {
-        getBaiduImageList(searchKeyWord, ++pageNo);
+        getBaiduImageList(searchKeyWord, pageNo + 1);
     }
 
     private void getBaiduImageList(String keyWord, final int requestPageNo) {
@@ -152,12 +154,8 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
                         }
                         listImage.addAll(baiduImages);
                         //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
-                        if (baiduImages.size() < 48) {
-                            mView.noMoreData();
-                        }
+                        mView.requestData(listImage, baiduImages.size() < 48);
                         pageNo = requestPageNo;
-
-                        mView.requestData(listImage);
                     }
 
                     @Override
@@ -167,7 +165,6 @@ class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
 
                 });
     }
-
 
 
     @Override

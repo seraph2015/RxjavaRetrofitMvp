@@ -1,6 +1,6 @@
 package org.seraph.mvprxjavaretrofit.data.network.service;
 
-import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 
 import io.reactivex.Flowable;
 import retrofit2.http.GET;

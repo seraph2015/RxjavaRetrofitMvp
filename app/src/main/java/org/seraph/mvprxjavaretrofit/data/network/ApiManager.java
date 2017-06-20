@@ -1,7 +1,7 @@
 package org.seraph.mvprxjavaretrofit.data.network;
 
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
-import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
 
 import javax.inject.Inject;

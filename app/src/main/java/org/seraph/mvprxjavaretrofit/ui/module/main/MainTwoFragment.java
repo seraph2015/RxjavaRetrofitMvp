@@ -22,6 +22,9 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
+import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainTwoFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.ui.views.GoTopListView;
 
 import java.util.ArrayList;
@@ -31,6 +34,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -46,23 +50,46 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     GoTopListView lvImages;
     @BindView(R.id.iv_go_top)
     ImageView ivGoTop;
-
-    Button btnGetCache;
-
-    TextView tvCache;
-
-    EditText etSearchKeyword;
-
-    Button btnSearchHistory;
-
-    Button btnPicassoImage;
-
     @Inject
     MainTwoFragmentPresenter mPresenter;
 
     @Inject
     ImageListBaiduAdapter mImageListBaiduAdapter;
 
+
+    class HeadViewHolder {
+
+        @BindView(R.id.tv_cache)
+        TextView tvCache;
+        @BindView(R.id.et_search_keyword)
+        EditText etSearchKeyword;
+        @BindView(R.id.btn_picasso_image)
+        Button btnPicassoImage;
+
+
+        HeadViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+
+        @OnClick(value = {R.id.btn_get_cache, R.id.btn_search_history, R.id.btn_picasso_image})
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_get_cache:
+                    mPresenter.showCacheFilePath();
+                    break;
+                case R.id.btn_search_history:
+                    mPresenter.searchHistory();
+                    break;
+                case R.id.btn_picasso_image:
+                    mPresenter.startPicassoToImage();
+                    break;
+            }
+        }
+
+
+    }
+
+    private HeadViewHolder headViewholder;
 
     @Override
     public int getContentView() {
@@ -87,13 +114,13 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     }
 
     protected void rxBinding() {
-        RxTextView.textChanges(etSearchKeyword).subscribe(new Consumer<CharSequence>() {
+        RxTextView.textChanges(headViewholder.etSearchKeyword).subscribe(new Consumer<CharSequence>() {
             @Override
             public void accept(CharSequence charSequence) throws Exception {
                 if (charSequence.length() > 0) {
-                    btnPicassoImage.setEnabled(true);
+                    headViewholder.btnPicassoImage.setEnabled(true);
                 } else {
-                    btnPicassoImage.setEnabled(false);
+                    headViewholder.btnPicassoImage.setEnabled(false);
                 }
             }
         });
@@ -108,38 +135,25 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
     private void addListHeadView() {
         View headView = LayoutInflater.from(getActivity()).inflate(R.layout.test_fragment_two_list_head, lvImages, false);
-        btnGetCache = ButterKnife.findById(headView, R.id.btn_get_cache);
-        tvCache = ButterKnife.findById(headView, R.id.tv_cache);
-        etSearchKeyword = ButterKnife.findById(headView, R.id.et_search_keyword);
-        btnSearchHistory = ButterKnife.findById(headView, R.id.btn_search_history);
-        btnPicassoImage = ButterKnife.findById(headView, R.id.btn_picasso_image);
-
-        btnGetCache.setOnClickListener(headClick);
-        btnSearchHistory.setOnClickListener(headClick);
-        btnPicassoImage.setOnClickListener(headClick);
-
+        headViewholder = new HeadViewHolder(headView);
         lvImages.addHeaderView(headView);
     }
 
     @Override
     public void setTextView(CharSequence charSequence) {
-        tvCache.setText(charSequence);
+        headViewholder.tvCache.setText(charSequence);
     }
 
 
     @Override
     public String getSearchKeyWord() {
-        return etSearchKeyword.getText().toString().trim();
+        return headViewholder.etSearchKeyword.getText().toString().trim();
     }
 
-    @Override
-    public void noMoreData() {
-        mImageListBaiduAdapter.onNoMoreData();
-    }
 
     @Override
     public void setSearchInput(String item) {
-        etSearchKeyword.setText(item);
+        headViewholder.etSearchKeyword.setText(item);
     }
 
 
@@ -149,9 +163,10 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
     }
 
     @Override
-    public void requestData(List<ImageBaiduBean.BaiduImage> listImage) {
+    public void requestData(List<ImageBaiduBean.BaiduImage> listImage, boolean isMore) {
         //请求的数据
         mImageListBaiduAdapter.addAllListData(listImage);
+        mImageListBaiduAdapter.setIsMoreData(isMore);
     }
 
 
@@ -170,22 +185,5 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
         });
     }
 
-
-    private View.OnClickListener headClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btn_get_cache:
-                    mPresenter.showCacheFilePath();
-                    break;
-                case R.id.btn_search_history:
-                    mPresenter.searchHistory();
-                    break;
-                case R.id.btn_picasso_image:
-                    mPresenter.startPicassoToImage();
-                    break;
-            }
-        }
-    };
 
 }

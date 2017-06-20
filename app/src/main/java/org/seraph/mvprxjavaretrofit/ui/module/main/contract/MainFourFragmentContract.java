@@ -1,9 +1,8 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
 import android.content.Intent;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBasePresenter;
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseView;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ import java.util.ArrayList;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public interface MainFourFragmentContract {
+public interface MainFourFragmentContract extends IBaseContract {
 
     interface View extends IBaseView {
 

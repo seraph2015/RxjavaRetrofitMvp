@@ -1,7 +1,8 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
+import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainThreeFragmentContract;
 
 import javax.inject.Inject;
 
@@ -13,7 +14,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class MainThreeFragmentPresenter implements MainThreeFragmentContract.Presenter {
+public class MainThreeFragmentPresenter implements MainThreeFragmentContract.Presenter {
 
 
     private MainThreeFragmentContract.View mView;

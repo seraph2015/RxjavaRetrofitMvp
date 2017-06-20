@@ -1,7 +1,12 @@
-package org.seraph.mvprxjavaretrofit.ui.module.main;
+package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import android.support.v4.app.Fragment;
 
+import org.seraph.mvprxjavaretrofit.ui.module.main.MainFourFragment;
+import org.seraph.mvprxjavaretrofit.ui.module.main.MainOneFragment;
+import org.seraph.mvprxjavaretrofit.ui.module.main.MainThreeFragment;
+import org.seraph.mvprxjavaretrofit.ui.module.main.MainTwoFragment;
+import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
 import java.util.concurrent.TimeUnit;
@@ -18,7 +23,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class MainActivityPresenter implements MainActivityContract.Presenter {
+public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     private MainActivityContract.View mView;
 

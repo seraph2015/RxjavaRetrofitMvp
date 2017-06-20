@@ -20,7 +20,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.BaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
-import org.seraph.mvprxjavaretrofit.ui.module.main.ImageBaiduBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,6 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
     AppBarLayout appbar;
     @BindView(R.id.rv_data)
     RecyclerView mRecyclerView;
-
 
     @Override
     public int getContextView() {

@@ -11,6 +11,8 @@ import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseFragment;
+import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
+import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainOneFragmentPresenter;
 
 import javax.inject.Inject;
 
