@@ -220,13 +220,12 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
 
     }
 
-
     /**
      * 权限请求返回
      */
     @Override
-    public void onActivityResult(int requestCode) {
-        if (requestCode == PermissionsActivity.PERMISSIONS_GRANTED) {
+    public void onPermissionsRequest(int resultCode) {
+        if (resultCode == PermissionsActivity.PERMISSIONS_GRANTED) {
             imageDownload();
         } else {
             mView.showToast("权限请求失败，无法保存图片");

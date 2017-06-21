@@ -100,8 +100,6 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
     }
 
 
-
-
     private void initViewPager() {
         vpPhotoPreview.setOnPageSelectedListener(new ImageViewTouchViewPager.OnPageSelectedListener() {
             @Override
@@ -151,7 +149,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.PERMISSIONS_CODE_REQUEST_1) {
-            mPresenter.onActivityResult(resultCode);
+            mPresenter.onPermissionsRequest(resultCode);
         }
     }
 

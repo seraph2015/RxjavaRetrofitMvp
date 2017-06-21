@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-interface PhotoPreviewContract extends IBaseContract{
+interface PhotoPreviewContract extends IBaseContract {
 
     /**
      * 操作ui
@@ -38,9 +38,9 @@ interface PhotoPreviewContract extends IBaseContract{
 
     interface Presenter extends IBasePresenter<View> {
 
-        void saveImage();
+        void onPermissionsRequest(int resultCode);
 
-        void onActivityResult(int requestCode);
+        void saveImage();
 
         void unSubscribe();
 

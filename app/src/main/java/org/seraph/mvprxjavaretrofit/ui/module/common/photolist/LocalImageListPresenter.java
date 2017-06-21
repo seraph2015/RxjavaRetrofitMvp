@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 
 import org.seraph.mvprxjavaretrofit.AppConfig;
+import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionManagement;
+import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -51,10 +53,27 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
 
     }
 
+    @Override
+    public void onPermissionsRequest(int resultCode) {
+        switch (resultCode) {
+            case PermissionsActivity.PERMISSIONS_GRANTED://权限授权
+                startAsyncQuery();
+                break;
+            case PermissionsActivity.PERMISSIONS_DENIED://权限拒绝
+                mView.showToast("获取授权失败");
+                break;
+        }
+    }
+
     /**
      * 查询
      */
     private void startAsyncQuery() {
+        //检查读取存储卡的权限
+        if (PermissionManagement.lacksPermissions(mView.getContext(), AppConfig.PERMISSIONS_SDCARD)) {
+            mView.requestPermission(AppConfig.PERMISSIONS_SDCARD);
+            return;
+        }
         mQueryHandler.startQuery(AppConfig.PERMISSIONS_CODE_REQUEST_1, null, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionImages, null, null, "date_modified DESC");
     }
 

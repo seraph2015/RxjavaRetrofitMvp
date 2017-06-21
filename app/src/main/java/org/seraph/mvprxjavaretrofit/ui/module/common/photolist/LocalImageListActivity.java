@@ -1,6 +1,8 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photolist;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,10 +14,12 @@ import android.view.MenuItem;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
+import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +32,7 @@ import io.reactivex.functions.Consumer;
 /**
  * 显示并且选择本地图片的类，结果以List传出
  */
-public class LocalImageListActivity extends ABaseActivity<LocalImageListContract.View,LocalImageListContract.Presenter> implements LocalImageListContract.View {
+public class LocalImageListActivity extends ABaseActivity<LocalImageListContract.View, LocalImageListContract.Presenter> implements LocalImageListContract.View {
 
 
     @BindView(R.id.toolbar)
@@ -118,5 +122,17 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
         mImageListAdapter.setSelectedPathList(arrayList);
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void requestPermission(String[] permissions) {
+        PermissionsActivity.startActivityForResult(this, AppConfig.PERMISSIONS_CODE_REQUEST_1, permissions);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == AppConfig.PERMISSIONS_CODE_REQUEST_1){
+            mPresenter.onPermissionsRequest(resultCode);
+        }
+    }
 }
