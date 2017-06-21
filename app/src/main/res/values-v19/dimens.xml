@@ -1,6 +1,4 @@
 <resources>
-    <!--可侵入状态栏高度-->
-    <dimen name="statusbar_h">24dp</dimen>
 
     <!--toolbar高度（正常）56dp + 可侵入状态栏高度 24dp-->
     <dimen name="toolbar_h">80dp</dimen>
@@ -11,5 +9,6 @@
     <dimen name="toolbar_h_min">68dp</dimen>
     <!--toolbar icon距离顶部的内边距 24dp-(56dp-44dp)/2 ， (正常56高度对应的为24dp，icon默认有内边距所以无法使用24dp)-->
     <dimen name="toolbar_top_padding_min">18dp</dimen>
-
+    <!-- toolbar内添加的布局padding没有内边距 需要加补齐24dp (24dp-18dp)-->
+    <dimen name="toolbar_top_padding_text_min">6dp</dimen>
 </resources>

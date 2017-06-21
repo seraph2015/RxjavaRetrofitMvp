@@ -21,7 +21,7 @@
         android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingTop="@dimen/statusbar_h">
+        android:paddingTop="@dimen/toolbar_top_padding">
 
         <TextView
             android:id="@+id/tv_progress"

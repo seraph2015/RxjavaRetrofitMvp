@@ -15,8 +15,8 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_h"
-                android:paddingTop="@dimen/statusbar_h"
+                android:layout_height="@dimen/toolbar_h_min"
+                android:paddingTop="@dimen/toolbar_top_padding_min"
                 app:navigationIcon="@drawable/common_ic_arrow_back_black_24dp"
                 app:title=" ">
 
@@ -25,6 +25,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:paddingTop="@dimen/toolbar_top_padding_text_min"
                     android:text="选择图片"
                     android:textColor="#ffffff"
                     android:textSize="20sp" />

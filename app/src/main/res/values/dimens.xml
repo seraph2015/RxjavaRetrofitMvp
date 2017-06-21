@@ -1,6 +1,4 @@
 <resources>
-    <!--可侵入状态栏高度-->
-    <dimen name="statusbar_h">0dp</dimen>
 
     <!--toolbar高度（正常）-->
     <dimen name="toolbar_h">56dp</dimen>
@@ -10,6 +8,8 @@
     <dimen name="toolbar_h_min">44dp</dimen>
     <!--toolbar icon距离顶部的内边距 0dp-(56dp-44dp)/2 ， (在没有侵入状态栏的时候正常56高度对应的为0dp，icon默认有内边距所以无法使用0dp)-->
     <dimen name="toolbar_top_padding_min">-6dp</dimen>
+    <!-- toolbar内添加的布局padding没有内边距 需要加补齐到0dp (0dp-(-6dp))-->
+    <dimen name="toolbar_top_padding_text_min">6dp</dimen>
 
     <!--FloatingActionButton的margin-->
     <dimen name="fab_margin">0dp</dimen>
