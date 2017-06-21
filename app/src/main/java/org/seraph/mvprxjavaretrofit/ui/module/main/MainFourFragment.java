@@ -11,7 +11,7 @@ import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseFragment;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainFourFragmentContract;
@@ -34,7 +34,7 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainFourFragment extends BaseFragment<MainFourFragmentContract.View,MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
+public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.View,MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
 
     @BindView(R.id.vg_add_image_group)
     CustomImageViewGroup mAddImageView;
@@ -52,11 +52,6 @@ public class MainFourFragment extends BaseFragment<MainFourFragmentContract.View
     @Override
     protected MainFourFragmentContract.Presenter getMVPPresenter() {
         return mPresenter;
-    }
-
-    @Override
-    protected MainFourFragmentContract.View getMVPView() {
-        return this;
     }
 
 

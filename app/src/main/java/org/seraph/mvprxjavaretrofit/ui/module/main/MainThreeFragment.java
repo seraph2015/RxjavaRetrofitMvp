@@ -8,7 +8,7 @@ import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseFragment;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainThreeFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainThreeFragmentPresenter;
 
@@ -23,7 +23,7 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainThreeFragment extends BaseFragment<MainThreeFragmentContract.View,MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View{
+public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.View,MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View{
 
     @BindView(R.id.tv_https_value)
     TextView tvHttpsValue;
@@ -39,11 +39,6 @@ public class MainThreeFragment extends BaseFragment<MainThreeFragmentContract.Vi
     @Override
     protected MainThreeFragmentContract.Presenter getMVPPresenter() {
         return mPresenter;
-    }
-
-    @Override
-    protected MainThreeFragmentContract.View getMVPView() {
-        return this;
     }
 
     @Override

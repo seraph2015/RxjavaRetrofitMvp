@@ -14,7 +14,7 @@ import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActivity;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
 
@@ -29,7 +29,7 @@ import butterknife.OnClick;
 /**
  * 图片查看器
  */
-public class PhotoPreviewActivity extends BaseActivity<PhotoPreviewContract.View, PhotoPreviewContract.Presenter> implements PhotoPreviewContract.View {
+public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.View, PhotoPreviewContract.Presenter> implements PhotoPreviewContract.View {
 
     @BindView(R.id.vp_photo_preview)
     ImageViewTouchViewPager vpPhotoPreview;
@@ -70,11 +70,6 @@ public class PhotoPreviewActivity extends BaseActivity<PhotoPreviewContract.View
     @Override
     protected PhotoPreviewContract.Presenter getMVPPresenter() {
         return mPresenter;
-    }
-
-    @Override
-    protected PhotoPreviewContract.View getMVPView() {
-        return this;
     }
 
     @Override

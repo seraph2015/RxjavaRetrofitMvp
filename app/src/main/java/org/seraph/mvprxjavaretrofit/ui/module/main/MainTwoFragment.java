@@ -16,7 +16,7 @@ import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentTwoComponent;
 import org.seraph.mvprxjavaretrofit.di.module.MainFragmentTwoModule;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseFragment;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
@@ -42,7 +42,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainTwoFragment extends BaseFragment<MainTwoFragmentContract.View, MainTwoFragmentContract.Presenter> implements MainTwoFragmentContract.View {
+public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View, MainTwoFragmentContract.Presenter> implements MainTwoFragmentContract.View {
 
 
     @BindView(R.id.lv_images)
@@ -102,12 +102,6 @@ public class MainTwoFragment extends BaseFragment<MainTwoFragmentContract.View, 
     protected MainTwoFragmentContract.Presenter getMVPPresenter() {
         return mPresenter;
     }
-
-    @Override
-    protected MainTwoFragmentContract.View getMVPView() {
-        return this;
-    }
-
 
     @Override
     public void setupActivityComponent() {

@@ -15,7 +15,7 @@ import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import io.reactivex.functions.Consumer;
 /**
  * 显示并且选择本地图片的类，结果以List传出
  */
-public class LocalImageListActivity extends BaseActivity<LocalImageListContract.View,LocalImageListContract.Presenter> implements LocalImageListContract.View {
+public class LocalImageListActivity extends ABaseActivity<LocalImageListContract.View,LocalImageListContract.Presenter> implements LocalImageListContract.View {
 
 
     @BindView(R.id.toolbar)
@@ -54,11 +54,6 @@ public class LocalImageListActivity extends BaseActivity<LocalImageListContract.
     @Override
     protected LocalImageListContract.Presenter getMVPPresenter() {
         return mPresenter;
-    }
-
-    @Override
-    protected LocalImageListContract.View getMVPView() {
-        return this;
     }
 
     @Inject

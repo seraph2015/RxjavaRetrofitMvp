@@ -9,7 +9,7 @@ import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseFragment;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainOneFragmentPresenter;
 
@@ -24,7 +24,7 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainOneFragment extends BaseFragment<MainOneFragmentContract.View, MainOneFragmentContract.Presenter> implements MainOneFragmentContract.View {
+public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.View, MainOneFragmentContract.Presenter> implements MainOneFragmentContract.View {
 
 
     @BindView(R.id.tv_content)
@@ -43,11 +43,6 @@ public class MainOneFragment extends BaseFragment<MainOneFragmentContract.View, 
     @Override
     protected MainOneFragmentContract.Presenter getMVPPresenter() {
         return mPresenter;
-    }
-
-    @Override
-    protected MainOneFragmentContract.View getMVPView() {
-        return this;
     }
 
 

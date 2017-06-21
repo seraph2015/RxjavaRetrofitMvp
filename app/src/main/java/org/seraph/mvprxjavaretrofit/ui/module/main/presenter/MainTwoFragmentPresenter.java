@@ -8,7 +8,7 @@ import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.SearchHistoryTableDao;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
 import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseNetWorkSubscriber;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
@@ -146,7 +146,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
                         return imageBaiduBean.imgs;
                     }
                 })
-                .subscribe(new BaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>, MainTwoFragmentContract.View>(mView) {
+                .subscribe(new ABaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>, MainTwoFragmentContract.View>(mView) {
                     @Override
                     public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
                         if (requestPageNo == 1) {

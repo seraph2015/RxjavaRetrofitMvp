@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class BaseActivity2<V extends IBaseContract.IBaseView, P extends IBaseContract.IBasePresenter<V>> extends AppCompatActivity implements IBaseContract.IBaseView {
+public abstract class ABaseActivity<V extends IBaseContract.IBaseView, P extends IBaseContract.IBasePresenter<V>> extends AppCompatActivity implements IBaseContract.IBaseView {
 
     @Inject
     protected CustomLoadingDialog mLoadingDialog;
@@ -57,7 +57,6 @@ public abstract class BaseActivity2<V extends IBaseContract.IBaseView, P extends
                 e1.printStackTrace();
             }
         }
-
     }
 
 

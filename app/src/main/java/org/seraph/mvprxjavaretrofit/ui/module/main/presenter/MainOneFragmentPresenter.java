@@ -2,7 +2,7 @@ package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseNetWorkSubscriber;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.UserTableDao;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.UserTable;
@@ -71,7 +71,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
                 mSubscription = subscription;
                 mView.showLoading("正在登陆...");
             }
-        }).subscribe(new BaseNetWorkSubscriber<BaseDataResponse<UserBean>,MainOneFragmentContract.View>(mView) {
+        }).subscribe(new ABaseNetWorkSubscriber<BaseDataResponse<UserBean>,MainOneFragmentContract.View>(mView) {
             @Override
             public void onSuccess(BaseDataResponse<UserBean> baseDataResponse) {
                 baseData = baseDataResponse.data;

@@ -23,13 +23,11 @@ import butterknife.Unbinder;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class BaseFragment<V extends IBaseContract.IBaseView, P extends IBaseContract.IBasePresenter<V>> extends Fragment implements IBaseContract.IBaseView{
+public abstract class ABaseFragment<V extends IBaseContract.IBaseView, P extends IBaseContract.IBasePresenter<V>> extends Fragment implements IBaseContract.IBaseView{
 
     public abstract int getContextView();
 
     protected abstract P getMVPPresenter();
-
-    protected abstract V getMVPView();
 
     public abstract void setupActivityComponent();
 
@@ -55,9 +53,18 @@ public abstract class BaseFragment<V extends IBaseContract.IBaseView, P extends 
         return rootView;
     }
 
+    @SuppressWarnings("unchecked")
     private void initMVP() {
-        this.p = getMVPPresenter();
-        p.setView(getMVPView());
+        p = getMVPPresenter();
+        try {
+            p.setView((V) this);
+        } catch (ClassCastException e) {
+            try {
+                throw new Exception("子类必须实现IBaseContract.IBaseView接口");
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     @Override

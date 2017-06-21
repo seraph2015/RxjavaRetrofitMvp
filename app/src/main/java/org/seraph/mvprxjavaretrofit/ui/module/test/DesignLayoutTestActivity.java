@@ -16,7 +16,7 @@ import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.di.component.test.DaggerDesignLayoutComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
@@ -37,7 +37,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class DesignLayoutTestActivity extends BaseActivity<DesignLayoutTestContract.View,DesignLayoutTestContract.Presenter> implements DesignLayoutTestContract.View {
+public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestContract.View,DesignLayoutTestContract.Presenter> implements DesignLayoutTestContract.View {
 
     @BindView(R.id.app_bar_image)
     ImageView appBarImage;
@@ -59,11 +59,6 @@ public class DesignLayoutTestActivity extends BaseActivity<DesignLayoutTestContr
     @Override
     protected DesignLayoutTestContract.Presenter getMVPPresenter() {
         return mPresenter;
-    }
-
-    @Override
-    protected DesignLayoutTestContract.View getMVPView() {
-        return this;
     }
 
     @Inject
@@ -92,7 +87,6 @@ public class DesignLayoutTestActivity extends BaseActivity<DesignLayoutTestContr
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mDesignLayoutAdapter);
         initListener();
-
         mPresenter.start();
     }
 

@@ -12,7 +12,7 @@ import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter;
 import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
@@ -28,7 +28,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainActivity extends BaseActivity<MainActivityContract.View, MainActivityContract.Presenter> implements MainActivityContract.View {
+public class MainActivity extends ABaseActivity<MainActivityContract.View, MainActivityContract.Presenter> implements MainActivityContract.View {
 
 
     @BindView(R.id.bnv_main)
@@ -48,12 +48,6 @@ public class MainActivity extends BaseActivity<MainActivityContract.View, MainAc
     protected MainActivityContract.Presenter getMVPPresenter() {
         return mPresenter;
     }
-
-    @Override
-    protected MainActivityContract.View getMVPView() {
-        return null;
-    }
-
 
     @Inject
     FragmentController fragmentController;
