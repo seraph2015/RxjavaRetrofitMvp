@@ -76,7 +76,7 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         toolbar.setTitle("Tomia相册");
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setNavigationIcon(R.drawable.common_ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
         RxToolbar.navigationClicks(toolbar).subscribe(new Consumer<Object>() {
             @Override

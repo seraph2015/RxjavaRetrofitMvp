@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_h_min"
             android:paddingTop="@dimen/toolbar_top_padding_min"
-            app:navigationIcon="@mipmap/ic_action_name" />
+            app:navigationIcon="@drawable/test_ic_gesture_24dp" />
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
@@ -28,8 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        app:itemBackground="@drawable/main_bottom_bg"
+        app:itemBackground="@drawable/test_main_bottom_bg"
         app:itemIconTint="@color/main_bottom_icon_color"
         app:itemTextColor="@color/main_bottom_text_color"
-        app:menu="@menu/menu_main" />
+        app:menu="@menu/test_menu_main" />
 </LinearLayout>

@@ -70,11 +70,11 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                 break;
             case 2:
                 clazz = MainThreeFragment.class;
-                mView.setTitle("HTTPS TEST");
+                mView.setTitle("HTTPS");
                 break;
             case 3:
                 clazz = MainFourFragment.class;
-                mView.setTitle("TEST");
+                mView.setTitle("其它");
                 break;
             default:
                 clazz = MainOneFragment.class;

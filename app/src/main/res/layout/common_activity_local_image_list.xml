@@ -17,7 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_h"
                 android:paddingTop="@dimen/statusbar_h"
-                app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+                app:navigationIcon="@drawable/common_ic_arrow_back_black_24dp"
                 app:title=" ">
 
                 <TextView
