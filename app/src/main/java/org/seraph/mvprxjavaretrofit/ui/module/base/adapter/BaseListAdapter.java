@@ -126,13 +126,15 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
     public abstract void bindView(int position, View view, T t);
 
 
-    public void addAllListData(List<T> list) {
+    public void addAllListData(List<T> listData) {
         mDatas.clear();
-        addListData(list);
+        addListData(listData);
     }
 
-    public void addListData(List<T> list) {
-        mDatas.addAll(list);
+    public void addListData(List<T> listData) {
+        if (listData != null) {
+            mDatas.addAll(listData);
+        }
         notifyDataSetChanged();
     }
 

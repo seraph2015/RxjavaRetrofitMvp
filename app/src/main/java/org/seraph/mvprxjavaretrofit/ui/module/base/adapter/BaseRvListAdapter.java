@@ -152,7 +152,9 @@ public abstract class BaseRvListAdapter<T> extends RecyclerView.Adapter<ViewHold
     }
 
     public void addListData(List<T> listData) {
-        mDatas.addAll(listData);
+        if (listData != null) {
+            mDatas.addAll(listData);
+        }
         notifyDataSetChanged();
     }
 
