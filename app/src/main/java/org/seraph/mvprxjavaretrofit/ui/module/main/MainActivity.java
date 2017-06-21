@@ -28,7 +28,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainActivity extends BaseActivity<MainActivityContract.View,MainActivityContract.Presenter> implements MainActivityContract.View {
+public class MainActivity extends BaseActivity<MainActivityContract.View, MainActivityContract.Presenter> implements MainActivityContract.View {
 
 
     @BindView(R.id.bnv_main)
@@ -51,8 +51,9 @@ public class MainActivity extends BaseActivity<MainActivityContract.View,MainAct
 
     @Override
     protected MainActivityContract.View getMVPView() {
-        return this;
+        return null;
     }
+
 
     @Inject
     FragmentController fragmentController;

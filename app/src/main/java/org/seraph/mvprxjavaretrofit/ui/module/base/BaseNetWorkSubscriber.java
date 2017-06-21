@@ -14,7 +14,7 @@ import org.seraph.mvprxjavaretrofit.utlis.NetWorkUtils;
  **/
 public abstract class BaseNetWorkSubscriber<T, V extends IBaseContract.IBaseView> implements Subscriber<T> {
 
-    private IBaseContract.IBaseView v;
+    private V v;
 
     protected BaseNetWorkSubscriber(V v) {
         this.v = v;
