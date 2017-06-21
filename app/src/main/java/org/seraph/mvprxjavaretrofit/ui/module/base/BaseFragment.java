@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,27 +23,41 @@ import butterknife.Unbinder;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment<V extends IBaseContract.IBaseView, P extends IBaseContract.IBasePresenter<V>> extends Fragment implements IBaseContract.IBaseView{
 
-    protected Context mContext;
+    public abstract int getContextView();
 
-    public abstract int getContentView();
+    protected abstract P getMVPPresenter();
+
+    protected abstract V getMVPView();
+
+    public abstract void setupActivityComponent();
 
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
-
-    private Unbinder unbinder;
 
     @Inject
     protected CustomLoadingDialog mLoadingDialog;
 
+    private Unbinder unbinder;
+
+    protected Context mContext;
+
+    //在base里面初始化和设置一些通用操作
+    private P p;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(getContentView(), container, false);
+        View rootView = inflater.inflate(getContextView(), container, false);
         unbinder = ButterKnife.bind(this, rootView);
         mContext = getActivity();
         setupActivityComponent();
+        initMVP();
         return rootView;
+    }
+
+    private void initMVP() {
+        this.p = getMVPPresenter();
+        p.setView(getMVPView());
     }
 
     @Override
@@ -51,16 +66,25 @@ public abstract class BaseFragment extends Fragment {
         initCreate(savedInstanceState);
     }
 
-    protected abstract void setupActivityComponent();
 
+    @Override
     public void showToast(String message) {
         Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
     public void showLoading(String str) {
         mLoadingDialog.setDialogMessage(str);
+        mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                p.unSubscribe();
+                mLoadingDialog.setOnDismissListener(null);
+            }
+        });
     }
 
+    @Override
     public void hideLoading() {
         if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
             mLoadingDialog.dismiss();
@@ -72,5 +96,8 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+
+
 
 }

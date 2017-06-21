@@ -28,7 +28,7 @@ import io.reactivex.functions.Consumer;
 /**
  * 显示并且选择本地图片的类，结果以List传出
  */
-public class LocalImageListActivity extends BaseActivity implements LocalImageListContract.View {
+public class LocalImageListActivity extends BaseActivity<LocalImageListContract.View,LocalImageListContract.Presenter> implements LocalImageListContract.View {
 
 
     @BindView(R.id.toolbar)
@@ -48,18 +48,29 @@ public class LocalImageListActivity extends BaseActivity implements LocalImageLi
     }
 
     @Inject
+    LocalImageListPresenter mPresenter;
+
+
+    @Override
+    protected LocalImageListContract.Presenter getMVPPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    protected LocalImageListContract.View getMVPView() {
+        return this;
+    }
+
+    @Inject
     LocalImageListAdapter mImageListAdapter;
 
     @Inject
     GridLayoutManager manager;
 
-    @Inject
-    LocalImageListPresenter mPresenter;
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         initRxBinding();
-        mPresenter.setView(this);
         mPresenter.setIntent(getIntent());
         mPresenter.start();
     }

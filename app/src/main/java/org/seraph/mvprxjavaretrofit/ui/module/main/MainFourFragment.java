@@ -34,21 +34,31 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainFourFragment extends BaseFragment implements MainFourFragmentContract.View {
+public class MainFourFragment extends BaseFragment<MainFourFragmentContract.View,MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
 
     @BindView(R.id.vg_add_image_group)
     CustomImageViewGroup mAddImageView;
 
     @Override
-    public int getContentView() {
+    public int getContextView() {
         return R.layout.test_fragment_four;
     }
-
     @Inject
     MainFourFragmentPresenter mPresenter;
 
     @Inject
     AlertDialogUtils mAlertDialogUtils;
+
+    @Override
+    protected MainFourFragmentContract.Presenter getMVPPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    protected MainFourFragmentContract.View getMVPView() {
+        return this;
+    }
+
 
     @Override
     public void setupActivityComponent() {
@@ -58,7 +68,6 @@ public class MainFourFragment extends BaseFragment implements MainFourFragmentCo
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         initListener();
-        mPresenter.setView(this);
         mPresenter.start();
     }
 

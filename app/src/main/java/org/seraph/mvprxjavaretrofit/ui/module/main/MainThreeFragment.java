@@ -23,7 +23,7 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainThreeFragment extends BaseFragment implements MainThreeFragmentContract.View{
+public class MainThreeFragment extends BaseFragment<MainThreeFragmentContract.View,MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View{
 
     @BindView(R.id.tv_https_value)
     TextView tvHttpsValue;
@@ -32,8 +32,18 @@ public class MainThreeFragment extends BaseFragment implements MainThreeFragment
     MainThreeFragmentPresenter mPresenter;
 
     @Override
-    public int getContentView() {
+    public int getContextView() {
         return R.layout.test_fragment_three;
+    }
+
+    @Override
+    protected MainThreeFragmentContract.Presenter getMVPPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    protected MainThreeFragmentContract.View getMVPView() {
+        return this;
     }
 
     @Override
@@ -43,7 +53,7 @@ public class MainThreeFragment extends BaseFragment implements MainThreeFragment
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        mPresenter.setView(this);
+
     }
 
 

@@ -1,6 +1,5 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -20,7 +19,6 @@ import org.seraph.mvprxjavaretrofit.di.module.MainFragmentTwoModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity2;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
@@ -44,18 +42,14 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainTwoFragment extends BaseFragment implements MainTwoFragmentContract.View {
+public class MainTwoFragment extends BaseFragment<MainTwoFragmentContract.View, MainTwoFragmentContract.Presenter> implements MainTwoFragmentContract.View {
 
 
     @BindView(R.id.lv_images)
     GoTopListView lvImages;
     @BindView(R.id.iv_go_top)
     ImageView ivGoTop;
-    @Inject
-    MainTwoFragmentPresenter mPresenter;
 
-    @Inject
-    ImageListBaiduAdapter mImageListBaiduAdapter;
 
 
     class HeadViewHolder {
@@ -90,12 +84,30 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
     }
 
+
+
+    @Override
+    public int getContextView() {
+        return R.layout.test_fragment_two;
+    }
+    @Inject
+    MainTwoFragmentPresenter mPresenter;
+
+    @Inject
+    ImageListBaiduAdapter mImageListBaiduAdapter;
+
     private HeadViewHolder headViewholder;
 
     @Override
-    public int getContentView() {
-        return R.layout.test_fragment_two;
+    protected MainTwoFragmentContract.Presenter getMVPPresenter() {
+        return mPresenter;
     }
+
+    @Override
+    protected MainTwoFragmentContract.View getMVPView() {
+        return this;
+    }
+
 
     @Override
     public void setupActivityComponent() {
@@ -109,7 +121,6 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
         addListHeadView();
         rxBinding();
         initListener();
-        mPresenter.setView(this);
         mPresenter.start();
 
     }
@@ -160,7 +171,7 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
     @Override
     public void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position) {
-        PhotoPreviewActivity2.startPhotoPreview(getActivity(), photoList, position - 1, PhotoPreviewActivity.IMAGE_TYPE_NETWORK);
+        PhotoPreviewActivity.startPhotoPreview(getActivity(), photoList, position - 1, PhotoPreviewActivity.IMAGE_TYPE_NETWORK);
     }
 
     @Override
@@ -172,12 +183,6 @@ public class MainTwoFragment extends BaseFragment implements MainTwoFragmentCont
 
 
     private void initListener() {
-        mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mPresenter.unSubscribe();
-            }
-        });
         mImageListBaiduAdapter.setLoadMoreListener(new BaseListAdapter.LoadMoreListener() {
             @Override
             public void onLoadMore() {

@@ -1,6 +1,5 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -25,7 +24,7 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainOneFragment extends BaseFragment implements MainOneFragmentContract.View {
+public class MainOneFragment extends BaseFragment<MainOneFragmentContract.View, MainOneFragmentContract.Presenter> implements MainOneFragmentContract.View {
 
 
     @BindView(R.id.tv_content)
@@ -34,12 +33,23 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentCont
     TextView tvDbUser;
 
     @Override
-    public int getContentView() {
+    public int getContextView() {
         return R.layout.test_fragment_one;
     }
 
     @Inject
     MainOneFragmentPresenter mPresenter;
+
+    @Override
+    protected MainOneFragmentContract.Presenter getMVPPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    protected MainOneFragmentContract.View getMVPView() {
+        return this;
+    }
+
 
     @Override
     public void setupActivityComponent() {
@@ -49,19 +59,7 @@ public class MainOneFragment extends BaseFragment implements MainOneFragmentCont
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        initListener();
-        mPresenter.setView(this);
-        mPresenter.start();
 
-    }
-
-    private void initListener() {
-        mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mPresenter.unSubscribe();
-            }
-        });
     }
 
 

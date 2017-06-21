@@ -1,7 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,7 +29,7 @@ import butterknife.OnClick;
 /**
  * 图片查看器
  */
-public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewContract.View {
+public class PhotoPreviewActivity extends BaseActivity<PhotoPreviewContract.View, PhotoPreviewContract.Presenter> implements PhotoPreviewContract.View {
 
     @BindView(R.id.vp_photo_preview)
     ImageViewTouchViewPager vpPhotoPreview;
@@ -48,6 +47,7 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
 
 
     public static final String IMAGE_TYPE = "image_type";
+
     public static final String IMAGE_TYPE_LOCAL = "image_type_local";
 
     public static final String IMAGE_TYPE_NETWORK = "image_type_network";
@@ -61,19 +61,26 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
      */
     public final static String CURRENT_POSITION = "currentPosition";
 
-
-    @Override
-    public void setupActivityComponent() {
-        DaggerCommonComponent.builder().appComponent(AppApplication.getAppComponent()).commonModule(new CommonModule(this)).build().inject(this);
-    }
-
-
     @Inject
     PhotoPreviewPresenter mPresenter;
 
     @Inject
     PhotoPreviewAdapter mPhotoPreviewAdapter;
 
+    @Override
+    protected PhotoPreviewContract.Presenter getMVPPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    protected PhotoPreviewContract.View getMVPView() {
+        return this;
+    }
+
+    @Override
+    public void setupActivityComponent() {
+        DaggerCommonComponent.builder().appComponent(AppApplication.getAppComponent()).commonModule(new CommonModule(this)).build().inject(this);
+    }
 
     /**
      * 图片预览
@@ -92,18 +99,13 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        initBar();
-        initListener();
         initViewPager();
-        mPresenter.setView(this);
         mPresenter.setIntent(getIntent());
         mPresenter.start();
     }
 
-    private void initBar() {
 
 
-    }
 
     private void initViewPager() {
         vpPhotoPreview.setOnPageSelectedListener(new ImageViewTouchViewPager.OnPageSelectedListener() {
@@ -121,15 +123,6 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
             }
         });
         vpPhotoPreview.setAdapter(mPhotoPreviewAdapter);
-    }
-
-    private void initListener() {
-        mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mPresenter.unSubscribe();
-            }
-        });
     }
 
 
@@ -172,4 +165,6 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoPreviewCo
     public void onViewClicked() {
         mPresenter.saveImage();
     }
+
+
 }

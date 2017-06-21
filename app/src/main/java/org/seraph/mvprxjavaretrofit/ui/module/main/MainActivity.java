@@ -28,7 +28,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainActivity extends BaseActivity implements MainActivityContract.View {
+public class MainActivity extends BaseActivity<MainActivityContract.View,MainActivityContract.Presenter> implements MainActivityContract.View {
 
 
     @BindView(R.id.bnv_main)
@@ -44,6 +44,16 @@ public class MainActivity extends BaseActivity implements MainActivityContract.V
     @Inject
     MainActivityPresenter mPresenter;
 
+    @Override
+    protected MainActivityContract.Presenter getMVPPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    protected MainActivityContract.View getMVPView() {
+        return this;
+    }
+
     @Inject
     FragmentController fragmentController;
 
@@ -56,7 +66,6 @@ public class MainActivity extends BaseActivity implements MainActivityContract.V
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         fragmentController.setContainerViewId(R.id.fl_home);
-        mPresenter.setView(this);
         mPresenter.start();
         RxBottomNavigationView.itemSelections(bnvMain).subscribe(bottomNavigationConsumer);
     }

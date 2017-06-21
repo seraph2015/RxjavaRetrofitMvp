@@ -37,7 +37,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class DesignLayoutTestActivity extends BaseActivity implements DesignLayoutTestContract.View {
+public class DesignLayoutTestActivity extends BaseActivity<DesignLayoutTestContract.View,DesignLayoutTestContract.Presenter> implements DesignLayoutTestContract.View {
 
     @BindView(R.id.app_bar_image)
     ImageView appBarImage;
@@ -55,6 +55,16 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
 
     @Inject
     DesignLayoutTestPresenter mPresenter;
+
+    @Override
+    protected DesignLayoutTestContract.Presenter getMVPPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    protected DesignLayoutTestContract.View getMVPView() {
+        return this;
+    }
 
     @Inject
     LinearLayoutManager layoutManager;
@@ -81,10 +91,8 @@ public class DesignLayoutTestActivity extends BaseActivity implements DesignLayo
         });
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mDesignLayoutAdapter);
-
         initListener();
 
-        mPresenter.setView(this);
         mPresenter.start();
     }
 
