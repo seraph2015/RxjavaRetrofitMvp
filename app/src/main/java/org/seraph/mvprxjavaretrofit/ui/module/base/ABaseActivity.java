@@ -51,11 +51,7 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseView, P extends
         try {
             p.setView((V) this);
         } catch (ClassCastException e) {
-            try {
-                throw new Exception("子类必须实现IBaseContract.IBaseView接口");
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
+            throw new RuntimeException("子类必须实现IBaseContract.IBaseView接口");
         }
     }
 

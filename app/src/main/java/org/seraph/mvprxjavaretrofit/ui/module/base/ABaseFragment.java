@@ -23,7 +23,7 @@ import butterknife.Unbinder;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class ABaseFragment<V extends IBaseContract.IBaseView, P extends IBaseContract.IBasePresenter<V>> extends Fragment implements IBaseContract.IBaseView{
+public abstract class ABaseFragment<V extends IBaseContract.IBaseView, P extends IBaseContract.IBasePresenter<V>> extends Fragment implements IBaseContract.IBaseView {
 
     public abstract int getContextView();
 
@@ -59,11 +59,7 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseView, P extends
         try {
             p.setView((V) this);
         } catch (ClassCastException e) {
-            try {
-                throw new Exception("子类必须实现IBaseContract.IBaseView接口");
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
+            throw new RuntimeException("子类必须实现IBaseContract.IBaseView接口");
         }
     }
 
@@ -103,8 +99,6 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseView, P extends
         super.onDestroyView();
         unbinder.unbind();
     }
-
-
 
 
 }
