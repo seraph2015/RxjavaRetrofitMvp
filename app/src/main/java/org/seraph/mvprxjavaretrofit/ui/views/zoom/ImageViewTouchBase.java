@@ -8,6 +8,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
@@ -18,7 +19,7 @@ import android.widget.ImageView;
  */
 
 // 将原框架的 extends ImageView改为 extends CustomNetworkImageView，使之能显示网络图片
-public abstract class ImageViewTouchBase extends ImageView implements IDisposable {
+public abstract class ImageViewTouchBase extends AppCompatImageView implements IDisposable {
 
     public interface OnDrawableChangeListener {
         /**
@@ -839,6 +840,7 @@ public abstract class ImageViewTouchBase extends ImageView implements IDisposabl
         mSuppMatrix.postScale(scale, scale, centerX, centerY);
         setImageMatrix(getImageViewMatrix());
     }
+
 
     protected PointF getCenter() {
         return mCenter;
