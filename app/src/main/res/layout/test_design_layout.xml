@@ -28,9 +28,7 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_h_min"
-                android:paddingTop="@dimen/toolbar_top_padding_min"
+                style="@style/app_toolbar_style"
                 app:layout_collapseMode="pin"
                 tools:background="?attr/colorPrimary" />
         </android.support.design.widget.CollapsingToolbarLayout>

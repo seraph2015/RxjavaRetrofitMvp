@@ -11,10 +11,17 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_h_min"
-            android:paddingTop="@dimen/toolbar_top_padding_min"
-            app:navigationIcon="@drawable/test_ic_gesture_24dp" />
+            style="@style/app_toolbar_style"
+            app:navigationIcon="@drawable/test_ic_gesture_24dp">
+
+            <TextView
+                android:id="@+id/tv_toolbar_title"
+                style="@style/app_toolbar_child_style"
+                android:gravity="center"
+                android:text="首页" />
+
+        </android.support.v7.widget.Toolbar>
+
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout

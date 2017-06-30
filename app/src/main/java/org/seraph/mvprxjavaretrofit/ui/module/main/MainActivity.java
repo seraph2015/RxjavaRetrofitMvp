@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView;
 
@@ -35,6 +36,8 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     BottomNavigationView bnvMain;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tv_toolbar_title)
+    TextView toolbarTitle;
 
     @Override
     public int getContextView() {
@@ -93,7 +96,8 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
 
     @Override
     public void setTitle(String title) {
-        toolbar.setTitle(title);
+        //toolbar_top_padding_text_min
+        toolbarTitle.setText(title);
     }
 
     @Override

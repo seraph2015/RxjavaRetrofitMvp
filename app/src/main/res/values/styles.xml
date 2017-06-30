@@ -41,4 +41,19 @@
         <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
     </style>
 
+    <!--toolbar布局配置-->
+    <style name="app_toolbar_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/toolbar_h_min</item>
+        <item name="android:paddingTop">@dimen/toolbar_top_padding_min</item>
+    </style>
+    <!--toolbar子元素布局配置-->
+    <style name="app_toolbar_child_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingTop">@dimen/toolbar_top_padding_text_min</item>
+    </style>
 </resources>
