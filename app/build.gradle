@@ -50,6 +50,10 @@ dependencies {
     //rxJava响应式编程
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //This library allows one to automatically complete sequences based on a second lifecycle stream.
+    //This capability is useful in Android, where incomplete subscriptions can cause memory leaks.
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
     //网络请求框架,添加这个依赖就默认添加了okhttp依赖
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     //retrofit2是基于okhttp，所以使用okhttp log 工具

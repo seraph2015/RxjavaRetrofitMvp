@@ -16,7 +16,7 @@ import java.util.List;
 public interface LocalImageListContract extends IBaseContract {
 
 
-    interface View extends IBaseView {
+    interface View extends IBaseActivityView {
 
         void setQueryImageList(List<LocalImageBean> localImageBeen);
 
@@ -27,7 +27,7 @@ public interface LocalImageListContract extends IBaseContract {
         void requestPermission(String[] permissions);
     }
 
-    interface Presenter extends IBasePresenter<View> {
+    interface Presenter extends IBaseActivityPresenter<View> {
 
         void save(ArrayList<String> arrayList);
 

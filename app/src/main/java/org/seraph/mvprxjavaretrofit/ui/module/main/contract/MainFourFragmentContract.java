@@ -14,7 +14,7 @@ import java.util.ArrayList;
  **/
 public interface MainFourFragmentContract extends IBaseContract {
 
-    interface View extends IBaseView {
+    interface View extends IBaseFragmentView {
 
         void setImageList(ArrayList<String> imageList);
 
@@ -24,7 +24,7 @@ public interface MainFourFragmentContract extends IBaseContract {
 
     }
 
-    interface Presenter extends IBasePresenter<View> {
+    interface Presenter extends IBaseFragmentPresenter<View> {
 
 
         void doTakePhoto();

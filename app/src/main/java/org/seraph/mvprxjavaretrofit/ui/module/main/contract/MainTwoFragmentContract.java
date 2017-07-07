@@ -15,7 +15,7 @@ import java.util.List;
  **/
 public interface MainTwoFragmentContract extends IBaseContract {
 
-    interface Presenter extends IBasePresenter<View> {
+    interface Presenter extends IBaseFragmentPresenter<View> {
 
 
         void showCacheFilePath();
@@ -30,7 +30,7 @@ public interface MainTwoFragmentContract extends IBaseContract {
 
     }
 
-    interface View extends IBaseView {
+    interface View extends IBaseFragmentView {
 
         void setTextView(CharSequence charSequence);
 

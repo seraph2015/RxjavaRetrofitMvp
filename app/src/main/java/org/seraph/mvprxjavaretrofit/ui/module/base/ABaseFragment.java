@@ -4,11 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
 
@@ -23,7 +24,7 @@ import butterknife.Unbinder;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class ABaseFragment<V extends IBaseContract.IBaseView, P extends IBaseContract.IBasePresenter<V>> extends Fragment implements IBaseContract.IBaseView {
+public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P extends IBaseContract.IBaseFragmentPresenter<V>> extends RxFragment implements IBaseContract.IBaseFragmentView {
 
     public abstract int getContextView();
 

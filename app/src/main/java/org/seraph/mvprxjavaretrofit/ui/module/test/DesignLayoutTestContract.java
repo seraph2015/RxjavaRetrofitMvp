@@ -13,12 +13,12 @@ import java.util.List;
  **/
 interface DesignLayoutTestContract extends IBaseContract{
 
-    interface View extends IBaseView {
+    interface View extends IBaseActivityView {
 
         void setImageListData(List<ImageBaiduBean.BaiduImage> baiduImages, boolean isMore);
     }
 
-    interface Presenter extends IBasePresenter<View> {
+    interface Presenter extends IBaseActivityPresenter<View> {
 
         void requestNextPage();
 

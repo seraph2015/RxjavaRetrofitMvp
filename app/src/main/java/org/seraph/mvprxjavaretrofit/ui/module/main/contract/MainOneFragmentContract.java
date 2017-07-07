@@ -10,7 +10,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
  **/
 public interface MainOneFragmentContract extends IBaseContract {
 
-    interface View extends IBaseView {
+    interface View extends IBaseFragmentView {
 
         void setTextViewValue(CharSequence charSequence);
 
@@ -18,7 +18,7 @@ public interface MainOneFragmentContract extends IBaseContract {
 
     }
 
-    interface Presenter extends IBasePresenter<View> {
+    interface Presenter extends IBaseFragmentPresenter<View> {
 
         void doLoginTest();
 

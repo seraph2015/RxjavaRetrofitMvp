@@ -11,13 +11,13 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 public interface MainThreeFragmentContract extends IBaseContract {
 
 
-    interface View extends IBaseView {
+    interface View extends IBaseFragmentView {
 
         void setTextView(CharSequence charSequence);
 
     }
 
-    interface Presenter extends IBasePresenter<View> {
+    interface Presenter extends IBaseFragmentPresenter<View> {
         void post12306Https();
     }
 

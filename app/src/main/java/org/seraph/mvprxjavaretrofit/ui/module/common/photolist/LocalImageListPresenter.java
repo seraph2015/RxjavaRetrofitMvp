@@ -43,6 +43,7 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
         mView = view;
     }
 
+
     @Override
     public void start() {
         startAsyncQuery();

@@ -18,7 +18,7 @@ interface PhotoPreviewContract extends IBaseContract {
     /**
      * 操作ui
      */
-    interface View extends IBaseView {
+    interface View extends IBaseActivityView {
 
         /**
          * 跳转授权
@@ -36,7 +36,7 @@ interface PhotoPreviewContract extends IBaseContract {
 
     }
 
-    interface Presenter extends IBasePresenter<View> {
+    interface Presenter extends IBaseActivityPresenter<View> {
 
         void onPermissionsRequest(int resultCode);
 

@@ -11,7 +11,7 @@ import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
  **/
 public interface MainActivityContract extends IBaseContract {
 
-    interface View extends IBaseView {
+    interface View extends IBaseActivityView {
 
         void setTitle(String title);
 
@@ -22,7 +22,7 @@ public interface MainActivityContract extends IBaseContract {
         void finish();
     }
 
-    interface Presenter extends IBasePresenter<View> {
+    interface Presenter extends IBaseActivityPresenter<View> {
 
         void setSelectedFragment(int page);
 

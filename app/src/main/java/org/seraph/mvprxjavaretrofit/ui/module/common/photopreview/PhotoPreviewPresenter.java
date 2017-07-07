@@ -163,6 +163,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         private void saveFileToDisk(Bitmap bitmap) {
             Flowable.just(bitmap)
                     .subscribeOn(Schedulers.io())
+                    .compose(mView.<Bitmap>bindToLifecycle())
                     .flatMap(new Function<Bitmap, Flowable<String>>() {
                         @Override
                         public Flowable<String> apply(Bitmap bitmap) throws Exception {

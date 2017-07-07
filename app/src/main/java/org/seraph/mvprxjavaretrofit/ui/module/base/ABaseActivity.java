@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
 
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class ABaseActivity<V extends IBaseContract.IBaseView, P extends IBaseContract.IBasePresenter<V>> extends AppCompatActivity implements IBaseContract.IBaseView {
+public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P extends IBaseContract.IBaseActivityPresenter<V>> extends RxAppCompatActivity implements IBaseContract.IBaseActivityView {
 
     @Inject
     protected CustomLoadingDialog mLoadingDialog;
@@ -84,5 +85,7 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseView, P extends
     public Context getContext() {
         return this;
     }
+
+
 
 }
