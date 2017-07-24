@@ -6,12 +6,13 @@ import org.junit.Test;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
@@ -48,28 +49,27 @@ public class ExampleUnitTest {
 
     @Test
     public void testRxJavaTest1() throws Exception {
-        Observable.fromArray(1, 2, 3).subscribe(new Observer<Integer>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                System.out.println("onSubscribe");
-            }
-
-            @Override
-            public void onNext(Integer value) {
-                System.out.println("onNext->" + value);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                System.out.println("onError->" + e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-                System.out.println("onComplete->");
-            }
-        });
-
+//        Observable.fromArray(1, 2, 3).subscribe(new Observer<Integer>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//                System.out.println("onSubscribe");
+//            }
+//
+//            @Override
+//            public void onNext(Integer value) {
+//                System.out.println("onNext->" + value);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                System.out.println("onError->" + e.getMessage());
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                System.out.println("onComplete->");
+//            }
+//        });
     }
 
     @Test
@@ -212,6 +212,18 @@ public class ExampleUnitTest {
             }
         });
 
+    }
+
+    @Test
+    public void testAlias(){
+      System.out.println(isValidTagAndAlias("elysJh1da@W1Q2i3OiI0NyJ9"));
+    }
+
+    // 校验Tag Alias 只能是数字,英文字母和中文
+    public static boolean isValidTagAndAlias(String s) {
+        Pattern p = Pattern.compile("^[\u4E00-\u9FA50-9a-zA-Z_!@#$&*+=.|]+$");
+        Matcher m = p.matcher(s);
+        return m.matches();
     }
 
 }

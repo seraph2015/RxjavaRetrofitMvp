@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.utlis.ViewHolderRv;
 
 import java.util.ArrayList;
 import java.util.List;

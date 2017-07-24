@@ -11,7 +11,7 @@ import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSquareImageView;
-import org.seraph.mvprxjavaretrofit.utlis.ViewHolderRv;
+import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.ViewHolderRv;
 
 import java.io.File;
 import java.util.ArrayList;

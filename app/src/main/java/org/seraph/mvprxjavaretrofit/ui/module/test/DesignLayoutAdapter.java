@@ -8,7 +8,7 @@ import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
-import org.seraph.mvprxjavaretrofit.utlis.ViewHolderRv;
+import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.ViewHolderRv;
 
 import javax.inject.Inject;
 

@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.utlis;
+package org.seraph.mvprxjavaretrofit.ui.module.base.adapter;
 
 import android.util.SparseArray;
 import android.view.View;

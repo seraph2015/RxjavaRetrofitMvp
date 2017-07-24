@@ -11,7 +11,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSelfProportionImageView;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
-import org.seraph.mvprxjavaretrofit.utlis.ViewHolder;
+import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.ViewHolder;
 
 import javax.inject.Inject;
 

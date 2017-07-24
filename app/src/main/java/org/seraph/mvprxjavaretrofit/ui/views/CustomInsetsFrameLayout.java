@@ -17,14 +17,17 @@ public class CustomInsetsFrameLayout extends FrameLayout {
 
     public CustomInsetsFrameLayout(Context context) {
         super(context);
+        setFitsSystemWindows(true);
     }
 
     public CustomInsetsFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setFitsSystemWindows(true);
     }
 
     public CustomInsetsFrameLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        setFitsSystemWindows(true);
     }
 
     public final int[] getInsets() {
