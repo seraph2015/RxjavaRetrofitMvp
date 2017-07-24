@@ -7,7 +7,8 @@ import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.SearchHistoryTableDao;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
-import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
+import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
+import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
@@ -38,13 +39,13 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
         this.mView = view;
     }
 
-    private ApiManager mApiManager;
+    private ApiBaiduService mApiBaiduService;
 
     private DaoSession mDaoSession;
 
     @Inject
-    MainTwoFragmentPresenter(ApiManager apiManager, DaoSession daoSession) {
-        this.mApiManager = apiManager;
+    MainTwoFragmentPresenter(ApiBaiduService apiBaiduService, DaoSession daoSession) {
+        this.mApiBaiduService = apiBaiduService;
         this.mDaoSession = daoSession;
     }
 
@@ -133,20 +134,22 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     private void getBaiduImageList(String keyWord, final int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
-        mApiManager.doBaiduImage(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
+
+        mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {
                         mSubscription = subscription;
                     }
-                })
+                }).compose(mView.<ImageBaiduBean>bindToLifecycle())
+                .compose(RxSchedulers.<ImageBaiduBean>io_main())
                 .map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
                     @Override
                     public List<ImageBaiduBean.BaiduImage> apply(ImageBaiduBean imageBaiduBean) throws Exception {
                         return imageBaiduBean.imgs;
                     }
                 })
-                .subscribe(new ABaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>, MainTwoFragmentContract.View>(mView) {
+                .subscribe(new ABaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>>(mView) {
                     @Override
                     public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
                         if (requestPageNo == 1) {

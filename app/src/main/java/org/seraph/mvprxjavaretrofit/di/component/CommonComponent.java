@@ -1,7 +1,9 @@
 package org.seraph.mvprxjavaretrofit.di.component;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
@@ -21,11 +23,14 @@ import dagger.Component;
 public interface CommonComponent {
 
     void inject(PhotoPreviewActivity photoPreviewActivity);
-    
+
     void inject(LocalImageListActivity localImageListActivity);
 
-    Activity activity();
+    Activity ACTIVITY();
 
-    Context context();
+    Context CONTEXT();
 
+    GridLayoutManager GRID_LAYOUT_MANAGER();
+
+    ContentResolver CONTENT_RESOLVER();
 }

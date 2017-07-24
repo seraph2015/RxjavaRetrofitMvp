@@ -2,6 +2,9 @@ package org.seraph.mvprxjavaretrofit.di.component;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
+import org.seraph.mvprxjavaretrofit.data.network.service.Api12306Service;
+import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
+import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 import org.seraph.mvprxjavaretrofit.di.module.AppModule;
 
 import javax.inject.Singleton;
@@ -20,7 +23,13 @@ public interface AppComponent {
 
     void inject(AppApplication appApplication);
 
-    AppApplication app();
+    AppApplication APP_APPLICATION();
 
-    DaoSession daoSession();
+    DaoSession DAO_SESSION();
+
+    ApiService API_SERVICE();
+
+    ApiBaiduService API_BAIDU_SERVICE();
+
+    Api12306Service API_12306_SERVICE();
 }

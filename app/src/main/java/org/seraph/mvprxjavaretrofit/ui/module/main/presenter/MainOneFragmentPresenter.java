@@ -1,12 +1,12 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
-import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.UserTableDao;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.UserTable;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseData;
+import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
+import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
@@ -30,16 +30,16 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
 
     private Subscription mSubscription;
 
-    private BaseData<UserBean> baseData;
+    private UserBean userBean;
 
-    private ApiManager mApiManager;
+    private ApiService mApiService;
 
     private DaoSession mDaoSession;
 
     @Inject
-    MainOneFragmentPresenter(ApiManager apiManager, DaoSession daoSession) {
+    MainOneFragmentPresenter(ApiService apiService, DaoSession daoSession) {
         this.mDaoSession = daoSession;
-        this.mApiManager = apiManager;
+        this.mApiService = apiService;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
 
     @Override
     public void setView(MainOneFragmentContract.View view) {
-       this.mView = view;
+        this.mView = view;
     }
 
 
@@ -65,28 +65,29 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
      */
     @Override
     public void doLoginTest() {
-        mApiManager.doLogin("15172311067", "123456").doOnSubscribe(new Consumer<Subscription>() {
-            @Override
-            public void accept(Subscription subscription) throws Exception {
-                mSubscription = subscription;
-                mView.showLoading("正在登陆...");
-            }
-        }).subscribe(new ABaseNetWorkSubscriber<BaseDataResponse<UserBean>,MainOneFragmentContract.View>(mView) {
-            @Override
-            public void onSuccess(BaseDataResponse<UserBean> baseDataResponse) {
-                baseData = baseDataResponse.data;
-                UserBean userBean = baseData.data;
-                mView.showToast("登陆成功");
-                mView.setTextViewValue("token->" + baseData.token + "\nuserId->" + userBean.id + "\nnickName->" + userBean.nickName + "\nheadImg->" + userBean.headImg);
-            }
+        mApiService.login("15172311067", "123456")
+                .compose(mView.<BaseDataResponse<UserBean>>bindToLifecycle())
+                .compose(RxSchedulers.<UserBean>io_main_business())
+                .doOnSubscribe(new Consumer<Subscription>() {
+                    @Override
+                    public void accept(Subscription subscription) throws Exception {
+                        mSubscription = subscription;
+                        mView.showLoading("正在登陆...");
+                    }
+                })
+                .subscribe(new ABaseNetWorkSubscriber<BaseDataResponse<UserBean>>(mView) {
+                    @Override
+                    public void onSuccess(BaseDataResponse<UserBean> userBeanBaseDataResponse) {
+                        userBean = userBeanBaseDataResponse.data;
+                        mView.showToast("登陆成功");
+                    }
 
-            @Override
-            public void onError(String errStr) {
-                mView.showToast(errStr);
-            }
+                    @Override
+                    public void onError(String errStr) {
+                        mView.showToast(errStr);
+                    }
+                });
 
-
-        });
     }
 
 
@@ -95,16 +96,16 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
      */
     @Override
     public void saveUserInfo() {
-        if (baseData == null) {
+        if (userBean == null) {
             mView.showToast("没有可保存数据");
             return;
         }
-        UserTable userBean = new UserTable();
-        userBean.setId(baseData.data.id);
-        userBean.setToken(baseData.token);
-        userBean.setName(baseData.data.nickName);
-        userBean.setHeadPortrait(baseData.data.headImg);
-        mDaoSession.getUserTableDao().save(userBean);
+        UserTable userTable = new UserTable();
+        userTable.setId(userBean.id);
+        userTable.setToken(userBean.token);
+        userTable.setName(userBean.user_nicename);
+        userTable.setHeadPortrait(userBean.avatar);
+        mDaoSession.getUserTableDao().save(userTable);
         mView.showToast("保存成功");
     }
 
@@ -113,14 +114,14 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
      */
     @Override
     public void upDataUserInfo() {
-        List<UserTable> listAll = mDaoSession.getUserTableDao().queryBuilder().where(UserTableDao.Properties.Id.eq(baseData.data.id)).list();
+        List<UserTable> listAll = mDaoSession.getUserTableDao().queryBuilder().where(UserTableDao.Properties.Id.eq(userBean.id)).list();
         if (listAll.size() == 0) {
             mView.showToast("没有可更新的数据");
             return;
         }
         for (UserTable searchUser : listAll) {
             //更新token
-            searchUser.setToken(baseData.token);
+            searchUser.setToken(userBean.token);
             mDaoSession.getUserTableDao().update(searchUser);
         }
 

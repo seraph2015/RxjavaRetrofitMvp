@@ -15,6 +15,7 @@ import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.di.component.test.DaggerDesignLayoutComponent;
+import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
@@ -37,7 +38,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestContract.View,DesignLayoutTestContract.Presenter> implements DesignLayoutTestContract.View {
+public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestContract.View, DesignLayoutTestContract.Presenter> implements DesignLayoutTestContract.View {
 
     @BindView(R.id.app_bar_image)
     ImageView appBarImage;
@@ -70,7 +71,7 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
     @Override
     public void setupActivityComponent() {
         DaggerDesignLayoutComponent.builder().appComponent(AppApplication.getAppComponent())
-                .designLayoutModule(new DesignLayoutModule(this)).build().inject(this);
+                .activityModule(new ActivityModule(this)).designLayoutModule(new DesignLayoutModule()).build().inject(this);
     }
 
     @Override

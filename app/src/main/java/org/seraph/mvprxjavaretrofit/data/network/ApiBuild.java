@@ -1,14 +1,10 @@
 package org.seraph.mvprxjavaretrofit.data.network;
 
-import android.content.Context;
-
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.data.network.https.HTTPS;
-import org.seraph.mvprxjavaretrofit.data.network.service.Api12306Service;
-import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
-import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,10 +34,10 @@ public class ApiBuild {
     private SSLSocketFactory sslSocketFactory;
 
     @Inject
-    public ApiBuild(Context context) {
+    public ApiBuild(AppApplication application) {
         if (AppConfig.IS_ENABLED_CER) {
             try {
-                InputStream inputStream = context.getAssets().open(AppConfig.HTTPS_CER_NAME);
+                InputStream inputStream = application.getAssets().open(AppConfig.HTTPS_CER_NAME);
                 x509TrustManager = HTTPS.getX509TrustManager(inputStream);
                 sslSocketFactory = HTTPS.getSSLSocketFactory(x509TrustManager);
             } catch (IOException e) {
@@ -72,7 +68,7 @@ public class ApiBuild {
     /**
      * 构建ApiInterface
      */
-    private <T> T buildApiInterface(String apiBaseUrl, Class<T> service) {
+    public <T> T buildApiInterface(String apiBaseUrl, Class<T> service) {
         OkHttpClient.Builder builder = builder();
         //判断是否启用证书
         if (AppConfig.IS_ENABLED_CER && sslSocketFactory != null && x509TrustManager != null) {
@@ -86,17 +82,5 @@ public class ApiBuild {
                 .create(service);
     }
 
-
-    ApiService apiService() {
-        return buildApiInterface(ApiService.BASE_URL, ApiService.class);
-    }
-
-    ApiBaiduService apiBaiduService() {
-        return buildApiInterface(ApiBaiduService.BASE_URL_BAIDU, ApiBaiduService.class);
-    }
-
-    Api12306Service api12306Service() {
-        return buildApiInterface(Api12306Service.BASE_URL_12306, Api12306Service.class);
-    }
 
 }

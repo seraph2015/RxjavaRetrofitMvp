@@ -1,7 +1,6 @@
 package org.seraph.mvprxjavaretrofit.di.module;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
@@ -15,32 +14,13 @@ import dagger.Provides;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-@Module
+@Module(includes = ActivityModule.class)
 public class DesignLayoutModule {
 
-    private final Activity mActivity;
-
-    public DesignLayoutModule(Activity activity) {
-        this.mActivity = activity;
-    }
-
     @Provides
     @ActivityScope
-    Activity provideActivity() {
-        return mActivity;
-    }
-
-    @Provides
-    @ActivityScope
-    Context provideContext() {
-        return mActivity;
-    }
-
-    @Provides
-    @ActivityScope
-    LinearLayoutManager provideLinearLayoutManager(){
+    LinearLayoutManager provideLinearLayoutManager(Activity mActivity){
         return new LinearLayoutManager(mActivity);
     }
-
 
 }

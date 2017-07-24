@@ -2,38 +2,38 @@ package org.seraph.mvprxjavaretrofit.di.module;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
-import org.seraph.mvprxjavaretrofit.ui.module.main.MainTwoFragment;
 
 import dagger.Module;
 import dagger.Provides;
 
 /**
- * MainFragmentTwoModule
- * date：2017/4/10 16:49
+ * Activity注入模块 与Activity生命周期相同
+ * date：2017/4/6 09:25
  * author：xiongj
  * mail：417753393@qq.com
  **/
 @Module
-public class MainFragmentTwoModule {
+public class FragmentModule {
 
-    private final Activity context;
+    private final Activity mActivity;
 
-    public MainFragmentTwoModule(MainTwoFragment context) {
-        this.context = context.getActivity();
+    public FragmentModule(Fragment fragment) {
+        this.mActivity = fragment.getActivity();
     }
 
     @Provides
     @ActivityScope
-    Activity provideActivity() {
-        return context;
+    Activity provideContextActivity() {
+        return mActivity;
     }
 
     @Provides
     @ActivityScope
     Context provideContext() {
-        return context;
+        return mActivity;
     }
 
 }

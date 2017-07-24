@@ -1,14 +1,12 @@
 package org.seraph.mvprxjavaretrofit.di.component.main;
 
+import android.app.Activity;
 import android.content.Context;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.component.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.main.MainFourFragment;
-import org.seraph.mvprxjavaretrofit.ui.module.main.MainOneFragment;
-import org.seraph.mvprxjavaretrofit.ui.module.main.MainThreeFragment;
 
 import dagger.Component;
 
@@ -19,23 +17,14 @@ import dagger.Component;
  * mail：417753393@qq.com
  **/
 @ActivityScope
-@Component(dependencies = AppComponent.class, modules = {ActivityModule.class})
+@Component(dependencies = AppComponent.class,modules = ActivityModule.class)
+
 public interface MainActivityComponent {
 
     void inject(MainActivity mainActivity);
 
-    void inject(MainOneFragment mainOneFragment);
+    Activity ACTIVITY();
 
-    void inject(MainThreeFragment mainThreeFragment);
-
-    void inject(MainFourFragment mainFourFragment);
-
-    Context context();
-
-//    ApiManager apiManager();
-//
-//    PreferencesManager preferencesManager();
-//
-//    DaoSession daoSession();
+    Context CONTEXT();
 
 }

@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainActivityComponent;
-import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
+import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentComponent;
+import org.seraph.mvprxjavaretrofit.di.module.FragmentModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainThreeFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainThreeFragmentPresenter;
@@ -43,7 +43,7 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.V
 
     @Override
     public void setupActivityComponent() {
-        DaggerMainActivityComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(getActivity())).build().inject(this);
+        DaggerMainFragmentComponent.builder().appComponent(AppApplication.getAppComponent()).fragmentModule(new FragmentModule(this)).build().inject(this);
     }
 
     @Override

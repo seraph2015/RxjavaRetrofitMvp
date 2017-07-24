@@ -17,6 +17,7 @@ import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
+import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActivity;
@@ -94,7 +95,7 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
 
     @Override
     public void setupActivityComponent() {
-        DaggerCommonComponent.builder().appComponent(AppApplication.getAppComponent()).commonModule(new CommonModule(this)).build().inject(this);
+        DaggerCommonComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(this)).commonModule(new CommonModule()).build().inject(this);
     }
 
     @Override

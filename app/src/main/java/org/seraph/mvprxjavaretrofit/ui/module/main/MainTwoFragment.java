@@ -14,8 +14,8 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentTwoComponent;
-import org.seraph.mvprxjavaretrofit.di.module.MainFragmentTwoModule;
+import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentComponent;
+import org.seraph.mvprxjavaretrofit.di.module.FragmentModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
@@ -105,7 +105,7 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View,
 
     @Override
     public void setupActivityComponent() {
-        DaggerMainFragmentTwoComponent.builder().appComponent(AppApplication.getAppComponent()).mainFragmentTwoModule(new MainFragmentTwoModule(this)).build().inject(this);
+        DaggerMainFragmentComponent.builder().appComponent(AppApplication.getAppComponent()).fragmentModule(new FragmentModule(this)).build().inject(this);
     }
 
     @Override

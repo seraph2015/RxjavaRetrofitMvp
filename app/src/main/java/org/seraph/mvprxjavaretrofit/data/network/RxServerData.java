@@ -19,7 +19,7 @@ class RxServerData {
     /**
      * 业务成功code
      */
-    private static final int SUCCESS_STATUS = 0;
+    private static final int SUCCESS_STATUS = 1;
 
 
     /**
@@ -32,7 +32,7 @@ class RxServerData {
                 if (tBaseDataResponse.status != SUCCESS_STATUS) { //业务逻辑失败
                     return Flowable.error(new ServerErrorException(tBaseDataResponse.msg));
                 }
-                return Flowable.just(tBaseDataResponse).subscribeOn(AndroidSchedulers.mainThread());
+                return Flowable.just(tBaseDataResponse);
             }
         });
     }

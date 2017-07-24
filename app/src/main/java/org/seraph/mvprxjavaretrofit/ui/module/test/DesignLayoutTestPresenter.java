@@ -1,7 +1,8 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
+import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
+import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -30,14 +31,14 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
 
     private Subscription mSubscription;
 
-    private ApiManager mApiManager;
+    private ApiBaiduService mApiManager;
 
     private List<ImageBaiduBean.BaiduImage> mBaiduImages = new ArrayList<>();
 
     private int pageNo = 0;
 
     @Inject
-    DesignLayoutTestPresenter(ApiManager mApiManager) {
+    DesignLayoutTestPresenter(ApiBaiduService mApiManager) {
         this.mApiManager = mApiManager;
     }
 
@@ -65,7 +66,10 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
     }
 
     private void doBaiduImages(final int tempNo) {
-        mApiManager.doBaiduImage(Tools.getBaiduImagesUrl("tomia", tempNo)).doOnSubscribe(new Consumer<Subscription>() {
+        mApiManager.doBaiduImageUrl(Tools.getBaiduImagesUrl("tomia", tempNo))
+                .compose(mView.<ImageBaiduBean>bindToLifecycle())
+                .compose(RxSchedulers.<ImageBaiduBean>io_main())
+                .doOnSubscribe(new Consumer<Subscription>() {
             @Override
             public void accept(Subscription subscription) throws Exception {
                 mSubscription = subscription;
@@ -95,7 +99,6 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
             }
         });
     }
-
 
 
 }

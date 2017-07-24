@@ -2,7 +2,6 @@ package org.seraph.mvprxjavaretrofit.di.module;
 
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
@@ -16,31 +15,13 @@ import dagger.Provides;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-@Module
+@Module(includes = ActivityModule.class)
 public class CommonModule {
 
-    private final Activity mActivity;
-
-    public CommonModule(Activity mActivity) {
-        this.mActivity = mActivity;
-    }
-
     @Provides
     @ActivityScope
-    Activity provideActivity() {
-        return mActivity;
-    }
-
-    @Provides
-    @ActivityScope
-    Context provideContext() {
-        return mActivity;
-    }
-
-    @Provides
-    @ActivityScope
-    GridLayoutManager provideGridLayoutManager() {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mActivity, 4);
+    GridLayoutManager provideGridLayoutManager(Activity activity) {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(activity, 4);
         gridLayoutManager.setSmoothScrollbarEnabled(true);
         gridLayoutManager.setAutoMeasureEnabled(true);
         return gridLayoutManager;
@@ -49,8 +30,8 @@ public class CommonModule {
 
     @Provides
     @ActivityScope
-    ContentResolver provideContentResolver() {
-        return mActivity.getContentResolver();
+    ContentResolver provideContentResolver(Activity activity) {
+        return activity.getContentResolver();
     }
 
 }

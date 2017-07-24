@@ -17,7 +17,11 @@ public class BaseDataResponse<T> {
      */
     public String msg;
 
-    /* 总数据结构 */
-    public BaseData<T> data;
+//    /* 总数据结构 */
+//    public BaseData<T> data;
+//
+//    public List<T> list;
+
+    public T data;
 
 }

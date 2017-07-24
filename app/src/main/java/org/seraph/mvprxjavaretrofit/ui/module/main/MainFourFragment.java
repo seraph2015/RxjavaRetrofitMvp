@@ -9,8 +9,8 @@ import android.view.View;
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainActivityComponent;
-import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
+import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentComponent;
+import org.seraph.mvprxjavaretrofit.di.module.FragmentModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
@@ -34,7 +34,7 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.View,MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
+public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.View, MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
 
     @BindView(R.id.vg_add_image_group)
     CustomImageViewGroup mAddImageView;
@@ -43,6 +43,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
     public int getContextView() {
         return R.layout.test_fragment_four;
     }
+
     @Inject
     MainFourFragmentPresenter mPresenter;
 
@@ -57,7 +58,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
 
     @Override
     public void setupActivityComponent() {
-        DaggerMainActivityComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(getActivity())).build().inject(this);
+        DaggerMainFragmentComponent.builder().appComponent(AppApplication.getAppComponent()).fragmentModule(new FragmentModule(this)).build().inject(this);
     }
 
     @Override
@@ -105,7 +106,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_design_layout:
-                startActivity(new Intent(mContext,DesignLayoutTestActivity.class));
+                startActivity(new Intent(mContext, DesignLayoutTestActivity.class));
                 break;
         }
     }

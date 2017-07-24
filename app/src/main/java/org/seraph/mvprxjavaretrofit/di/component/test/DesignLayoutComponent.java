@@ -1,6 +1,8 @@
 package org.seraph.mvprxjavaretrofit.di.component.test;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.component.AppComponent;
@@ -16,11 +18,15 @@ import dagger.Component;
  * mail：417753393@qq.com
  **/
 @ActivityScope
-@Component(dependencies = AppComponent.class, modules = DesignLayoutModule.class)
+@Component(dependencies = AppComponent.class, modules = {DesignLayoutModule.class})
 public interface DesignLayoutComponent {
 
     void inject(DesignLayoutTestActivity designLayoutTestActivity);
 
-    Context context();
+    Activity ACTIVITY();
+
+    Context CONTEXT();
+
+    LinearLayoutManager LINEAR_LAYOUT_MANAGER();
 
 }

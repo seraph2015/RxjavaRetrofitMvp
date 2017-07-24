@@ -15,7 +15,7 @@ import dagger.Provides;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-@Module
+@Module(includes = ApiServiceModule.class)
 public class AppModule {
 
     private final AppApplication application;
@@ -30,13 +30,10 @@ public class AppModule {
         return application;
     }
 
-
     @Provides
     @Singleton
     DaoSession provideDaoSession(DBGreenDaoHelp dbGreenDaoHelp) {
         return dbGreenDaoHelp.getDaoSession();
     }
-
-
 
 }

@@ -6,8 +6,9 @@ import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
 import java.util.Map;
 
 import io.reactivex.Flowable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -18,14 +19,16 @@ import retrofit2.http.QueryMap;
  **/
 public interface ApiService {
 
-    String BASE_URL = "http://47.89.26.54:8080/yxtg-app/";
+    //String BASE_URL = "http://106.15.103.137:80/zycartrade-app/";
 
+    String BASE_URL = "http://120.27.227.156:8080/index.php/Api/";
 
-    @POST("member/login")
+    @POST("User/login")
     Flowable<BaseDataResponse<UserBean>> login(@QueryMap Map<String, Object> map);
 
-    @POST("member/login")
-    Flowable<BaseDataResponse<UserBean>> login(@Query("cellphone") String cellphone, @Query("password") String password);
+    @POST("User/login")
+    @FormUrlEncoded
+    Flowable<BaseDataResponse<UserBean>> login(@Field("mobile") String mobile, @Field("password") String password);
 
 
 

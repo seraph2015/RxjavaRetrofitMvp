@@ -8,12 +8,12 @@ import java.io.Serializable;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class UserBean implements Serializable{
+public class UserBean implements Serializable {
 
     public int id;
-
-    public String nickName;
-
-    public String headImg;
-
+    public String user_nicename;
+    public String avatar;
+    public String age;
+    public String sex;
+    public String token;
 }

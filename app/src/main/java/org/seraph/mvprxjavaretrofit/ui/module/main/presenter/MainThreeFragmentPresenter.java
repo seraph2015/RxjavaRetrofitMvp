@@ -1,7 +1,8 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.network.ApiManager;
+import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
+import org.seraph.mvprxjavaretrofit.data.network.service.Api12306Service;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainThreeFragmentContract;
 
 import javax.inject.Inject;
@@ -19,11 +20,11 @@ public class MainThreeFragmentPresenter implements MainThreeFragmentContract.Pre
 
     private MainThreeFragmentContract.View mView;
 
-    private ApiManager mApiManager;
+    private Api12306Service mApi12306Service;
 
     @Inject
-    MainThreeFragmentPresenter(ApiManager apiManager) {
-        mApiManager = apiManager;
+    MainThreeFragmentPresenter(Api12306Service api12306Service) {
+        mApi12306Service = api12306Service;
     }
 
 
@@ -48,13 +49,15 @@ public class MainThreeFragmentPresenter implements MainThreeFragmentContract.Pre
 
     @Override
     public void post12306Https() {
-        mApiManager.do12306().doOnSubscribe(new Consumer<Subscription>() {
+        mApi12306Service.do12306Url().compose(RxSchedulers.<String>io_main()).compose(mView.<String>bindToLifecycle()).doOnSubscribe(new Consumer<Subscription>() {
             @Override
             public void accept(Subscription subscription) throws Exception {
                 mSubscription = subscription;
                 mView.showLoading("正在访问");
             }
-        }).subscribe(new Consumer<String>() {
+        })
+
+                .subscribe(new Consumer<String>() {
             @Override
             public void accept(String s) throws Exception {
 
