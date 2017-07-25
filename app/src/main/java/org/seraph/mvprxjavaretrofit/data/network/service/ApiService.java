@@ -37,6 +37,7 @@ public interface ApiService {
      * @param url         上传地址
      * @param requestBody 请求体，生成对应上传requestBody参见
      *                    {@link org.seraph.mvprxjavaretrofit.data.network.FileUploadHelp#multipartRequestBody(Map, List, String)}
+     *                    {@link org.seraph.mvprxjavaretrofit.data.network.FileUploadHelp#multipartRequestBody(Map, Map)}
      */
     @POST()
     Flowable<BaseDataResponse> multipart(@Url() String url, @Body RequestBody requestBody);
