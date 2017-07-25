@@ -49,31 +49,30 @@ public class MainThreeFragmentPresenter implements MainThreeFragmentContract.Pre
 
     @Override
     public void post12306Https() {
-        mApi12306Service.do12306Url().compose(RxSchedulers.<String>io_main()).compose(mView.<String>bindToLifecycle()).doOnSubscribe(new Consumer<Subscription>() {
+        mApi12306Service.do12306Url().compose(RxSchedulers.<String>io_main(mView)).doOnSubscribe(new Consumer<Subscription>() {
             @Override
             public void accept(Subscription subscription) throws Exception {
                 mSubscription = subscription;
                 mView.showLoading("正在访问");
             }
         })
-
                 .subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String s) throws Exception {
+                    @Override
+                    public void accept(String s) throws Exception {
 
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                mView.hideLoading();
-                //访问的为12306网站测试证书，所以无法用gson解析
-                if (throwable instanceof javax.net.ssl.SSLHandshakeException) {
-                    mView.setTextView("缺少https证书");
-                } else if (throwable instanceof com.google.gson.stream.MalformedJsonException) {
-                    mView.setTextView("访问成功");
-                }
-            }
-        });
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        mView.hideLoading();
+                        //访问的为12306网站测试证书，所以无法用gson解析
+                        if (throwable instanceof javax.net.ssl.SSLHandshakeException) {
+                            mView.setTextView("缺少https证书");
+                        } else if (throwable instanceof com.google.gson.stream.MalformedJsonException) {
+                            mView.setTextView("访问成功");
+                        }
+                    }
+                });
 
     }
 

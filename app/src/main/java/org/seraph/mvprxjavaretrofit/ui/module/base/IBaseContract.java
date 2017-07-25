@@ -30,6 +30,7 @@ public interface IBaseContract {
 
         Context getContext();
 
+        <T> LifecycleTransformer<T> bindToLifecycle();
     }
 
     /**
@@ -53,7 +54,6 @@ public interface IBaseContract {
 
         <T> LifecycleTransformer<T> bindUntilEvent(@NonNull ActivityEvent event);
 
-        <T> LifecycleTransformer<T> bindToLifecycle();
     }
 
 
@@ -63,7 +63,6 @@ public interface IBaseContract {
 
         <T> LifecycleTransformer<T> bindUntilEvent(@NonNull FragmentEvent event);
 
-        <T> LifecycleTransformer<T> bindToLifecycle();
     }
 
 

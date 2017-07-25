@@ -67,8 +67,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
 
     private void doBaiduImages(final int tempNo) {
         mApiManager.doBaiduImageUrl(Tools.getBaiduImagesUrl("tomia", tempNo))
-                .compose(mView.<ImageBaiduBean>bindToLifecycle())
-                .compose(RxSchedulers.<ImageBaiduBean>io_main())
+                .compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
                 .doOnSubscribe(new Consumer<Subscription>() {
             @Override
             public void accept(Subscription subscription) throws Exception {

@@ -7,7 +7,6 @@ import org.seraph.mvprxjavaretrofit.data.local.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
 
@@ -66,8 +65,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
     @Override
     public void doLoginTest() {
         mApiService.login("15172311067", "123456")
-                .compose(mView.<BaseDataResponse<UserBean>>bindToLifecycle())
-                .compose(RxSchedulers.<UserBean>io_main_business())
+                .compose(RxSchedulers.<UserBean>io_main_business(mView))
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {

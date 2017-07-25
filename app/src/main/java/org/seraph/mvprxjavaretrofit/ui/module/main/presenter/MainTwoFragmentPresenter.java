@@ -141,8 +141,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
                     public void accept(Subscription subscription) throws Exception {
                         mSubscription = subscription;
                     }
-                }).compose(mView.<ImageBaiduBean>bindToLifecycle())
-                .compose(RxSchedulers.<ImageBaiduBean>io_main())
+                }).compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
                 .map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
                     @Override
                     public List<ImageBaiduBean.BaiduImage> apply(ImageBaiduBean imageBaiduBean) throws Exception {
