@@ -30,7 +30,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
 
     private Subscription mSubscription;
 
-    private UserBean userBean;
+    private UserBean mUserBean;
 
     private ApiService mApiService;
 
@@ -75,10 +75,10 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
                         mView.showLoading("正在登陆...");
                     }
                 })
-                .subscribe(new ABaseNetWorkSubscriber<BaseDataResponse<UserBean>>(mView) {
+                .subscribe(new ABaseNetWorkSubscriber<UserBean>(mView) {
                     @Override
-                    public void onSuccess(BaseDataResponse<UserBean> userBeanBaseDataResponse) {
-                        userBean = userBeanBaseDataResponse.data;
+                    public void onSuccess(UserBean userBean) {
+                        mUserBean = userBean;
                         mView.showToast("登陆成功");
                     }
 
@@ -96,15 +96,15 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
      */
     @Override
     public void saveUserInfo() {
-        if (userBean == null) {
+        if (mUserBean == null) {
             mView.showToast("没有可保存数据");
             return;
         }
         UserTable userTable = new UserTable();
-        userTable.setId(userBean.id);
-        userTable.setToken(userBean.token);
-        userTable.setName(userBean.user_nicename);
-        userTable.setHeadPortrait(userBean.avatar);
+        userTable.setId(mUserBean.id);
+        userTable.setToken(mUserBean.token);
+        userTable.setName(mUserBean.user_nicename);
+        userTable.setHeadPortrait(mUserBean.avatar);
         mDaoSession.getUserTableDao().save(userTable);
         mView.showToast("保存成功");
     }
@@ -114,14 +114,14 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
      */
     @Override
     public void upDataUserInfo() {
-        List<UserTable> listAll = mDaoSession.getUserTableDao().queryBuilder().where(UserTableDao.Properties.Id.eq(userBean.id)).list();
+        List<UserTable> listAll = mDaoSession.getUserTableDao().queryBuilder().where(UserTableDao.Properties.Id.eq(mUserBean.id)).list();
         if (listAll.size() == 0) {
             mView.showToast("没有可更新的数据");
             return;
         }
         for (UserTable searchUser : listAll) {
             //更新token
-            searchUser.setToken(userBean.token);
+            searchUser.setToken(mUserBean.token);
             mDaoSession.getUserTableDao().update(searchUser);
         }
 

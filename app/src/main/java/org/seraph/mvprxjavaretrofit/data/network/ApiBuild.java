@@ -6,11 +6,7 @@ import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.data.network.https.HTTPS;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.security.GeneralSecurityException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -40,13 +36,7 @@ public class ApiBuild {
                 InputStream inputStream = application.getAssets().open(AppConfig.HTTPS_CER_NAME);
                 x509TrustManager = HTTPS.getX509TrustManager(inputStream);
                 sslSocketFactory = HTTPS.getSSLSocketFactory(x509TrustManager);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (KeyManagementException e) {
-                e.printStackTrace();
-            } catch (GeneralSecurityException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
