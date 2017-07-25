@@ -15,10 +15,16 @@
             android:layout_height="wrap_content"
             android:text="design layout" />
 
+        <Button
+            android:id="@+id/btn_upload_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UPLOAD FILE TEST" />
+
         <org.seraph.mvprxjavaretrofit.ui.views.addImage.CustomImageViewGroup
             android:id="@+id/vg_add_image_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

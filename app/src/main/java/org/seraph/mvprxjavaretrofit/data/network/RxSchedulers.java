@@ -25,7 +25,7 @@ public class RxSchedulers {
     /**
      * 业务成功code
      */
-    private static final int SUCCESS_STATUS = 1;
+    private static final int SUCCESS_STATUS = 0;
 
 
     public static <T> FlowableTransformer<BaseDataResponse<T>, T> io_main_business() {

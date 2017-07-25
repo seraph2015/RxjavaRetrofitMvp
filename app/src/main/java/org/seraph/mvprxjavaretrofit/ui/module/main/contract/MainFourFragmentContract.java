@@ -38,5 +38,7 @@ public interface MainFourFragmentContract extends IBaseContract {
         void photoPreview(int position);
 
         void onCameraComplete();
+
+        void uploadFile();
     }
 }

@@ -7,6 +7,7 @@ import org.seraph.mvprxjavaretrofit.data.local.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
+import org.seraph.mvprxjavaretrofit.ui.module.base.BaseData;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
 
@@ -65,7 +66,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
     @Override
     public void doLoginTest() {
         mApiService.login("15172311067", "123456")
-                .compose(RxSchedulers.<UserBean>io_main_business(mView))
+                .compose(RxSchedulers.<BaseData<UserBean>>io_main_business())
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {
@@ -73,10 +74,10 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
                         mView.showLoading("正在登陆...");
                     }
                 })
-                .subscribe(new ABaseNetWorkSubscriber<UserBean>(mView) {
+                .subscribe(new ABaseNetWorkSubscriber<BaseData<UserBean>>(mView) {
                     @Override
-                    public void onSuccess(UserBean userBean) {
-                        mUserBean = userBean;
+                    public void onSuccess(BaseData<UserBean> userBean) {
+                        mUserBean = userBean.user;
                         mView.showToast("登陆成功");
                     }
 
@@ -101,8 +102,8 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
         UserTable userTable = new UserTable();
         userTable.setId(mUserBean.id);
         userTable.setToken(mUserBean.token);
-        userTable.setName(mUserBean.user_nicename);
-        userTable.setHeadPortrait(mUserBean.avatar);
+        userTable.setName(mUserBean.nickname);
+        userTable.setHeadPortrait(mUserBean.headimg);
         mDaoSession.getUserTableDao().save(userTable);
         mView.showToast("保存成功");
     }
