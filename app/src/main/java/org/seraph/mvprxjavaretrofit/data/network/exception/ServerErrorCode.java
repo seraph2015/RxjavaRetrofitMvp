@@ -15,15 +15,6 @@ import java.net.ConnectException;
 public class ServerErrorCode {
 
 
-    private static final int UNAUTHORIZED = 401;
-    private static final int FORBIDDEN = 403;
-    private static final int NOT_FOUND = 404;
-    private static final int REQUEST_TIMEOUT = 408;
-    private static final int INTERNAL_SERVER_ERROR = 500;
-    private static final int BAD_GATEWAY = 502;
-    private static final int SERVICE_UNAVAILABLE = 503;
-    private static final int GATEWAY_TIMEOUT = 504;
-
     public static final String NETWORK_ERR = "NETWORK_ERR";
 
     /**
@@ -43,14 +34,15 @@ public class ServerErrorCode {
 
     /**
      * 显示错误信息
+     *@see ServerErrorException 自定义异常可以配合 {@link #errorCodeToMessage(String)} 进行转义
      */
     public static String errorCodeToMessageShow(Throwable e) {
         String message = e.getMessage();
-        if (e instanceof ServerErrorException) {
+        if (e instanceof ServerErrorException) { //自定义异常，进行自定义词典进行转义（包含自定义和业务逻辑失败）
             message = errorCodeToMessage(message);
         } else if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
-            message = "网络错误:code " + httpException.code();
+            message = "网络异常:code " + httpException.code();
         } else if (e instanceof ConnectException) {
             message = "连接失败";
         } else if (e instanceof java.net.SocketTimeoutException) {
@@ -60,7 +52,7 @@ public class ServerErrorCode {
         } else if (e instanceof com.google.gson.stream.MalformedJsonException) {
             message = "Json转换异常";
         } else if (Tools.isNull(message)) {
-            message = "未知错误";
+            message = "未知异常";
         }
         return message;
     }
