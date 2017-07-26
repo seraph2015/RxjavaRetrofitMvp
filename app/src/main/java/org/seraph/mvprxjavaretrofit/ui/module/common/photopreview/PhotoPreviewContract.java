@@ -20,12 +20,6 @@ interface PhotoPreviewContract extends IBaseContract {
      */
     interface View extends IBaseActivityView {
 
-        /**
-         * 跳转授权
-         */
-        void startPermissionsActivity(String[] permissions);
-
-
         void finish();
 
         void setPhotoList(ArrayList<PhotoPreviewBean> mPhotoList);
@@ -37,8 +31,6 @@ interface PhotoPreviewContract extends IBaseContract {
     }
 
     interface Presenter extends IBaseActivityPresenter<View> {
-
-        void onPermissionsRequest(int resultCode);
 
         void saveImage();
 

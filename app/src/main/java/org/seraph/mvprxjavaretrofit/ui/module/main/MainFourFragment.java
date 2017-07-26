@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
-import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentComponent;
 import org.seraph.mvprxjavaretrofit.di.module.FragmentModule;
@@ -36,6 +35,7 @@ import butterknife.OnClick;
  **/
 public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.View, MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
 
+
     @BindView(R.id.vg_add_image_group)
     CustomImageViewGroup mAddImageView;
 
@@ -61,6 +61,9 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
         DaggerMainFragmentComponent.builder().appComponent(AppApplication.getAppComponent()).fragmentModule(new FragmentModule(this)).build().inject(this);
     }
 
+    private static final int CODE_REQUEST = 1000;
+
+
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         initListener();
@@ -80,7 +83,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
                                     case 1:
                                         mPresenter.doTakePhoto();
                                         break;
-                                    case 2:
+                                    case 2://本地相册
                                         mPresenter.doSelectedLocalImage();
                                         break;
                                 }
@@ -102,7 +105,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
     }
 
 
-    @OnClick(value = {R.id.btn_design_layout,R.id.btn_upload_test})
+    @OnClick(value = {R.id.btn_design_layout, R.id.btn_upload_test})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_design_layout:
@@ -126,7 +129,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
     public void startLocalImageActivity(ArrayList<String> imageList) {
         Intent intent = new Intent(mContext, LocalImageListActivity.class);
         intent.putExtra(LocalImageListActivity.SELECTED_PATH, imageList);
-        startActivityForResult(intent, AppConfig.PERMISSIONS_CODE_REQUEST_1);
+        startActivityForResult(intent, CODE_REQUEST);
     }
 
     @Override
@@ -142,7 +145,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
                 case TakePhoto.CAMERA_WITH_DATA:
                     mPresenter.onCameraComplete();
                     break;
-                case AppConfig.PERMISSIONS_CODE_REQUEST_1://相册
+                case CODE_REQUEST://相册
                     mPresenter.onLocalImageResult(data);
                     break;
             }

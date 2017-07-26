@@ -3,16 +3,12 @@ package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.AppConfig;
-import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionManagement;
-import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActivity;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.io.File;
@@ -134,21 +130,10 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
     public void saveImage() {
         if (StringUtils.equals(imageType, PhotoPreviewActivity.IMAGE_TYPE_NETWORK)) {
             mSavePhoto = mPhotoList.get(currentPosition);
-            imageDownload();
-        }
-    }
-
-    private void imageDownload() {
-        //判然系统权限
-        // 缺少权限时, 进入权限配置页面
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionManagement.lacksPermissions(mView.getContext(), AppConfig.PERMISSIONS_SDCARD)) {
-            mView.startPermissionsActivity(AppConfig.PERMISSIONS_SDCARD);
-        } else {
             mView.showLoading("正在保存");
             Picasso.with(mView.getContext()).load(mSavePhoto.objURL).into(target);
         }
     }
-
 
     /**
      * 保存图片到本地
@@ -220,18 +205,5 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         }
 
     }
-
-    /**
-     * 权限请求返回
-     */
-    @Override
-    public void onPermissionsRequest(int resultCode) {
-        if (resultCode == PermissionsActivity.PERMISSIONS_GRANTED) {
-            imageDownload();
-        } else {
-            mView.showToast("权限请求失败，无法保存图片");
-        }
-    }
-
 
 }

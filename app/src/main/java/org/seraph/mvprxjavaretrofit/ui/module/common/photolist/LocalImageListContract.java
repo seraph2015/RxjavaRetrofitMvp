@@ -24,7 +24,6 @@ public interface LocalImageListContract extends IBaseContract {
 
         void setSelectedPath(ArrayList<String> arrayList);
 
-        void requestPermission(String[] permissions);
     }
 
     interface Presenter extends IBaseActivityPresenter<View> {
@@ -33,7 +32,6 @@ public interface LocalImageListContract extends IBaseContract {
 
         void setIntent(Intent intent);
 
-        void onPermissionsRequest(int resultCode);
     }
 
 }

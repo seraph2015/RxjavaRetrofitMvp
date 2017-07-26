@@ -3,6 +3,8 @@ package org.seraph.mvprxjavaretrofit.di.module;
 import android.app.Activity;
 import android.content.Context;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 
 import dagger.Module;
@@ -34,5 +36,12 @@ public class ActivityModule {
     Context provideContext() {
         return mActivity;
     }
+
+    @Provides
+    @ActivityScope
+    RxPermissions provideRxPermissions() {
+        return new RxPermissions(mActivity);
+    }
+
 
 }

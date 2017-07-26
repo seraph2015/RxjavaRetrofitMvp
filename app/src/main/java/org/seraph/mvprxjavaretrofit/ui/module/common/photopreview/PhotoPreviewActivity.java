@@ -1,21 +1,21 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import org.seraph.mvprxjavaretrofit.AppApplication;
-import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
 import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActivity;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
 
 import java.util.ArrayList;
@@ -23,7 +23,8 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -67,6 +68,9 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
     @Inject
     PhotoPreviewAdapter mPhotoPreviewAdapter;
 
+    @Inject
+    RxPermissions rxPermissions;
+
     @Override
     protected PhotoPreviewContract.Presenter getMVPPresenter() {
         return mPresenter;
@@ -95,8 +99,34 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         initViewPager();
+        initRxBinding();
         mPresenter.setIntent(getIntent());
         mPresenter.start();
+    }
+
+    private void initRxBinding() {
+        //点击保存按钮先检查权限
+        RxView.clicks(tvSave)
+                .compose(rxPermissions.ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            //获取权限成功
+                            mPresenter.saveImage();
+                        } else {
+                            //获取权限失败
+                            showToast("缺少SD卡权限，保存图片失败");
+//                            Tools.showMissingPermissionDialog(PhotoPreviewActivity.this, new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    showToast("保存失败");
+//                                }
+//                            });
+                        }
+                    }
+                });
+
     }
 
 
@@ -119,12 +149,6 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void startPermissionsActivity(String[] permissions) {
-        PermissionsActivity.startActivityForResult(this, AppConfig.PERMISSIONS_CODE_REQUEST_1, permissions);
-    }
-
     @Override
     public void setPhotoList(ArrayList<PhotoPreviewBean> mPhotoList) {
         mPhotoPreviewAdapter.setListData(mPhotoList);
@@ -142,21 +166,6 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
     @Override
     public void hideSaveBtn() {
         tvSave.setVisibility(View.GONE);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppConfig.PERMISSIONS_CODE_REQUEST_1) {
-            mPresenter.onPermissionsRequest(resultCode);
-        }
-    }
-
-
-    @OnClick(R.id.tv_save)
-    public void onViewClicked() {
-        mPresenter.saveImage();
     }
 
 

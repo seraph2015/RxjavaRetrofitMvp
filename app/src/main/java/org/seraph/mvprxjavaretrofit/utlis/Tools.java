@@ -3,6 +3,7 @@ package org.seraph.mvprxjavaretrofit.utlis;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
@@ -11,6 +12,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -338,5 +341,39 @@ public class Tools {
     }
 
 
+    /**
+     * 显示缺失权限提示
+     */
+    public static void showMissingPermissionDialog(final Context context, final View.OnClickListener onClickListener) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("帮助");
+        builder.setMessage("缺少必要权限。\n请点击\"设置\"-\"权限\"-打开所需权限。");
+        // 拒绝, 退出应用
+        builder.setNegativeButton("退出", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (onClickListener != null) {
+                    onClickListener.onClick(null);
+                }
 
+            }
+        });
+        builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startAppSettings(context);
+            }
+        });
+        builder.show();
+    }
+
+
+    /**
+     * 启动应用的设置
+     */
+    public static void startAppSettings(Context context) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + context.getPackageName()));
+        context.startActivity(intent);
+    }
 }

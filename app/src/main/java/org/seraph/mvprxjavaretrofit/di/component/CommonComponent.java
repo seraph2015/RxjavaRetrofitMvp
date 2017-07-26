@@ -5,6 +5,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
@@ -33,4 +35,6 @@ public interface CommonComponent {
     GridLayoutManager GRID_LAYOUT_MANAGER();
 
     ContentResolver CONTENT_RESOLVER();
+
+    RxPermissions RX_PERMISSIONS();
 }

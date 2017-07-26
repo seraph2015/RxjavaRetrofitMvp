@@ -1,8 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photolist;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,13 +12,11 @@ import android.view.MenuItem;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
-import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
 import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +38,6 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     RecyclerView mRvList;
 
 
-    public static final String SELECT_PATH = "select_path";
-
-    public static final String SELECTED_PATH = "selected_path";
-
-
     @Override
     public int getContextView() {
         return R.layout.common_activity_local_image_list;
@@ -55,18 +46,21 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     @Inject
     LocalImageListPresenter mPresenter;
 
-
-    @Override
-    protected LocalImageListContract.Presenter getMVPPresenter() {
-        return mPresenter;
-    }
-
     @Inject
     LocalImageListAdapter mImageListAdapter;
 
     @Inject
     GridLayoutManager manager;
 
+    @Override
+    protected LocalImageListContract.Presenter getMVPPresenter() {
+        return mPresenter;
+    }
+
+
+    public static final String SELECT_PATH = "select_path";
+
+    public static final String SELECTED_PATH = "selected_path";
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
@@ -123,17 +117,5 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
         mImageListAdapter.setSelectedPathList(arrayList);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void requestPermission(String[] permissions) {
-        PermissionsActivity.startActivityForResult(this, AppConfig.PERMISSIONS_CODE_REQUEST_1, permissions);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == AppConfig.PERMISSIONS_CODE_REQUEST_1){
-            mPresenter.onPermissionsRequest(resultCode);
-        }
-    }
 }

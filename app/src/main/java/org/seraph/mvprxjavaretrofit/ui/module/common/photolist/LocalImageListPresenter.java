@@ -1,20 +1,22 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photolist;
 
+import android.Manifest;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
-import org.seraph.mvprxjavaretrofit.AppConfig;
-import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionManagement;
-import org.seraph.mvprxjavaretrofit.ui.module.common.permission.PermissionsActivity;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * 本地图库
@@ -26,17 +28,20 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
 
     private LocalImageListContract.View mView;
 
-    private ContentResolver mContentResolver;
-
     private AsyncImageQueryHandler mQueryHandler;
 
     private String[] projectionImages = {MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
 
+    private RxPermissions mRxPermissions;
+
     @Inject
-    public LocalImageListPresenter(ContentResolver contentResolver) {
-        this.mContentResolver = contentResolver;
+    public LocalImageListPresenter(ContentResolver contentResolver, RxPermissions rxPermissions) {
         mQueryHandler = new AsyncImageQueryHandler(contentResolver);
+        mRxPermissions = rxPermissions;
     }
+
+
+    private final int CODE_REQUEST = 1000;
 
     @Override
     public void setView(LocalImageListContract.View view) {
@@ -54,28 +59,22 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
 
     }
 
-    @Override
-    public void onPermissionsRequest(int resultCode) {
-        switch (resultCode) {
-            case PermissionsActivity.PERMISSIONS_GRANTED://权限授权
-                startAsyncQuery();
-                break;
-            case PermissionsActivity.PERMISSIONS_DENIED://权限拒绝
-                mView.showToast("获取授权失败");
-                break;
-        }
-    }
-
     /**
      * 查询
      */
     private void startAsyncQuery() {
         //检查读取存储卡的权限
-        if (PermissionManagement.lacksPermissions(mView.getContext(), AppConfig.PERMISSIONS_SDCARD)) {
-            mView.requestPermission(AppConfig.PERMISSIONS_SDCARD);
-            return;
-        }
-        mQueryHandler.startQuery(AppConfig.PERMISSIONS_CODE_REQUEST_1, null, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionImages, null, null, "date_modified DESC");
+        mRxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            mQueryHandler.startQuery(CODE_REQUEST, null, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionImages, null, null, "date_modified DESC");
+                        } else {
+                            mView.showToast("缺少SD卡权限，读取照片失败");
+                        }
+                    }
+                });
     }
 
     @Override
@@ -104,7 +103,7 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
         @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
             switch (token) {
-                case AppConfig.PERMISSIONS_CODE_REQUEST_1:
+                case CODE_REQUEST:
                     mView.setQueryImageList(initImageList(cursor));
                     break;
             }
