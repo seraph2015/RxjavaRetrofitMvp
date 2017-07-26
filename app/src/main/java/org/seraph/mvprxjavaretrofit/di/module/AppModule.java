@@ -1,7 +1,7 @@
 package org.seraph.mvprxjavaretrofit.di.module;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
-import org.seraph.mvprxjavaretrofit.data.local.db.DBGreenDaoHelp;
+import org.seraph.mvprxjavaretrofit.data.local.db.DBManager;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
 
 import javax.inject.Singleton;
@@ -32,8 +32,9 @@ public class AppModule {
 
     @Provides
     @Singleton
-    DaoSession provideDaoSession(DBGreenDaoHelp dbGreenDaoHelp) {
+    DaoSession provideDaoSession(DBManager dbGreenDaoHelp) {
         return dbGreenDaoHelp.getDaoSession();
     }
+
 
 }

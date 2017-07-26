@@ -66,7 +66,7 @@ public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.View,
         tvDbUser.setText(charSequence);
     }
 
-    @OnClick({R.id.btn_request, R.id.btn_sava_db, R.id.btn_updata_db, R.id.tv_query_user, R.id.tv_clean_user})
+    @OnClick({R.id.btn_request, R.id.btn_sava_db, R.id.tv_query_user, R.id.tv_clean_user})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_request:
@@ -74,9 +74,6 @@ public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.View,
                 break;
             case R.id.btn_sava_db:
                 mPresenter.saveUserInfo();
-                break;
-            case R.id.btn_updata_db:
-                mPresenter.upDataUserInfo();
                 break;
             case R.id.tv_query_user:
                 mPresenter.queryUserInfo();

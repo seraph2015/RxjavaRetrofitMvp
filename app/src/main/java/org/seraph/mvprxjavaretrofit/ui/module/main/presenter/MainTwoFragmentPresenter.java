@@ -4,15 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.SearchHistoryTableDao;
+import org.seraph.mvprxjavaretrofit.data.local.db.help.SearchHistoryHelp;
+import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
 import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
-import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.FileUtils;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -41,12 +41,15 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     private ApiBaiduService mApiBaiduService;
 
-    private DaoSession mDaoSession;
+    private SearchHistoryHelp mSearchHistoryHelp;
+
+    private UserBeanHelp mUserHelp;
 
     @Inject
-    MainTwoFragmentPresenter(ApiBaiduService apiBaiduService, DaoSession daoSession) {
+    MainTwoFragmentPresenter(ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp) {
         this.mApiBaiduService = apiBaiduService;
-        this.mDaoSession = daoSession;
+        this.mSearchHistoryHelp = searchHistoryHelp;
+        this.mUserHelp = userHelp;
     }
 
     private Subscription mSubscription;
@@ -61,7 +64,10 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
     private int pageNo = 0;
 
     private String searchKeyWord;
-
+    //默认用户id
+    private int tempId = -1;
+    //历史记录type
+    private String type = "Search Image";
 
     @Override
     public void start() {
@@ -82,8 +88,13 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     @Override
     public void searchHistory() {
+        if (mUserHelp.getUserBeanTable() == null) {
+            tempId = -1;
+        } else {
+            tempId = mUserHelp.getUserBeanTable().getId();
+        }
         //查询本地数据搜索历史（时间倒叙）
-        listSearch = mDaoSession.getSearchHistoryTableDao().queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1)).orderDesc(SearchHistoryTableDao.Properties.SearchTime).list();
+        listSearch = mSearchHistoryHelp.querySearchDB(tempId, type);
         if (listSearch.size() == 0) {
             mView.showToast("暂无搜索历史");
             return;
@@ -106,7 +117,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == listSearch.size()) {
-                    deleteAllSearchDB();
+                    mSearchHistoryHelp.deleteAllSearchDB(tempId, type);
                 } else {
                     mView.setSearchInput(items[which]);
                 }
@@ -122,7 +133,8 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
             return;
         }
         //保存搜索到本地数据库
-        saveSearchToDB();
+        mSearchHistoryHelp.saveSearchToDB(tempId, type, searchKeyWord);
+
         mView.showLoading("正在搜索");
         getBaiduImageList(searchKeyWord, 1);
     }
@@ -186,35 +198,5 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
         mView.startPhotoPreview(photoList, position);
     }
 
-    /**
-     * 保存到数据库
-     */
-    private void saveSearchToDB() {
-        //清理之前在同一用户种同一类型的重复的key
-        SearchHistoryTableDao searchHistoryTableDao = mDaoSession.getSearchHistoryTableDao();
-        List<SearchHistoryTable> historyTableList = searchHistoryTableDao.queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1), SearchHistoryTableDao.Properties.Type.eq("Search Image"), SearchHistoryTableDao.Properties.SearchKey.eq(searchKeyWord)).list();
-        for (SearchHistoryTable searchHistoryTable : historyTableList) {
-            searchHistoryTableDao.delete(searchHistoryTable);
-        }
-        SearchHistoryTable searchHistoryTable = new SearchHistoryTable();
-        searchHistoryTable.setSearchKey(searchKeyWord);
-        searchHistoryTable.setSearchTime(System.currentTimeMillis());
-        searchHistoryTable.setType("Search Image");
-        searchHistoryTable.setUserId(-1);
-        mDaoSession.getSearchHistoryTableDao().save(searchHistoryTable);
-    }
-
-
-    /**
-     * 清理当前用户search image类型历史数据库
-     */
-    private void deleteAllSearchDB() {
-        SearchHistoryTableDao searchHistoryTableDao = mDaoSession.getSearchHistoryTableDao();
-        List<SearchHistoryTable> historyTableList = searchHistoryTableDao.queryBuilder().where(SearchHistoryTableDao.Properties.UserId.eq(-1), SearchHistoryTableDao.Properties.Type.eq("Search Image")).list();
-        for (SearchHistoryTable searchHistoryTable : historyTableList) {
-            searchHistoryTableDao.delete(searchHistoryTable);
-        }
-
-    }
 
 }

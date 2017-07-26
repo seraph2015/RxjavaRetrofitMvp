@@ -1,9 +1,9 @@
 package org.seraph.mvprxjavaretrofit.data.local.db.table;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * 搜索历史表
@@ -94,8 +94,6 @@ public class SearchHistoryTable {
     public void setSearchTime(long searchTime) {
         this.searchTime = searchTime;
     }
-
-
 
 
 }

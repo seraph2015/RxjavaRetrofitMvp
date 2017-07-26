@@ -1,17 +1,14 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.UserTableDao;
-import org.seraph.mvprxjavaretrofit.data.local.db.table.UserTable;
+import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
+import org.seraph.mvprxjavaretrofit.data.local.db.table.UserBeanTable;
 import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseData;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -34,11 +31,11 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
 
     private ApiService mApiService;
 
-    private DaoSession mDaoSession;
+    private UserBeanHelp mUserBeanHelp;
 
     @Inject
-    MainOneFragmentPresenter(ApiService apiService, DaoSession daoSession) {
-        this.mDaoSession = daoSession;
+    MainOneFragmentPresenter(ApiService apiService, UserBeanHelp userBeanHelp) {
+        this.mUserBeanHelp = userBeanHelp;
         this.mApiService = apiService;
     }
 
@@ -99,32 +96,13 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
             mView.showToast("没有可保存数据");
             return;
         }
-        UserTable userTable = new UserTable();
+        UserBeanTable userTable = new UserBeanTable();
         userTable.setId(mUserBean.id);
         userTable.setToken(mUserBean.token);
         userTable.setName(mUserBean.nickname);
         userTable.setHeadPortrait(mUserBean.headimg);
-        mDaoSession.getUserTableDao().save(userTable);
+        mUserBeanHelp.save(userTable);
         mView.showToast("保存成功");
-    }
-
-    /**
-     * 更新用户id与网络请求数据id相同的信息
-     */
-    @Override
-    public void upDataUserInfo() {
-        List<UserTable> listAll = mDaoSession.getUserTableDao().queryBuilder().where(UserTableDao.Properties.Id.eq(mUserBean.id)).list();
-        if (listAll.size() == 0) {
-            mView.showToast("没有可更新的数据");
-            return;
-        }
-        for (UserTable searchUser : listAll) {
-            //更新token
-            searchUser.setToken(mUserBean.token);
-            mDaoSession.getUserTableDao().update(searchUser);
-        }
-
-        queryUserInfo();
     }
 
     /**
@@ -132,12 +110,12 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
      */
     @Override
     public void queryUserInfo() {
-        List<UserTable> list = mDaoSession.getUserTableDao().queryBuilder().list();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (UserTable userTable : list) {
-            stringBuilder.append("_id:" + userTable.get_id() + "\nid:" + userTable.getId() + "\ntoken:" + userTable.getToken() + "\nname:" + userTable.getName() + "\nheadImg:" + userTable.getHeadPortrait() + "\n\n");
+        UserBeanTable userBeanTable = mUserBeanHelp.getUserBeanTable();
+        if (userBeanTable != null) {
+            mView.setUserTextViewValue("_id:" + userBeanTable.get_id() + "\nid:" + userBeanTable.getId() + "\ntoken:" + userBeanTable.getToken() + "\nname:" + userBeanTable.getName() + "\nheadImg:" + userBeanTable.getHeadPortrait() + "\n\n");
+        } else {
+            mView.setUserTextViewValue("没有保存的信息");
         }
-        mView.setUserTextViewValue(stringBuilder.toString());
     }
 
     /**
@@ -145,7 +123,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
      */
     @Override
     public void cleanUserInfo() {
-        mDaoSession.getUserTableDao().deleteAll();
+        mUserBeanHelp.cleanUser();
         queryUserInfo();
     }
 

@@ -24,8 +24,6 @@ public interface MainOneFragmentContract extends IBaseContract {
 
         void saveUserInfo();
 
-        void upDataUserInfo();
-
         void queryUserInfo();
 
         void cleanUserInfo();

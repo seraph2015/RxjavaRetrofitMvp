@@ -34,7 +34,7 @@ public class SearchHistoryTableDao extends AbstractDao<SearchHistoryTable, Long>
         public final static Property SearchTime = new Property(4, long.class, "searchTime", false, "SEARCH_TIME");
     }
 
-    private Query<SearchHistoryTable> userTable_ListSearchHistoryQuery;
+    private Query<SearchHistoryTable> userBeanTable_ListSearchHistoryQuery;
 
     public SearchHistoryTableDao(DaoConfig config) {
         super(config);
@@ -156,16 +156,16 @@ public class SearchHistoryTableDao extends AbstractDao<SearchHistoryTable, Long>
         return true;
     }
     
-    /** Internal query to resolve the "listSearchHistory" to-many relationship of UserTable. */
-    public List<SearchHistoryTable> _queryUserTable_ListSearchHistory(int userId) {
+    /** Internal query to resolve the "listSearchHistory" to-many relationship of UserBeanTable. */
+    public List<SearchHistoryTable> _queryUserBeanTable_ListSearchHistory(int userId) {
         synchronized (this) {
-            if (userTable_ListSearchHistoryQuery == null) {
+            if (userBeanTable_ListSearchHistoryQuery == null) {
                 QueryBuilder<SearchHistoryTable> queryBuilder = queryBuilder();
                 queryBuilder.where(Properties.UserId.eq(null));
-                userTable_ListSearchHistoryQuery = queryBuilder.build();
+                userBeanTable_ListSearchHistoryQuery = queryBuilder.build();
             }
         }
-        Query<SearchHistoryTable> query = userTable_ListSearchHistoryQuery.forCurrentThread();
+        Query<SearchHistoryTable> query = userBeanTable_ListSearchHistoryQuery.forCurrentThread();
         query.setParameter(0, userId);
         return query.list();
     }
