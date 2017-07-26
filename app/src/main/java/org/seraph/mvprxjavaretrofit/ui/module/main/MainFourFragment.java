@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
@@ -135,6 +136,11 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
     @Override
     public void startPhotoPreview(ArrayList<String> imageList, int position) {
         PhotoPreviewActivity.startPhotoPreview(getActivity(), imageList, position, PhotoPreviewActivity.IMAGE_TYPE_LOCAL);
+    }
+
+    @Override
+    public Fragment getFragment() {
+        return this;
     }
 
     @Override

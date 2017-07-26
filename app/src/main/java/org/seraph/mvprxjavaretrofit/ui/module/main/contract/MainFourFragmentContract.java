@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 
@@ -22,6 +23,7 @@ public interface MainFourFragmentContract extends IBaseContract {
 
         void startPhotoPreview(ArrayList<String> imageList, int position);
 
+        Fragment getFragment();
     }
 
     interface Presenter extends IBaseFragmentPresenter<View> {

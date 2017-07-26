@@ -12,7 +12,10 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
+
+import com.zhy.base.fileprovider.FileProvider7;
 
 import java.io.File;
 import java.util.UUID;
@@ -61,7 +64,10 @@ public class TakePhoto {
             //给新照的照片文件命名
             mCurrentPhotoFile = getNewPhotoFile();
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mCurrentPhotoFile));
+            //Uri.fromFile(mCurrentPhotoFile)
+            //适配7.0文件共享
+            Uri fileUri = FileProvider7.getUriForFile(mContext, mCurrentPhotoFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
             mContext.startActivityForResult(intent, CAMERA_WITH_DATA);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(mContext, "没有程序执行拍照操作", Toast.LENGTH_SHORT).show();
@@ -69,6 +75,26 @@ public class TakePhoto {
         }
     }
 
+
+    /**
+     * 请求照相机拍照
+     */
+
+    public void doTakePhoto(Fragment fragment) {
+        try {
+            //给新照的照片文件命名
+            mCurrentPhotoFile = getNewPhotoFile();
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
+            //Uri.fromFile(mCurrentPhotoFile)
+            //适配7.0文件共享
+            Uri fileUri = FileProvider7.getUriForFile(fragment.getContext(), mCurrentPhotoFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+            fragment.startActivityForResult(intent, CAMERA_WITH_DATA);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(mContext, "没有程序执行拍照操作", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 获取一个新的图片输出路径

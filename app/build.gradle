@@ -84,6 +84,8 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     //RxJava 文件下载
     compile 'zlc.season:rxdownload2:2.0.4'
+    //7.0文件共享FileProvider适配
+    compile 'com.zhy.base:fileprovider:1.0.0'
 
 }
 repositories {

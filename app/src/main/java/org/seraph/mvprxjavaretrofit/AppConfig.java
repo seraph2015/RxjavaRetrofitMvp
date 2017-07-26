@@ -32,13 +32,9 @@ public class AppConfig {
     public static final String PREFERENCES_NAME = "Seraph";
 
     /**
-     * 权限请求code
-     */
-    public static final int CODE_REQUEST_PERMISSIONS = 1000;
-    /**
      * 是否在debug模式
      */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     /**
      * 是否启用证书

@@ -67,7 +67,7 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
 
     @Override
     public void doTakePhoto() {
-        mTakePhoto.doTakePhoto();
+        mTakePhoto.doTakePhoto(mView.getFragment());
     }
 
     @Override
@@ -144,4 +144,6 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
             }
         });
     }
+
+
 }
