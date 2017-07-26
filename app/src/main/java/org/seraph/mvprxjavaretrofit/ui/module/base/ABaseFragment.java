@@ -19,7 +19,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * BaseFragment
+ * 基础的Fragment继承父类
+ * 说明参见{@link ABaseActivity}
  * date：2017/2/20 16:40
  * author：xiongj
  * mail：417753393@qq.com
