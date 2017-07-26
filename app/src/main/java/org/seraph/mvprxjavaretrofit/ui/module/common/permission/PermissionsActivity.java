@@ -21,6 +21,7 @@ import org.seraph.mvprxjavaretrofit.R;
  * date：2017/2/28 11:55
  * author：xiongj
  * mail：417753393@qq.com
+ * RxJava使用RxPermissions{@link com.tbruyelle.rxpermissions2.RxPermissions}
  **/
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class PermissionsActivity extends AppCompatActivity {
