@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
 
 import javax.inject.Inject;
@@ -75,7 +76,7 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
             @Override
             public void onDismiss(DialogInterface dialog) {
                // p.unSubscribe();
-                DisposableHelp.dispose();
+                RxDisposableHelp.dispose();
                 mLoadingDialog.setOnDismissListener(null);
             }
         });

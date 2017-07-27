@@ -9,8 +9,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
-import org.seraph.mvprxjavaretrofit.ui.module.base.DisposableHelp;
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.io.File;
@@ -176,7 +176,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
                             mView.showToast("保存失败");
                         }
                     });
-            DisposableHelp.addSubscription(disposable);
+            RxDisposableHelp.addSubscription(disposable);
         }
 
         @Override

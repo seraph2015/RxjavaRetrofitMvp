@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.data.network;
+package org.seraph.mvprxjavaretrofit.data.network.rx;
 
 
 import org.reactivestreams.Publisher;

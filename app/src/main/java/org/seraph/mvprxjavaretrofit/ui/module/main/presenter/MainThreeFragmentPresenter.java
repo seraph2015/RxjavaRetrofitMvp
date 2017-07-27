@@ -1,7 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.Api12306Service;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainThreeFragmentContract;
 

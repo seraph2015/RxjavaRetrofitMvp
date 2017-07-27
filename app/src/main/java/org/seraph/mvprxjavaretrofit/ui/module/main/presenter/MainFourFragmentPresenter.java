@@ -5,7 +5,7 @@ import android.net.Uri;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.FileUploadHelp;
-import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;

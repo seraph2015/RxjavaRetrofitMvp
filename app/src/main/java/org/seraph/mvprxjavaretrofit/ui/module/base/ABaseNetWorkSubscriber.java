@@ -4,6 +4,7 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.exception.ServerErrorCode;
 import org.seraph.mvprxjavaretrofit.data.network.exception.ServerErrorException;
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.utlis.NetWorkUtils;
 
 import io.reactivex.disposables.Disposable;
@@ -39,7 +40,7 @@ public abstract class ABaseNetWorkSubscriber<T> implements Subscriber<T>, Dispos
             isDisposed = false;
             s.request(1);
         }
-        DisposableHelp.addSubscription(this);
+        RxDisposableHelp.addSubscription(this);
     }
 
     @Override

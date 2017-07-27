@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
 
 import javax.inject.Inject;
@@ -83,7 +84,7 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
         mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                DisposableHelp.dispose();
+                RxDisposableHelp.dispose();
                 mLoadingDialog.setOnDismissListener(null);
             }
         });
