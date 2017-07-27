@@ -9,6 +9,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.reactivestreams.Subscription;
+import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
+import org.seraph.mvprxjavaretrofit.ui.module.base.DisposableHelp;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.io.File;
@@ -17,10 +19,9 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -146,9 +147,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         }
 
         private void saveFileToDisk(Bitmap bitmap) {
-            Flowable.just(bitmap)
-                    .subscribeOn(Schedulers.io())
-                    .compose(mView.<Bitmap>bindToLifecycle())
+           Disposable disposable = Flowable.just(bitmap)
                     .flatMap(new Function<Bitmap, Flowable<String>>() {
                         @Override
                         public Flowable<String> apply(Bitmap bitmap) throws Exception {
@@ -161,13 +160,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
                             return Flowable.just("保存成功");
                         }
                     })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe(new Consumer<Subscription>() {
-                        @Override
-                        public void accept(Subscription subscription) throws Exception {
-                            mSubscription = subscription;
-                        }
-                    })
+                    .compose(RxSchedulers.<String>io_main(mView))
                     .subscribe(new Consumer<String>() {
                         @Override
                         public void accept(String s) throws Exception {
@@ -183,7 +176,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
                             mView.showToast("保存失败");
                         }
                     });
-
+            DisposableHelp.addSubscription(disposable);
         }
 
         @Override
@@ -196,14 +189,5 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         public void onPrepareLoad(Drawable placeHolderDrawable) {
         }
     };
-
-
-    @Override
-    public void unSubscribe() {
-        if (mSubscription != null) {
-            mSubscription.cancel();
-        }
-
-    }
 
 }

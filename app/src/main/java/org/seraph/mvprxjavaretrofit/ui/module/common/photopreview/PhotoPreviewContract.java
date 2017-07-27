@@ -34,8 +34,6 @@ interface PhotoPreviewContract extends IBaseContract {
 
         void saveImage();
 
-        void unSubscribe();
-
         void setIntent(Intent intent);
 
         void upDataCurrentPosition(int position);

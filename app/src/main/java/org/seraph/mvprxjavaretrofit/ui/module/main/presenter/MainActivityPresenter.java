@@ -39,11 +39,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     }
 
     @Override
-    public void unSubscribe() {
-
-    }
-
-    @Override
     public void setView(MainActivityContract.View view) {
         this.mView = view;
     }

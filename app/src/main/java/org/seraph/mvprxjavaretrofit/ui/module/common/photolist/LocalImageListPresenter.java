@@ -54,10 +54,6 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
         startAsyncQuery();
     }
 
-    @Override
-    public void unSubscribe() {
-
-    }
 
     /**
      * 查询

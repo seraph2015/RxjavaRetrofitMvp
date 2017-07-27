@@ -37,11 +37,11 @@ public interface IBaseContract {
      * base presenter层
      */
     interface IBasePresenter<V extends IBaseView> {
+
         void setView(V v);
 
         void start();
 
-        void unSubscribe();
     }
 
 

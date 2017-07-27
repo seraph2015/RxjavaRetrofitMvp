@@ -1,8 +1,8 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
-import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
+import org.seraph.mvprxjavaretrofit.ui.module.base.DisposableHelp;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
@@ -28,8 +29,6 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
     public void setView(DesignLayoutTestContract.View view) {
         this.mView = view;
     }
-
-    private Subscription mSubscription;
 
     private ApiBaiduService mApiManager;
 
@@ -49,13 +48,6 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
     }
 
     @Override
-    public void unSubscribe() {
-        if (mSubscription != null) {
-            mSubscription.cancel();
-        }
-    }
-
-    @Override
     public void requestNextPage() {
         doBaiduImages(++pageNo);
     }
@@ -66,37 +58,33 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
     }
 
     private void doBaiduImages(final int tempNo) {
-        mApiManager.doBaiduImageUrl(Tools.getBaiduImagesUrl("tomia", tempNo))
+        Disposable disposable = mApiManager.doBaiduImageUrl(Tools.getBaiduImagesUrl("tomia", tempNo))
                 .compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
-                .doOnSubscribe(new Consumer<Subscription>() {
-            @Override
-            public void accept(Subscription subscription) throws Exception {
-                mSubscription = subscription;
-            }
-        }).map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
-            @Override
-            public List<ImageBaiduBean.BaiduImage> apply(ImageBaiduBean imageBaiduBean) throws Exception {
-                return imageBaiduBean.imgs;
-            }
-        }).subscribe(new Consumer<List<ImageBaiduBean.BaiduImage>>() {
+                .map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
+                    @Override
+                    public List<ImageBaiduBean.BaiduImage> apply(ImageBaiduBean imageBaiduBean) throws Exception {
+                        return imageBaiduBean.imgs;
+                    }
+                }).subscribe(new Consumer<List<ImageBaiduBean.BaiduImage>>() {
 
-            @Override
-            public void accept(List<ImageBaiduBean.BaiduImage> baiduImages) throws Exception {
-                mView.hideLoading();
-                if (tempNo == 1) {
-                    mBaiduImages.clear();
-                }
-                mBaiduImages.addAll(baiduImages);
-                mView.setImageListData(mBaiduImages, baiduImages.size() == 48);
-                pageNo = tempNo;
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                mView.hideLoading();
-                mView.showToast("网络异常");
-            }
-        });
+                    @Override
+                    public void accept(List<ImageBaiduBean.BaiduImage> baiduImages) throws Exception {
+                        mView.hideLoading();
+                        if (tempNo == 1) {
+                            mBaiduImages.clear();
+                        }
+                        mBaiduImages.addAll(baiduImages);
+                        mView.setImageListData(mBaiduImages, baiduImages.size() == 48);
+                        pageNo = tempNo;
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        mView.hideLoading();
+                        mView.showToast("网络异常");
+                    }
+                });
+        DisposableHelp.addSubscription(disposable);
     }
 
 

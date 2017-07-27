@@ -12,8 +12,6 @@ public interface MainOneFragmentContract extends IBaseContract {
 
     interface View extends IBaseFragmentView {
 
-        void setTextViewValue(CharSequence charSequence);
-
         void setUserTextViewValue(CharSequence charSequence);
 
     }

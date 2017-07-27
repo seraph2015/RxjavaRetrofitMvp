@@ -25,7 +25,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
 
     private MainOneFragmentContract.View mView;
 
-    private Subscription mSubscription;
+   // private Subscription mSubscription;
 
     private UserBean mUserBean;
 
@@ -45,13 +45,6 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
     }
 
     @Override
-    public void unSubscribe() {
-        if (mSubscription != null) {
-            mSubscription.cancel();
-        }
-    }
-
-    @Override
     public void setView(MainOneFragmentContract.View view) {
         this.mView = view;
     }
@@ -63,11 +56,10 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
     @Override
     public void doLoginTest() {
         mApiService.login("15172311067", "123456")
-                .compose(RxSchedulers.<BaseData<UserBean>>io_main_business())
+                .compose(RxSchedulers.<BaseData<UserBean>>io_main_business(mView))
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {
-                        mSubscription = subscription;
                         mView.showLoading("正在登陆...");
                     }
                 })

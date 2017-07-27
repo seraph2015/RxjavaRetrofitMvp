@@ -3,7 +3,6 @@ package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
-import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.local.db.help.SearchHistoryHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
@@ -21,7 +20,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 /**
@@ -52,8 +50,6 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
         this.mUserHelp = userHelp;
     }
 
-    private Subscription mSubscription;
-
 
     private List<ImageBaiduBean.BaiduImage> listImage = new ArrayList<>();
     /**
@@ -74,12 +70,6 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     }
 
-    @Override
-    public void unSubscribe() {
-        if (mSubscription != null) {
-            mSubscription.cancel();
-        }
-    }
 
     @Override
     public void showCacheFilePath() {
@@ -147,20 +137,14 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
     private void getBaiduImageList(String keyWord, final int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
 
-        mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
-                .doOnSubscribe(new Consumer<Subscription>() {
-                    @Override
-                    public void accept(Subscription subscription) throws Exception {
-                        mSubscription = subscription;
-                    }
-                }).compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
+      mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
+                .compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
                 .map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
                     @Override
                     public List<ImageBaiduBean.BaiduImage> apply(ImageBaiduBean imageBaiduBean) throws Exception {
                         return imageBaiduBean.imgs;
                     }
-                })
-                .subscribe(new ABaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>>(mView) {
+                }).subscribe(new ABaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>>(mView) {
                     @Override
                     public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
                         if (requestPageNo == 1) {

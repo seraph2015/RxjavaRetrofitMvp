@@ -35,8 +35,6 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
     private TakePhoto mTakePhoto;
     private ApiService mApiService;
 
-    private Subscription mSubscription;
-
     @Inject
     MainFourFragmentPresenter(ApiService apiService, TakePhoto takePhoto) {
         mTakePhoto = takePhoto;
@@ -51,13 +49,6 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
     @Override
     public void start() {
 
-    }
-
-    @Override
-    public void unSubscribe() {
-        if (mSubscription != null) {
-            mSubscription.cancel();
-        }
     }
 
     @Override
@@ -126,7 +117,6 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
                     @Override
                     public void accept(@NonNull Subscription subscription) throws Exception {
                         mView.showLoading("正在上传图片");
-                        mSubscription = subscription;
                     }
                 }).subscribe(new ABaseNetWorkSubscriber<BaseDataResponse>(mView) {
             @Override

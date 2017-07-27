@@ -74,7 +74,8 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
         mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                p.unSubscribe();
+               // p.unSubscribe();
+                DisposableHelp.dispose();
                 mLoadingDialog.setOnDismissListener(null);
             }
         });
@@ -91,7 +92,5 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
     public Context getContext() {
         return this;
     }
-
-
 
 }

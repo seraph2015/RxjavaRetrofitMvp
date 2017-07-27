@@ -83,7 +83,7 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
         mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                p.unSubscribe();
+                DisposableHelp.dispose();
                 mLoadingDialog.setOnDismissListener(null);
             }
         });

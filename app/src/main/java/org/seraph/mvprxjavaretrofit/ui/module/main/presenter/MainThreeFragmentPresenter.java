@@ -28,18 +28,9 @@ public class MainThreeFragmentPresenter implements MainThreeFragmentContract.Pre
     }
 
 
-    private Subscription mSubscription;
-
     @Override
     public void start() {
 
-    }
-
-    @Override
-    public void unSubscribe() {
-        if (mSubscription != null) {
-            mSubscription.cancel();
-        }
     }
 
     @Override
@@ -52,7 +43,6 @@ public class MainThreeFragmentPresenter implements MainThreeFragmentContract.Pre
         mApi12306Service.do12306Url().compose(RxSchedulers.<String>io_main(mView)).doOnSubscribe(new Consumer<Subscription>() {
             @Override
             public void accept(Subscription subscription) throws Exception {
-                mSubscription = subscription;
                 mView.showLoading("正在访问");
             }
         })
