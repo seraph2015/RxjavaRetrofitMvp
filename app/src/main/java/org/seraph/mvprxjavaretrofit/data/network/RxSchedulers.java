@@ -15,6 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * 进行线程切换（业务和程序逻辑的调度，包括rxjava的生命周期管理）
+ * @see Flowable#compose(FlowableTransformer) 操作符进行使用
  * date：2017/7/24 14:21
  * author：xiongj
  * mail：417753393@qq.com
