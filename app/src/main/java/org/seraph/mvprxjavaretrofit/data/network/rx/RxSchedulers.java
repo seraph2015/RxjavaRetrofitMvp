@@ -14,7 +14,9 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * 进行线程切换（业务和程序逻辑的调度，包括rxjava的生命周期管理）
+ * 进行线程切换（业务和程序逻辑的调度），
+ * 使用{@link com.trello.rxlifecycle2.LifecycleProvider } 接口的实现类进行RxJava的生命周期管理。
+ *
  * @see Flowable#compose(FlowableTransformer) 操作符进行使用
  * date：2017/7/24 14:21
  * author：xiongj
@@ -36,6 +38,7 @@ public class RxSchedulers {
 
     /**
      * io线程转main线程，同时包含了业务逻辑的封装转换(返回对应的T对象)
+     *
      * @param view IBaseContract.IBaseView的实现类，实现了bindToLifecycle方法用来管理Rxjava生命周期
      */
     public static <T> FlowableTransformer<BaseDataResponse<T>, T> io_main_business(final IBaseContract.IBaseView view) {
@@ -60,7 +63,6 @@ public class RxSchedulers {
             }
         };
     }
-
 
 
     /**
