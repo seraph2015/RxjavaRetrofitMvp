@@ -1,4 +1,7 @@
-package org.seraph.mvprxjavaretrofit.data.network.https;
+package org.seraph.mvprxjavaretrofit.data.network.http;
+
+import org.seraph.mvprxjavaretrofit.AppApplication;
+import org.seraph.mvprxjavaretrofit.AppConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +14,7 @@ import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.inject.Inject;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -19,19 +23,45 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * https访问
+ * 使用https请求帮助类
  * date：2017/3/1 15:00
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class HTTPS {
+public class HttpsRequestHelp {
 
+    private AppApplication mApplication;
 
-    public static SSLSocketFactory getSSLSocketFactory(X509TrustManager trustManager) throws NoSuchAlgorithmException, KeyManagementException {
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, new TrustManager[]{trustManager}, null);
-        return sslContext.getSocketFactory();
+    private X509TrustManager mX509TrustManager;
+
+    private SSLSocketFactory mSSLSocketFactory;
+
+    @Inject
+    public HttpsRequestHelp(AppApplication application) {
+        this.mApplication = application;
     }
+
+    /**
+     * 获取X509TrustManager
+     */
+    public X509TrustManager getX509TrustManager() throws IOException, GeneralSecurityException {
+        if (mX509TrustManager == null) {
+            mX509TrustManager = getX509TrustManager(mApplication.getAssets().open(AppConfig.HTTPS_CER_NAME));
+        }
+        return mX509TrustManager;
+    }
+
+    /**
+     * 获取SSLSocketFactory
+     */
+    public SSLSocketFactory getSSLSocketFactory() throws IOException, GeneralSecurityException {
+        if (mSSLSocketFactory == null) {
+            mSSLSocketFactory = getSSLSocketFactory(getX509TrustManager());
+        }
+        return mSSLSocketFactory;
+    }
+
+
 
 
     /**
@@ -46,7 +76,7 @@ public class HTTPS {
      * 通过安装一组特定的受信任证书，您可以接受额外的证书操作复杂性，并限制您在证书颁发机构之间迁移的能力。
      * 如果没有服务器的TLS管理员的blessing ，请不要在生产中使用自定义的可信证书。
      */
-    public static X509TrustManager getX509TrustManager(InputStream in) throws GeneralSecurityException {
+    private X509TrustManager getX509TrustManager(InputStream in) throws GeneralSecurityException {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(in);
         if (certificates.isEmpty()) {
@@ -81,9 +111,8 @@ public class HTTPS {
      * 添加password
      *
      * @param password 密码
-     * @throws GeneralSecurityException
      */
-    private static KeyStore newEmptyKeyStore(char[] password) throws GeneralSecurityException {
+    private KeyStore newEmptyKeyStore(char[] password) throws GeneralSecurityException {
         try {
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType()); // 这里添加自定义的密码，默认
             keyStore.load(null, password);
@@ -92,4 +121,13 @@ public class HTTPS {
             throw new AssertionError(e);
         }
     }
+
+
+
+    private SSLSocketFactory getSSLSocketFactory(X509TrustManager trustManager) throws NoSuchAlgorithmException, KeyManagementException {
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(null, new TrustManager[]{trustManager}, null);
+        return sslContext.getSocketFactory();
+    }
+
 }

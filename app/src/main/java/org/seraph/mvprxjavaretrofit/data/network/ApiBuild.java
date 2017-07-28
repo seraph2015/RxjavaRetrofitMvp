@@ -4,17 +4,13 @@ import android.content.Context;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.AppConfig;
-import org.seraph.mvprxjavaretrofit.data.network.https.HTTPS;
+import org.seraph.mvprxjavaretrofit.data.network.http.HttpsRequestHelp;
 import org.seraph.mvprxjavaretrofit.utlis.FileUtils;
 
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -31,21 +27,32 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiBuild {
 
 
-    private AppApplication mApplication;
+    private HttpsRequestHelp mHttpsRequestHelp;
+   // private HttpCacheHelp mHttpCacheHelp;
 
     @Inject
-    public ApiBuild(AppApplication application) {
-        this.mApplication = application;
+    public ApiBuild(HttpsRequestHelp httpsRequestHelp) {
+        this.mHttpsRequestHelp = httpsRequestHelp;
+       // this.mHttpCacheHelp = httpCacheHelp;
     }
 
 
     private OkHttpClient.Builder builder() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-      //  builder.cache(new Cache(FileUtils.getCacheDirectory(mApplication.getApplicationContext(), null), AppConfig.CACHE_MAX_SIZE));
+        //builder.cache(mHttpCacheHelp.getCache());
+
         if (AppConfig.DEBUG) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-            builder.addNetworkInterceptor(logging);
+            builder.addInterceptor(logging);
+        }
+        //判断是否启用证书
+        if (AppConfig.IS_ENABLED_CER) {
+            try {
+                builder.sslSocketFactory(mHttpsRequestHelp.getSSLSocketFactory(), mHttpsRequestHelp.getX509TrustManager());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         builder.connectTimeout(AppConfig.DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         return builder;
@@ -57,17 +64,6 @@ public class ApiBuild {
      */
     public <T> T buildApiInterface(String apiBaseUrl, Class<T> service) {
         OkHttpClient.Builder builder = builder();
-        //判断是否启用证书
-        if (AppConfig.IS_ENABLED_CER) {
-            try {
-                InputStream inputStream = mApplication.getAssets().open(AppConfig.HTTPS_CER_NAME);
-                X509TrustManager x509TrustManager = HTTPS.getX509TrustManager(inputStream);
-                SSLSocketFactory sslSocketFactory = HTTPS.getSSLSocketFactory(x509TrustManager);
-                builder.sslSocketFactory(sslSocketFactory, x509TrustManager);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

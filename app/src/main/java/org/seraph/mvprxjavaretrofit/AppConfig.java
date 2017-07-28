@@ -41,7 +41,7 @@ public class AppConfig {
     /**
      * 是否启用证书
      */
-    public static final boolean IS_ENABLED_CER = false;
+    public static final boolean IS_ENABLED_CER = true;
     /**
      * 使用的证书名称
      */
