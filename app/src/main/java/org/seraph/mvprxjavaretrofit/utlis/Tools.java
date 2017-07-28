@@ -195,7 +195,7 @@ public class Tools {
     public static File getDCIMFile(String imageName) {
         if (Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) { // 文件可用
-            File dirs = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), AppConfig.SAVE_FOLDER_NAME);
+            File dirs = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), AppConfig.SAVE_IMAGE_FOLDERS_NAME);
             if (!dirs.exists())
                 dirs.mkdirs();
             File file = new File(dirs, imageName);
@@ -216,7 +216,7 @@ public class Tools {
      * 扫描相册对应文件
      */
     public static void scanAppImageFile(Context context, String fileName) {
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/" + AppConfig.SAVE_FOLDER_NAME + "/" + fileName)));
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/" + AppConfig.SAVE_IMAGE_FOLDERS_NAME + "/" + fileName)));
     }
 
 

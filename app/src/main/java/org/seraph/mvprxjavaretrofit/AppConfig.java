@@ -18,13 +18,15 @@ public class AppConfig {
      */
     public static final int DEFAULT_TIMEOUT = 30;
     /**
-     * 图片最大缓存 1G
+     * 最大缓存 1G
      */
-    public static final long CACHE_IMAGE_MAX_SIZE = 1024 * 1024 * 1024;
+    public static final long CACHE_MAX_SIZE = 1024 * 1024 * 1024;
     /**
      * 图片保存文件夹名称
+     * 为相册文件夹{@link android.os.Environment#DIRECTORY_DCIM}中的子文件夹名
      */
-    public static final String SAVE_FOLDER_NAME = "Seraph";
+    public static final String SAVE_IMAGE_FOLDERS_NAME = "Seraph";
+
 
     /**
      * 本地偏好文件名字
@@ -39,11 +41,10 @@ public class AppConfig {
     /**
      * 是否启用证书
      */
-    public static final boolean IS_ENABLED_CER= false;
+    public static final boolean IS_ENABLED_CER = false;
     /**
      * 使用的证书名称
      */
     public static final String HTTPS_CER_NAME = "srca12306.cer";
-
 
 }
