@@ -24,8 +24,6 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
 
     private MainOneFragmentContract.View mView;
 
-   // private Subscription mSubscription;
-
     private UserBean.UserInfo mUserBean;
 
     private ApiService mApiService;

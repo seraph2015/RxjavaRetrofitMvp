@@ -11,6 +11,7 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * 网络订阅者父类通用操作
+ * 自动添加到CompositeDisposable管理类里面
  * date：2017/3/15 14:34
  * author：xiongj
  * mail：417753393@qq.com
