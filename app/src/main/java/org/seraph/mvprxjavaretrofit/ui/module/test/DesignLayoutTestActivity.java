@@ -11,12 +11,12 @@ import android.widget.ImageView;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
-import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
-import org.seraph.mvprxjavaretrofit.di.component.test.DaggerDesignLayoutComponent;
-import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
+import org.seraph.mvprxjavaretrofit.di.component.DaggerDesignLayoutComponent;
+import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
+import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
@@ -69,9 +69,13 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
     DesignLayoutAdapter mDesignLayoutAdapter;
 
     @Override
-    public void setupActivityComponent() {
-        DaggerDesignLayoutComponent.builder().appComponent(AppApplication.getAppComponent())
-                .activityModule(new ActivityModule(this)).designLayoutModule(new DesignLayoutModule()).build().inject(this);
+    public void setupActivityComponent(AppComponent appComponent,ActivityModule activityModule) {
+        DaggerDesignLayoutComponent.builder()
+                .appComponent(appComponent)
+                .activityModule(activityModule)
+                .designLayoutModule(new DesignLayoutModule())
+                .build()
+                .inject(this);
     }
 
     @Override

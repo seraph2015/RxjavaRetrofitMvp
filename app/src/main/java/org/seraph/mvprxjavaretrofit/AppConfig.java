@@ -34,7 +34,7 @@ public class AppConfig {
     /**
      * 是否在debug模式
      */
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     /**
      * 是否启用证书

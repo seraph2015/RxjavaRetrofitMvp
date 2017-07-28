@@ -8,7 +8,10 @@ import android.widget.Toast;
 
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
+import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
+import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
 
 import javax.inject.Inject;
@@ -18,9 +21,10 @@ import butterknife.ButterKnife;
 /**
  * 所有的activity的父类继承，包含的一系列的常用操作
  * mvp结构设计
+ *
  * @see #getContextView 获取对应的加载的布局view
  * @see #getMVPPresenter() 获取实现{@link IBaseContract.IBaseActivityPresenter<V>}接口的实现类，也是mvp架构中的Presenter层
- * @see #setupActivityComponent() 进行dagger2的依赖注入绑定
+ * @see #setupActivityComponent(AppComponent, ActivityModule) () 进行dagger2的依赖注入绑定
  * @see #initCreate(Bundle) 初始化之后的第一次调用相当于activity的{@link #onCreate(Bundle)}
  * 此类设计必须实现{@link IBaseContract.IBaseActivityPresenter}或者子类接口，以完成mvp架构中的View层
  * date：2017/2/15 09:09
@@ -36,7 +40,7 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
 
     protected abstract P getMVPPresenter();
 
-    public abstract void setupActivityComponent();
+    public abstract void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule);
 
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
 
@@ -48,7 +52,7 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
         super.onCreate(savedInstanceState);
         setContentView(getContextView());
         ButterKnife.bind(this);
-        setupActivityComponent();
+        setupActivityComponent(getAppComponent(), getActivityModule());
         initMVP();
         initCreate(savedInstanceState);
     }
@@ -75,7 +79,7 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
         mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-               // p.unSubscribe();
+                // p.unSubscribe();
                 RxDisposableHelp.dispose();
                 mLoadingDialog.setOnDismissListener(null);
             }
@@ -92,6 +96,20 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
     @Override
     public Context getContext() {
         return this;
+    }
+
+    /**
+     * 获取公用的AppComponent
+     */
+    protected AppComponent getAppComponent() {
+        return ((AppApplication)getApplication()).getAppComponent();
+    }
+
+    /**
+     * 获取公用的ActivityModule
+     */
+    protected ActivityModule getActivityModule() {
+        return new ActivityModule(this);
     }
 
 }

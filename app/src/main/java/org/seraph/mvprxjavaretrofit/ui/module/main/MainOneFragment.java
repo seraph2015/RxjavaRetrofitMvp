@@ -5,10 +5,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
-import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentComponent;
-import org.seraph.mvprxjavaretrofit.di.module.FragmentModule;
+import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainOneFragmentPresenter;
@@ -48,15 +46,13 @@ public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.View,
 
     @Override
     public void setupActivityComponent() {
-       DaggerMainFragmentComponent.builder().appComponent(AppApplication.getAppComponent()).fragmentModule(new FragmentModule(this)).build().inject(this);
+        this.getComponent(MainActivityComponent.class).inject(this);
     }
-
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
 
     }
-
 
     public void setTextViewValue(CharSequence charSequence) {
         tvContent.setText(charSequence);

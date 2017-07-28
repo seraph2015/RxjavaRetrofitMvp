@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.support.v7.widget.GridLayoutManager;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
+import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 
 import dagger.Module;
 import dagger.Provides;

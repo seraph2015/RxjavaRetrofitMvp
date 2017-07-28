@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.di.module;
+package org.seraph.mvprxjavaretrofit.di.module.base;
 
 import android.app.Activity;
 import android.content.Context;
@@ -42,7 +42,6 @@ public class ActivityModule {
     RxPermissions provideRxPermissions() {
         return new RxPermissions(mActivity);
     }
-
 
 
 }

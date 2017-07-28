@@ -3,12 +3,11 @@ package org.seraph.mvprxjavaretrofit;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
-import com.squareup.picasso.Picasso;
 
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoFactory;
-import org.seraph.mvprxjavaretrofit.di.component.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerAppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.AppModule;
+import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
+import org.seraph.mvprxjavaretrofit.di.component.base.DaggerAppComponent;
+import org.seraph.mvprxjavaretrofit.di.module.base.AppModule;
 
 /**
  * app初始化
@@ -18,7 +17,7 @@ import org.seraph.mvprxjavaretrofit.di.module.AppModule;
  **/
 public class AppApplication extends Application {
 
-    private static AppComponent appComponent;
+    private AppComponent appComponent;
 
     @Override
     public void onCreate() {
@@ -29,15 +28,14 @@ public class AppApplication extends Application {
     }
 
     private void initDagger2() {
-        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+        this.appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
     }
 
     private void initPicasso() {
         PicassoFactory.initPicassoToOkHttp(this);
-        Picasso.with(this).setIndicatorsEnabled(AppConfig.DEBUG);
     }
 
-    public static AppComponent getAppComponent() {
+    public AppComponent getAppComponent() {
         return appComponent;
     }
 }

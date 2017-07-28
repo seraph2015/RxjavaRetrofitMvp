@@ -1,8 +1,9 @@
-package org.seraph.mvprxjavaretrofit.di.module;
+package org.seraph.mvprxjavaretrofit.di.module.base;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.data.local.db.DBManager;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
+import org.seraph.mvprxjavaretrofit.di.module.ApiServiceModule;
 
 import javax.inject.Singleton;
 

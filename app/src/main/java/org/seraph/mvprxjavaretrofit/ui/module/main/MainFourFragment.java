@@ -7,10 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentComponent;
-import org.seraph.mvprxjavaretrofit.di.module.FragmentModule;
+import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
@@ -59,7 +57,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
 
     @Override
     public void setupActivityComponent() {
-        DaggerMainFragmentComponent.builder().appComponent(AppApplication.getAppComponent()).fragmentModule(new FragmentModule(this)).build().inject(this);
+        getComponent(MainActivityComponent.class).inject(this);
     }
 
     private static final int CODE_REQUEST = 1000;

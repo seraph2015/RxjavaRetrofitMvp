@@ -6,7 +6,6 @@ import org.seraph.mvprxjavaretrofit.data.local.db.table.UserBeanTable;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseData;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
 
@@ -27,7 +26,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
 
    // private Subscription mSubscription;
 
-    private UserBean mUserBean;
+    private UserBean.UserInfo mUserBean;
 
     private ApiService mApiService;
 
@@ -56,16 +55,16 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
     @Override
     public void doLoginTest() {
         mApiService.login("15172311067", "123456")
-                .compose(RxSchedulers.<BaseData<UserBean>>io_main_business(mView))
+                .compose(RxSchedulers.<UserBean>io_main_business(mView))
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(Subscription subscription) throws Exception {
                         mView.showLoading("正在登陆...");
                     }
                 })
-                .subscribe(new ABaseNetWorkSubscriber<BaseData<UserBean>>(mView) {
+                .subscribe(new ABaseNetWorkSubscriber<UserBean>(mView) {
                     @Override
-                    public void onSuccess(BaseData<UserBean> userBean) {
+                    public void onSuccess(UserBean userBean) {
                         mUserBean = userBean.user;
                         mView.showToast("登陆成功");
                     }

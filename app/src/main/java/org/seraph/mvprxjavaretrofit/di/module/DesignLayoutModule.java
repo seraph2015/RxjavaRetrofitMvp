@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
+import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 
 import dagger.Module;
 import dagger.Provides;

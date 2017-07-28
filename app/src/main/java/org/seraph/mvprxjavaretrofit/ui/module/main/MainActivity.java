@@ -9,11 +9,13 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView;
 
-import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainActivityComponent;
-import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
+import org.seraph.mvprxjavaretrofit.di.component.DaggerMainActivityComponent;
+import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
+import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
+import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter;
 import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
@@ -29,7 +31,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainActivity extends ABaseActivity<MainActivityContract.View, MainActivityContract.Presenter> implements MainActivityContract.View {
+public class MainActivity extends ABaseActivity<MainActivityContract.View, MainActivityContract.Presenter> implements MainActivityContract.View, IComponent<MainActivityComponent> {
 
 
     @BindView(R.id.bnv_main)
@@ -55,10 +57,15 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     @Inject
     FragmentController fragmentController;
 
+    private MainActivityComponent mMainActivityComponent;
 
     @Override
-    public void setupActivityComponent() {
-        DaggerMainActivityComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(this)).build().inject(this);
+    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
+        mMainActivityComponent = DaggerMainActivityComponent.builder()
+                .appComponent(appComponent)
+                .activityModule(activityModule)
+                .build();
+        mMainActivityComponent.inject(this);
     }
 
     @Override
@@ -106,4 +113,8 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     }
 
 
+    @Override
+    public MainActivityComponent getComponent() {
+        return mMainActivityComponent;
+    }
 }

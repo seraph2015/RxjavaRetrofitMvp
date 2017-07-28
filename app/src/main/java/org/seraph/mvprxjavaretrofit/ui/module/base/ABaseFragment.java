@@ -22,6 +22,8 @@ import butterknife.Unbinder;
 /**
  * 基础的Fragment继承父类
  * 说明参见{@link ABaseActivity}
+ * @see #getComponent(Class) 获取实现了{@link IComponent}接口的依赖Activity的Component连接类，
+ * 以便在此类的继承子类{@link #setupActivityComponent()}中进行依赖注入。
  * date：2017/2/20 16:40
  * author：xiongj
  * mail：417753393@qq.com
@@ -45,6 +47,7 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
 
     //在base里面初始化和设置一些通用操作
     private P p;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,5 +106,13 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
         unbinder.unbind();
     }
 
+
+    /**
+     * 根据不同类型获取对应依赖Activity的Component
+     */
+    @SuppressWarnings("unchecked")
+    protected <C> C getComponent(Class<C> componentType) {
+        return componentType.cast(((IComponent<C>) getActivity()).getComponent());
+    }
 
 }

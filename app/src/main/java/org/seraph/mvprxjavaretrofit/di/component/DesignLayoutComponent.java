@@ -1,11 +1,11 @@
-package org.seraph.mvprxjavaretrofit.di.component.test;
+package org.seraph.mvprxjavaretrofit.di.component;
 
 import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
-import org.seraph.mvprxjavaretrofit.di.component.AppComponent;
+import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
 import org.seraph.mvprxjavaretrofit.ui.module.test.DesignLayoutTestActivity;
 

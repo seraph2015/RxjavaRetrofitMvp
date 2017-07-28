@@ -11,10 +11,10 @@ import android.view.MenuItem;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
-import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
-import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
+import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 
@@ -88,8 +88,13 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     }
 
     @Override
-    public void setupActivityComponent() {
-        DaggerCommonComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(this)).commonModule(new CommonModule()).build().inject(this);
+    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
+        DaggerCommonComponent.builder()
+                .appComponent(appComponent)
+                .activityModule(activityModule)
+                .commonModule(new CommonModule())
+                .build()
+                .inject(this);
     }
 
     @Override

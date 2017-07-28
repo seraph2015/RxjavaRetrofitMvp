@@ -11,10 +11,10 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
-import org.seraph.mvprxjavaretrofit.di.module.ActivityModule;
+import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
 
@@ -77,8 +77,8 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
     }
 
     @Override
-    public void setupActivityComponent() {
-        DaggerCommonComponent.builder().appComponent(AppApplication.getAppComponent()).activityModule(new ActivityModule(this)).build().inject(this);
+    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
+        DaggerCommonComponent.builder().appComponent(appComponent).activityModule(activityModule).build().inject(this);
     }
 
     /**

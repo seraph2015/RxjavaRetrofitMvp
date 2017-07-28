@@ -1,6 +1,5 @@
 package org.seraph.mvprxjavaretrofit.data.network.service;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.BaseData;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
 
@@ -29,7 +28,7 @@ public interface ApiService {
 
     @POST("auth/login")
     @FormUrlEncoded
-    Flowable<BaseDataResponse<BaseData<UserBean>>> login(@Field("phone") String phone, @Field("password") String password);
+    Flowable<BaseDataResponse<UserBean>> login(@Field("phone") String phone, @Field("password") String password);
 
     /**
      * 通用多文件和字段上传（使用RequestBody方式）

@@ -1,11 +1,10 @@
-package org.seraph.mvprxjavaretrofit.di.component.main;
-
-import android.app.Activity;
-import android.content.Context;
+package org.seraph.mvprxjavaretrofit.di.component;
 
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
-import org.seraph.mvprxjavaretrofit.di.component.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.FragmentModule;
+import org.seraph.mvprxjavaretrofit.di.component.base.ActivityComponent;
+import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
+import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
+import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainFourFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainOneFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainThreeFragment;
@@ -14,14 +13,16 @@ import org.seraph.mvprxjavaretrofit.ui.module.main.MainTwoFragment;
 import dagger.Component;
 
 /**
- * fragment连接类
- * date：2017/4/10 16:45
+ * main连接类
+ * date：2017/4/6 15:15
  * author：xiongj
  * mail：417753393@qq.com
  **/
 @ActivityScope
-@Component(dependencies = AppComponent.class, modules = FragmentModule.class)
-public interface MainFragmentComponent {
+@Component(dependencies = AppComponent.class, modules = ActivityModule.class)
+public interface MainActivityComponent extends ActivityComponent {
+
+    void inject(MainActivity mainActivity);
 
     void inject(MainOneFragment mainOneFragment);
 
@@ -30,9 +31,5 @@ public interface MainFragmentComponent {
     void inject(MainThreeFragment mainThreeFragment);
 
     void inject(MainFourFragment mainFourFragment);
-
-    Activity ACTIVITY();
-
-    Context CONTEXT();
 
 }

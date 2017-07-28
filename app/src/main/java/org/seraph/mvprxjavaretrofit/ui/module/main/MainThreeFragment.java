@@ -4,10 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
-import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.main.DaggerMainFragmentComponent;
-import org.seraph.mvprxjavaretrofit.di.module.FragmentModule;
+import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainThreeFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainThreeFragmentPresenter;
@@ -23,7 +21,7 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.View,MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View{
+public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.View, MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View {
 
     @BindView(R.id.tv_https_value)
     TextView tvHttpsValue;
@@ -43,7 +41,7 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.V
 
     @Override
     public void setupActivityComponent() {
-        DaggerMainFragmentComponent.builder().appComponent(AppApplication.getAppComponent()).fragmentModule(new FragmentModule(this)).build().inject(this);
+        getComponent(MainActivityComponent.class).inject(this);
     }
 
     @Override

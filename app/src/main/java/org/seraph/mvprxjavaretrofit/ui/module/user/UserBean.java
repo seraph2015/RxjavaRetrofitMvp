@@ -10,10 +10,15 @@ import java.io.Serializable;
  **/
 public class UserBean implements Serializable {
 
-    public int id;
-    public String nickname;
-    public String headimg;
-    public String age;
-    public String sex;
-    public String token;
+    public UserInfo user;
+
+    public class UserInfo implements Serializable {
+        public int id;
+        public String nickname;
+        public String headimg;
+        public String age;
+        public String sex;
+        public String token;
+    }
+
 }
