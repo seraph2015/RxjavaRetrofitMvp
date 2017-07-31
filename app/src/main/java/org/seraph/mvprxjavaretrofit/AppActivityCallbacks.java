@@ -36,7 +36,7 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         if (activity instanceof ABaseActivity) {
             ((ABaseActivity) activity).setupActivityComponent(getAppComponent(activity), getActivityModule(activity));
         }
-        //todo 可以进行其他公共设置（例如布局）...
+        //todo 可以进行其他公共设置（例如布局，切换动画。）...
     }
 
     @Override
