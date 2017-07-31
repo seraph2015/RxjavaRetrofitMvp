@@ -23,7 +23,7 @@ import butterknife.Unbinder;
 /**
  * 基础的Fragment继承父类
  * 说明参见{@link ABaseActivity}
- *
+ * 如果fragment需要获取依赖activity的component，则activity必须实现{@link IComponent}接口，
  * @see #getComponent(Class) 获取实现了{@link IComponent}接口的依赖Activity的Component连接类，
  * 以便在此类的继承子类{@link #setupActivityComponent()}中进行依赖注入。
  * date：2017/2/20 16:40
@@ -116,8 +116,6 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
         super.onDestroyView();
         unbinder.unbind();
     }
-
-
 
 
 }
