@@ -23,6 +23,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContr
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainTwoFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.ui.views.GoTopListView;
+import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,6 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View,
     GoTopListView lvImages;
     @BindView(R.id.iv_go_top)
     ImageView ivGoTop;
-
 
 
     class HeadViewHolder {
@@ -79,15 +79,14 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View,
             }
         }
 
-
     }
-
 
 
     @Override
     public int getContextView() {
         return R.layout.test_fragment_two;
     }
+
     @Inject
     MainTwoFragmentPresenter mPresenter;
 
@@ -141,6 +140,8 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View,
         View headView = LayoutInflater.from(getActivity()).inflate(R.layout.test_fragment_two_list_head, lvImages, false);
         headViewholder = new HeadViewHolder(headView);
         lvImages.addHeaderView(headView);
+        //加载新添加的布局字体
+        FontUtils.injectFont(headView);
     }
 
     @Override

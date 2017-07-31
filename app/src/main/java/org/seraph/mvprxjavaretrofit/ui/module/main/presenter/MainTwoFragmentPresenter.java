@@ -137,7 +137,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
     private void getBaiduImageList(String keyWord, final int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
 
-      mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
+        mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
                 .compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
                 .map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
                     @Override
@@ -145,23 +145,23 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
                         return imageBaiduBean.imgs;
                     }
                 }).subscribe(new ABaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>>(mView) {
-                    @Override
-                    public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
-                        if (requestPageNo == 1) {
-                            listImage.clear();
-                        }
-                        listImage.addAll(baiduImages);
-                        //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
-                        mView.requestData(listImage, baiduImages.size() < 48);
-                        pageNo = requestPageNo;
-                    }
+            @Override
+            public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
+                if (requestPageNo == 1) {
+                    listImage.clear();
+                }
+                listImage.addAll(baiduImages);
+                //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
+                mView.requestData(listImage, baiduImages.size() >= 48);
+                pageNo = requestPageNo;
+            }
 
-                    @Override
-                    public void onError(String errStr) {
-                        mView.showToast(errStr);
-                    }
+            @Override
+            public void onError(String errStr) {
+                mView.showToast(errStr);
+            }
 
-                });
+        });
     }
 
 

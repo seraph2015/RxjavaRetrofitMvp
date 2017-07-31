@@ -74,7 +74,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
                             mBaiduImages.clear();
                         }
                         mBaiduImages.addAll(baiduImages);
-                        mView.setImageListData(mBaiduImages, baiduImages.size() == 48);
+                        mView.setImageListData(mBaiduImages, baiduImages.size() >= 48);
                         pageNo = tempNo;
                     }
                 }, new Consumer<Throwable>() {

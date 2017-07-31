@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -8,15 +9,12 @@ import android.widget.Toast;
 
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
-import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
 
 import javax.inject.Inject;
-
-import butterknife.ButterKnife;
 
 /**
  * 所有的activity的父类继承，包含的一系列的常用操作
@@ -47,12 +45,14 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
     //在base里面初始化和设置一些通用操作
     private P p;
 
+    /**
+     * ActivityLifecycleCallbacks回调在super中，
+     * 所以加载布局需要super之前{@link org.seraph.mvprxjavaretrofit.AppActivityCallbacks#onActivityCreated(Activity, Bundle)}
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(getContextView());
-        ButterKnife.bind(this);
-        setupActivityComponent(getAppComponent(), getActivityModule());
+        super.onCreate(savedInstanceState);
         initMVP();
         initCreate(savedInstanceState);
     }
@@ -98,18 +98,5 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
         return this;
     }
 
-    /**
-     * 获取公用的AppComponent
-     */
-    protected AppComponent getAppComponent() {
-        return ((AppApplication)getApplication()).getAppComponent();
-    }
-
-    /**
-     * 获取公用的ActivityModule
-     */
-    protected ActivityModule getActivityModule() {
-        return new ActivityModule(this);
-    }
 
 }

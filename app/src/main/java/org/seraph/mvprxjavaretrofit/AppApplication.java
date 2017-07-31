@@ -25,6 +25,8 @@ public class AppApplication extends Application {
         initPicasso();
         initDagger2();
         Utils.init(this);
+        //注册activity回调
+        registerActivityLifecycleCallbacks(new AppActivityCallbacks());
     }
 
     private void initDagger2() {
@@ -38,4 +40,5 @@ public class AppApplication extends Application {
     public AppComponent getAppComponent() {
         return appComponent;
     }
+
 }
