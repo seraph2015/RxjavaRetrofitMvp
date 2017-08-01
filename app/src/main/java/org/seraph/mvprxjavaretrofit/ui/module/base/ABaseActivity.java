@@ -42,9 +42,6 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
 
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
 
-    //在base里面初始化和设置一些通用操作
-    private P p;
-
     /**
      * ActivityLifecycleCallbacks回调在super中，
      * 所以加载布局需要super之前{@link org.seraph.mvprxjavaretrofit.AppActivityCallbacks#onActivityCreated(Activity, Bundle)}
@@ -59,9 +56,8 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
 
     @SuppressWarnings("unchecked")
     private void initMVP() {
-        p = getMVPPresenter();
         try {
-            p.setView((V) this);
+            getMVPPresenter().setView((V) this);
         } catch (ClassCastException e) {
             throw new RuntimeException("子类必须实现IBaseContract.IBaseView接口");
         }

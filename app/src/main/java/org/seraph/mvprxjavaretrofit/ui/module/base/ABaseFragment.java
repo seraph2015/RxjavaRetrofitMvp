@@ -48,8 +48,6 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
 
     protected Context mContext;
 
-    //在base里面初始化和设置一些通用操作
-    private P p;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,9 +70,8 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
 
     @SuppressWarnings("unchecked")
     private void initMVP() {
-        p = getMVPPresenter();
         try {
-            p.setView((V) this);
+            getMVPPresenter().setView((V) this);
         } catch (ClassCastException e) {
             throw new RuntimeException("子类必须实现IBaseContract.IBaseView接口");
         }
