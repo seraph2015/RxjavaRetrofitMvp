@@ -75,7 +75,6 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
         mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                // p.unSubscribe();
                 RxDisposableHelp.dispose();
                 mLoadingDialog.setOnDismissListener(null);
             }
