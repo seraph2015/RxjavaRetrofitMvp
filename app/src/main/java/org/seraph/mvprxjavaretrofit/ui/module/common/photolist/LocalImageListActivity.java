@@ -8,14 +8,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
+import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
+import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tv_toolbar_title)
+    TextView toolbarTitle;
+
     @BindView(R.id.rv_local_image_list)
     RecyclerView mRvList;
 
@@ -70,6 +74,9 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     }
 
     private void initRxBinding() {
+        toolbarTitle.setText("选择图片");
+        toolbar.setTitle("");
+        toolbar.setNavigationIcon(R.drawable.common_ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
         RxToolbar.navigationClicks(toolbar).subscribe(new Consumer<Object>() {
             @Override

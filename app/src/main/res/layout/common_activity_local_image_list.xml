@@ -3,36 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <include layout="@layout/common_title_layout" />
+    <!--<android.support.design.widget.AppBarLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <!--<FrameLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <!--<android.support.v7.widget.Toolbar-->
+                <!--android:id="@+id/toolbar"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/toolbar_h_min"-->
+                <!--android:paddingTop="@dimen/toolbar_top_padding_min"-->
+                <!--app:navigationIcon="@drawable/common_ic_arrow_back_black_24dp"-->
+                <!--app:title=" ">-->
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_h_min"
-                android:paddingTop="@dimen/toolbar_top_padding_min"
-                app:navigationIcon="@drawable/common_ic_arrow_back_black_24dp"
-                app:title=" ">
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:gravity="center"-->
+                    <!--android:paddingTop="@dimen/toolbar_top_padding_text_min"-->
+                    <!--android:text="选择图片"-->
+                    <!--android:textColor="#ffffff"-->
+                    <!--android:textSize="20sp" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingTop="@dimen/toolbar_top_padding_text_min"
-                    android:text="选择图片"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp" />
-
-            </android.support.v7.widget.Toolbar>
-        </FrameLayout>
-    </android.support.design.widget.AppBarLayout>
+            <!--</android.support.v7.widget.Toolbar>-->
+        <!--</FrameLayout>-->
+    <!--</android.support.design.widget.AppBarLayout>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_local_image_list"

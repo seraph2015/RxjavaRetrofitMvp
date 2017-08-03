@@ -5,24 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            style="@style/app_toolbar_style"
-            app:navigationIcon="@drawable/test_ic_gesture_24dp">
-
-            <TextView
-                android:id="@+id/tv_toolbar_title"
-                style="@style/app_toolbar_child_style"
-                android:gravity="center"
-                android:text="首页" />
-
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/common_title_layout" />
 
     <FrameLayout
         android:id="@+id/fl_home"
