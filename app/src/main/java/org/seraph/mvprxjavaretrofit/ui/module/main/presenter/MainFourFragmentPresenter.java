@@ -145,7 +145,6 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        LogUtils.i("MainFourFragmentPresenter", "onSaveInstanceState");
         //如果拍照路径不为空，则保存。
         if (mTakePhoto.getCurrentPhotoFile() != null) {
             outState.putStringArrayList("imageList", imageList);
@@ -158,9 +157,9 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
         if (savedInstanceState == null) {
             return;
         }
+        LogUtils.i("MainFourFragment->onViewStateRestored", savedInstanceState);
         String photoPath = savedInstanceState.getString("photoFile");
         imageList = savedInstanceState.getStringArrayList("imageList");
-        LogUtils.i("MainFourFragmentPresenter", "onViewStateRestored", photoPath, imageList.size());
         if (!Tools.isNull(photoPath)) {
             mTakePhoto.setmCurrentPhotoFile(new File(photoPath));
         }

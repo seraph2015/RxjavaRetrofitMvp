@@ -29,8 +29,6 @@ import io.reactivex.functions.Consumer;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
-    private static final String TAG = "org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter";
-
     private MainActivityContract.View mView;
 
     private FragmentController mFragmentController;
@@ -97,17 +95,16 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     public void onSaveInstanceState(Bundle outState) {
         //保存停留的页面
         outState.putInt("page", position);
-        LogUtils.i(TAG,"onSaveInstanceState",outState);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             return;
         }
+        LogUtils.i("MainActivity->onRestoreInstanceState", savedInstanceState);
         //恢复停留的页面
         setSelectedFragment((int) savedInstanceState.get("page"));
-        LogUtils.i(TAG,"onRestoreInstanceState",savedInstanceState);
     }
 
 
