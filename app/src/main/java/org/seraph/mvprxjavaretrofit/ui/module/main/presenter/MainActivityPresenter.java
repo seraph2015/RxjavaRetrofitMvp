@@ -1,6 +1,9 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+
+import com.blankj.utilcode.util.LogUtils;
 
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainFourFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainOneFragment;
@@ -23,13 +26,18 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
+
 public class MainActivityPresenter implements MainActivityContract.Presenter {
+
+    private static final String TAG = "org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter";
 
     private MainActivityContract.View mView;
 
     private FragmentController mFragmentController;
 
     private String[] tags = new String[]{"one", "two", "three", "four"};
+
+    private int position = 0;
 
 
     @Override
@@ -53,6 +61,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
      * 设置选中的碎片,切换主题
      */
     public void setSelectedFragment(int positionIndex) {
+        position = positionIndex;
         Class<? extends Fragment> clazz;
         switch (positionIndex) {
             case 0:
@@ -82,6 +91,23 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     public void onBackPressed() {
         doublePressBackToast();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //保存停留的页面
+        outState.putInt("page", position);
+        LogUtils.i(TAG,"onSaveInstanceState",outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if(savedInstanceState == null){
+            return;
+        }
+        //恢复停留的页面
+        setSelectedFragment((int) savedInstanceState.get("page"));
+        LogUtils.i(TAG,"onRestoreInstanceState",savedInstanceState);
     }
 
 

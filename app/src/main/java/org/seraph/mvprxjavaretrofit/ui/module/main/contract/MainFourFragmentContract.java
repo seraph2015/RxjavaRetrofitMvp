@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
@@ -42,5 +43,9 @@ public interface MainFourFragmentContract extends IBaseContract {
         void onCameraComplete();
 
         void uploadFile();
+
+        void onSaveInstanceState(Bundle outState);
+
+        void onViewStateRestored(Bundle savedInstanceState);
     }
 }

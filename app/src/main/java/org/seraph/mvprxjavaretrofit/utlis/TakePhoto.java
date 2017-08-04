@@ -110,6 +110,9 @@ public class TakePhoto {
         return mCurrentPhotoFile;
     }
 
+    public void setmCurrentPhotoFile(File mCurrentPhotoFile) {
+        this.mCurrentPhotoFile = mCurrentPhotoFile;
+    }
 
     // 请求Gallery程序
     public void doPickPhotoFromGallery() {

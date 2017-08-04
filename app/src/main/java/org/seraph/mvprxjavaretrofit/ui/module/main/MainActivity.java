@@ -103,9 +103,9 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
 
     @Override
     public void setTitle(String title) {
-        //toolbar_top_padding_text_min
         toolbarTitle.setText(title);
     }
+
 
     @Override
     public FragmentController getFragmentController() {
@@ -117,4 +117,19 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     public MainActivityComponent getComponent() {
         return mMainActivityComponent;
     }
+
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mPresenter.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mPresenter.onRestoreInstanceState(savedInstanceState);
+    }
+
 }

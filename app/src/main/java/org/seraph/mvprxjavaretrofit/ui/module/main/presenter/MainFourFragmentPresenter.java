@@ -2,6 +2,9 @@ package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+
+import com.blankj.utilcode.util.LogUtils;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.FileUploadHelp;
@@ -12,6 +15,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainFourFragmentContract;
 import org.seraph.mvprxjavaretrofit.utlis.TakePhoto;
+import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,6 +92,10 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
 
     @Override
     public void onCameraComplete() {
+        if (mTakePhoto.getCurrentPhotoFile() == null) {
+            mView.showToast("拍照异常");
+            return;
+        }
         Uri photoUri = Uri.fromFile(mTakePhoto.getCurrentPhotoFile());
         imageList.add(photoUri.getPath());
         mView.setImageList(imageList);
@@ -133,6 +141,29 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
                 mView.showLoading(errStr);
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        LogUtils.i("MainFourFragmentPresenter", "onSaveInstanceState");
+        //如果拍照路径不为空，则保存。
+        if (mTakePhoto.getCurrentPhotoFile() != null) {
+            outState.putStringArrayList("imageList", imageList);
+            outState.putString("photoFile", mTakePhoto.getCurrentPhotoFile().getAbsolutePath());
+        }
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            return;
+        }
+        String photoPath = savedInstanceState.getString("photoFile");
+        imageList = savedInstanceState.getStringArrayList("imageList");
+        LogUtils.i("MainFourFragmentPresenter", "onViewStateRestored", photoPath, imageList.size());
+        if (!Tools.isNull(photoPath)) {
+            mTakePhoto.setmCurrentPhotoFile(new File(photoPath));
+        }
     }
 
 

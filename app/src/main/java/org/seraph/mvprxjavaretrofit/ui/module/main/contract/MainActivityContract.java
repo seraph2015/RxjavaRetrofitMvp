@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
+import android.os.Bundle;
+
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
@@ -29,6 +31,9 @@ public interface MainActivityContract extends IBaseContract {
         void onBackPressed();
 
 
+        void onSaveInstanceState(Bundle outState);
+
+        void onRestoreInstanceState(Bundle savedInstanceState);
     }
 
 }

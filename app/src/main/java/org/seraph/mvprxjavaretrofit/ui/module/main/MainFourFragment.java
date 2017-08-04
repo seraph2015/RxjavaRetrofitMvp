@@ -156,4 +156,17 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
 
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mPresenter.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        mPresenter.onViewStateRestored(savedInstanceState);
+    }
 }

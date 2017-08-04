@@ -79,7 +79,7 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
             mView.showToast("请选择图片");
             return;
         }
-        //可以进行一些其他处理。例如压缩
+        //todo 可以进行一些其他处理。例如压缩
         mView.setResult(arrayList);
     }
 
