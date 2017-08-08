@@ -111,9 +111,8 @@ public class Tools {
      * 判断 多个字段的值否为空
      */
     public static boolean isNull(String... ss) {
-        for (int i = 0; i < ss.length; i++) {
-            if (null == ss[i] || ss[i].equals("")
-                    || ss[i].equalsIgnoreCase("null")) {
+        for (String s : ss) {
+            if (null == s || s.equals("") || s.equalsIgnoreCase("null")) {
                 return true;
             }
         }
@@ -376,4 +375,37 @@ public class Tools {
         intent.setData(Uri.parse("package:" + context.getPackageName()));
         context.startActivity(intent);
     }
+
+    /**
+     * html适配手机(背景透明，文本字颜色为灰色)
+     * @param htmlContent html文本
+     */
+    public static String setHtmlHeadBody(String htmlContent) {
+        return "<!DOCTYPE html>" +
+                "<html>" +
+                    "<head>" +
+                        "<meta charset=\"utf-8\">" +
+                        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\">" +
+                        "<meta content=\"yes\" name=\"apple-mobile-web-app-capable\">" +
+                        "<meta content=\"black\" name=\"apple-mobile-web-app-status-bar-style\">" +
+                        "<meta content=\"telephone=no\" name=\"format-detection\">" +
+                        "<style type=\"text/css\">" +
+                            "body { font-family: Arial,\"microsoft yahei\",Verdana; padding:0; margin:0; font-size:13px; color:#666666; background: none; overflow-x:hidden; }" +
+                            "body,div,fieldset,form,h1,h2,h3,h4,h5,h6,html,p,span { -webkit-text-size-adjust: none}" +
+                            "h1,h2,h3,h4,h5,h6 { font-weight:normal; }" +
+                            "applet,dd,div,dl,dt,h1,h2,h3,h4,h5,h6,html,iframe,img,object,p,span {	padding: 0;	margin: 0;	border: none}" +
+                            "img {padding:0; margin:0; vertical-align:top; border: none}" +
+                            "li,ul {list-style: none outside none; padding: 0; margin: 0}" +
+                            "input[type=text],select {-webkit-appearance:none; -moz-appearance: none; margin:0; padding:0; background:none; border:none; font-size:14px; text-indent:3px; font-family: Arial,\"microsoft yahei\",Verdana;}" +
+                            "body { width:100%; padding:10px; box-sizing:border-box;}" +
+                            "p { color:#666; line-height:1.6em;} " +
+                            "img { max-width:100%; width:auto !important; height:auto !important;}" +
+                        "</style>" +
+                    "</head>" +
+                    "<body>" +
+                        htmlContent +
+                    "</body>" +
+                "</html>";
+    }
+
 }
