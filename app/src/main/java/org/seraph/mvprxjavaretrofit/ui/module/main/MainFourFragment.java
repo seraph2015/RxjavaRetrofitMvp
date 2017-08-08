@@ -108,7 +108,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_design_layout:
-                startActivity(new Intent(mContext, DesignLayoutTestActivity.class));
+                startActivity(new Intent(getContext(), DesignLayoutTestActivity.class));
                 break;
             case R.id.btn_upload_test:
                 mPresenter.uploadFile();
@@ -126,7 +126,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
 
     @Override
     public void startLocalImageActivity(ArrayList<String> imageList) {
-        Intent intent = new Intent(mContext, LocalImageListActivity.class);
+        Intent intent = new Intent(getContext(), LocalImageListActivity.class);
         intent.putExtra(LocalImageListActivity.SELECTED_PATH, imageList);
         startActivityForResult(intent, CODE_REQUEST);
     }

@@ -1,11 +1,12 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
+import com.blankj.utilcode.util.NetworkUtils;
+
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.exception.ServerErrorCode;
 import org.seraph.mvprxjavaretrofit.data.network.exception.ServerErrorException;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
-import org.seraph.mvprxjavaretrofit.utlis.NetWorkUtils;
 
 import io.reactivex.disposables.Disposable;
 
@@ -34,7 +35,7 @@ public abstract class ABaseNetWorkSubscriber<T> implements Subscriber<T>, Dispos
     public void onSubscribe(Subscription s) {
         mSubscription = s;
         //判断网络是否可用
-        if (!NetWorkUtils.isNetworkConnected(v.getContext())) {
+        if (!NetworkUtils.isConnected()) {
             dispose();
             onError(new ServerErrorException(ServerErrorCode.NETWORK_ERR));
         } else {

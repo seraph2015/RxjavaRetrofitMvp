@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.FileUploadHelp;
@@ -93,7 +94,7 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
     @Override
     public void onCameraComplete() {
         if (mTakePhoto.getCurrentPhotoFile() == null) {
-            mView.showToast("拍照异常");
+            ToastUtils.showShortToast("拍照异常");
             return;
         }
         Uri photoUri = Uri.fromFile(mTakePhoto.getCurrentPhotoFile());
@@ -104,7 +105,7 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
     @Override
     public void uploadFile() {
         if (imageList.size() == 0) {
-            mView.showToast("请先选择需要上传的图片");
+            ToastUtils.showShortToast("请先选择需要上传的图片");
             return;
         }
 
@@ -130,9 +131,9 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
             @Override
             public void onSuccess(BaseDataResponse stringBaseDataResponse) {
                 if (stringBaseDataResponse.status == 0) {
-                    mView.showToast("上传成功");
+                    ToastUtils.showShortToast("上传成功");
                 } else {
-                    mView.showToast(stringBaseDataResponse.msg);
+                    ToastUtils.showShortToast(stringBaseDataResponse.msg);
                 }
             }
 

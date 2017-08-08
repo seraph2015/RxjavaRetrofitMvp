@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -116,7 +117,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
                             mPresenter.saveImage();
                         } else {
                             //获取权限失败
-                            showToast("缺少SD卡权限，保存图片失败");
+                            ToastUtils.showShortToast("缺少SD卡权限，保存图片失败");
 //                            Tools.showMissingPermissionDialog(PhotoPreviewActivity.this, new View.OnClickListener() {
 //                                @Override
 //                                public void onClick(View v) {

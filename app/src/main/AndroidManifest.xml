@@ -18,13 +18,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoStatusBar">
-        <activity android:name=".ui.module.main.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.module.main.MainActivity"/>
         <!--图片预览 android:process=":picture" -->
         <activity android:name=".ui.module.common.photopreview.PhotoPreviewActivity" />
         <!--权限设置-->
@@ -33,7 +27,15 @@
         <activity android:name=".ui.module.common.photolist.LocalImageListActivity" />
         <!--Design布局测试-->
         <activity android:name=".ui.module.test.DesignLayoutTestActivity" />
+        <!--欢迎和引导页-->
+        <activity android:name=".ui.module.welcome.WelcomeActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.module.welcome.GuidePagesActivity" />
     </application>
 
 </manifest>

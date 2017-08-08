@@ -1,7 +1,10 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+
+import com.blankj.utilcode.util.ToastUtils;
 
 import org.seraph.mvprxjavaretrofit.data.local.db.help.SearchHistoryHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
@@ -37,6 +40,8 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
         this.mView = view;
     }
 
+    private Context mContext;
+
     private ApiBaiduService mApiBaiduService;
 
     private SearchHistoryHelp mSearchHistoryHelp;
@@ -44,7 +49,8 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
     private UserBeanHelp mUserHelp;
 
     @Inject
-    MainTwoFragmentPresenter(ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp) {
+    MainTwoFragmentPresenter(Context context,ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp) {
+        this.mContext = context;
         this.mApiBaiduService = apiBaiduService;
         this.mSearchHistoryHelp = searchHistoryHelp;
         this.mUserHelp = userHelp;
@@ -73,7 +79,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     @Override
     public void showCacheFilePath() {
-        mView.setTextView(FileUtils.getCacheDirectory(mView.getContext(), null).getPath());
+        mView.setTextView(FileUtils.getCacheDirectory(mContext, null).getPath());
     }
 
     @Override
@@ -86,7 +92,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
         //查询本地数据搜索历史（时间倒叙）
         listSearch = mSearchHistoryHelp.querySearchDB(tempId, type);
         if (listSearch.size() == 0) {
-            mView.showToast("暂无搜索历史");
+            ToastUtils.showShortToast("暂无搜索历史");
             return;
         }
         showSearchHistory();
@@ -97,7 +103,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
      * 显示选择框
      */
     private void showSearchHistory() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mView.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         final String[] items = new String[listSearch.size() + 1];
         for (int i = 0; i < listSearch.size(); i++) {
             items[i] = listSearch.get(i).getSearchKey();
@@ -119,7 +125,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
     public void startPicassoToImage() {
         searchKeyWord = mView.getSearchKeyWord();
         if (Tools.isNull(searchKeyWord)) {
-            mView.showToast("search is null!");
+            ToastUtils.showShortToast("search is null!");
             return;
         }
         //保存搜索到本地数据库
@@ -158,7 +164,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
             @Override
             public void onError(String errStr) {
-                mView.showToast(errStr);
+                ToastUtils.showShortToast(errStr);
             }
 
         });

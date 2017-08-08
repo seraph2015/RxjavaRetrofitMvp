@@ -1,10 +1,13 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView;
@@ -33,9 +36,13 @@ import io.reactivex.functions.Consumer;
  **/
 public class MainActivity extends ABaseActivity<MainActivityContract.View, MainActivityContract.Presenter> implements MainActivityContract.View, IComponent<MainActivityComponent> {
 
-
+    @BindView(R.id.ll_root)
+    LinearLayout rootView;
     @BindView(R.id.bnv_main)
     BottomNavigationView bnvMain;
+
+    @BindView(R.id.appbar)
+    AppBarLayout appbar;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tv_toolbar_title)
@@ -70,6 +77,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
+        appbar.setAlpha(0.8f);
         fragmentController.setContainerViewId(R.id.fl_home);
         mPresenter.start();
         RxBottomNavigationView.itemSelections(bnvMain).subscribe(bottomNavigationConsumer);
@@ -106,6 +114,10 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
         toolbarTitle.setText(title);
     }
 
+    @Override
+    public void setBackgroundResource(@DrawableRes int resid) {
+        rootView.setBackgroundResource(resid);
+    }
 
     @Override
     public FragmentController getFragmentController() {

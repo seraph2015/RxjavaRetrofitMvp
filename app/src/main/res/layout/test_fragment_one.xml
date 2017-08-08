@@ -7,12 +7,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <Button
             android:id="@+id/btn_request"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/test_bg_btn"
             android:text="request" />
 
         <TextView
@@ -25,18 +27,23 @@
             android:id="@+id/btn_sava_db"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/test_bg_btn"
             android:text="SaveToDB" />
 
         <Button
             android:id="@+id/tv_query_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/test_bg_btn"
             android:text="QueryUserInfo" />
 
         <Button
             android:id="@+id/tv_clean_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/test_bg_btn"
             android:text="cleanUserInfo" />
 
         <TextView

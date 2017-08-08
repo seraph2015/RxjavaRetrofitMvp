@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
+import com.blankj.utilcode.util.ToastUtils;
+
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.UserBeanTable;
@@ -20,7 +22,6 @@ import io.reactivex.functions.Consumer;
  * mail：417753393@qq.com
  **/
 public class MainOneFragmentPresenter implements MainOneFragmentContract.Presenter {
-
 
     private MainOneFragmentContract.View mView;
 
@@ -64,12 +65,12 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
                     @Override
                     public void onSuccess(UserBean userBean) {
                         mUserBean = userBean.user;
-                        mView.showToast("登陆成功");
+                        ToastUtils.showShortToast("登陆成功");
                     }
 
                     @Override
                     public void onError(String errStr) {
-                        mView.showToast(errStr);
+                        ToastUtils.showShortToast(errStr);
                     }
                 });
 
@@ -82,7 +83,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
     @Override
     public void saveUserInfo() {
         if (mUserBean == null) {
-            mView.showToast("没有可保存数据");
+            ToastUtils.showShortToast("没有可保存数据");
             return;
         }
         UserBeanTable userTable = new UserBeanTable();
@@ -91,7 +92,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
         userTable.setName(mUserBean.nickname);
         userTable.setHeadPortrait(mUserBean.headimg);
         mUserBeanHelp.save(userTable);
-        mView.showToast("保存成功");
+        ToastUtils.showShortToast("保存成功");
     }
 
     /**

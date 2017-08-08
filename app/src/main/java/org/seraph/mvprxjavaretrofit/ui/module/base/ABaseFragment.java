@@ -1,13 +1,11 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
@@ -46,15 +44,12 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
 
     private Unbinder unbinder;
 
-    protected Context mContext;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(getContextView(), container, false);
         FontUtils.injectFont(rootView);
         unbinder = ButterKnife.bind(this, rootView);
-        mContext = getActivity();
         setupActivityComponent();
         initMVP();
         return rootView;
@@ -83,11 +78,6 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
         initCreate(savedInstanceState);
     }
 
-
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void showLoading(String str) {

@@ -49,6 +49,7 @@ public class AppConfig {
 
     /**
      * 设置放在Assets文件夹下的字体的路径,如果不需要设置字体。此处路径使用 null 或者 ""
+     * fonts/hksn.ttc
      */
     public static final String FONTS_ASSETS_DIR = "fonts/hksn.ttc";
 

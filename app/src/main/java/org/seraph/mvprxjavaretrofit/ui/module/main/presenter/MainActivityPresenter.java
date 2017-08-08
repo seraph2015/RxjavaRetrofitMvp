@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 
+import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainFourFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainOneFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainThreeFragment;
@@ -18,6 +21,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -34,6 +38,9 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     private FragmentController mFragmentController;
 
     private String[] tags = new String[]{"one", "two", "three", "four"};
+    private String[] titles = new String[]{"首页", "搜索", "HTTPS", "其它"};
+    private int[] bgs = new int[]{R.mipmap.test_bg_fragment_one, R.mipmap.test_bg_fragment_two, R.mipmap.test_bg_fragment_three, R.mipmap.test_bg_fragment_four};
+
 
     private int position = 0;
 
@@ -60,30 +67,24 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
      */
     public void setSelectedFragment(int positionIndex) {
         position = positionIndex;
-        Class<? extends Fragment> clazz;
-        switch (positionIndex) {
+        Class<? extends Fragment> clazz = null;
+        switch (position) {
             case 0:
                 clazz = MainOneFragment.class;
-                mView.setTitle("首页");
                 break;
             case 1:
                 clazz = MainTwoFragment.class;
-                mView.setTitle("搜索");
                 break;
             case 2:
                 clazz = MainThreeFragment.class;
-                mView.setTitle("HTTPS");
                 break;
             case 3:
                 clazz = MainFourFragment.class;
-                mView.setTitle("其它");
-                break;
-            default:
-                clazz = MainOneFragment.class;
-                mView.setTitle("首页");
                 break;
         }
-        mFragmentController.add(clazz, tags[positionIndex], null);
+        mView.setTitle(titles[position]);
+        mView.setBackgroundResource(bgs[position]);
+        mFragmentController.add(clazz, tags[position], null);
     }
 
 
@@ -116,17 +117,18 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     private void doublePressBackToast() {
         if (!isBackPressed) {
             isBackPressed = true;
-            mView.showToast("再按一次退出程序");
+            ToastUtils.showShortToast("再按一次退出程序");
         } else {
             mView.finish();
         }
-        Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
+        Disposable disposable = Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
             @Override
             public void accept(Long aLong) throws Exception {
                 isBackPressed = false;
+                RxDisposableHelp.dispose();
             }
         });
-
+        RxDisposableHelp.addSubscription(disposable);
     }
 
 

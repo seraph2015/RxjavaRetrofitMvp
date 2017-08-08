@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
@@ -67,7 +68,7 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
                         if (aBoolean) {
                             mQueryHandler.startQuery(CODE_REQUEST, null, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionImages, null, null, "date_modified DESC");
                         } else {
-                            mView.showToast("缺少SD卡权限，读取照片失败");
+                            ToastUtils.showShortToast("缺少SD卡权限，读取照片失败");
                         }
                     }
                 });
@@ -76,7 +77,7 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
     @Override
     public void save(ArrayList<String> arrayList) {
         if (arrayList.size() == 0) {
-            mView.showToast("请选择图片");
+            ToastUtils.showShortToast("请选择图片");
             return;
         }
         //todo 可以进行一些其他处理。例如压缩

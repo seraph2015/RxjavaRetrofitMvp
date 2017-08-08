@@ -86,7 +86,8 @@ dependencies {
     compile 'zlc.season:rxdownload2:2.0.4'
     //7.0文件共享FileProvider适配
     compile 'com.zhy.base:fileprovider:1.0.0'
-
+    //viewpager切换
+    compile 'com.alibaba.android:ultraviewpager:1.0.4'
 }
 repositories {
     mavenCentral()

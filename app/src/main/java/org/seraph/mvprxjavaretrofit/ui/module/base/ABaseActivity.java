@@ -1,11 +1,9 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -33,6 +31,7 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
 
     @Inject
     protected CustomLoadingDialog mLoadingDialog;
+
 
     public abstract int getContextView();
 
@@ -64,10 +63,7 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
     }
 
 
-    @Override
-    public void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
+
 
     @Override
     public void showLoading(String str) {
@@ -88,10 +84,6 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
         }
     }
 
-    @Override
-    public Context getContext() {
-        return this;
-    }
 
 
 }

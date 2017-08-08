@@ -1,6 +1,5 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -19,16 +18,13 @@ public interface IBaseContract {
 
     /**
      * base view层
+     * 公共常用操作showToast请参考{@link com.blankj.utilcode.util.ToastUtils}类
      */
     interface IBaseView {
-
-        void showToast(String str);
 
         void showLoading(String str);
 
         void hideLoading();
-
-        Context getContext();
 
         <T> LifecycleTransformer<T> bindToLifecycle();
     }

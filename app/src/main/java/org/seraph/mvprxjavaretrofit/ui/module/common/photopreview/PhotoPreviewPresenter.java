@@ -1,16 +1,18 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.io.File;
@@ -39,9 +41,11 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         this.mView = view;
     }
 
-    @Inject
-    PhotoPreviewPresenter() {
+    private Context mContext;
 
+    @Inject
+    PhotoPreviewPresenter(Context context) {
+        mContext = context;
     }
 
 
@@ -85,7 +89,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
                 break;
         }
         if (mPhotoList == null || mPhotoList.size() == 0) {
-            mView.showToast("没有可预览的图片");
+            ToastUtils.showShortToast("没有可预览的图片");
             mView.finish();
             return;
         }
@@ -132,7 +136,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         if (StringUtils.equals(imageType, PhotoPreviewActivity.IMAGE_TYPE_NETWORK)) {
             mSavePhoto = mPhotoList.get(currentPosition);
             mView.showLoading("正在保存");
-            Picasso.with(mView.getContext()).load(mSavePhoto.objURL).into(target);
+            Picasso.with(mContext).load(mSavePhoto.objURL).into(target);
         }
     }
 
@@ -147,7 +151,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         }
 
         private void saveFileToDisk(Bitmap bitmap) {
-           Disposable disposable = Flowable.just(bitmap)
+            Disposable disposable = Flowable.just(bitmap)
                     .flatMap(new Function<Bitmap, Flowable<String>>() {
                         @Override
                         public Flowable<String> apply(Bitmap bitmap) throws Exception {
@@ -165,15 +169,15 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
                         @Override
                         public void accept(String s) throws Exception {
                             mView.hideLoading();
-                            mView.showToast(s);
+                            ToastUtils.showShortToast(s);
                             // 最后通知图库更新此图片
-                            Tools.scanAppImageFile(mView.getContext(), saveImageName);
+                            Tools.scanAppImageFile(mContext, saveImageName);
                         }
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Exception {
                             mView.hideLoading();
-                            mView.showToast("保存失败");
+                            ToastUtils.showShortToast("保存失败");
                         }
                     });
             RxDisposableHelp.addSubscription(disposable);
@@ -182,7 +186,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         @Override
         public void onBitmapFailed(Drawable errorDrawable) {
             mView.hideLoading();
-            mView.showToast("保存失败");
+            ToastUtils.showShortToast("保存失败");
         }
 
         @Override

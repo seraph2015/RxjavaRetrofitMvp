@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
@@ -17,9 +18,9 @@ public interface MainActivityContract extends IBaseContract {
 
         void setTitle(String title);
 
-        FragmentController getFragmentController();
+        void setBackgroundResource(@DrawableRes int resid);
 
-        void showToast(String str);
+        FragmentController getFragmentController();
 
         void finish();
     }
@@ -29,7 +30,6 @@ public interface MainActivityContract extends IBaseContract {
         void setSelectedFragment(int page);
 
         void onBackPressed();
-
 
         void onSaveInstanceState(Bundle outState);
 

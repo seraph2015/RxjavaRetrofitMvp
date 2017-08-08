@@ -15,13 +15,13 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class PreferencesManager {
+public class AppPreferencesManager {
 
 
     private SharedPreferences sp;
 
     @Inject
-    public PreferencesManager(Context context) {
+    public AppPreferencesManager(Context context) {
         sp = context.getSharedPreferences(AppConfig.PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 

@@ -1,8 +1,10 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
+import com.blankj.utilcode.util.ToastUtils;
+
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
-import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -81,7 +83,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         mView.hideLoading();
-                        mView.showToast("网络异常");
+                        ToastUtils.showShortToast("网络异常");
                     }
                 });
         RxDisposableHelp.addSubscription(disposable);

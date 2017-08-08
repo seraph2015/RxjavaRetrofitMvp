@@ -2,23 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <Button
         android:id="@+id/btn_get_cache"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/test_bg_btn"
         android:text="get cacheFile" />
 
     <TextView
         android:id="@+id/tv_cache"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:textColor="@android:color/holo_red_dark" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <EditText
@@ -37,6 +41,7 @@
             android:id="@+id/btn_search_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/test_bg_btn"
             android:text="历史搜索" />
     </LinearLayout>
 
@@ -45,6 +50,8 @@
         android:id="@+id/btn_picasso_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/test_bg_btn"
         android:text="Picasso To Image" />
 
 </LinearLayout>
