@@ -107,9 +107,9 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View,
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
+        addListHeadView();
         lvImages.setAdapter(mImageListBaiduAdapter);
         lvImages.setScrollListener(ivGoTop);
-        addListHeadView();
         rxBinding();
         initListener();
         mPresenter.start();

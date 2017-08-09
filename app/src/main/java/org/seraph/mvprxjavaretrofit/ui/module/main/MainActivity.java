@@ -21,7 +21,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.base.IComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter;
-import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
 import javax.inject.Inject;
 
@@ -61,8 +60,6 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
         return mPresenter;
     }
 
-    @Inject
-    FragmentController fragmentController;
 
     private MainActivityComponent mMainActivityComponent;
 
@@ -78,7 +75,6 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         appbar.setAlpha(0.8f);
-        fragmentController.setContainerViewId(R.id.fl_home);
         mPresenter.start();
         RxBottomNavigationView.itemSelections(bnvMain).subscribe(bottomNavigationConsumer);
     }
@@ -117,11 +113,6 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     @Override
     public void setBackgroundResource(@DrawableRes int resid) {
         rootView.setBackgroundResource(resid);
-    }
-
-    @Override
-    public FragmentController getFragmentController() {
-        return fragmentController;
     }
 
 

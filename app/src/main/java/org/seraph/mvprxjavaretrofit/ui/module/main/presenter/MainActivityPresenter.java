@@ -15,6 +15,8 @@ import org.seraph.mvprxjavaretrofit.ui.module.main.MainTwoFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -37,19 +39,12 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     private FragmentController mFragmentController;
 
-    private String[] tags = new String[]{"one", "two", "three", "four"};
     private String[] titles = new String[]{"首页", "搜索", "HTTPS", "其它"};
     private int[] bgs = new int[]{R.mipmap.test_bg_fragment_one, R.mipmap.test_bg_fragment_two, R.mipmap.test_bg_fragment_three, R.mipmap.test_bg_fragment_four};
 
+    private List<Class<? extends Fragment>> fragmentList = new ArrayList<>();
 
     private int position = 0;
-
-
-    @Override
-    public void start() {
-        mFragmentController = mView.getFragmentController();
-        mFragmentController.setFragmentTags(tags);
-    }
 
     @Override
     public void setView(MainActivityContract.View view) {
@@ -58,33 +53,30 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
 
     @Inject
-    MainActivityPresenter() {
-
+    MainActivityPresenter(FragmentController fragmentController) {
+        mFragmentController = fragmentController;
     }
+
+
+    @Override
+    public void start() {
+        mFragmentController.setContainerViewId(R.id.fl_home);
+        mFragmentController.setFragmentTags(titles);
+        fragmentList.add(MainOneFragment.class);
+        fragmentList.add(MainTwoFragment.class);
+        fragmentList.add(MainThreeFragment.class);
+        fragmentList.add(MainFourFragment.class);
+    }
+
 
     /**
      * 设置选中的碎片,切换主题
      */
     public void setSelectedFragment(int positionIndex) {
         position = positionIndex;
-        Class<? extends Fragment> clazz = null;
-        switch (position) {
-            case 0:
-                clazz = MainOneFragment.class;
-                break;
-            case 1:
-                clazz = MainTwoFragment.class;
-                break;
-            case 2:
-                clazz = MainThreeFragment.class;
-                break;
-            case 3:
-                clazz = MainFourFragment.class;
-                break;
-        }
         mView.setTitle(titles[position]);
         mView.setBackgroundResource(bgs[position]);
-        mFragmentController.add(clazz, tags[position], null);
+        mFragmentController.add(fragmentList.get(position), titles[position], null);
     }
 
 

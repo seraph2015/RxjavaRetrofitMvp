@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
-import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
 /**
  * main契约类
@@ -19,8 +18,6 @@ public interface MainActivityContract extends IBaseContract {
         void setTitle(String title);
 
         void setBackgroundResource(@DrawableRes int resid);
-
-        FragmentController getFragmentController();
 
         void finish();
     }
