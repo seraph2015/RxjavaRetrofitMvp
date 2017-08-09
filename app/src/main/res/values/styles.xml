@@ -10,7 +10,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!--Window color-->
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@mipmap/welcome_bg</item>
         <!--toolbar menu文字颜色-->
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="android:actionMenuTextColor">@android:color/white</item>

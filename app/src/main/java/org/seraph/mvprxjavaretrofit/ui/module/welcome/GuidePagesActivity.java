@@ -1,9 +1,13 @@
 package org.seraph.mvprxjavaretrofit.ui.module.welcome;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.TypedValue;
+import android.view.Gravity;
 
+import com.blankj.utilcode.util.ConvertUtils;
 import com.tmall.ultraviewpager.UltraViewPager;
 
 import org.seraph.mvprxjavaretrofit.R;
@@ -64,21 +68,21 @@ public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract
         });
         ultraViewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
         //UltraPagerAdapter 绑定子view到UltraViewPager
-        ultraViewPager.setOffscreenPageLimit(5);
+        ultraViewPager.setOffscreenPageLimit(3);
         ultraViewPager.setAdapter(mUltraPagerAdapter);
-//        //内置indicator初始化
-//        ultraViewPager.initIndicator();
-//        //设置indicator样式
-//        ultraViewPager.getIndicator()
-//                .setOrientation(UltraViewPager.Orientation.HORIZONTAL)
-//                .setFocusColor(Color.GREEN)
-//                .setNormalColor(Color.WHITE)
-//                .setRadius((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
-//        //设置indicator对齐方式
-//        ultraViewPager.getIndicator().setMargin(10, 10, 10, ConvertUtils.dp2px(15));
-//        ultraViewPager.getIndicator().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
-//        //构造indicator,绑定到UltraViewPager
-//        ultraViewPager.getIndicator().build();
+        //内置indicator初始化
+        ultraViewPager.initIndicator();
+        //设置indicator样式
+        ultraViewPager.getIndicator()
+                .setOrientation(UltraViewPager.Orientation.HORIZONTAL)
+                .setFocusColor(Color.WHITE)
+                .setNormalColor(Color.GRAY)
+                .setRadius((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
+        //设置indicator对齐方式
+        ultraViewPager.getIndicator().setMargin(10, 10, 10, ConvertUtils.dp2px(15));
+        ultraViewPager.getIndicator().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+        //构造indicator,绑定到UltraViewPager
+        ultraViewPager.getIndicator().build();
     }
 
 

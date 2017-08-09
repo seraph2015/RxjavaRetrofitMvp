@@ -1,13 +1,10 @@
 package org.seraph.mvprxjavaretrofit.ui.module.welcome;
 
-import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
-
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -43,14 +40,12 @@ class WelcomeActivityPresenter implements WelcomeActivityContract.Presenter {
      * 3秒倒计时转跳
      */
     private void CountDown() {
-        Disposable disposable = Observable.intervalRange(0, 1, 3, 3, TimeUnit.SECONDS).subscribe(new Consumer<Long>() {
+        Observable.intervalRange(0, 1, 3, 3, TimeUnit.SECONDS).subscribe(new Consumer<Long>() {
             @Override
             public void accept(Long aLong) throws Exception {
-                RxDisposableHelp.dispose();
                 mView.jumpNextActivity();
             }
         });
-        RxDisposableHelp.addSubscription(disposable);
     }
 
 }

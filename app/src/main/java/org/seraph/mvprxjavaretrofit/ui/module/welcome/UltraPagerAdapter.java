@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import org.seraph.mvprxjavaretrofit.R;
 
@@ -59,8 +58,8 @@ class UltraPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        RelativeLayout linearLayout = (RelativeLayout) LayoutInflater.from(container.getContext()).inflate(R.layout.welcome_item_guide_pager_layout, null);
-        ImageView imageView = (ImageView) linearLayout.findViewById(R.id.iv_guide_page);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.welcome_item_guide_pager_layout, container, false);
+        ImageView imageView = (ImageView) view.findViewById(R.id.iv_guide_page);
         imageView.setImageResource(listImage[position]);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,15 +69,13 @@ class UltraPagerAdapter extends PagerAdapter {
                 }
             }
         });
-        container.addView(linearLayout);
-//        linearLayout.getLayoutParams().width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 180, container.getContext().getResources().getDisplayMetrics());
-//        linearLayout.getLayoutParams().height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 400, container.getContext().getResources().getDisplayMetrics());
-        return linearLayout;
+        container.addView(view);
+        return view;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        RelativeLayout view = (RelativeLayout) object;
+        View view = (View) object;
         container.removeView(view);
     }
 }

@@ -87,7 +87,7 @@ dependencies {
     //7.0文件共享FileProvider适配
     compile 'com.zhy.base:fileprovider:1.0.0'
     //viewpager切换
-    compile 'com.alibaba.android:ultraviewpager:1.0.4'
+    compile 'com.alibaba.android:ultraviewpager:1.0.6'
 }
 repositories {
     mavenCentral()
