@@ -3,7 +3,6 @@ package org.seraph.mvprxjavaretrofit.ui.module.welcome;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.ImageView;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.local.AppPreferencesConstant;
@@ -16,8 +15,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-
 /**
  * 欢迎页
  * date：2017/5/3 09:50
@@ -25,10 +22,6 @@ import butterknife.BindView;
  * mail：417753393@qq.com
  **/
 public class WelcomeActivity extends ABaseActivity<WelcomeActivityContract.View, WelcomeActivityContract.Presenter> implements WelcomeActivityContract.View {
-
-
-    @BindView(R.id.iv_welcome)
-    ImageView ivWelcome;
 
 
     @Override
