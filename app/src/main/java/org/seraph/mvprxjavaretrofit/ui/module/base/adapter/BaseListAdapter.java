@@ -138,6 +138,10 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public List<T> getDatas() {
+        return mDatas;
+    }
+
     public void setLoadMoreListener(LoadMoreListener loadMoreListener) {
         this.loadMoreListener = loadMoreListener;
     }

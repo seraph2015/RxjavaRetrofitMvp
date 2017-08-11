@@ -56,13 +56,14 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
     @SuppressWarnings("unchecked")
     private void initMVP() {
         try {
+            if (getMVPPresenter() == null) {
+                return;
+            }
             getMVPPresenter().setView((V) this);
         } catch (ClassCastException e) {
             throw new RuntimeException("子类必须实现IBaseContract.IBaseView接口");
         }
     }
-
-
 
 
     @Override
@@ -83,7 +84,6 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
             mLoadingDialog.dismiss();
         }
     }
-
 
 
 }
