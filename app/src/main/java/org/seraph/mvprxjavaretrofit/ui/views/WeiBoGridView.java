@@ -165,7 +165,7 @@ public class WeiBoGridView extends GridView {
         private int mColumnWidth;
 
         FeedPhotoAdapter(Context context, List<String> mData, int width) {
-            super(context, R.layout.item_feed_photo,mData);
+            super(context, R.layout.common_view_weibo_item_image,mData);
             this.mColumnWidth = width;
         }
 

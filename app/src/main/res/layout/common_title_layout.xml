@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appbar"
     android:layout_width="match_parent"
@@ -7,7 +8,8 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        style="@style/app_toolbar_style">
+        style="@style/app_toolbar_style"
+        app:title=" ">
 
         <TextView
             android:id="@+id/tv_toolbar_title"

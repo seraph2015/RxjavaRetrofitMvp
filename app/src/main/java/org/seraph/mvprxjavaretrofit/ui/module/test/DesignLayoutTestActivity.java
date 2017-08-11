@@ -9,8 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
-
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerDesignLayoutComponent;
@@ -30,7 +28,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.functions.Consumer;
 
 /**
  * Design风格布局效果测试
@@ -81,14 +78,6 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         toolbar.setTitle("Tomia相册");
-        toolbar.setNavigationIcon(R.drawable.common_ic_arrow_back_black_24dp);
-        setSupportActionBar(toolbar);
-        RxToolbar.navigationClicks(toolbar).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                finish();
-            }
-        });
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mDesignLayoutAdapter);
         initListener();

@@ -7,8 +7,8 @@
 
     <!--toolbar高度（小）44dp + 状态栏高度 24dp-->
     <dimen name="toolbar_h_min">68dp</dimen>
-    <!--toolbar icon距离顶部的内边距 24dp-(56dp-44dp)/2 ， (正常56高度对应的为24dp，icon默认有内边距所以无法使用24dp)-->
+    <!--toolbar icon距离顶部的内边距 24dp-(56dp-44dp)/2 ， (正常56高度对应的为24dp，toolbar默认有内边距所以无法使用24dp)-->
     <dimen name="toolbar_top_padding_min">18dp</dimen>
-    <!-- toolbar内添加的布局padding没有内边距 需要加补齐24dp (24dp-18dp)-->
+    <!-- toolbar内添加的布局padding没有内边距 需要补齐状态栏的24dp (24dp-18dp)-->
     <dimen name="toolbar_top_padding_text_min">6dp</dimen>
 </resources>

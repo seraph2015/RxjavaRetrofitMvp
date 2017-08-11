@@ -75,15 +75,6 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
 
     private void initRxBinding() {
         toolbarTitle.setText("选择图片");
-        toolbar.setTitle("");
-        toolbar.setNavigationIcon(R.drawable.common_ic_arrow_back_black_24dp);
-        setSupportActionBar(toolbar);
-        RxToolbar.navigationClicks(toolbar).subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(Object o) throws Exception {
-                finish();
-            }
-        });
         RxToolbar.itemClicks(toolbar).subscribe(new Consumer<MenuItem>() {
             @Override
             public void accept(MenuItem menuItem) throws Exception {

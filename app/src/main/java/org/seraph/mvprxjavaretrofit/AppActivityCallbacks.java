@@ -3,16 +3,23 @@ package org.seraph.mvprxjavaretrofit;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+
+import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
 import java.io.Serializable;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * App中每个Activity的回调,处理部分公共的问题
@@ -25,7 +32,7 @@ import butterknife.Unbinder;
 public class AppActivityCallbacks implements Application.ActivityLifecycleCallbacks {
 
     @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+    public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
         //管理activity
         AppActivityManage.getInstance().addActivity(activity);
         //设置字体，需要在设置布局之后
@@ -37,6 +44,24 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
             ((ABaseActivity) activity).setupActivityComponent(getAppComponent(activity), getActivityModule(activity));
         }
         //todo 可以进行其他公共设置（例如布局，切换动画。）...
+        //例如：如果有toolbar。则初始化部分公共设置，如果部分界面不需要，自己进行清除
+        View view = activity.findViewById(R.id.toolbar);
+        if (view != null && view instanceof Toolbar && activity instanceof ABaseActivity) {
+            Toolbar toolbar = ((Toolbar) view);
+            ((ABaseActivity) activity).setSupportActionBar(toolbar);
+            //主页特殊处理。不需要进行返回键的操作
+            if (activity instanceof MainActivity) {
+                return;
+            }
+            //符合条件的布局设置统一的返回按键和监听
+            toolbar.setNavigationIcon(R.drawable.common_title_arrow_white_left);
+            RxToolbar.navigationClicks(toolbar).subscribe(new Consumer<Object>() {
+                @Override
+                public void accept(@NonNull Object o) throws Exception {
+                    activity.finish();
+                }
+            });
+        }
     }
 
     @Override
