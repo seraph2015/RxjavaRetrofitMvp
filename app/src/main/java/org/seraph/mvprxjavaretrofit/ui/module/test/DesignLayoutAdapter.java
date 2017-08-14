@@ -1,14 +1,13 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
-import android.content.Context;
-import android.widget.ImageView;
+import com.blankj.utilcode.util.SizeUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
-import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
-import org.seraph.mvprxjavaretrofit.utlis.Tools;
-import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.ViewHolderRv;
+import org.seraph.mvprxjavaretrofit.ui.views.CustomSelfProportionImageView;
 
 import javax.inject.Inject;
 
@@ -18,23 +17,22 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class DesignLayoutAdapter extends BaseRvListAdapter<ImageBaiduBean.BaiduImage> {
+public class DesignLayoutAdapter extends BaseQuickAdapter<ImageBaiduBean.BaiduImage, BaseViewHolder> {
 
     private int targetWidth;
     private int targetHeight;
 
     @Inject
-    DesignLayoutAdapter(Context mContext) {
-        super(mContext, R.layout.test_item_design);
-        targetWidth = Tools.dip2px(mContext, 200);
-        targetHeight = Tools.dip2px(mContext, 150);
+    DesignLayoutAdapter() {
+        super(R.layout.test_item_design);
+        targetWidth = SizeUtils.dp2px(200);
+        targetHeight = SizeUtils.dp2px(150);
     }
+
 
     @Override
-    protected void bindData(ViewHolderRv holder, ImageBaiduBean.BaiduImage baiduImage, int position) {
-        ImageView imageView = holder.getView(R.id.imageView);
-        PicassoTool.loadCache(mContext, baiduImage.objURL, imageView, targetWidth, targetHeight);
+    protected void convert(BaseViewHolder helper, ImageBaiduBean.BaiduImage item) {
+        CustomSelfProportionImageView imageView = helper.getView(R.id.imageView);
+        PicassoTool.loadCache(mContext, item.objURL, imageView, targetWidth, targetHeight);
     }
-
-
 }

@@ -3,8 +3,12 @@ package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.seraph.mvprxjavaretrofit.data.local.db.help.SearchHistoryHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
@@ -13,6 +17,7 @@ import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.FileUtils;
@@ -35,9 +40,12 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     private MainTwoFragmentContract.View mView;
 
+    private RecyclerView mRecyclerView;
+
     @Override
     public void setView(MainTwoFragmentContract.View view) {
         this.mView = view;
+        mRecyclerView = mView.getRecyclerView();
     }
 
     private Context mContext;
@@ -48,16 +56,17 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     private UserBeanHelp mUserHelp;
 
+    private ImageListBaiduAdapter mAdapter;
+
     @Inject
-    MainTwoFragmentPresenter(Context context,ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp) {
+    MainTwoFragmentPresenter(Context context, ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp, ImageListBaiduAdapter adapter) {
         this.mContext = context;
         this.mApiBaiduService = apiBaiduService;
         this.mSearchHistoryHelp = searchHistoryHelp;
         this.mUserHelp = userHelp;
+        this.mAdapter = adapter;
     }
 
-
-    private List<ImageBaiduBean.BaiduImage> listImage = new ArrayList<>();
     /**
      * 搜索历史
      */
@@ -73,7 +82,21 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     @Override
     public void start() {
-
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mAdapter.bindToRecyclerView(mRecyclerView);
+        mAdapter.addHeaderView(mView.getHeadView());
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                onPhotoPreview(position);
+            }
+        });
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                getBaiduImageList(searchKeyWord, pageNo + 1);
+            }
+        }, mRecyclerView);
     }
 
 
@@ -135,10 +158,6 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
         getBaiduImageList(searchKeyWord, 1);
     }
 
-    @Override
-    public void loadMoreImage() {
-        getBaiduImageList(searchKeyWord, pageNo + 1);
-    }
 
     private void getBaiduImageList(String keyWord, final int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
@@ -154,30 +173,32 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
             @Override
             public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
                 if (requestPageNo == 1) {
-                    listImage.clear();
+                    mAdapter.replaceData(baiduImages);
+                }else {
+                    mAdapter.addData(baiduImages);
                 }
-                listImage.addAll(baiduImages);
                 //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
-                mView.requestData(listImage, baiduImages.size() >= 48);
+                if (baiduImages.size() >= 48) {
+                    mAdapter.loadMoreComplete();
+                } else {
+                    mAdapter.loadMoreEnd();
+                }
                 pageNo = requestPageNo;
             }
 
             @Override
             public void onError(String errStr) {
                 ToastUtils.showShortToast(errStr);
+                //数据失败
+                mAdapter.loadMoreFail();
             }
 
         });
     }
 
-
-    @Override
-    public void onItemClick(int position) {
-        if (position > listImage.size()) {
-            return;
-        }
+    public void onPhotoPreview(int position) {
         ArrayList<PhotoPreviewBean> photoList = new ArrayList<>();
-        for (ImageBaiduBean.BaiduImage baiduImage : listImage) {
+        for (ImageBaiduBean.BaiduImage baiduImage : mAdapter.getData()) {
             PhotoPreviewBean photoPreviewBean = new PhotoPreviewBean();
             photoPreviewBean.objURL = baiduImage.objURL;
             photoPreviewBean.type = baiduImage.type;

@@ -88,6 +88,8 @@ dependencies {
     compile 'com.zhy.base:fileprovider:1.0.0'
     //viewpager切换
     compile 'com.alibaba.android:ultraviewpager:1.0.6'
+    //一个强大的recyclerView适配器 ，文档见：http://www.jianshu.com/p/b343fcff51b0
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
 }
 repositories {
     mavenCentral()

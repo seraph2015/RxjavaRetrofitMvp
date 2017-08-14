@@ -2,31 +2,25 @@ package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jakewharton.rxbinding2.widget.RxAdapterView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
-import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
-import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
-import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainTwoFragmentPresenter;
-import org.seraph.mvprxjavaretrofit.ui.views.GoTopListView;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -44,10 +38,8 @@ import io.reactivex.functions.Consumer;
 public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View, MainTwoFragmentContract.Presenter> implements MainTwoFragmentContract.View {
 
 
-    @BindView(R.id.lv_images)
-    GoTopListView lvImages;
-    @BindView(R.id.iv_go_top)
-    ImageView ivGoTop;
+    @BindView(R.id.rv_images)
+    RecyclerView rvImages;
 
 
     class HeadViewHolder {
@@ -90,9 +82,6 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View,
     @Inject
     MainTwoFragmentPresenter mPresenter;
 
-    @Inject
-    ImageListBaiduAdapter mImageListBaiduAdapter;
-
     private HeadViewHolder headViewholder;
 
     @Override
@@ -107,13 +96,8 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View,
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        addListHeadView();
-        lvImages.setAdapter(mImageListBaiduAdapter);
-        lvImages.setScrollListener(ivGoTop);
-        rxBinding();
-        initListener();
         mPresenter.start();
-
+        rxBinding();
     }
 
     protected void rxBinding() {
@@ -127,22 +111,8 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View,
                 }
             }
         });
-
-        RxAdapterView.itemClicks(lvImages).subscribe(new Consumer<Integer>() {
-            @Override
-            public void accept(Integer integer) throws Exception {
-                mPresenter.onItemClick(integer);
-            }
-        });
     }
 
-    private void addListHeadView() {
-        View headView = LayoutInflater.from(getActivity()).inflate(R.layout.test_fragment_two_list_head, lvImages, false);
-        headViewholder = new HeadViewHolder(headView);
-        lvImages.addHeaderView(headView);
-        //加载新添加的布局字体
-        FontUtils.injectFont(headView);
-    }
 
     @Override
     public void setTextView(CharSequence charSequence) {
@@ -164,24 +134,22 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View,
 
     @Override
     public void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position) {
-        PhotoPreviewActivity.startPhotoPreview(getActivity(), photoList, position - 1, PhotoPreviewActivity.IMAGE_TYPE_NETWORK);
+        PhotoPreviewActivity.startPhotoPreview(getActivity(), photoList, position, PhotoPreviewActivity.IMAGE_TYPE_NETWORK);
+    }
+
+
+    @Override
+    public RecyclerView getRecyclerView() {
+        return rvImages;
     }
 
     @Override
-    public void requestData(List<ImageBaiduBean.BaiduImage> listImage, boolean isMore) {
-        //请求的数据
-        mImageListBaiduAdapter.addAllListData(listImage);
-        mImageListBaiduAdapter.setIsMoreData(isMore);
-    }
-
-
-    private void initListener() {
-        mImageListBaiduAdapter.setLoadMoreListener(new BaseListAdapter.LoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                mPresenter.loadMoreImage();
-            }
-        });
+    public View getHeadView() {
+        View headView = LayoutInflater.from(getActivity()).inflate(R.layout.test_fragment_two_list_head, rvImages, false);
+        headViewholder = new HeadViewHolder(headView);
+        //加载新添加的布局字体
+        FontUtils.injectFont(headView);
+        return headView;
     }
 
 

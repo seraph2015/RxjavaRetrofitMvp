@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+
 import org.seraph.mvprxjavaretrofit.R;
 
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.List;
 
 /**
  * baseListView适配器(添加自动加载更多)
+ * 如使用RecyclerView加载布局，使用BaseRecyclerViewAdapterHelper框架，见{@link BaseQuickAdapter}
+ * 详细文档见：http://www.jianshu.com/p/b343fcff51b0
  * date：2017/5/8 09:31
  * author：xiongj
  * mail：417753393@qq.com

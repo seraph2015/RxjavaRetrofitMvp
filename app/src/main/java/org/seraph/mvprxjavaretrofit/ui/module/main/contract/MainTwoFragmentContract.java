@@ -1,11 +1,11 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
+import android.support.v7.widget.RecyclerView;
+
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
-import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 第2页的契约类
@@ -17,17 +17,11 @@ public interface MainTwoFragmentContract extends IBaseContract {
 
     interface Presenter extends IBaseFragmentPresenter<View> {
 
-
         void showCacheFilePath();
 
         void searchHistory();
 
         void startPicassoToImage();
-
-        void loadMoreImage();
-
-        void onItemClick(int position);
-
     }
 
     interface View extends IBaseFragmentView {
@@ -46,6 +40,8 @@ public interface MainTwoFragmentContract extends IBaseContract {
          */
         void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position);
 
-        void requestData(List<ImageBaiduBean.BaiduImage> listImage, boolean isMore);
+        RecyclerView getRecyclerView();
+
+        android.view.View getHeadView();
     }
 }

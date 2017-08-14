@@ -1,17 +1,14 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.adapter;
 
-import android.app.Activity;
-import android.view.View;
-
 import com.blankj.utilcode.util.ScreenUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
-import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSelfProportionImageView;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
-import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.ViewHolder;
 
 import javax.inject.Inject;
 
@@ -21,31 +18,28 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class ImageListBaiduAdapter extends BaseListAdapter<ImageBaiduBean.BaiduImage> {
+public class ImageListBaiduAdapter extends BaseQuickAdapter<ImageBaiduBean.BaiduImage, BaseViewHolder> {
 
     private int screenWidth;
 
     @Inject
-    public ImageListBaiduAdapter(Activity context) {
-        super(context, R.layout.test_item_image);
+    public ImageListBaiduAdapter() {
+        super(R.layout.test_item_image);
         screenWidth = ScreenUtils.getScreenWidth();
     }
 
+
     @Override
-    public void bindView(int position, View view, ImageBaiduBean.BaiduImage baiduImage) {
-        CustomSelfProportionImageView imageView = ViewHolder.get(view,R.id.image);
-        imageView.setSize(baiduImage.width, baiduImage.height);
+    protected void convert(BaseViewHolder helper, ImageBaiduBean.BaiduImage item) {
+        CustomSelfProportionImageView imageView = helper.getView(R.id.image);
+        imageView.setSize(item.width, item.height);
         //按照控件的大小来缩放图片的尺寸
-        int width = baiduImage.width;
-        int height = baiduImage.height;
-        //直接使用屏幕宽
-        //  int imageViewWidth = imageView.getMeasuredWidth();
+        int width = item.width;
+        int height = item.height;
         if (width != 0) {
             height = Tools.getNewHeight(width, height, screenWidth);
             width = screenWidth;
         }
-        PicassoTool.loadCache(mContext, baiduImage.objURL, imageView, width, height);
+        PicassoTool.loadCache(mContext, item.objURL, imageView, width, height);
     }
-
-
 }

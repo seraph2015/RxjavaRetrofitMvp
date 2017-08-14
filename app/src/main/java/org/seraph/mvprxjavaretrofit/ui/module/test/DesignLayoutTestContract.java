@@ -16,13 +16,14 @@ interface DesignLayoutTestContract extends IBaseContract{
     interface View extends IBaseActivityView {
 
         void setImageListData(List<ImageBaiduBean.BaiduImage> baiduImages, boolean isMore);
+
+        void onLoadErr();
+
     }
 
     interface Presenter extends IBaseActivityPresenter<View> {
 
         void requestNextPage();
-
-        void requestRefresh();
 
     }
 }

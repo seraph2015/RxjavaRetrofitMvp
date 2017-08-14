@@ -23,5 +23,4 @@ public interface WelcomeComponent extends ActivityComponent {
 
     void inject(GuidePagesActivity guidePagesActivity);
 
-
 }

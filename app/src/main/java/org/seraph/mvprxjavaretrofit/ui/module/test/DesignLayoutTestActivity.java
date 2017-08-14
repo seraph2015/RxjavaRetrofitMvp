@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerDesignLayoutComponent;
@@ -16,7 +18,6 @@ import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
@@ -66,7 +67,7 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
     DesignLayoutAdapter mDesignLayoutAdapter;
 
     @Override
-    public void setupActivityComponent(AppComponent appComponent,ActivityModule activityModule) {
+    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
         DaggerDesignLayoutComponent.builder()
                 .appComponent(appComponent)
                 .activityModule(activityModule)
@@ -78,8 +79,6 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         toolbar.setTitle("Tomia相册");
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mDesignLayoutAdapter);
         initListener();
         mPresenter.start();
     }
@@ -88,23 +87,20 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
      * 初始化加载更多
      */
     public void initListener() {
-        mDesignLayoutAdapter.setLoadMoreListener(new BaseRvListAdapter.LoadMoreListener() {
+        mRecyclerView.setLayoutManager(layoutManager);
+        mDesignLayoutAdapter.bindToRecyclerView(mRecyclerView);
+        mDesignLayoutAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onLoadMore() {
-                mPresenter.requestNextPage();
-            }
-        });
-        mDesignLayoutAdapter.setOnItemClickListener(new BaseRvListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 startPhotoPreview(position);
             }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
         });
+        mDesignLayoutAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                mPresenter.requestNextPage();
+            }
+        }, mRecyclerView);
     }
 
 
@@ -123,7 +119,7 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
 
     private void startPhotoPreview(int position) {
         ArrayList<PhotoPreviewBean> photoList = new ArrayList<>();
-        List<ImageBaiduBean.BaiduImage> list = mDesignLayoutAdapter.getDatas();
+        List<ImageBaiduBean.BaiduImage> list = mDesignLayoutAdapter.getData();
         for (ImageBaiduBean.BaiduImage baiduImage : list) {
             PhotoPreviewBean photoPreviewBean = new PhotoPreviewBean();
             photoPreviewBean.objURL = baiduImage.objURL;
@@ -138,7 +134,17 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
     @Override
     public void setImageListData(List<ImageBaiduBean.BaiduImage> baiduImages, boolean isMore) {
         PicassoTool.loadNoCache(this, baiduImages.get((int) (Math.random() * baiduImages.size())).objURL, appBarImage);
-        mDesignLayoutAdapter.addAllListData(baiduImages);
+        mDesignLayoutAdapter.replaceData(baiduImages);
+        if (isMore) {
+            mDesignLayoutAdapter.loadMoreComplete();
+        } else {
+            mDesignLayoutAdapter.loadMoreEnd();
+        }
+    }
+
+    @Override
+    public void onLoadErr() {
+        mDesignLayoutAdapter.loadMoreFail();
     }
 
 }

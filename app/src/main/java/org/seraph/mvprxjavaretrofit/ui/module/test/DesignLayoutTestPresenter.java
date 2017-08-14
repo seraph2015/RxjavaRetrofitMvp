@@ -45,8 +45,8 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
 
     @Override
     public void start() {
-        mView.showLoading("正在请求相册数据");
-        requestRefresh();
+        mView.showLoading("正在加载");
+        doBaiduImages(1);
     }
 
     @Override
@@ -54,10 +54,6 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
         doBaiduImages(++pageNo);
     }
 
-    @Override
-    public void requestRefresh() {
-        doBaiduImages(1);
-    }
 
     private void doBaiduImages(final int tempNo) {
         Disposable disposable = mApiManager.doBaiduImageUrl(Tools.getBaiduImagesUrl("tomia", tempNo))
@@ -83,6 +79,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         mView.hideLoading();
+                        mView.onLoadErr();
                         ToastUtils.showShortToast("网络异常");
                     }
                 });
