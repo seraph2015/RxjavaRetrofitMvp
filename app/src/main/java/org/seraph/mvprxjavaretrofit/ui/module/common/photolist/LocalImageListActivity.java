@@ -103,7 +103,7 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
 
     @Override
     public void setQueryImageList(List<LocalImageBean> localImageBeen) {
-        mImageListAdapter.addAllListData(localImageBeen);
+        mImageListAdapter.replaceData(localImageBeen);
     }
 
     @Override

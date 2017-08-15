@@ -57,6 +57,10 @@ public class RxSchedulers {
                         if (tBaseDataResponse.status != SUCCESS_STATUS) { //业务逻辑失败
                             return Flowable.error(new ServerErrorException(tBaseDataResponse.msg));
                         }
+                        if (tBaseDataResponse.data == null) {
+                            //如果在不用T而且T为null的情况下，则在完成回调中接收，不会回调onNext(T)方法
+                            return Flowable.empty();
+                        }
                         return Flowable.just(tBaseDataResponse.data);
                     }
                 });

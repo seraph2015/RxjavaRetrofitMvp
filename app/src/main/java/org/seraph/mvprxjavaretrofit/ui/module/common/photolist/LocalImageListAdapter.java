@@ -6,12 +6,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.SizeUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
-import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseRvListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSquareImageView;
-import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.ViewHolderRv;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import javax.inject.Inject;
 /**
  * 显示并选择本地图片的适配器
  */
-class LocalImageListAdapter extends BaseRvListAdapter<LocalImageBean> {
+class LocalImageListAdapter extends BaseQuickAdapter<LocalImageBean,BaseViewHolder> {
 
     private ArrayList<String> mSelectedPathList = new ArrayList<>();
 
@@ -30,13 +30,13 @@ class LocalImageListAdapter extends BaseRvListAdapter<LocalImageBean> {
 
     @Inject
     LocalImageListAdapter(Context context) {
-        super(context, R.layout.common_activity_loacl_image_item, false);
+        super(R.layout.common_activity_loacl_image_item);
         size = SizeUtils.dp2px(120);
     }
 
 
     @Override
-    protected void bindData(ViewHolderRv holder, final LocalImageBean localImageBean, final int position) {
+    protected void convert(final BaseViewHolder holder, final LocalImageBean localImageBean) {
         CustomSquareImageView imageView = holder.getView(R.id.iv_image_item);
         final ImageView tagView = holder.getView(R.id.iv_image_item_tag);
         PicassoTool.loadCache(mContext, new File(localImageBean.path), imageView, size, size);
@@ -49,7 +49,7 @@ class LocalImageListAdapter extends BaseRvListAdapter<LocalImageBean> {
             @Override
             public void onClick(View v) {
                 if (localImageBean.isSelected) { //取消选中
-                    mDatas.get(position).isSelected = false;
+                    mData.get(holder.getAdapterPosition()).isSelected = false;
                     if (mSelectedPathList.contains(localImageBean.path)) {
                         mSelectedPathList.remove(localImageBean.path);
                     }
@@ -62,7 +62,7 @@ class LocalImageListAdapter extends BaseRvListAdapter<LocalImageBean> {
                     if (!mSelectedPathList.contains(localImageBean.path)) {
                         mSelectedPathList.add(localImageBean.path);
                     }
-                    mDatas.get(position).isSelected = true;
+                    mData.get(holder.getAdapterPosition()).isSelected = true;
                     tagView.setVisibility(View.VISIBLE);
                 }
             }
@@ -80,4 +80,6 @@ class LocalImageListAdapter extends BaseRvListAdapter<LocalImageBean> {
             notifyDataSetChanged();
         }
     }
+
+
 }
