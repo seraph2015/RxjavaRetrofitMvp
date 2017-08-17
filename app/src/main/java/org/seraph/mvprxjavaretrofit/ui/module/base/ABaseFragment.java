@@ -1,6 +1,5 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
-import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
@@ -80,15 +78,9 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
 
 
     @Override
-    public void showLoading(String str) {
+    public CustomLoadingDialog showLoading(String str) {
         mLoadingDialog.setDialogMessage(str);
-        mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                RxDisposableHelp.dispose();
-                mLoadingDialog.setOnDismissListener(null);
-            }
-        });
+        return mLoadingDialog;
     }
 
     @Override

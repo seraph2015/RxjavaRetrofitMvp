@@ -38,8 +38,8 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
 
     @BindView(R.id.tv_progress)
     TextView tvProgress;
-    @BindView(R.id.tv_save)
-    TextView tvSave;
+    @BindView(R.id.ll_save)
+    View llSave;
 
 
     @Override
@@ -107,7 +107,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
 
     private void initRxBinding() {
         //点击保存按钮先检查权限
-        RxView.clicks(tvSave)
+        RxView.clicks(llSave)
                 .compose(rxPermissions.ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
                 .subscribe(new Consumer<Boolean>() {
                     @Override
@@ -118,12 +118,6 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
                         } else {
                             //获取权限失败
                             ToastUtils.showShortToast("缺少SD卡权限，保存图片失败");
-//                            Tools.showMissingPermissionDialog(PhotoPreviewActivity.this, new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    showToast("保存失败");
-//                                }
-//                            });
                         }
                     }
                 });
@@ -166,7 +160,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
 
     @Override
     public void hideSaveBtn() {
-        tvSave.setVisibility(View.GONE);
+        llSave.setVisibility(View.GONE);
     }
 
 

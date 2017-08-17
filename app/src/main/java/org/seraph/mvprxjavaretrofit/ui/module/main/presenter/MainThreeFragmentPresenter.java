@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
+import android.content.DialogInterface;
+
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.Api12306Service;
@@ -42,8 +44,13 @@ public class MainThreeFragmentPresenter implements MainThreeFragmentContract.Pre
     public void post12306Https() {
         mApi12306Service.do12306Url().compose(RxSchedulers.<String>io_main(mView)).doOnSubscribe(new Consumer<Subscription>() {
             @Override
-            public void accept(Subscription subscription) throws Exception {
-                mView.showLoading("正在访问");
+            public void accept(final Subscription subscription) throws Exception {
+                mView.showLoading("正在访问").setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        subscription.cancel();
+                    }
+                });
             }
         })
                 .subscribe(new Consumer<String>() {

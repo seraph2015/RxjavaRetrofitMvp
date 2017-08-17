@@ -1,13 +1,11 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
-import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
@@ -67,15 +65,9 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
 
 
     @Override
-    public void showLoading(String str) {
+    public CustomLoadingDialog showLoading(String str) {
         mLoadingDialog.setDialogMessage(str);
-        mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                RxDisposableHelp.dispose();
-                mLoadingDialog.setOnDismissListener(null);
-            }
-        });
+        return mLoadingDialog;
     }
 
     @Override

@@ -11,19 +11,21 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 
 /**
@@ -133,65 +135,64 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
      */
     @Override
     public void saveImage() {
-        if (StringUtils.equals(imageType, PhotoPreviewActivity.IMAGE_TYPE_NETWORK)) {
-            mSavePhoto = mPhotoList.get(currentPosition);
-            mView.showLoading("正在保存");
-            Picasso.with(mContext).load(mSavePhoto.objURL).into(target);
+        if (!StringUtils.equals(imageType, PhotoPreviewActivity.IMAGE_TYPE_NETWORK)) {
+            return;
         }
-    }
-
-    /**
-     * 保存图片到本地
-     */
-    private Target target = new Target() {
-
-        @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            saveFileToDisk(bitmap);
-        }
-
-        private void saveFileToDisk(Bitmap bitmap) {
-            Disposable disposable = Flowable.just(bitmap)
-                    .flatMap(new Function<Bitmap, Flowable<String>>() {
-                        @Override
-                        public Flowable<String> apply(Bitmap bitmap) throws Exception {
-                            saveImageName = Tools.getMD5(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
-                            File dcimFile = Tools.getDCIMFile(saveImageName);
-                            if (dcimFile.exists() && dcimFile.length() > 0) {
-                                return Flowable.just("图片已保存");
-                            }
-                            Tools.bitmapToFile(bitmap, dcimFile);
-                            return Flowable.just("保存成功");
+        mView.showLoading("正在保存");
+        mSavePhoto = mPhotoList.get(currentPosition);
+        //此方法需要在主线程里
+        Picasso.with(mContext).load(mSavePhoto.objURL).into(new Target() {
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                //使用子线程进行保存
+                Flowable.create(new FlowableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(@NonNull FlowableEmitter<String> e) throws Exception {
+                        String saveImageName = Tools.getMD5(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
+                        File dcimFile = Tools.getDCIMFile(saveImageName);
+                        if (dcimFile.exists() && dcimFile.length() > 0) {
+                            e.onNext("图片已保存");
+                            e.onComplete();
                         }
-                    })
-                    .compose(RxSchedulers.<String>io_main(mView))
-                    .subscribe(new Consumer<String>() {
-                        @Override
-                        public void accept(String s) throws Exception {
-                            mView.hideLoading();
-                            ToastUtils.showShortToast(s);
+                        try {
+                            Tools.bitmapToFile(bitmap, dcimFile);
                             // 最后通知图库更新此图片
                             Tools.scanAppImageFile(mContext, saveImageName);
+                            e.onNext("保存成功");
+                            e.onComplete();
+                        } catch (IOException e1) {
+                            e.onError(e1);
                         }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            mView.hideLoading();
-                            ToastUtils.showShortToast("保存失败");
-                        }
-                    });
-            RxDisposableHelp.addSubscription(disposable);
-        }
+                    }
+                }, BackpressureStrategy.BUFFER)
+                        .compose(RxSchedulers.<String>io_main(mView))
+                        .subscribe(new Consumer<String>() {
+                            @Override
+                            public void accept(@NonNull String s) throws Exception {
+                                ToastUtils.showShortToast(s);
+                                mView.hideLoading();
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                throwable.printStackTrace();
+                                ToastUtils.showShortToast("保存失败");
+                                mView.hideLoading();
+                            }
+                        });
 
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
-            mView.hideLoading();
-            ToastUtils.showShortToast("保存失败");
-        }
+            }
 
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-        }
-    };
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                ToastUtils.showShortToast("保存失败");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+    }
 
 }

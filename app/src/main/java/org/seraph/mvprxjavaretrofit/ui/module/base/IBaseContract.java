@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
+import android.app.Dialog;
 import android.support.annotation.NonNull;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -22,7 +23,7 @@ public interface IBaseContract {
      */
     interface IBaseView {
 
-        void showLoading(String str);
+        Dialog showLoading(String str);
 
         void hideLoading();
 

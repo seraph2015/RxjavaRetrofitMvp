@@ -10,6 +10,7 @@ import android.view.View;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.local.db.help.SearchHistoryHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
@@ -28,6 +29,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 /**
@@ -41,6 +44,8 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
     private MainTwoFragmentContract.View mView;
 
     private RecyclerView mRecyclerView;
+
+    private Subscription mSubscription;
 
     @Override
     public void setView(MainTwoFragmentContract.View view) {
@@ -154,7 +159,14 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
         //保存搜索到本地数据库
         mSearchHistoryHelp.saveSearchToDB(tempId, type, searchKeyWord);
 
-        mView.showLoading("正在搜索");
+        mView.showLoading("正在搜索").setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (mSubscription != null) {
+                    mSubscription.cancel();
+                }
+            }
+        });
         getBaiduImageList(searchKeyWord, 1);
     }
 
@@ -169,31 +181,38 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
                     public List<ImageBaiduBean.BaiduImage> apply(ImageBaiduBean imageBaiduBean) throws Exception {
                         return imageBaiduBean.imgs;
                     }
-                }).subscribe(new ABaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>>(mView) {
-            @Override
-            public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
-                if (requestPageNo == 1) {
-                    mAdapter.replaceData(baiduImages);
-                }else {
-                    mAdapter.addData(baiduImages);
-                }
-                //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
-                if (baiduImages.size() >= 48) {
-                    mAdapter.loadMoreComplete();
-                } else {
-                    mAdapter.loadMoreEnd();
-                }
-                pageNo = requestPageNo;
-            }
+                })
+                .doOnSubscribe(new Consumer<Subscription>() {
+                    @Override
+                    public void accept(@NonNull Subscription subscription) throws Exception {
+                        mSubscription = subscription;
+                    }
+                })
+                .subscribe(new ABaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>>(mView) {
+                    @Override
+                    public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
+                        if (requestPageNo == 1) {
+                            mAdapter.replaceData(baiduImages);
+                        } else {
+                            mAdapter.addData(baiduImages);
+                        }
+                        //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
+                        if (baiduImages.size() >= 48) {
+                            mAdapter.loadMoreComplete();
+                        } else {
+                            mAdapter.loadMoreEnd();
+                        }
+                        pageNo = requestPageNo;
+                    }
 
-            @Override
-            public void onError(String errStr) {
-                ToastUtils.showShortToast(errStr);
-                //数据失败
-                mAdapter.loadMoreFail();
-            }
+                    @Override
+                    public void onError(String errStr) {
+                        ToastUtils.showShortToast(errStr);
+                        //数据失败
+                        mAdapter.loadMoreFail();
+                    }
 
-        });
+                });
     }
 
     public void onPhotoPreview(int position) {

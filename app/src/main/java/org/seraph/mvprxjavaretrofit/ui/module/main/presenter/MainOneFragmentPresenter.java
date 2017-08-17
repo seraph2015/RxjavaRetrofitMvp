@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
+import android.content.DialogInterface;
+
 import com.blankj.utilcode.util.ToastUtils;
 
 import org.reactivestreams.Subscription;
@@ -57,8 +59,13 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
                 .compose(RxSchedulers.<UserBean>io_main_business(mView))
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
-                    public void accept(Subscription subscription) throws Exception {
-                        mView.showLoading("正在登陆...");
+                    public void accept(final Subscription subscription) throws Exception {
+                        mView.showLoading("正在登陆...").setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                subscription.cancel();
+                            }
+                        });
                     }
                 })
                 .subscribe(new ABaseNetWorkSubscriber<UserBean>(mView) {
