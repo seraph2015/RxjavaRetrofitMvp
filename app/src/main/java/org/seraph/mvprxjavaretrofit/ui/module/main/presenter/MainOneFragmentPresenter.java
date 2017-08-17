@@ -6,7 +6,7 @@ import com.blankj.utilcode.util.ToastUtils;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
-import org.seraph.mvprxjavaretrofit.data.local.db.table.UserBeanTable;
+import org.seraph.mvprxjavaretrofit.data.local.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
@@ -93,7 +93,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
             ToastUtils.showShortToast("没有可保存数据");
             return;
         }
-        UserBeanTable userTable = new UserBeanTable();
+        UserTable userTable = new UserTable();
         userTable.setId(mUserBean.id);
         userTable.setToken(mUserBean.token);
         userTable.setName(mUserBean.nickname);
@@ -107,7 +107,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
      */
     @Override
     public void queryUserInfo() {
-        UserBeanTable userBeanTable = mUserBeanHelp.getUserBeanTable();
+        UserTable userBeanTable = mUserBeanHelp.getUserBean();
         if (userBeanTable != null) {
             mView.setUserTextViewValue("_id:" + userBeanTable.get_id() + "\nid:" + userBeanTable.getId() + "\ntoken:" + userBeanTable.getToken() + "\nname:" + userBeanTable.getName() + "\nheadImg:" + userBeanTable.getHeadPortrait() + "\n\n");
         } else {
@@ -120,7 +120,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
      */
     @Override
     public void cleanUserInfo() {
-        mUserBeanHelp.cleanUser();
+        mUserBeanHelp.cleanUserBean();
         queryUserInfo();
     }
 

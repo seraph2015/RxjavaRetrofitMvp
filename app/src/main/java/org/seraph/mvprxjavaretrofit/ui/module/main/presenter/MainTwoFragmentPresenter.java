@@ -112,10 +112,10 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     @Override
     public void searchHistory() {
-        if (mUserHelp.getUserBeanTable() == null) {
+        if (mUserHelp.getUserToken() == null) {
             tempId = -1;
         } else {
-            tempId = mUserHelp.getUserBeanTable().getId();
+            tempId = mUserHelp.getUserBean().getId();
         }
         //查询本地数据搜索历史（时间倒叙）
         listSearch = mSearchHistoryHelp.querySearchDB(tempId, type);

@@ -1,17 +1,17 @@
 package org.seraph.mvprxjavaretrofit.data.local.db.table;
 
-import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.JoinProperty;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToMany;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.SearchHistoryTableDao;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.UserBeanTableDao;
 
 import java.util.List;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.DaoException;
+import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
+import org.seraph.mvprxjavaretrofit.data.local.db.gen.SearchHistoryTableDao;
+import org.seraph.mvprxjavaretrofit.data.local.db.gen.UserTableDao;
 
 /**
  * 用户表
@@ -25,7 +25,7 @@ import java.util.List;
  * 更新的实体判断以主键为基础。
  **/
 @Entity
-public class UserBeanTable {
+public class UserTable {
 
     /**
      * id 自增长
@@ -67,11 +67,11 @@ public class UserBeanTable {
     private transient DaoSession daoSession;
 
     /** Used for active entity operations. */
-    @Generated(hash = 12532454)
-    private transient UserBeanTableDao myDao;
+    @Generated(hash = 1224316336)
+    private transient UserTableDao myDao;
 
-    @Generated(hash = 1762145986)
-    public UserBeanTable(Long _id, int id, String token, String name, String gender, String headPortrait) {
+    @Generated(hash = 2133800168)
+    public UserTable(Long _id, int id, String token, String name, String gender, String headPortrait) {
         this._id = _id;
         this.id = id;
         this.token = token;
@@ -80,8 +80,8 @@ public class UserBeanTable {
         this.headPortrait = headPortrait;
     }
 
-    @Generated(hash = 894509491)
-    public UserBeanTable() {
+    @Generated(hash = 726134616)
+    public UserTable() {
     }
 
     public Long get_id() {
@@ -136,7 +136,7 @@ public class UserBeanTable {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1177631984)
+    @Generated(hash = 465397896)
     public List<SearchHistoryTable> getListSearchHistory() {
         if (listSearchHistory == null) {
             final DaoSession daoSession = this.daoSession;
@@ -144,7 +144,7 @@ public class UserBeanTable {
                 throw new DaoException("Entity is detached from DAO context");
             }
             SearchHistoryTableDao targetDao = daoSession.getSearchHistoryTableDao();
-            List<SearchHistoryTable> listSearchHistoryNew = targetDao._queryUserBeanTable_ListSearchHistory(id);
+            List<SearchHistoryTable> listSearchHistoryNew = targetDao._queryUserTable_ListSearchHistory(id);
             synchronized (this) {
                 if (listSearchHistory == null) {
                     listSearchHistory = listSearchHistoryNew;
@@ -197,10 +197,10 @@ public class UserBeanTable {
     }
 
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 92408486)
+    @Generated(hash = 1889643915)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getUserBeanTableDao() : null;
+        myDao = daoSession != null ? daoSession.getUserTableDao() : null;
     }
 
 

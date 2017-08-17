@@ -32,12 +32,8 @@ public class SearchHistoryHelp {
      */
     public void saveSearchToDB(int userId, String type, String saveStr) {
         //清理之前在同一用户种同一类型的重复的key
-        List<SearchHistoryTable> historyTableList = mSearchHistoryTableDao.queryBuilder()
-                .where(SearchHistoryTableDao.Properties.UserId.eq(userId), SearchHistoryTableDao.Properties.Type.eq(type), SearchHistoryTableDao.Properties.SearchKey.eq(saveStr))
-                .list();
-        for (SearchHistoryTable searchHistoryTable : historyTableList) {
-            mSearchHistoryTableDao.delete(searchHistoryTable);
-        }
+        deleteAllSearchDB(userId, type, saveStr);
+
         SearchHistoryTable searchHistoryTable = new SearchHistoryTable();
         searchHistoryTable.setSearchKey(saveStr);
         searchHistoryTable.setSearchTime(System.currentTimeMillis());
@@ -61,6 +57,10 @@ public class SearchHistoryHelp {
     /**
      * 清理对应用户对应类型的单个历史数据库
      * 在保存的时候清理了对应重复保存的key，所有使用key进行唯一性移除数据
+     *
+     * @param userId    用户id
+     * @param type      记录的类型（区分不同的使用地方）
+     * @param deleteStr 需要移除的对应key
      */
     public void deleteAllSearchDB(int userId, String type, String deleteStr) {
         List<SearchHistoryTable> historyTableList = mSearchHistoryTableDao.queryBuilder()
@@ -74,6 +74,9 @@ public class SearchHistoryHelp {
 
     /**
      * 查询对应用户的和对应区域的历史记录信息（时间倒叙）
+     *
+     * @param userId 用户id
+     * @param type   记录的类型（区分不同的使用地方）
      */
     public List<SearchHistoryTable> querySearchDB(int userId, String type) {
         return mSearchHistoryTableDao.queryBuilder()
