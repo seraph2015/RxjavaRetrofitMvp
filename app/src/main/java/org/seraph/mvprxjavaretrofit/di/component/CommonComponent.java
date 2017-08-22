@@ -9,7 +9,6 @@ import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.component.base.ActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
-import org.seraph.mvprxjavaretrofit.ui.module.common.camera2.SmallVideoActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 
@@ -28,8 +27,6 @@ public interface CommonComponent extends ActivityComponent {
     void inject(PhotoPreviewActivity photoPreviewActivity);
 
     void inject(LocalImageListActivity localImageListActivity);
-
-    void inject(SmallVideoActivity videoActivity);
 
     GridLayoutManager GRID_LAYOUT_MANAGER();
 
