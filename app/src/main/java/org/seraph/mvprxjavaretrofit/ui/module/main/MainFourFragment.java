@@ -104,7 +104,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
     }
 
 
-    @OnClick(value = {R.id.btn_design_layout, R.id.btn_upload_test})
+    @OnClick(value = { R.id.btn_design_layout, R.id.btn_upload_test})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_design_layout:
