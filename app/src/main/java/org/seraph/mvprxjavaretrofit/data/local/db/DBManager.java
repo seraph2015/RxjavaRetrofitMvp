@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.data.local.db;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
@@ -17,18 +18,22 @@ import javax.inject.Inject;
  **/
 public class DBManager {
 
+    private Context mContext;
 
     private DaoMaster.DevOpenHelper mHelper;
 
     @Inject
     DBManager(AppApplication context) {
-        mHelper = new DaoMaster.DevOpenHelper(context.getApplicationContext(), AppConfig.DB_NAME);
+        mContext = context.getApplicationContext();
     }
 
     /**
      * 获取操作数据库的Session
      */
     public DaoSession getDaoSession() {
+        if (mHelper == null) {
+            mHelper = new DaoMaster.DevOpenHelper(mContext, AppConfig.DB_NAME);
+        }
         SQLiteDatabase db = mHelper.getWritableDatabase();
         //该数据库连接属于 DaoMaster，所以多个 Session 指的是相同的数据库连接。
         DaoMaster mDaoMaster = new DaoMaster(db);
