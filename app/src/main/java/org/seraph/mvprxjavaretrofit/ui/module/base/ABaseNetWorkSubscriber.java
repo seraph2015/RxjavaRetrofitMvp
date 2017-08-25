@@ -15,20 +15,24 @@ import org.seraph.mvprxjavaretrofit.data.network.exception.ServerErrorException;
  **/
 public abstract class ABaseNetWorkSubscriber<T> implements Subscriber<T> {
 
-    private IBaseContract.IBaseView v;
+    private IBaseContract.IBaseView mView;
 
-    protected ABaseNetWorkSubscriber(IBaseContract.IBaseView v) {
-        this.v = v;
+    private ServerErrorCode errorCode;
+
+    protected ABaseNetWorkSubscriber(IBaseContract.IBaseView view) {
+        this.mView = view;
+        errorCode = new ServerErrorCode(mView);
     }
 
     public ABaseNetWorkSubscriber() {
+        errorCode = new ServerErrorCode();
     }
 
     @Override
     public void onSubscribe(Subscription s) {
         //判断网络是否可用
         if (!NetworkUtils.isConnected()) {
-            onError(new ServerErrorException(ServerErrorCode.NETWORK_ERR));
+            onError(new ServerErrorException("当前网络不可用，请检查网络情况", ServerErrorException.CODE_NET_ERR));
         } else {
             s.request(1);
         }
@@ -36,9 +40,9 @@ public abstract class ABaseNetWorkSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onError(Throwable t) {
-        onError(ServerErrorCode.errorCodeToMessageShow(t));
-        if (v != null)
-            v.hideLoading();
+        onError(errorCode.errorCodeToMessageShow(t));
+        if (mView != null)
+            mView.hideLoading();
     }
 
     @Override
@@ -53,8 +57,8 @@ public abstract class ABaseNetWorkSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onComplete() {
-        if (v != null)
-            v.hideLoading();
+        if (mView != null)
+            mView.hideLoading();
     }
 
 }

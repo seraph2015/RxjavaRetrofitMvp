@@ -8,8 +8,32 @@ package org.seraph.mvprxjavaretrofit.data.network.exception;
  **/
 public class ServerErrorException extends Exception{
 
-    public ServerErrorException(String message) {
+    /**
+     * 业务失败
+     */
+    public final static int CODE_STATUS_ERR = 1;
+    /**
+     * token失效
+     */
+    public final static int CODE_TOKEN_ERR = 2;
+    /**
+     * 网络异常
+     */
+    public final static int CODE_NET_ERR = 3;
+
+    /**
+     * 错误码{@link #CODE_TOKEN_ERR,#CODE_STATUS_ERR,#CODE_NET_ERR}
+     */
+    private int code = -1;
+
+
+    public ServerErrorException(String message, int code) {
         super(message);
+        this.code = code;
+    }
+
+    public int getCode() {
+        return code;
     }
 
 }
