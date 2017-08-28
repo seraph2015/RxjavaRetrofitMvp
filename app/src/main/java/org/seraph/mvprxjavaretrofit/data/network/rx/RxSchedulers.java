@@ -54,14 +54,17 @@ public class RxSchedulers {
                 return tempUpstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).flatMap(new Function<BaseDataResponse<T>, Flowable<T>>() {
                     @Override
                     public Flowable<T> apply(BaseDataResponse<T> tBaseDataResponse) throws Exception {
-                        if (tBaseDataResponse.status != SUCCESS_STATUS) { //业务逻辑失败
-                            return Flowable.error(new ServerErrorException(tBaseDataResponse.msg));
+                        switch (tBaseDataResponse.status) {
+                            case SUCCESS_STATUS: //成功
+                                T t = tBaseDataResponse.data;
+                                if (t == null) {
+                                    //约束后台，在有对象的时候不允许返回null，最好的办法是在 tBaseDataResponse.data 泛型T 如果没有返回值则返回空对象data{}
+                                    t = (T) "";
+                                }
+                                return Flowable.just(t);
+                            default://业务失败
+                                return Flowable.error(new ServerErrorException(tBaseDataResponse.msg, tBaseDataResponse.status));
                         }
-                        if (tBaseDataResponse.data == null) {
-                            //如果在不用T而且T为null的情况下，则在完成回调中接收，不会回调onNext(T)方法
-                            return Flowable.empty();
-                        }
-                        return Flowable.just(tBaseDataResponse.data);
                     }
                 });
             }
