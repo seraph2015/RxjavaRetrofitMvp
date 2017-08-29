@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -22,6 +23,8 @@ public interface IBaseContract {
      * 公共常用操作showToast请参考{@link com.blankj.utilcode.util.ToastUtils}类
      */
     interface IBaseView {
+
+        Context getContext();
 
         Dialog showLoading(String str);
 

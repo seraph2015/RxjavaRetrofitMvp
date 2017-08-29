@@ -13,18 +13,18 @@ import org.seraph.mvprxjavaretrofit.data.network.exception.ServerErrorException;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class ABaseNetWorkSubscriber<T> implements Subscriber<T> {
+public abstract class ABaseSubscriber<T> implements Subscriber<T> {
 
     private IBaseContract.IBaseView mView;
 
     private ServerErrorCode errorCode;
 
-    protected ABaseNetWorkSubscriber(IBaseContract.IBaseView view) {
+    protected ABaseSubscriber(IBaseContract.IBaseView view) {
         this.mView = view;
         errorCode = new ServerErrorCode(mView);
     }
 
-    public ABaseNetWorkSubscriber() {
+    public ABaseSubscriber() {
         errorCode = new ServerErrorCode();
     }
 

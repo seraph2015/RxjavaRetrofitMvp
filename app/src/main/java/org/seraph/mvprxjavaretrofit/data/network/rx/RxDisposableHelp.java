@@ -3,7 +3,7 @@ package org.seraph.mvprxjavaretrofit.data.network.rx;
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
-import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 
 import io.reactivex.FlowableTransformer;
@@ -13,7 +13,7 @@ import io.reactivex.disposables.Disposable;
 /**
  * 统一的Disposable管理帮助类
  * 帮助在关闭等待框{@link ABaseActivity#showLoading(String)}{@link ABaseFragment#showLoading(String)}自动取消,
- * 所有在{@link ABaseNetWorkSubscriber#onSubscribe(Subscription)}中添加的订阅
+ * 所有在{@link ABaseSubscriber#onSubscribe(Subscription)}中添加的订阅
  * <p>
  * 其余部分的rxjava生命周期管理交给{@link IBaseContract.IBaseView#bindToLifecycle()}自动或者子类对应的方法进行手动管理
  * 使用方法见示例{@link RxSchedulers#io_main(IBaseContract.IBaseView)}

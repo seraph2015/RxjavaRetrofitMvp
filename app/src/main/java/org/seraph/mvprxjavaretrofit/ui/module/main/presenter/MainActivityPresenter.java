@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 
+import org.seraph.mvprxjavaretrofit.AppActivityManage;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainFourFragment;
@@ -111,7 +112,8 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
             isBackPressed = true;
             ToastUtils.showShortToast("再按一次退出程序");
         } else {
-            mView.finish();
+            AppActivityManage.getInstance().appExit();
+
         }
         Disposable disposable = Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
             @Override

@@ -16,7 +16,7 @@ import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
-import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
@@ -53,8 +53,6 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
         mRecyclerView = mView.getRecyclerView();
     }
 
-    private Context mContext;
-
     private ApiBaiduService mApiBaiduService;
 
     private SearchHistoryHelp mSearchHistoryHelp;
@@ -64,8 +62,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
     private ImageListBaiduAdapter mAdapter;
 
     @Inject
-    MainTwoFragmentPresenter(Context context, ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp, ImageListBaiduAdapter adapter) {
-        this.mContext = context;
+    MainTwoFragmentPresenter(ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp, ImageListBaiduAdapter adapter) {
         this.mApiBaiduService = apiBaiduService;
         this.mSearchHistoryHelp = searchHistoryHelp;
         this.mUserHelp = userHelp;
@@ -87,7 +84,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     @Override
     public void start() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mView.getContext()));
         mAdapter.bindToRecyclerView(mRecyclerView);
         mAdapter.addHeaderView(mView.getHeadView());
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -107,7 +104,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     @Override
     public void showCacheFilePath() {
-        mView.setTextView(FileUtils.getCacheDirectory(mContext, null).getPath());
+        mView.setTextView(FileUtils.getCacheDirectory(mView.getContext(), null).getPath());
     }
 
     @Override
@@ -131,7 +128,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
      * 显示选择框
      */
     private void showSearchHistory() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mView.getContext());
         final String[] items = new String[listSearch.size() + 1];
         for (int i = 0; i < listSearch.size(); i++) {
             items[i] = listSearch.get(i).getSearchKey();
@@ -173,7 +170,6 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     private void getBaiduImageList(String keyWord, final int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
-
         mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
                 .compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
                 .map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
@@ -188,7 +184,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
                         mSubscription = subscription;
                     }
                 })
-                .subscribe(new ABaseNetWorkSubscriber<List<ImageBaiduBean.BaiduImage>>(mView) {
+                .subscribe(new ABaseSubscriber<List<ImageBaiduBean.BaiduImage>>(mView) {
                     @Override
                     public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
                         if (requestPageNo == 1) {

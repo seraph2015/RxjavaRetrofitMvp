@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
+import android.content.DialogInterface;
+
 import com.blankj.utilcode.util.ToastUtils;
 
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
@@ -32,20 +34,31 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
         this.mView = view;
     }
 
-    private ApiBaiduService mApiManager;
+    private ApiBaiduService mApiBaiduService;
+
+
+    @Inject
+    DesignLayoutTestPresenter(ApiBaiduService apiBaiduService) {
+        this.mApiBaiduService = apiBaiduService;
+    }
 
     private List<ImageBaiduBean.BaiduImage> mBaiduImages = new ArrayList<>();
 
     private int pageNo = 0;
 
-    @Inject
-    DesignLayoutTestPresenter(ApiBaiduService mApiManager) {
-        this.mApiManager = mApiManager;
-    }
+    private Disposable disposable;
+
 
     @Override
     public void start() {
-        mView.showLoading("正在加载");
+        mView.showLoading("正在加载").setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (disposable != null) {
+                    disposable.dispose();
+                }
+            }
+        });
         doBaiduImages(1);
     }
 
@@ -56,7 +69,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
 
 
     private void doBaiduImages(final int tempNo) {
-        Disposable disposable = mApiManager.doBaiduImageUrl(Tools.getBaiduImagesUrl("tomia", tempNo))
+        disposable = mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl("tomia", tempNo))
                 .compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
                 .map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
                     @Override
@@ -83,7 +96,6 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
                         ToastUtils.showShortToast("网络异常");
                     }
                 });
-        RxDisposableHelp.addSubscription(disposable);
     }
 
 

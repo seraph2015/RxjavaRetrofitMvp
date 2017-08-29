@@ -12,7 +12,7 @@ import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.FileUploadHelp;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
-import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainFourFragmentContract;
@@ -133,7 +133,7 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
                             }
                         });
                     }
-                }).subscribe(new ABaseNetWorkSubscriber<BaseDataResponse>(mView) {
+                }).subscribe(new ABaseSubscriber<BaseDataResponse>(mView) {
             @Override
             public void onSuccess(BaseDataResponse stringBaseDataResponse) {
                 if (stringBaseDataResponse.status == 0) {

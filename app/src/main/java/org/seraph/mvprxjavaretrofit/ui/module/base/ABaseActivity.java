@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -63,6 +64,11 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
         }
     }
 
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
 
     @Override
     public CustomLoadingDialog showLoading(String str) {

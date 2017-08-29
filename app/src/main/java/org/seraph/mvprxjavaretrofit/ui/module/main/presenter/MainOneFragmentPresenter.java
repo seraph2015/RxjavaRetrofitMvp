@@ -9,7 +9,7 @@ import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
-import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseNetWorkSubscriber;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
 
@@ -68,7 +68,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
                         });
                     }
                 })
-                .subscribe(new ABaseNetWorkSubscriber<UserBean>(mView) {
+                .subscribe(new ABaseSubscriber<UserBean>(mView) {
                     @Override
                     public void onSuccess(UserBean userBean) {
                         mUserBean = userBean.user;

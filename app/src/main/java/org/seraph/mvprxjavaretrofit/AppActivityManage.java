@@ -2,6 +2,8 @@ package org.seraph.mvprxjavaretrofit;
 
 import android.app.Activity;
 
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
+
 import java.util.Stack;
 
 /**
@@ -75,6 +77,7 @@ public class AppActivityManage {
      * 退出程序
      */
     public void appExit() {
+        RxDisposableHelp.dispose();
         closeAllActivity();
         System.exit(0);
     }
