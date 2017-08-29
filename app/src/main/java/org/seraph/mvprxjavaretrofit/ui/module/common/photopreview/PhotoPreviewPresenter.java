@@ -156,44 +156,9 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-            //使用子线程进行保存
-            mDisposable = Flowable.create(new FlowableOnSubscribe<String>() {
-                @Override
-                public void subscribe(@NonNull FlowableEmitter<String> e) throws Exception {
-                    String saveImageName = Tools.getMD5(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
-                    File dcimFile = Tools.getDCIMFile(saveImageName);
-                    if (dcimFile.exists() && dcimFile.length() > 0) {
-                        e.onNext("图片已保存");
-                        e.onComplete();
-                    }
-                    try {
-                        Tools.bitmapToFile(bitmap, dcimFile);
-                        // 最后通知图库更新此图片
-                        Tools.scanAppImageFile(mContext, saveImageName);
-                        e.onNext("保存成功");
-                        e.onComplete();
-                    } catch (IOException e1) {
-                        e.onError(e1);
-                    }
-                }
-            }, BackpressureStrategy.BUFFER)
-                    .compose(RxSchedulers.<String>io_main(mView))
-                    .subscribe(new Consumer<String>() {
-                        @Override
-                        public void accept(@NonNull String s) throws Exception {
-                            ToastUtils.showShortToast(s);
-                            mView.hideLoading();
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@NonNull Throwable throwable) throws Exception {
-                            throwable.printStackTrace();
-                            ToastUtils.showShortToast("保存失败");
-                            mView.hideLoading();
-                        }
-                    });
-
+            mDisposable = saveImageToDisk(bitmap);
         }
+
 
         @Override
         public void onBitmapFailed(Drawable errorDrawable) {
@@ -205,4 +170,45 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         }
     };
 
+    /**
+     * 保存到磁盘
+     * */
+    private Disposable saveImageToDisk(final Bitmap bitmap) {
+        //使用子线程进行保存
+        return Flowable.create(new FlowableOnSubscribe<String>() {
+            @Override
+            public void subscribe(@NonNull FlowableEmitter<String> e) throws Exception {
+                String saveImageName = Tools.getMD5(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
+                File dcimFile = Tools.getDCIMFile(saveImageName);
+                if (dcimFile != null && dcimFile.exists() && dcimFile.length() > 0) {
+                    e.onNext("图片已保存");
+                    e.onComplete();
+                }
+                try {
+                    Tools.bitmapToFile(bitmap, dcimFile);
+                    // 最后通知图库更新此图片
+                    Tools.scanAppImageFile(mContext, saveImageName);
+                    e.onNext("保存成功");
+                    e.onComplete();
+                } catch (IOException e1) {
+                    e.onError(e1);
+                }
+            }
+        }, BackpressureStrategy.BUFFER)
+                .compose(RxSchedulers.<String>io_main(mView))
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@NonNull String s) throws Exception {
+                        ToastUtils.showShortToast(s);
+                        mView.hideLoading();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                        ToastUtils.showShortToast("保存失败");
+                        mView.hideLoading();
+                    }
+                });
+    }
 }
