@@ -31,6 +31,8 @@ public interface IBaseContract {
         void hideLoading();
 
         <T> LifecycleTransformer<T> bindToLifecycle();
+
+        void finish();
     }
 
     /**

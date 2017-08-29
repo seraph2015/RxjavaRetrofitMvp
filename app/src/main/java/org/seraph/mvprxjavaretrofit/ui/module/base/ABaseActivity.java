@@ -34,9 +34,9 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
 
     public abstract int getContextView();
 
-    protected abstract P getMVPPresenter();
-
     public abstract void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule);
+
+    protected abstract P getMVPPresenter();
 
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
 
