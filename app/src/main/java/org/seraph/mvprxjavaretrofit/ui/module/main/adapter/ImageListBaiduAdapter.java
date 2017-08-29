@@ -40,6 +40,6 @@ public class ImageListBaiduAdapter extends BaseQuickAdapter<ImageBaiduBean.Baidu
             height = Tools.getNewHeight(width, height, screenWidth);
             width = screenWidth;
         }
-        PicassoTool.loadCache(mContext, item.objURL, imageView, width, height);
+        PicassoTool.loadCache(mContext, item.objURL, imageView);
     }
 }

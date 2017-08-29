@@ -11,6 +11,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.seraph.mvprxjavaretrofit.data.network.picasso.ZoomTransformation;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -148,8 +149,8 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
                 }
             }
         });
-        //此方法需要在主线程里
-        Picasso.with(mContext).load(mSavePhoto.objURL).into(target);
+        //此方法需要在主线程里(限制最大的宽为1080px,防止图片过大，保存oom)
+        Picasso.with(mContext).load(mSavePhoto.objURL).transform(new ZoomTransformation(1080)).into(target);
     }
 
     //注意：Target 不能直接new 出来。因为Picasso 里面持有Target 用的是弱引用，要是直接new 就有很大可能被GC回收导致接收不到回调。
@@ -163,6 +164,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         @Override
         public void onBitmapFailed(Drawable errorDrawable) {
             ToastUtils.showShortToast("保存失败");
+            mView.hideLoading();
         }
 
         @Override
@@ -172,7 +174,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
 
     /**
      * 保存到磁盘
-     * */
+     */
     private Disposable saveImageToDisk(final Bitmap bitmap) {
         //使用子线程进行保存
         return Flowable.create(new FlowableOnSubscribe<String>() {

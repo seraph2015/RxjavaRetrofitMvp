@@ -51,6 +51,9 @@ public class PicassoTool {
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE);
         if (targetWidth != 0 && targetHeight != 0) {
             requestCreator.resize(targetWidth, targetHeight).centerCrop();
+        }else {
+            //进行等比压缩
+            requestCreator.transform(new ZoomTransformation(target));
         }
         requestCreator.into(target);
     }
@@ -100,6 +103,9 @@ public class PicassoTool {
         }
         if (targetWidth != 0 && targetHeight != 0) {
             requestCreator.resize(targetWidth, targetHeight).centerCrop();
+        }else {
+            //进行等比压缩
+            requestCreator.transform(new ZoomTransformation(target));
         }
         requestCreator.into(target);
     }

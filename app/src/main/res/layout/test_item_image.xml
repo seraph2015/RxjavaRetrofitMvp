@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/icon_placeholder"
         android:background="@android:color/white"
-        android:scaleType="center" />
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tv_title"
