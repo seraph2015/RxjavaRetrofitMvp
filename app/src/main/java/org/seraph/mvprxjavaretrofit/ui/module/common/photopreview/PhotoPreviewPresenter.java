@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -10,7 +11,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -25,6 +25,7 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 
@@ -51,7 +52,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
     }
 
 
-    private Subscription mSubscription;
+    private Disposable mDisposable;
 
     /**
      * 保存的图片
@@ -138,61 +139,70 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         if (!StringUtils.equals(imageType, PhotoPreviewActivity.IMAGE_TYPE_NETWORK)) {
             return;
         }
-        mView.showLoading("正在保存");
         mSavePhoto = mPhotoList.get(currentPosition);
-        //此方法需要在主线程里
-        Picasso.with(mContext).load(mSavePhoto.objURL).into(new Target() {
+        mView.showLoading("正在保存").setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
-            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                //使用子线程进行保存
-                Flowable.create(new FlowableOnSubscribe<String>() {
-                    @Override
-                    public void subscribe(@NonNull FlowableEmitter<String> e) throws Exception {
-                        String saveImageName = Tools.getMD5(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
-                        File dcimFile = Tools.getDCIMFile(saveImageName);
-                        if (dcimFile.exists() && dcimFile.length() > 0) {
-                            e.onNext("图片已保存");
-                            e.onComplete();
-                        }
-                        try {
-                            Tools.bitmapToFile(bitmap, dcimFile);
-                            // 最后通知图库更新此图片
-                            Tools.scanAppImageFile(mContext, saveImageName);
-                            e.onNext("保存成功");
-                            e.onComplete();
-                        } catch (IOException e1) {
-                            e.onError(e1);
-                        }
-                    }
-                }, BackpressureStrategy.BUFFER)
-                        .compose(RxSchedulers.<String>io_main(mView))
-                        .subscribe(new Consumer<String>() {
-                            @Override
-                            public void accept(@NonNull String s) throws Exception {
-                                ToastUtils.showShortToast(s);
-                                mView.hideLoading();
-                            }
-                        }, new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                throwable.printStackTrace();
-                                ToastUtils.showShortToast("保存失败");
-                                mView.hideLoading();
-                            }
-                        });
-
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-                ToastUtils.showShortToast("保存失败");
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
+            public void onDismiss(DialogInterface dialog) {
+                if (mDisposable != null) {
+                    mDisposable.dispose();
+                }
             }
         });
+        //此方法需要在主线程里
+        Picasso.with(mContext).load(mSavePhoto.objURL).into(target);
     }
+
+    //注意：Target 不能直接new 出来。因为Picasso 里面持有Target 用的是弱引用，要是直接new 就有很大可能被GC回收导致接收不到回调。
+    private Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+            //使用子线程进行保存
+            mDisposable = Flowable.create(new FlowableOnSubscribe<String>() {
+                @Override
+                public void subscribe(@NonNull FlowableEmitter<String> e) throws Exception {
+                    String saveImageName = Tools.getMD5(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
+                    File dcimFile = Tools.getDCIMFile(saveImageName);
+                    if (dcimFile.exists() && dcimFile.length() > 0) {
+                        e.onNext("图片已保存");
+                        e.onComplete();
+                    }
+                    try {
+                        Tools.bitmapToFile(bitmap, dcimFile);
+                        // 最后通知图库更新此图片
+                        Tools.scanAppImageFile(mContext, saveImageName);
+                        e.onNext("保存成功");
+                        e.onComplete();
+                    } catch (IOException e1) {
+                        e.onError(e1);
+                    }
+                }
+            }, BackpressureStrategy.BUFFER)
+                    .compose(RxSchedulers.<String>io_main(mView))
+                    .subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(@NonNull String s) throws Exception {
+                            ToastUtils.showShortToast(s);
+                            mView.hideLoading();
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@NonNull Throwable throwable) throws Exception {
+                            throwable.printStackTrace();
+                            ToastUtils.showShortToast("保存失败");
+                            mView.hideLoading();
+                        }
+                    });
+
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+            ToastUtils.showShortToast("保存失败");
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+        }
+    };
 
 }
