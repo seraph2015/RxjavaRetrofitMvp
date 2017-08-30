@@ -11,7 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * 通用模块
+ * 常用组件模块
  * date：2017/5/5 15:18
  * author：xiongj
  * mail：417753393@qq.com

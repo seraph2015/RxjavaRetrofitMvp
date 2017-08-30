@@ -15,7 +15,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewAc
 import dagger.Component;
 
 /**
- * 通用模块
+ * 常用组件模块
  * date：2017/4/6 09:05
  * author：xiongj
  * mail：417753393@qq.com
