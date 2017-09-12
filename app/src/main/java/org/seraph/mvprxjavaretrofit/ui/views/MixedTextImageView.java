@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.StringUtils;
 
-import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.utlis.HtmlUtils;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.data.network.picasso;
+package org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,6 +15,8 @@ import java.io.File;
 
 /**
  * PicassoTool工具，常用的一些加载配置
+ *  * 需要先在{@link org.seraph.mvprxjavaretrofit.AppApplication}中，
+ * 使用{@link org.seraph.mvprxjavaretrofit.data.network.ImageLoad.ImageFactory#initPicasso(Context)}方法进行初始化
  * date：2017/4/14 17:06
  * author：xiongj
  * mail：417753393@qq.com
@@ -53,7 +55,7 @@ public class PicassoTool {
             requestCreator.resize(targetWidth, targetHeight).centerCrop();
         }else {
             //进行等比压缩
-            requestCreator.transform(new ZoomTransformation(target));
+            requestCreator.transform(new PicassoZoomTransformation(target));
         }
         requestCreator.into(target);
     }
@@ -105,7 +107,7 @@ public class PicassoTool {
             requestCreator.resize(targetWidth, targetHeight).centerCrop();
         }else {
             //进行等比压缩
-            requestCreator.transform(new ZoomTransformation(target));
+            requestCreator.transform(new PicassoZoomTransformation(target));
         }
         requestCreator.into(target);
     }

@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerDesignLayoutComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;

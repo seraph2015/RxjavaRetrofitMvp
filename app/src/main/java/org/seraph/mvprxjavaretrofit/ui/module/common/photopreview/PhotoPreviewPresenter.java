@@ -11,7 +11,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import org.seraph.mvprxjavaretrofit.data.network.picasso.ZoomTransformation;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoZoomTransformation;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -150,7 +150,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
             }
         });
         //此方法需要在主线程里(限制最大的宽为1080px,防止图片过大，保存oom)
-        Picasso.with(mContext).load(mSavePhoto.objURL).transform(new ZoomTransformation(1080)).into(target);
+        Picasso.with(mContext).load(mSavePhoto.objURL).transform(new PicassoZoomTransformation(1080)).into(target);
     }
 
     //注意：Target 不能直接new 出来。因为Picasso 里面持有Target 用的是弱引用，要是直接new 就有很大可能被GC回收导致接收不到回调。

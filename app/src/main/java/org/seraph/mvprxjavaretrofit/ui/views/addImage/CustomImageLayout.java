@@ -14,7 +14,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SizeUtils;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
 
 import java.io.File;
 

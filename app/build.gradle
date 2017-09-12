@@ -70,8 +70,6 @@ dependencies {
     compile 'com.google.dagger:dagger:2.10'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
     compile 'org.glassfish:javax.annotation:10.0-b28'
-    //图片加载
-    compile 'com.squareup.picasso:picasso:2.5.2'
     //基于rxJava2的注册绑定对象
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
@@ -90,5 +88,8 @@ dependencies {
     compile 'com.alibaba.android:ultraviewpager:1.0.6'
     //一个强大的recyclerView适配器 ，文档见：http://www.jianshu.com/p/b343fcff51b0
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
+    //图片加载
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.facebook.fresco:fresco:1.5.0'
 }
 

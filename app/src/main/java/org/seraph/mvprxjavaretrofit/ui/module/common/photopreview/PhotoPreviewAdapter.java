@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.StringUtils;
 
-import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouch;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchBase;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;

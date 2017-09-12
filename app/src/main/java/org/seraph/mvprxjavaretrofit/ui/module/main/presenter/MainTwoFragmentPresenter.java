@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -84,7 +85,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     @Override
     public void start() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mView.getContext()));
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         mAdapter.bindToRecyclerView(mRecyclerView);
         mAdapter.addHeaderView(mView.getHeadView());
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {

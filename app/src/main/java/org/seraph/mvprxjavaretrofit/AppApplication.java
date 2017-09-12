@@ -3,8 +3,9 @@ package org.seraph.mvprxjavaretrofit;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
-import org.seraph.mvprxjavaretrofit.data.network.picasso.PicassoFactory;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.ImageFactory;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.DaggerAppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.AppModule;
@@ -22,7 +23,7 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        initPicasso();
+        initImageLoad();
         initDagger2();
         Utils.init(this);
         //注册activity回调
@@ -33,8 +34,9 @@ public class AppApplication extends Application {
         this.appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
     }
 
-    private void initPicasso() {
-        PicassoFactory.initPicassoToOkHttp(this);
+    private void initImageLoad() {
+        ImageFactory.initPicasso(this);
+      //  ImageFactory.initFresco(this);
     }
 
     public AppComponent getAppComponent() {

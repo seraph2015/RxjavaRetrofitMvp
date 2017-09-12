@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.data.network.picasso;
+package org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;
@@ -7,23 +7,22 @@ import com.squareup.picasso.Transformation;
 
 /**
  * picasso图形变换，如果图片大于目标宽，则等比缩小图片
- * <p>
  * date：2017/8/29 11:54
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class ZoomTransformation implements Transformation {
+public class PicassoZoomTransformation implements Transformation {
 
 
     private int mTargetWidth;
 
     private ImageView mTargetImageView;
 
-    public ZoomTransformation(int targetWidth) {
+    public PicassoZoomTransformation(int targetWidth) {
         this.mTargetWidth = targetWidth;
     }
 
-    public ZoomTransformation(ImageView targetImageView) {
+    public PicassoZoomTransformation(ImageView targetImageView) {
         this.mTargetImageView = targetImageView;
     }
 

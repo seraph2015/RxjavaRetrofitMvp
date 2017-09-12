@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.data.network.picasso;
+package org.seraph.mvprxjavaretrofit.data.network.ImageLoad;
 
 import android.net.Uri;
 
@@ -14,16 +14,16 @@ import okhttp3.Request;
 import okhttp3.ResponseBody;
 
 /**
- * 图片下载器
+ * okhttp下载器
  * date：2017/2/23 15:55
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class ImageDownLoader implements Downloader {
+public class OkHttpDownLoader implements Downloader {
 
     private OkHttpClient client = null;
 
-    public ImageDownLoader(OkHttpClient client) {
+    public OkHttpDownLoader(OkHttpClient client) {
         this.client = client;
     }
 
