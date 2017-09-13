@@ -5,11 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.Settings;
@@ -18,16 +15,15 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import com.blankj.utilcode.util.SDCardUtils;
 
 import org.seraph.mvprxjavaretrofit.AppConfig;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +32,7 @@ import java.util.regex.Pattern;
 
 /**
  * 通用工具类
+ * 一些工具集见：https://github.com/Blankj/AndroidUtilCode
  */
 @SuppressLint("SimpleDateFormat")
 public class Tools {
@@ -47,63 +44,6 @@ public class Tools {
         float arg = Float.valueOf(argStr);
         DecimalFormat fnum = new DecimalFormat("##0.00");
         return fnum.format(arg);
-    }
-
-    /**
-     * 网络是否可用
-     */
-    public static boolean IsInternetValidate(final Context context) {
-        try {
-            ConnectivityManager manger = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo info = manger.getActiveNetworkInfo();
-            return (info != null && info.isConnected());
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    /**
-     * 检测sdcard是否可用
-     *
-     * @return true为可用，否则为不可用
-     */
-    public static boolean sdCardIsAvailable() {
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                || !Environment.isExternalStorageRemovable()) {
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * 得到应用版本名
-     */
-    public static String getVersionName(Context context) {
-        String verName = "";
-        try {
-            verName = context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), 0).versionName;
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return verName;
-
-    }
-
-    /**
-     * 得到应用版本号
-     */
-    public static int getVersionCode(Context context) {
-        int verCode = 0;
-        try {
-            verCode = context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), 0).versionCode;
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return verCode;
     }
 
 
@@ -121,63 +61,6 @@ public class Tools {
 
 
     /**
-     * 验证手机号码
-     */
-    public static boolean validatePhone(String phone) {
-        if (isNull(phone))
-            return false;
-        if (phone.length() != 11) {
-            return false;
-        }
-        String pattern = "^1[3,4,5,6,7,8,9]+\\d{9}$";
-        return phone.matches(pattern);
-    }
-
-
-    /**
-     * 验证邮箱
-     */
-    public static boolean validateEmail(String email) {
-        if (isNull(email))
-            return false;
-        String pattern = "^([a-zA-Z0-9_\\.\\-])+\\@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,4})+$";
-        return email.matches(pattern);
-    }
-
-
-    /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-     */
-    public static int dip2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
-
-    /**
-     * 转md5
-     */
-    public static String getMD5(String url) {
-        String result = "";
-        try {
-            MessageDigest md = MessageDigest.getInstance("md5");
-            md.update(url.getBytes());
-            byte[] bytes = md.digest();
-            StringBuilder sb = new StringBuilder();
-            for (byte b : bytes) {
-                String str = Integer.toHexString(b & 0xFF);
-                if (str.length() == 1) {
-                    sb.append("0");
-                }
-                sb.append(str);
-            }
-            result = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    /**
      * bitmap转文件
      */
     public static void bitmapToFile(Bitmap mBitmap, File file) throws IOException {
@@ -192,23 +75,27 @@ public class Tools {
      * 获取相册文件路径
      */
     public static File getDCIMFile(String imageName) {
-        if (Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) { // 文件可用
-            File dirs = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), AppConfig.SAVE_IMAGE_FOLDERS_NAME);
-            if (!dirs.exists())
-                dirs.mkdirs();
-            File file = new File(dirs, imageName);
-            if (!file.exists()) {
-                try {
-                    //在指定的文件夹中创建文件
-                    file.createNewFile();
-                } catch (Exception e) {
-                }
-            }
-            return file;
-        } else {
+        //如果sd卡不可用返回null
+        if (!SDCardUtils.isSDCardEnable()) {
             return null;
         }
+        //获取对应存储照片的文件夹
+        File dirs = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), AppConfig.SAVE_IMAGE_FOLDERS_NAME);
+        //如果没有此文件夹，并且创建失败，则返回null
+        if (!dirs.exists() && !dirs.mkdirs()) {
+            return null;
+        }
+        //获取对应文件
+        File file = new File(dirs, imageName);
+        try {
+            //有此文件，或者没有此文件但是创建成就，则返回对应的文件
+            if (file.exists() || file.createNewFile()) {
+                return file;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -265,16 +152,6 @@ public class Tools {
         return ints;
     }
 
-    /**
-     * 设置外边距
-     */
-    public static void setMargins(View v, int l, int t, int r, int b) {
-        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            p.setMargins(l, t, r, b);
-            v.requestLayout();
-        }
-    }
 
 
     /**
@@ -378,33 +255,34 @@ public class Tools {
 
     /**
      * html适配手机(背景透明，文本字颜色为灰色)
+     *
      * @param htmlContent html文本
      */
     public static String setHtmlHeadBody(String htmlContent) {
         return "<!DOCTYPE html>" +
                 "<html>" +
-                    "<head>" +
-                        "<meta charset=\"utf-8\">" +
-                        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\">" +
-                        "<meta content=\"yes\" name=\"apple-mobile-web-app-capable\">" +
-                        "<meta content=\"black\" name=\"apple-mobile-web-app-status-bar-style\">" +
-                        "<meta content=\"telephone=no\" name=\"format-detection\">" +
-                        "<style type=\"text/css\">" +
-                            "body { font-family: Arial,\"microsoft yahei\",Verdana; padding:0; margin:0; font-size:13px; color:#666666; background: none; overflow-x:hidden; }" +
-                            "body,div,fieldset,form,h1,h2,h3,h4,h5,h6,html,p,span { -webkit-text-size-adjust: none}" +
-                            "h1,h2,h3,h4,h5,h6 { font-weight:normal; }" +
-                            "applet,dd,div,dl,dt,h1,h2,h3,h4,h5,h6,html,iframe,img,object,p,span {	padding: 0;	margin: 0;	border: none}" +
-                            "img {padding:0; margin:0; vertical-align:top; border: none}" +
-                            "li,ul {list-style: none outside none; padding: 0; margin: 0}" +
-                            "input[type=text],select {-webkit-appearance:none; -moz-appearance: none; margin:0; padding:0; background:none; border:none; font-size:14px; text-indent:3px; font-family: Arial,\"microsoft yahei\",Verdana;}" +
-                            "body { width:100%; padding:10px; box-sizing:border-box;}" +
-                            "p { color:#666; line-height:1.6em;} " +
-                            "img { max-width:100%; width:auto !important; height:auto !important;}" +
-                        "</style>" +
-                    "</head>" +
-                    "<body>" +
-                        htmlContent +
-                    "</body>" +
+                "<head>" +
+                "<meta charset=\"utf-8\">" +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\">" +
+                "<meta content=\"yes\" name=\"apple-mobile-web-app-capable\">" +
+                "<meta content=\"black\" name=\"apple-mobile-web-app-status-bar-style\">" +
+                "<meta content=\"telephone=no\" name=\"format-detection\">" +
+                "<style type=\"text/css\">" +
+                "body { font-family: Arial,\"microsoft yahei\",Verdana; padding:0; margin:0; font-size:13px; color:#666666; background: none; overflow-x:hidden; }" +
+                "body,div,fieldset,form,h1,h2,h3,h4,h5,h6,html,p,span { -webkit-text-size-adjust: none}" +
+                "h1,h2,h3,h4,h5,h6 { font-weight:normal; }" +
+                "applet,dd,div,dl,dt,h1,h2,h3,h4,h5,h6,html,iframe,img,object,p,span {	padding: 0;	margin: 0;	border: none}" +
+                "img {padding:0; margin:0; vertical-align:top; border: none}" +
+                "li,ul {list-style: none outside none; padding: 0; margin: 0}" +
+                "input[type=text],select {-webkit-appearance:none; -moz-appearance: none; margin:0; padding:0; background:none; border:none; font-size:14px; text-indent:3px; font-family: Arial,\"microsoft yahei\",Verdana;}" +
+                "body { width:100%; padding:10px; box-sizing:border-box;}" +
+                "p { color:#666; line-height:1.6em;} " +
+                "img { max-width:100%; width:auto !important; height:auto !important;}" +
+                "</style>" +
+                "</head>" +
+                "<body>" +
+                htmlContent +
+                "</body>" +
                 "</html>";
     }
 

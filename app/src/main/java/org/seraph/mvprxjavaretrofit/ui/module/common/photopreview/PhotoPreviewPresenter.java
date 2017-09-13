@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.squareup.picasso.Picasso;
@@ -180,7 +181,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
         return Flowable.create(new FlowableOnSubscribe<String>() {
             @Override
             public void subscribe(@NonNull FlowableEmitter<String> e) throws Exception {
-                String saveImageName = Tools.getMD5(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
+                String saveImageName = EncryptUtils.encryptMD5ToString(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
                 File dcimFile = Tools.getDCIMFile(saveImageName);
                 if (dcimFile != null && dcimFile.exists() && dcimFile.length() > 0) {
                     e.onNext("图片已保存");

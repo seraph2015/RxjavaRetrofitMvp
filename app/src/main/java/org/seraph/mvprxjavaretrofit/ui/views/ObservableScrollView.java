@@ -5,7 +5,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
 
-import org.seraph.mvprxjavaretrofit.utlis.Tools;
+import com.blankj.utilcode.util.SizeUtils;
 
 /**
  * 增加了滑动监听接口
@@ -46,7 +46,7 @@ public class ObservableScrollView extends ScrollView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             tempH = 120;
         }
-        pxH = Tools.dip2px(context, tempH);
+        pxH = SizeUtils.dp2px(tempH);
     }
 
 

@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit;
 
+import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.LogUtils;
 
 import org.junit.Test;
@@ -70,7 +71,8 @@ public class ExampleUnitTest {
 //                System.out.println("onComplete->");
 //            }
 //        });
-
+        String md52 = EncryptUtils.encryptMD5ToString("http://www.baidu.com");
+        System.out.println(md52);
 
     }
 
@@ -217,8 +219,8 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void testAlias(){
-      System.out.println(isValidTagAndAlias("elysJh1da@W1Q2i3OiI0NyJ9"));
+    public void testAlias() {
+        System.out.println(isValidTagAndAlias("elysJh1da@W1Q2i3OiI0NyJ9"));
     }
 
     // 校验Tag Alias 只能是数字,英文字母和中文
