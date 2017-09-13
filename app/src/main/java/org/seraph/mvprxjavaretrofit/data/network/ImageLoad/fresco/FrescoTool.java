@@ -3,7 +3,6 @@ package org.seraph.mvprxjavaretrofit.data.network.ImageLoad.fresco;
 import android.content.Context;
 import android.net.Uri;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
@@ -29,7 +28,6 @@ public class FrescoTool {
         ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(uri);
         int width = simpleDraweeView.getMeasuredWidth();
         int height = simpleDraweeView.getMeasuredHeight();
-       // LogUtils.i("width:" + width + "-height:" + height);
         if (width != 0 && height != 0) {
             imageRequestBuilder.setResizeOptions(new ResizeOptions(width, height));
         }
