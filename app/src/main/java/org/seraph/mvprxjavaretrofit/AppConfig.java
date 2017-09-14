@@ -29,11 +29,6 @@ public class AppConfig {
 
 
     /**
-     * 本地偏好文件名字
-     */
-    public static final String PREFERENCES_NAME = "Seraph";
-
-    /**
      * 是否在debug模式
      */
     public static final boolean DEBUG = true;

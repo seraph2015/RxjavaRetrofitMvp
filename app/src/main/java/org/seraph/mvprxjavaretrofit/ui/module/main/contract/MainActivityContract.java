@@ -30,7 +30,6 @@ public interface MainActivityContract extends IBaseContract {
 
         void onSaveInstanceState(Bundle outState);
 
-        void onRestoreInstanceState(Bundle savedInstanceState);
     }
 
 }

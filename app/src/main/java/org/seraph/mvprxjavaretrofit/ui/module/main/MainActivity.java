@@ -5,11 +5,15 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.FragmentUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView;
 
 import org.seraph.mvprxjavaretrofit.R;
@@ -21,6 +25,9 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.base.IComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -72,32 +79,67 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
         mMainActivityComponent.inject(this);
     }
 
+    //页面合集
+    private List<Fragment> fragments = new ArrayList<>();
+
+    //当前显示的fragment
+    private Fragment mShowFragment;
+
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         appbar.setAlpha(0.8f);
+        //初始化fragment
+        initFragment(0);
         mPresenter.start();
         RxBottomNavigationView.itemSelections(bnvMain).subscribe(bottomNavigationConsumer);
+    }
+
+    private void initFragment(int showIndex) {
+        fragments.clear();
+        fragments.add(new MainOneFragment());
+        fragments.add(new MainTwoFragment());
+        fragments.add(new MainThreeFragment());
+        fragments.add(new MainFourFragment());
+        //默认显示第一个
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentUtils.removeAllFragments(fragmentManager);
+        mShowFragment = FragmentUtils.addFragments(fragmentManager, fragments, R.id.fl_home, showIndex);
     }
 
     private Consumer<MenuItem> bottomNavigationConsumer = new Consumer<MenuItem>() {
         @Override
         public void accept(MenuItem menuItem) throws Exception {
+            int showIndex = 0;
             switch (menuItem.getItemId()) {
                 case R.id.item_one:
-                    mPresenter.setSelectedFragment(0);
+                    showIndex = 0;
                     break;
                 case R.id.item_two:
-                    mPresenter.setSelectedFragment(1);
+                    showIndex = 1;
                     break;
                 case R.id.item_three:
-                    mPresenter.setSelectedFragment(2);
+                    showIndex = 2;
                     break;
                 case R.id.item_four:
-                    mPresenter.setSelectedFragment(3);
+                    showIndex = 3;
                     break;
             }
+            showIndexFragment(showIndex);
         }
     };
+
+    /**
+     * 显示对应位置的fragment
+     *
+     * @param showIndex 位置
+     */
+    private void showIndexFragment(int showIndex) {
+        mPresenter.setSelectedFragment(showIndex);
+        Fragment showFragment = fragments.get(showIndex);
+        if (showFragment != null && mShowFragment != showFragment) {
+            mShowFragment = FragmentUtils.hideShowFragment(mShowFragment, showFragment);
+        }
+    }
 
 
     @Override
@@ -122,7 +164,6 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     }
 
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -132,7 +173,14 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mPresenter.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState == null) {
+            return;
+        }
+        LogUtils.i("MainActivity->onRestoreInstanceState", savedInstanceState);
+        //恢复停留的页面
+        int page = (int) savedInstanceState.get("page");
+        initFragment(page);
+        mPresenter.setSelectedFragment(page);
     }
 
 }

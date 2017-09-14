@@ -1,23 +1,14 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 
 import org.seraph.mvprxjavaretrofit.AppActivityManage;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
-import org.seraph.mvprxjavaretrofit.ui.module.main.MainFourFragment;
-import org.seraph.mvprxjavaretrofit.ui.module.main.MainOneFragment;
-import org.seraph.mvprxjavaretrofit.ui.module.main.MainThreeFragment;
-import org.seraph.mvprxjavaretrofit.ui.module.main.MainTwoFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
-import org.seraph.mvprxjavaretrofit.utlis.FragmentController;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -38,12 +29,8 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     private MainActivityContract.View mView;
 
-    private FragmentController mFragmentController;
-
     private String[] titles = new String[]{"首页", "搜索", "HTTPS", "其它"};
     private int[] bgs = new int[]{R.mipmap.test_bg_fragment_one, R.mipmap.test_bg_fragment_two, R.mipmap.test_bg_fragment_three, R.mipmap.test_bg_fragment_four};
-
-    private List<Class<? extends Fragment>> fragmentList = new ArrayList<>();
 
     private int position = 0;
 
@@ -54,30 +41,28 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
 
     @Inject
-    MainActivityPresenter(FragmentController fragmentController) {
-        mFragmentController = fragmentController;
+    MainActivityPresenter() {
+
     }
 
+    /**
+     * 数据保存的KEY
+     */
+    public static final String MAIN_SAVE_KEY = "showIndex";
 
     @Override
     public void start() {
-        mFragmentController.setContainerViewId(R.id.fl_home);
-        mFragmentController.setFragmentTags(titles);
-        fragmentList.add(MainOneFragment.class);
-        fragmentList.add(MainTwoFragment.class);
-        fragmentList.add(MainThreeFragment.class);
-        fragmentList.add(MainFourFragment.class);
+
     }
 
 
     /**
-     * 设置选中的碎片,切换主题
+     * 设置选中的碎片
      */
     public void setSelectedFragment(int positionIndex) {
         position = positionIndex;
         mView.setTitle(titles[position]);
         mView.setBackgroundResource(bgs[position]);
-        mFragmentController.add(fragmentList.get(position), titles[position], null);
     }
 
 
@@ -88,18 +73,9 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         //保存停留的页面
-        outState.putInt("page", position);
+        outState.putInt(MAIN_SAVE_KEY, position);
     }
 
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            return;
-        }
-        LogUtils.i("MainActivity->onRestoreInstanceState", savedInstanceState);
-        //恢复停留的页面
-        setSelectedFragment((int) savedInstanceState.get("page"));
-    }
 
 
     /**

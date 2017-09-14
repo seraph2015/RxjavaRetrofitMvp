@@ -2,8 +2,8 @@ package org.seraph.mvprxjavaretrofit.ui.module.welcome;
 
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.local.AppPreferencesConstant;
-import org.seraph.mvprxjavaretrofit.data.local.AppPreferencesManager;
+import org.seraph.mvprxjavaretrofit.data.local.AppSPConstant;
+import org.seraph.mvprxjavaretrofit.data.local.AppSPManager;
 
 import javax.inject.Inject;
 
@@ -19,11 +19,11 @@ class GuidePagesActivityPresenter implements GuidePagesActivityContract.Presente
 
     private Integer[] images = new Integer[]{R.mipmap.welcome_guide_pages_one, R.mipmap.welcome_guide_pages_two, R.mipmap.welcome_guide_pages_three, R.mipmap.welcome_guide_pages_four};
 
-    private AppPreferencesManager mPreferencesManager;
+    private AppSPManager mSPManager;
 
     @Inject
-    GuidePagesActivityPresenter(AppPreferencesManager preferencesManager) {
-        mPreferencesManager = preferencesManager;
+    GuidePagesActivityPresenter(AppSPManager preferencesManager) {
+        mSPManager = preferencesManager;
     }
 
 
@@ -35,7 +35,7 @@ class GuidePagesActivityPresenter implements GuidePagesActivityContract.Presente
 
     @Override
     public void start() {
-        mPreferencesManager.save(AppPreferencesConstant.IS_FIRST, false);
+        mSPManager.save(AppSPConstant.IS_FIRST, false);
         //设置引导页
         mView.setImageList(images);
     }

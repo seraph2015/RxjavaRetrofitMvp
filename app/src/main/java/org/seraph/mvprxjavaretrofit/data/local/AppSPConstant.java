@@ -6,28 +6,23 @@ package org.seraph.mvprxjavaretrofit.data.local;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class AppPreferencesConstant {
-    /**
-     * 默认城市
-     */
-    public static final String DEFAULT_CITY = "default_city";
+public class AppSPConstant {
+
+    public static final String SP_NAME = "seraph";
+
     /**
      * 是否第一次进入APP
      */
     public static final String IS_FIRST = "is_first";
 
     /**
-     * db搜索类型（活动）
-     */
-    public static final String SEARCH_ACTIVITY = "search_activity";
-
-    /**
      * 是否推送
      */
     public static final String IS_PUSH = "is_push";
+
     /**
      * 保存登录用户的账号密码
      */
-    public static final String SAVE_USER_NAME = "save_user_name";
-    public static final String SAVE_PASS_WORD = "save_pass_word";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
 }
