@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerDesignLayoutComponent;
+import org.seraph.mvprxjavaretrofit.di.component.DaggerTestsComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
@@ -68,7 +68,7 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
 
     @Override
     public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
-        DaggerDesignLayoutComponent.builder()
+        DaggerTestsComponent.builder()
                 .appComponent(appComponent)
                 .activityModule(activityModule)
                 .designLayoutModule(new DesignLayoutModule())

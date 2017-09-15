@@ -99,10 +99,25 @@ public class Tools {
     }
 
     /**
+     * 添加照片到画廊
+     * @param currentPhotoPath 照片路径
+     */
+    private static void galleryAddPic(Context context,String currentPhotoPath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        context.sendBroadcast(mediaScanIntent);
+    }
+
+
+    /**
      * 扫描相册对应文件
      */
     public static void scanAppImageFile(Context context, String fileName) {
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/" + AppConfig.SAVE_IMAGE_FOLDERS_NAME + "/" + fileName)));
+        String photoPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) +"/"  + AppConfig.SAVE_IMAGE_FOLDERS_NAME + "/" + fileName;
+        galleryAddPic(context,photoPath);
+       // context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/" + AppConfig.SAVE_IMAGE_FOLDERS_NAME + "/" + fileName)));
     }
 
 

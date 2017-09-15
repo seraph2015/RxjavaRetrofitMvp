@@ -3,6 +3,8 @@ package org.seraph.mvprxjavaretrofit.di.component.base;
 import android.app.Activity;
 import android.content.Context;
 
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 
@@ -21,5 +23,7 @@ public interface ActivityComponent {
     Activity ACTIVITY();
 
     Context CONTEXT();
+
+    RxPermissions RX_PERMISSIONS();
 
 }

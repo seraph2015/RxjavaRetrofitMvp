@@ -1,11 +1,15 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
+
+import com.blankj.utilcode.util.ToastUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
@@ -15,6 +19,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewAc
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainFourFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainFourFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.ui.module.test.DesignLayoutTestActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.test.SendVideoActivity;
 import org.seraph.mvprxjavaretrofit.ui.views.addImage.CustomImageViewGroup;
 import org.seraph.mvprxjavaretrofit.utlis.AlertDialogUtils;
 import org.seraph.mvprxjavaretrofit.utlis.TakePhoto;
@@ -25,6 +30,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * 4
@@ -48,6 +55,9 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
 
     @Inject
     AlertDialogUtils mAlertDialogUtils;
+
+    @Inject
+    RxPermissions mRxPermissions;
 
     @Override
     protected MainFourFragmentContract.Presenter getMVPPresenter() {
@@ -80,7 +90,17 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
                             public void onSelectedItem(int position) {
                                 switch (position) {
                                     case 1:
-                                        mPresenter.doTakePhoto();
+                                        mRxPermissions.request(Manifest.permission.CAMERA).subscribe(new Consumer<Boolean>() {
+                                            @Override
+                                            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                                                if (aBoolean) {
+                                                    mPresenter.doTakePhoto();
+                                                } else {
+                                                    ToastUtils.showShortToast("获取权限失败");
+                                                }
+                                            }
+                                        });
+
                                         break;
                                     case 2://本地相册
                                         mPresenter.doSelectedLocalImage();
@@ -104,11 +124,14 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
     }
 
 
-    @OnClick(value = { R.id.btn_design_layout, R.id.btn_upload_test})
+    @OnClick(value = {R.id.btn_design_layout, R.id.btn_send_video, R.id.btn_upload_test})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_design_layout:
                 startActivity(new Intent(getContext(), DesignLayoutTestActivity.class));
+                break;
+            case R.id.btn_send_video:
+                startActivity(new Intent(getContext(), SendVideoActivity.class));
                 break;
             case R.id.btn_upload_test:
                 mPresenter.uploadFile();

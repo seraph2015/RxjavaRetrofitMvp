@@ -3,8 +3,6 @@ package org.seraph.mvprxjavaretrofit.di.component;
 import android.content.ContentResolver;
 import android.support.v7.widget.GridLayoutManager;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
-
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.component.base.ActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
@@ -31,7 +29,5 @@ public interface CommonComponent extends ActivityComponent {
     GridLayoutManager GRID_LAYOUT_MANAGER();
 
     ContentResolver CONTENT_RESOLVER();
-
-    RxPermissions RX_PERMISSIONS();
 
 }

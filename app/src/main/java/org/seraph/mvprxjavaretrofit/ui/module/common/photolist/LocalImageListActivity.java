@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
 import org.seraph.mvprxjavaretrofit.R;
@@ -103,6 +104,10 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
 
     @Override
     public void setQueryImageList(List<LocalImageBean> localImageBeen) {
+        if (localImageBeen == null || localImageBeen.size() == 0){
+            ToastUtils.showShortToast("获取照片失败");
+            return;
+        }
         mImageListAdapter.replaceData(localImageBeen);
     }
 

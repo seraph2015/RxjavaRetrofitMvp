@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!--检查相机硬件需要可以使用才能安装-->
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:name=".AppApplication"
         android:allowBackup="true"
@@ -24,6 +28,7 @@
         <activity android:name=".ui.module.common.photolist.LocalImageListActivity" />
         <!--Design布局测试-->
         <activity android:name=".ui.module.test.DesignLayoutTestActivity" />
+        <activity android:name=".ui.module.test.SendVideoActivity"/>
         <!--欢迎和引导页-->
         <activity
             android:name=".ui.module.welcome.WelcomeActivity"
