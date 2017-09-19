@@ -30,6 +30,7 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
         public final static Property Name = new Property(3, String.class, "name", false, "NAME");
         public final static Property Gender = new Property(4, String.class, "gender", false, "GENDER");
         public final static Property HeadPortrait = new Property(5, String.class, "headPortrait", false, "HEAD_PORTRAIT");
+        public final static Property NickName = new Property(6, String.class, "nickName", false, "NICK_NAME");
     }
 
     private DaoSession daoSession;
@@ -53,7 +54,8 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
                 "\"TOKEN\" TEXT," + // 2: token
                 "\"NAME\" TEXT," + // 3: name
                 "\"GENDER\" TEXT," + // 4: gender
-                "\"HEAD_PORTRAIT\" TEXT);"); // 5: headPortrait
+                "\"HEAD_PORTRAIT\" TEXT," + // 5: headPortrait
+                "\"NICK_NAME\" TEXT);"); // 6: nickName
     }
 
     /** Drops the underlying database table. */
@@ -91,6 +93,11 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
         if (headPortrait != null) {
             stmt.bindString(6, headPortrait);
         }
+ 
+        String nickName = entity.getNickName();
+        if (nickName != null) {
+            stmt.bindString(7, nickName);
+        }
     }
 
     @Override
@@ -122,6 +129,11 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
         if (headPortrait != null) {
             stmt.bindString(6, headPortrait);
         }
+ 
+        String nickName = entity.getNickName();
+        if (nickName != null) {
+            stmt.bindString(7, nickName);
+        }
     }
 
     @Override
@@ -143,7 +155,8 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // token
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // name
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // gender
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // headPortrait
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // headPortrait
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // nickName
         );
         return entity;
     }
@@ -156,6 +169,7 @@ public class UserTableDao extends AbstractDao<UserTable, Long> {
         entity.setName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setGender(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setHeadPortrait(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setNickName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
      }
     
     @Override

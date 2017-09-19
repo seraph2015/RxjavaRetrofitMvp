@@ -30,7 +30,7 @@ android {
 
 
 greendao {
-    schemaVersion 1
+    schemaVersion 2
     daoPackage 'org.seraph.mvprxjavaretrofit.data.local.db.gen'
     targetGenDir 'src/main/java'
 }
@@ -47,6 +47,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     //greenDao数据库
     compile 'org.greenrobot:greendao:3.2.0'
+    //green数据库升级帮助类
+    compile 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.0.0'
     //rxJava响应式编程
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'

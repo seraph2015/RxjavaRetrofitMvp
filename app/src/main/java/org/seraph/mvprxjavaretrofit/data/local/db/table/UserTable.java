@@ -1,24 +1,24 @@
 package org.seraph.mvprxjavaretrofit.data.local.db.table;
 
+import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.JoinProperty;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToMany;
-
-import java.util.List;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.DaoException;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.SearchHistoryTableDao;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.UserTableDao;
+
+import java.util.List;
 
 /**
  * 用户表
  * date：2017/2/14 17:06
  * author：xiongj
  * mail：417753393@qq.com
- *
+ * <p>
  * 一般用户表保存一条当前的登录用户的信息，此为测试数据库示例。
  * 在实际开发中，直接用服务端返回的用户id会更加方便使用。
  * 在注销的时候，清除数据库表。
@@ -55,6 +55,10 @@ public class UserTable {
      * 头像
      */
     private String headPortrait;
+    /**
+     * 昵称
+     */
+    private String nickName;
 
     //@ToMany(referencedJoinProperty = "userId") -> SearchHistoryTable类的userId作为外键，与当前类的主键相连
     //@ToMany(joinProperties = {@JoinProperty(name = "userId", referencedName = "userId")}) -> SearchHistoryTable类的userId作为外键，与当前类的非主键不为空的键相连
@@ -62,22 +66,27 @@ public class UserTable {
     @ToMany(joinProperties = {@JoinProperty(name = "id", referencedName = "userId")})
     private List<SearchHistoryTable> listSearchHistory;
 
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
 
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 1224316336)
     private transient UserTableDao myDao;
 
-    @Generated(hash = 2133800168)
-    public UserTable(Long _id, int id, String token, String name, String gender, String headPortrait) {
+    @Generated(hash = 1991504431)
+    public UserTable(Long _id, int id, String token, String name, String gender, String headPortrait, String nickName) {
         this._id = _id;
         this.id = id;
         this.token = token;
         this.name = name;
         this.gender = gender;
         this.headPortrait = headPortrait;
+        this.nickName = nickName;
     }
 
     @Generated(hash = 726134616)
@@ -154,7 +163,9 @@ public class UserTable {
         return listSearchHistory;
     }
 
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    /**
+     * Resets a to-many relationship, making the next get call to query for a fresh result.
+     */
     @Generated(hash = 2001824891)
     public synchronized void resetListSearchHistory() {
         listSearchHistory = null;
@@ -196,11 +207,21 @@ public class UserTable {
         myDao.update(this);
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 1889643915)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getUserTableDao() : null;
+    }
+
+    public String getNickName() {
+        return this.nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
 
