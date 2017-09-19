@@ -3,8 +3,10 @@ package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 import android.content.DialogInterface;
 
 import org.reactivestreams.Subscription;
+import org.seraph.mvprxjavaretrofit.data.network.exception.ServerErrorCode;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.Api12306Service;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainThreeFragmentContract;
 
 import javax.inject.Inject;
@@ -53,20 +55,18 @@ public class MainThreeFragmentPresenter implements MainThreeFragmentContract.Pre
                 });
             }
         })
-                .subscribe(new Consumer<String>() {
+                .subscribe(new ABaseSubscriber<String>(mView) {
                     @Override
-                    public void accept(String s) throws Exception {
+                    public void onSuccess(String s) {
 
                     }
-                }, new Consumer<Throwable>() {
+
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        mView.hideLoading();
-                        //访问的为12306网站测试证书，所以无法用gson解析
-                        if (throwable instanceof javax.net.ssl.SSLHandshakeException) {
-                            mView.setTextView("缺少https证书");
-                        } else if (throwable instanceof com.google.gson.stream.MalformedJsonException) {
+                    public void onError(String errStr) {
+                        if (ServerErrorCode.MALFORMED_JSON_EXCEPTION.equals(errStr)) {
                             mView.setTextView("访问成功");
+                        } else {
+                            mView.setTextView(errStr);
                         }
                     }
                 });

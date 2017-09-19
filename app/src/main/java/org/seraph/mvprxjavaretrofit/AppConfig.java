@@ -16,7 +16,7 @@ public class AppConfig {
     /**
      * 网络超时
      */
-    public static final int DEFAULT_TIMEOUT = 30;
+    public static final int DEFAULT_TIMEOUT = 15;
     /**
      * 最大缓存 1G
      */
@@ -33,12 +33,11 @@ public class AppConfig {
      */
     public static final boolean DEBUG = true;
 
+
     /**
-     * 是否启用证书
-     */
-    public static final boolean IS_ENABLED_CER = true;
-    /**
-     * 使用的证书名称
+     * HTTPS访问证书名称
+     * 设置放在Assets文件夹下的证书的路径,如果不需要设置证书。此处路径使用 null 或者 ""
+     * srca12306.cer
      */
     public static final String HTTPS_CER_NAME = "srca12306.cer";
 

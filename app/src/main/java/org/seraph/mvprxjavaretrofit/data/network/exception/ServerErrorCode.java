@@ -1,11 +1,7 @@
 package org.seraph.mvprxjavaretrofit.data.network.exception;
 
-import android.content.Context;
-import android.content.Intent;
-
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
-import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -27,6 +23,15 @@ public class ServerErrorCode {
     public ServerErrorCode(IBaseContract.IBaseView view) {
         this.mView = view;
     }
+
+
+    public final static String HTTP_EXCEPTION = "网络异常";
+    public final static String CONNECT_EXCEPTION = "连接失败";
+    public final static String SOCKET_TIMEOUT_EXCEPTION = "连接服务器超时";
+    public final static String SSL_HANDSHAKE_EXCEPTION = "证书验证失败";
+    public final static String MALFORMED_JSON_EXCEPTION = "Json转换异常";
+    public final static String OTHER_EXCEPTION = "未知异常";
+
 
     /**
      * 根据对应的code进行不同的处理
@@ -57,17 +62,17 @@ public class ServerErrorCode {
             errorCodeToMessage((ServerErrorException) e);
         } else if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
-            message = "网络异常:code " + httpException.code();
+            message = HTTP_EXCEPTION + " " + httpException.code();
         } else if (e instanceof ConnectException) {
-            message = "连接失败";
+            message = CONNECT_EXCEPTION;
         } else if (e instanceof java.net.SocketTimeoutException) {
-            message = "连接服务器超时";
+            message = SOCKET_TIMEOUT_EXCEPTION;
         } else if (e instanceof javax.net.ssl.SSLHandshakeException) {
-            message = "https证书验证失败";
+            message = SSL_HANDSHAKE_EXCEPTION;
         } else if (e instanceof com.google.gson.stream.MalformedJsonException) {
-            message = "Json转换异常";
+            message = MALFORMED_JSON_EXCEPTION;
         } else if (Tools.isNull(message)) {
-            message = "未知异常";
+            message = OTHER_EXCEPTION;
         }
         return message;
     }

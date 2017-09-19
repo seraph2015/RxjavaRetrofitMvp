@@ -11,6 +11,8 @@ import org.seraph.mvprxjavaretrofit.utlis.FileUtils;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -28,31 +30,34 @@ public class ApiBuild {
 
 
     private HttpsRequestHelp mHttpsRequestHelp;
-   // private HttpCacheHelp mHttpCacheHelp;
+    // private HttpCacheHelp mHttpCacheHelp;
 
     @Inject
     public ApiBuild(HttpsRequestHelp httpsRequestHelp) {
         this.mHttpsRequestHelp = httpsRequestHelp;
-       // this.mHttpCacheHelp = httpCacheHelp;
+        mHttpsRequestHelp.setHttpsCerName(AppConfig.HTTPS_CER_NAME);
+        // this.mHttpCacheHelp = httpCacheHelp;
     }
 
 
     private OkHttpClient.Builder builder() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //builder.cache(mHttpCacheHelp.getCache());
-
+        //log输出
         if (AppConfig.DEBUG) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(logging);
         }
-        //判断是否启用证书
-        if (AppConfig.IS_ENABLED_CER) {
-            try {
-                builder.sslSocketFactory(mHttpsRequestHelp.getSSLSocketFactory(), mHttpsRequestHelp.getX509TrustManager());
-            } catch (Exception e) {
-                e.printStackTrace();
+        //https证书
+        try {
+            SSLSocketFactory sslSocketFactory = mHttpsRequestHelp.getSSLSocketFactory();
+            X509TrustManager x509TrustManager = mHttpsRequestHelp.getX509TrustManager();
+            if (sslSocketFactory != null && x509TrustManager != null) {
+                builder.sslSocketFactory(sslSocketFactory, x509TrustManager);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         builder.connectTimeout(AppConfig.DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         return builder;

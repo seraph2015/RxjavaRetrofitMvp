@@ -1,7 +1,7 @@
 package org.seraph.mvprxjavaretrofit.data.network.http;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
-import org.seraph.mvprxjavaretrofit.AppConfig;
+import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,17 +36,29 @@ public class HttpsRequestHelp {
 
     private SSLSocketFactory mSSLSocketFactory;
 
+    private String httpsCerName = "";
+
     @Inject
     public HttpsRequestHelp(AppApplication application) {
         this.mApplication = application;
     }
 
     /**
+     * 设置证书在Assets下的路径
+     */
+    public void setHttpsCerName(String httpsCerName) {
+        this.httpsCerName = httpsCerName;
+    }
+
+    /**
      * 获取X509TrustManager
      */
     public X509TrustManager getX509TrustManager() throws IOException, GeneralSecurityException {
+        if (Tools.isNull(httpsCerName)){
+            return null;
+        }
         if (mX509TrustManager == null) {
-            mX509TrustManager = getX509TrustManager(mApplication.getAssets().open(AppConfig.HTTPS_CER_NAME));
+            mX509TrustManager = getX509TrustManager(mApplication.getAssets().open(httpsCerName));
         }
         return mX509TrustManager;
     }
@@ -55,8 +67,12 @@ public class HttpsRequestHelp {
      * 获取SSLSocketFactory
      */
     public SSLSocketFactory getSSLSocketFactory() throws IOException, GeneralSecurityException {
+        X509TrustManager x509TrustManager = getX509TrustManager();
+        if (x509TrustManager == null){
+            return null;
+        }
         if (mSSLSocketFactory == null) {
-            mSSLSocketFactory = getSSLSocketFactory(getX509TrustManager());
+            mSSLSocketFactory = getSSLSocketFactory(x509TrustManager);
         }
         return mSSLSocketFactory;
     }
