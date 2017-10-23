@@ -19,7 +19,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewAc
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainFourFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainFourFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.ui.module.test.DesignLayoutTestActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.test.SendVideoActivity;
 import org.seraph.mvprxjavaretrofit.ui.views.addImage.CustomImageViewGroup;
 import org.seraph.mvprxjavaretrofit.utlis.AlertDialogUtils;
 import org.seraph.mvprxjavaretrofit.utlis.TakePhoto;
@@ -124,14 +123,11 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
     }
 
 
-    @OnClick(value = {R.id.btn_design_layout, R.id.btn_send_video, R.id.btn_upload_test})
+    @OnClick(value = {R.id.btn_design_layout, R.id.btn_upload_test})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_design_layout:
                 startActivity(new Intent(getContext(), DesignLayoutTestActivity.class));
-                break;
-            case R.id.btn_send_video:
-                startActivity(new Intent(getContext(), SendVideoActivity.class));
                 break;
             case R.id.btn_upload_test:
                 mPresenter.uploadFile();

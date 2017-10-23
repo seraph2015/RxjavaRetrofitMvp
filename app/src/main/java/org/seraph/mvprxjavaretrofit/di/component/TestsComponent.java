@@ -8,7 +8,6 @@ import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
 import org.seraph.mvprxjavaretrofit.ui.module.test.DesignLayoutTestActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.test.SendVideoActivity;
 
 import dagger.Component;
 
@@ -23,8 +22,6 @@ import dagger.Component;
 public interface TestsComponent {
 
     void inject(DesignLayoutTestActivity designLayoutTestActivity);
-
-    void inject(SendVideoActivity sendVideoActivity);
 
     Activity ACTIVITY();
 
