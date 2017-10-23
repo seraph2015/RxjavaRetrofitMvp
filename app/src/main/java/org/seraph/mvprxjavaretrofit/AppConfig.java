@@ -16,7 +16,7 @@ public class AppConfig {
     /**
      * 网络超时
      */
-    public static final int DEFAULT_TIMEOUT = 15;
+    public static final int DEFAULT_TIMEOUT = 30;
     /**
      * 最大缓存 1G
      */
@@ -37,13 +37,13 @@ public class AppConfig {
     /**
      * HTTPS访问证书名称
      * 设置放在Assets文件夹下的证书的路径,如果不需要设置证书。此处路径使用 null 或者 ""
-     * srca12306.cer
+     * xxx.cer
      */
     public static final String HTTPS_CER_NAME = "srca12306.cer";
 
     /**
      * 设置放在Assets文件夹下的字体的路径,如果不需要设置字体。此处路径使用 null 或者 ""
-     * fonts/hksn.ttc
+     * fonts/xxx.ttc
      */
     public static final String FONTS_ASSETS_DIR = "fonts/hksn.ttc";
 
