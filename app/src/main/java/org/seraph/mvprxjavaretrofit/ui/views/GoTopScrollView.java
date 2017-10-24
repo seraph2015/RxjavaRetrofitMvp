@@ -78,9 +78,9 @@ public class GoTopScrollView extends ScrollView implements View.OnClickListener 
     private void translateAnimation() {
         Animation animation;
         if (isShow) {
-            animation = AnimationUtils.loadAnimation(this.getContext(), R.anim.go_top_gone_to_show);
+            animation = AnimationUtils.loadAnimation(this.getContext(), R.anim.anim_go_top_gone_to_show);
         } else {
-            animation = AnimationUtils.loadAnimation(this.getContext(), R.anim.go_top_show_to_gone);
+            animation = AnimationUtils.loadAnimation(this.getContext(), R.anim.anim_go_top_show_to_gone);
         }
         animation.setAnimationListener(animationListener);
         goTopBtn.startAnimation(animation);

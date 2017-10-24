@@ -45,8 +45,8 @@ public class GoTopListView extends ListView implements View.OnClickListener {
         this.goTopBtn = goTopBtn;
         this.goTopBtn.setOnClickListener(this);
 
-        showAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.go_top_gone_to_show);
-        goneAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.go_top_show_to_gone);
+        showAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.anim_go_top_gone_to_show);
+        goneAnimation = AnimationUtils.loadAnimation(this.getContext(), R.anim.anim_go_top_show_to_gone);
         showAnimation.setAnimationListener(animationListener);
         goneAnimation.setAnimationListener(animationListener);
 

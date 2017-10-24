@@ -98,7 +98,7 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.common_activity_local_image_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_common_activity_local_image, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

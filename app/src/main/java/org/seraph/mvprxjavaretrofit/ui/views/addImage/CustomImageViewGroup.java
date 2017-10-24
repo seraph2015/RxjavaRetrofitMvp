@@ -194,7 +194,7 @@ public class CustomImageViewGroup extends ViewGroup implements OnLongClickListen
             layout.showDeleteIcon();
             layout.setDeleteMode(true);
             // 添加抖动的动画
-            Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.common_add_image_shake_anim);
+            Animation shake = AnimationUtils.loadAnimation(getContext(), R.anim.anim_common_add_image_shake);
             shake.reset();
             shake.setFillAfter(true);
             layout.startAnimation(shake);

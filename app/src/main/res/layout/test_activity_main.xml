@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:background="#99ffffff"
         app:itemBackground="@drawable/test_main_bottom_bg"
-        app:itemIconTint="@color/main_bottom_icon_color"
-        app:itemTextColor="@color/main_bottom_text_color"
-        app:menu="@menu/test_menu_main" />
+        app:itemIconTint="@color/color_main_bottom_icon"
+        app:itemTextColor="@color/color_main_bottom_text"
+        app:menu="@menu/menu_test_main" />
 </LinearLayout>
