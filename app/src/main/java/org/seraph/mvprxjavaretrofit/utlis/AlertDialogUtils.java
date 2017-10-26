@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 
 import org.seraph.mvprxjavaretrofit.R;
 
@@ -168,6 +173,134 @@ public class AlertDialogUtils {
             pop.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
             Tools.setWindowAlpha(mContext, 0.5f);
         }
+    }
+
+    /**
+     * 修改字段
+     */
+    public void createUpdateInputDialog(String titleText, String hint, int type, final String oldStr, final View.OnClickListener okCallBack) {
+        View view = View.inflate(mContext, R.layout.common_dialog_input_updata_layout, null);
+        final AlertDialog dialog = new AlertDialog.Builder(mContext, R.style.custom_dialog_style)
+                .setView(view).show();
+        final TextView okText = (TextView) dialog.findViewById(R.id.tv_ok);
+        final EditText editText = (EditText) dialog.findViewById(R.id.tv_input_content);
+        final TextView title = (TextView) dialog.findViewById(R.id.tv_title);
+        if (!Tools.isNull(titleText)) {
+            title.setText(titleText);
+        }
+        editText.setText(oldStr);
+        editText.setSelection(oldStr.length());
+        editText.setHint(hint);
+        if (type != -1) {
+            editText.setInputType(type);
+        }
+        okText.setTextColor(Color.parseColor("#666666"));
+        dialog.findViewById(R.id.rv_cancel).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+        okText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        if (okCallBack != null) {
+                            if (oldStr.equals(editText.getText().toString().trim())) {
+                                ToastUtils.showShortToast("没有修改内容");
+                                return;
+                            }
+                            if (EmptyUtils.isEmpty(editText.getText().toString().trim())){
+                                ToastUtils.showShortToast("输入不能为空");
+                                return;
+                            }
+                            okCallBack.onClick(editText);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence sequence, int start, int before, int count) {
+                //如果之前输入的笔记和现在一样，点击按钮文字变灰色
+                if (oldStr.equals(editText.getText().toString())) {
+                    okText.setTextColor(Color.parseColor("#666666"));
+                } else {
+                    okText.setTextColor(Color.parseColor("#007aff"));
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+
+    /**
+     * 输入笔记对话框
+     */
+    public void createInputDialog(final String oldStr, String hintStr, final View.OnClickListener okCallBack) {
+        View view = View.inflate(mContext, R.layout.common_dialog_input_layout, null);
+        final AlertDialog dialog = new AlertDialog.Builder(mContext)
+                .setView(view).show();
+        final EditText editText = (EditText) dialog.findViewById(R.id.tv_input_content);
+        final TextView okText = (TextView) dialog.findViewById(R.id.tv_ok);
+        //回填笔记到输入框
+        editText.setText(oldStr);
+        editText.setHint(hintStr);
+        okText.setTextColor(Color.parseColor("#666666"));
+        dialog.findViewById(R.id.rv_cancel).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+        okText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        if (okCallBack != null) {
+                            if (oldStr.equals(editText.getText().toString().trim())) {
+                                ToastUtils.showShortToast("没有修改内容");
+                                return;
+                            }
+                            if (EmptyUtils.isEmpty(editText.getText().toString().trim())){
+                                ToastUtils.showShortToast("输入不能为空");
+                                return;
+                            }
+                            okCallBack.onClick(editText);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence sequence, int start, int before, int count) {
+                //如果之前输入的笔记和现在一样，点击按钮文字变灰色
+                if (oldStr.equals(editText.getText().toString())) {
+                    okText.setTextColor(Color.parseColor("#666666"));
+                } else {
+                    okText.setTextColor(Color.parseColor("#007aff"));
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
     }
 
 }

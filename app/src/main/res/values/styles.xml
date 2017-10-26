@@ -59,4 +59,9 @@
         <item name="android:textSize">20sp</item>
         <item name="android:paddingTop">@dimen/toolbar_top_padding_text_min</item>
     </style>
+
+    <!--部分通用dialog样式-->
+    <style name="custom_dialog_style" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

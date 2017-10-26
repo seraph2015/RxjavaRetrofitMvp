@@ -83,10 +83,10 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
     }
 
     /**
-     * 图片预览
+     * 多图片预览
      *
      * @param imageList<T>    数据源IMAGE_TYPE_NETWORK对应PhotoPreviewBean，IMAGE_TYPE_LOCAL对应String
-     * @param currentPosition 当前第几个
+     * @param currentPosition 当前第几个（从0开始)
      * @param imageType       数据类型 { PhotoPreviewActivity.IMAGE_TYPE_LOCAL, PhotoPreviewActivity.IMAGE_TYPE_NETWORK}
      */
     public static <T> void startPhotoPreview(Activity activity, ArrayList<T> imageList, int currentPosition, String imageType) {
@@ -96,6 +96,34 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
         intent.putExtra(CURRENT_POSITION, currentPosition);
         activity.startActivity(intent);
     }
+
+    /**
+     * 多图片预览
+     *
+     * @param imageList<T> 数据源IMAGE_TYPE_NETWORK对应PhotoPreviewBean，IMAGE_TYPE_LOCAL对应String
+     * @param imageType    数据类型 { PhotoPreviewActivity.IMAGE_TYPE_LOCAL, PhotoPreviewActivity.IMAGE_TYPE_NETWORK}
+     */
+    public static <T> void startPhotoPreview(Activity activity, ArrayList<T> imageList, String imageType) {
+        startPhotoPreview(activity,imageList,0,imageType);
+    }
+
+    /**
+     * 单张图片预览
+     * 网络地址图片使用PhotoPreviewBean，本地使用String
+     * @param image     数据源IMAGE_TYPE_NETWORK对应PhotoPreviewBean，IMAGE_TYPE_LOCAL对应String
+     */
+    public static <T> void startPhotoPreview(Activity activity, T image) {
+        String imageType = PhotoPreviewActivity.IMAGE_TYPE_NETWORK;
+        if(image instanceof PhotoPreviewBean){
+            imageType = PhotoPreviewActivity.IMAGE_TYPE_NETWORK;
+        }else if (image instanceof String){
+            imageType = PhotoPreviewActivity.IMAGE_TYPE_LOCAL;
+        }
+        ArrayList<T> imageList = new ArrayList<>();
+        imageList.add(image);
+        startPhotoPreview(activity,imageList,0,imageType);
+    }
+
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
