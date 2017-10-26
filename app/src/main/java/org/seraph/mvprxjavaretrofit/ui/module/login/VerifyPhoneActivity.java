@@ -12,6 +12,7 @@ import com.blankj.utilcode.util.RegexUtils;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.di.component.DaggerLoginComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
