@@ -1,12 +1,14 @@
 package org.seraph.mvprxjavaretrofit.data.local.db.help;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.blankj.utilcode.util.ToastUtils;
 
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
 import org.seraph.mvprxjavaretrofit.data.local.db.gen.UserTableDao;
 import org.seraph.mvprxjavaretrofit.data.local.db.table.UserTable;
+import org.seraph.mvprxjavaretrofit.ui.module.login.LoginActivity;
 
 import javax.inject.Inject;
 
@@ -112,6 +114,6 @@ public class UserBeanHelp {
 
     private void startLoginActivity() {
         ToastUtils.showShortToast("您还未登录");
-      //  mContext.startActivity(new Intent(mContext, LoginActivity.class));
+        mContext.startActivity(new Intent(mContext, LoginActivity.class));
     }
 }
