@@ -116,7 +116,7 @@ public class LoginActivity extends ABaseActivity<LoginActivityContract.View, Log
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_forget_password://忘记密码
-                startActivity(new Intent(this,VerifyPhoneActivity.class));
+                startActivity(new Intent(this,ResetPasswordActivity.class));
                 break;
             case R.id.btn_login://登录
                 mPresenter.onLogin();

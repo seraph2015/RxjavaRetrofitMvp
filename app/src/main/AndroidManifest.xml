@@ -45,10 +45,8 @@
         <activity android:name=".ui.module.login.RegisteredActivity" />
         <!--注册协议-->
         <activity android:name=".ui.module.login.AgreementActivity" />
-        <!--验证手机号（修改/找回密码流程1）-->
-        <activity android:name=".ui.module.login.VerifyPhoneActivity" />
-        <!--设置新密码（修改/找回密码流程2）-->
-        <activity android:name=".ui.module.login.SetPasswordActivity" />
+        <!--重置密码（找回/修改）-->
+        <activity android:name=".ui.module.login.ResetPasswordActivity" />
     </application>
 
 </manifest>

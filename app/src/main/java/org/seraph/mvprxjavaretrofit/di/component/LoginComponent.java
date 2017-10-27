@@ -8,8 +8,7 @@ import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.login.AgreementActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.login.LoginActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.login.RegisteredActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.login.SetPasswordActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.login.VerifyPhoneActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.login.ResetPasswordActivity;
 
 import dagger.Component;
 
@@ -29,7 +28,5 @@ public interface LoginComponent extends ActivityComponent {
 
     void inject(AgreementActivity agreementActivity);
 
-    void inject(VerifyPhoneActivity verifyPhoneActivity);
-
-    void inject(SetPasswordActivity setPasswordActivity);
+    void inject(ResetPasswordActivity resetPasswordActivity);
 }

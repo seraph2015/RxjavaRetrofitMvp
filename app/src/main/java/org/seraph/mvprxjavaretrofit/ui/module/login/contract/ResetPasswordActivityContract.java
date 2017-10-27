@@ -8,7 +8,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public interface VerifyPhoneActivityContract extends IBaseContract {
+public interface ResetPasswordActivityContract extends IBaseContract{
 
     interface View extends IBaseActivityView{
 
@@ -17,6 +17,8 @@ public interface VerifyPhoneActivityContract extends IBaseContract {
     interface Presenter extends IBaseActivityPresenter<View>{
 
         void onGetCode(String phone);
+
+        void onSetPassword(String phone, String code, String password);
     }
 
 }
