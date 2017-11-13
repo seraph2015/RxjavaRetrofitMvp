@@ -36,6 +36,8 @@ public class AppConstants {
      * RxBus事件总线Tags
      */
     public final class RxBusAction{
+
+        //首页菜单跳转
         public final static String TAG_MAIN_MENU = "MAIN_MENU";
 
     }
