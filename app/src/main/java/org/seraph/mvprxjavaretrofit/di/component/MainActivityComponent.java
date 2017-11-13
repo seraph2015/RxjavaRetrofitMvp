@@ -3,7 +3,7 @@ package org.seraph.mvprxjavaretrofit.di.component;
 import org.seraph.mvprxjavaretrofit.di.ActivityScope;
 import org.seraph.mvprxjavaretrofit.di.component.base.ActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
+import org.seraph.mvprxjavaretrofit.di.module.MainModule;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainFourFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainOneFragment;
@@ -19,7 +19,7 @@ import dagger.Component;
  * mail：417753393@qq.com
  **/
 @ActivityScope
-@Component(dependencies = AppComponent.class, modules = ActivityModule.class)
+@Component(dependencies = AppComponent.class, modules = MainModule.class)
 public interface MainActivityComponent extends ActivityComponent {
 
     void inject(MainActivity mainActivity);

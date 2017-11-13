@@ -95,7 +95,7 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
     @Override
     public void onCameraComplete() {
         if (mTakePhoto.getCurrentPhotoFile() == null) {
-            ToastUtils.showShortToast("拍照异常");
+            ToastUtils.showShort("拍照异常");
             return;
         }
         Uri photoUri = Uri.fromFile(mTakePhoto.getCurrentPhotoFile());
@@ -106,7 +106,7 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
     @Override
     public void uploadFile() {
         if (imageList.size() == 0) {
-            ToastUtils.showShortToast("请先选择需要上传的图片");
+            ToastUtils.showShort("请先选择需要上传的图片");
             return;
         }
 
@@ -137,9 +137,9 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
             @Override
             public void onSuccess(BaseDataResponse stringBaseDataResponse) {
                 if (stringBaseDataResponse.status == 0) {
-                    ToastUtils.showShortToast("上传成功");
+                    ToastUtils.showShort("上传成功");
                 } else {
-                    ToastUtils.showShortToast(stringBaseDataResponse.msg);
+                    ToastUtils.showShort(stringBaseDataResponse.msg);
                 }
             }
 

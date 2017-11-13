@@ -74,7 +74,7 @@ public class LoginActivityPresenter implements LoginActivityContract.Presenter {
                 userTable.setToken("efewgafdfhhrehe23tryr2412");
                 userTable.setHeadPortrait("http://img4.duitang.com/uploads/item/201212/14/20121214233012_iVvrQ.thumb.600_0.jpeg");
                 userBeanHelp.saveUserBean(userTable);
-                ToastUtils.showShortToast("登录成功");
+                ToastUtils.showShort("登录成功");
                 view.finish();
             }
         });

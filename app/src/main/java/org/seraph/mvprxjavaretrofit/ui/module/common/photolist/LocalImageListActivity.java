@@ -105,7 +105,7 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     @Override
     public void setQueryImageList(List<LocalImageBean> localImageBeen) {
         if (localImageBeen == null || localImageBeen.size() == 0){
-            ToastUtils.showShortToast("获取照片失败");
+            ToastUtils.showShort("获取照片失败");
             return;
         }
         mImageListAdapter.replaceData(localImageBeen);

@@ -86,7 +86,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     private void doublePressBackToast() {
         if (!isBackPressed) {
             isBackPressed = true;
-            ToastUtils.showShortToast("再按一次退出程序");
+            ToastUtils.showShort("再按一次退出程序");
         } else {
             AppActivityManage.getInstance().appExit();
 

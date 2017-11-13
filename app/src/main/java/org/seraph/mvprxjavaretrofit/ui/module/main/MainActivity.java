@@ -85,8 +85,8 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     //页面合集
     private List<Fragment> fragments = new ArrayList<>();
 
-    //当前显示的fragment
-    private Fragment mShowFragment;
+    @Inject
+    FragmentManager fragmentManager;
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
@@ -113,9 +113,8 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
         fragments.add(new MainThreeFragment());
         fragments.add(new MainFourFragment());
         //默认显示第一个
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentUtils.removeAllFragments(fragmentManager);
-        mShowFragment = FragmentUtils.addFragments(fragmentManager, fragments, R.id.fl_home, showIndex);
+        FragmentUtils.removeAll(fragmentManager);
+        FragmentUtils.add(fragmentManager, fragments, R.id.fl_home, showIndex);
     }
 
     private Consumer<MenuItem> bottomNavigationConsumer = new Consumer<MenuItem>() {
@@ -148,8 +147,8 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     private void showIndexFragment(int showIndex) {
         mPresenter.setSelectedFragment(showIndex);
         Fragment showFragment = fragments.get(showIndex);
-        if (showFragment != null && mShowFragment != showFragment) {
-            mShowFragment = FragmentUtils.hideShowFragment(mShowFragment, showFragment);
+        if (showFragment != null) {
+            FragmentUtils.showHide(showFragment,fragments);
         }
     }
 
