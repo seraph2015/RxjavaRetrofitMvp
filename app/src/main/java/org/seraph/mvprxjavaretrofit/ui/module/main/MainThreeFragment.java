@@ -2,8 +2,12 @@ package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.TextView;
 
+import com.hwangjr.rxbus.RxBus;
+
+import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
@@ -54,10 +58,18 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.V
         tvHttpsValue.setText(charSequence);
     }
 
+    @OnClick(value = {R.id.btn_https, R.id.btn_jump})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_https:
+                mPresenter.post12306Https();
+                break;
+            case R.id.btn_jump:
+                RxBus.get().post(AppConstants.RxBusAction.TAG_MAIN_MENU, 1);
+                break;
+        }
 
-    @OnClick(R.id.btn_https)
-    public void onViewClicked() {
-        mPresenter.post12306Https();
     }
+
 
 }

@@ -48,8 +48,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_phone" />
 
-    <TextView
-        android:id="@+id/textView3"
+    <CheckBox
+        android:id="@+id/cb_zc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -62,10 +62,11 @@
         android:id="@+id/tv_agreement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="天弓智能注册协议"
+        android:padding="8dp"
+        android:text="xxxx注册协议"
         android:textColor="@android:color/holo_blue_dark"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/cb_zc"
+        app:layout_constraintStart_toEndOf="@+id/cb_zc" />
 
     <Button
         android:id="@+id/btn_ok"

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.hwangjr.rxbus.RxBus;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
@@ -39,6 +40,8 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         FontUtils.injectFont(activity.findViewById(android.R.id.content));
         //ButterKnife控件绑定
         activity.getIntent().putExtra("ActivityBean", new ActivityBean(ButterKnife.bind(activity)));
+        //注册事件总线
+        RxBus.get().register(activity);
         //初始化公共依赖注入
         if (activity instanceof ABaseActivity) {
             ((ABaseActivity) activity).setupActivityComponent(getAppComponent(activity), getActivityModule(activity));
@@ -91,6 +94,7 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
 
     @Override
     public void onActivityDestroyed(Activity activity) {
+        RxBus.get().unregister(activity);
         //解除ButterKnife控件绑定
         ((ActivityBean) activity.getIntent().getSerializableExtra("ActivityBean")).getUnbinder().unbind();
         //移除关闭activity
