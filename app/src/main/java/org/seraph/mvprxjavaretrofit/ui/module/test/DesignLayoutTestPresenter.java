@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 
 import com.blankj.utilcode.util.ToastUtils;
 
-import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
@@ -93,7 +92,7 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
                     public void accept(Throwable throwable) throws Exception {
                         mView.hideLoading();
                         mView.onLoadErr();
-                        ToastUtils.showShortToast("网络异常");
+                        ToastUtils.showShort("网络异常");
                     }
                 });
     }

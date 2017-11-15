@@ -79,4 +79,6 @@ public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.View,
                 break;
         }
     }
+
+
 }

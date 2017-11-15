@@ -208,11 +208,11 @@ public class AlertDialogUtils {
                     public void onClick(final View v) {
                         if (okCallBack != null) {
                             if (oldStr.equals(editText.getText().toString().trim())) {
-                                ToastUtils.showShortToast("没有修改内容");
+                                ToastUtils.showShort("没有修改内容");
                                 return;
                             }
                             if (EmptyUtils.isEmpty(editText.getText().toString().trim())){
-                                ToastUtils.showShortToast("输入不能为空");
+                                ToastUtils.showShort("输入不能为空");
                                 return;
                             }
                             okCallBack.onClick(editText);
@@ -269,11 +269,11 @@ public class AlertDialogUtils {
                     public void onClick(final View v) {
                         if (okCallBack != null) {
                             if (oldStr.equals(editText.getText().toString().trim())) {
-                                ToastUtils.showShortToast("没有修改内容");
+                                ToastUtils.showShort("没有修改内容");
                                 return;
                             }
                             if (EmptyUtils.isEmpty(editText.getText().toString().trim())){
-                                ToastUtils.showShortToast("输入不能为空");
+                                ToastUtils.showShort("输入不能为空");
                                 return;
                             }
                             okCallBack.onClick(editText);

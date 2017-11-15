@@ -100,8 +100,8 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         unbinder.unbind();
+        super.onDestroyView();
     }
 
 

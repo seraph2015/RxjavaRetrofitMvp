@@ -145,7 +145,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Vie
                             mPresenter.saveImage();
                         } else {
                             //获取权限失败
-                            ToastUtils.showShortToast("缺少SD卡权限，保存图片失败");
+                            ToastUtils.showShort("缺少SD卡权限，保存图片失败");
                         }
                     }
                 });

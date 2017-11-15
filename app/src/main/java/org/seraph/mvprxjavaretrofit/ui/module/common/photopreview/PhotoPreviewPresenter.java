@@ -94,7 +94,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
                 break;
         }
         if (mPhotoList == null || mPhotoList.size() == 0) {
-            ToastUtils.showShortToast("没有可预览的图片");
+            ToastUtils.showShort("没有可预览的图片");
             mView.finish();
             return;
         }
@@ -164,7 +164,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
 
         @Override
         public void onBitmapFailed(Drawable errorDrawable) {
-            ToastUtils.showShortToast("保存失败");
+            ToastUtils.showShort("保存失败");
             mView.hideLoading();
         }
 
@@ -202,14 +202,14 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(@NonNull String s) throws Exception {
-                        ToastUtils.showShortToast(s);
+                        ToastUtils.showShort(s);
                         mView.hideLoading();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         throwable.printStackTrace();
-                        ToastUtils.showShortToast("保存失败");
+                        ToastUtils.showShort("保存失败");
                         mView.hideLoading();
                     }
                 });

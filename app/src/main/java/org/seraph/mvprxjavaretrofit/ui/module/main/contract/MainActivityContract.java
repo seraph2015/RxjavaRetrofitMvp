@@ -19,7 +19,6 @@ public interface MainActivityContract extends IBaseContract {
 
         void setBackgroundResource(@DrawableRes int resid);
 
-        void finish();
     }
 
     interface Presenter extends IBaseActivityPresenter<View> {

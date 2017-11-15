@@ -41,12 +41,12 @@ public class RegisteredActivityPresenter implements RegisteredActivityContract.P
 
     @Override
     public void onGetCode() {
-        ToastUtils.showShortToast("获取验证码");
+        ToastUtils.showShort("获取验证码");
     }
 
     @Override
     public void onRegistered() {
-        ToastUtils.showShortToast("提交注册");
+        ToastUtils.showShort("提交注册");
     }
 
     @Override

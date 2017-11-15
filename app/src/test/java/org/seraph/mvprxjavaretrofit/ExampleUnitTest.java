@@ -1,7 +1,6 @@
 package org.seraph.mvprxjavaretrofit;
 
 import com.blankj.utilcode.util.EncryptUtils;
-import com.blankj.utilcode.util.LogUtils;
 
 import org.junit.Test;
 import org.reactivestreams.Subscriber;
@@ -212,7 +211,7 @@ public class ExampleUnitTest {
         }).subscribe(new Consumer<Byte[]>() {
             @Override
             public void accept(@NonNull Byte[] aByte) throws Exception {
-                LogUtils.i(aByte);
+               // LogUtils.i(aByte);
             }
         });
 

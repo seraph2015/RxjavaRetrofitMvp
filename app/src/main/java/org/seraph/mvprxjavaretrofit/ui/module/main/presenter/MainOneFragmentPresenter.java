@@ -72,12 +72,12 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
                     @Override
                     public void onSuccess(UserBean userBean) {
                         mUserBean = userBean.user;
-                        ToastUtils.showShortToast("登陆成功");
+                        ToastUtils.showShort("登陆成功");
                     }
 
                     @Override
                     public void onError(String errStr) {
-                        ToastUtils.showShortToast(errStr);
+                        ToastUtils.showShort(errStr);
                     }
                 });
 
@@ -90,7 +90,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
     @Override
     public void saveUserInfo() {
         if (mUserBean == null) {
-            ToastUtils.showShortToast("没有可保存数据");
+            ToastUtils.showShort("没有可保存数据");
             return;
         }
         UserTable userTable = new UserTable();
@@ -99,7 +99,7 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
         userTable.setName(mUserBean.nickname);
         userTable.setHeadPortrait(mUserBean.headimg);
         mUserBeanHelp.save(userTable);
-        ToastUtils.showShortToast("保存成功");
+        ToastUtils.showShort("保存成功");
     }
 
     /**

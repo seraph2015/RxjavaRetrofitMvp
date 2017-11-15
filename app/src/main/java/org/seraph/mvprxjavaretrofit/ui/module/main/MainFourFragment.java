@@ -95,7 +95,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Vie
                                                 if (aBoolean) {
                                                     mPresenter.doTakePhoto();
                                                 } else {
-                                                    ToastUtils.showShortToast("获取权限失败");
+                                                    ToastUtils.showShort("获取权限失败");
                                                 }
                                             }
                                         });

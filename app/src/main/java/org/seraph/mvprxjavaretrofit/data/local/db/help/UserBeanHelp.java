@@ -113,7 +113,7 @@ public class UserBeanHelp {
     }
 
     private void startLoginActivity() {
-        ToastUtils.showShortToast("您还未登录");
+        ToastUtils.showShort("您还未登录");
         mContext.startActivity(new Intent(mContext, LoginActivity.class));
     }
 }

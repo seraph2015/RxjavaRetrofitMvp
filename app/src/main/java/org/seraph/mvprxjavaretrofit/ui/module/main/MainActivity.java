@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -14,8 +13,11 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.hwangjr.rxbus.annotation.Tag;
 import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView;
 
+import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerMainActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
@@ -25,6 +27,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.base.IComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter;
+import org.seraph.mvprxjavaretrofit.ui.views.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +48,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     @BindView(R.id.ll_root)
     LinearLayout rootView;
     @BindView(R.id.bnv_main)
-    BottomNavigationView bnvMain;
+    BottomNavigationViewEx bnvBar;
 
     @BindView(R.id.appbar)
     AppBarLayout appbar;
@@ -82,17 +85,26 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     //页面合集
     private List<Fragment> fragments = new ArrayList<>();
 
-    //当前显示的fragment
-    private Fragment mShowFragment;
+    @Inject
+    FragmentManager fragmentManager;
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        appbar.setAlpha(0.8f);
-        //初始化fragment
-        initFragment(0);
+        //初始化layout
+        initLayout();
         mPresenter.start();
-        RxBottomNavigationView.itemSelections(bnvMain).subscribe(bottomNavigationConsumer);
+
     }
+
+    private void initLayout() {
+        appbar.setAlpha(0.8f);
+        initFragment(0);
+        bnvBar.enableAnimation(false);
+        bnvBar.enableShiftingMode(false);
+        bnvBar.enableItemShiftingMode(false);
+        RxBottomNavigationView.itemSelections(bnvBar).subscribe(bottomNavigationConsumer);
+    }
+
 
     private void initFragment(int showIndex) {
         fragments.clear();
@@ -101,9 +113,8 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
         fragments.add(new MainThreeFragment());
         fragments.add(new MainFourFragment());
         //默认显示第一个
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentUtils.removeAllFragments(fragmentManager);
-        mShowFragment = FragmentUtils.addFragments(fragmentManager, fragments, R.id.fl_home, showIndex);
+        FragmentUtils.removeAll(fragmentManager);
+        FragmentUtils.add(fragmentManager, fragments, R.id.fl_home, showIndex);
     }
 
     private Consumer<MenuItem> bottomNavigationConsumer = new Consumer<MenuItem>() {
@@ -136,8 +147,8 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
     private void showIndexFragment(int showIndex) {
         mPresenter.setSelectedFragment(showIndex);
         Fragment showFragment = fragments.get(showIndex);
-        if (showFragment != null && mShowFragment != showFragment) {
-            mShowFragment = FragmentUtils.hideShowFragment(mShowFragment, showFragment);
+        if (showFragment != null) {
+            FragmentUtils.showHide(showFragment,fragments);
         }
     }
 
@@ -178,9 +189,16 @@ public class MainActivity extends ABaseActivity<MainActivityContract.View, MainA
         }
         LogUtils.i("MainActivity->onRestoreInstanceState", savedInstanceState);
         //恢复停留的页面
-        int page = (int) savedInstanceState.get("page");
+        int page = (int) savedInstanceState.get(MainActivityPresenter.MAIN_SAVE_KEY);
         initFragment(page);
         mPresenter.setSelectedFragment(page);
     }
+
+
+    @Subscribe(tags = {@Tag(AppConstants.RxBusAction.TAG_MAIN_MENU)})
+    public void ClickMenuPosition(Integer position) {
+       bnvBar.setCurrentItem(position);
+    }
+
 
 }

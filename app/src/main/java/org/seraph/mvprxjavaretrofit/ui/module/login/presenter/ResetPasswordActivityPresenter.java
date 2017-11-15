@@ -40,11 +40,11 @@ public class ResetPasswordActivityPresenter implements ResetPasswordActivityCont
     @Override
     public void onGetCode(String phone) {
         //获取验证码
-        ToastUtils.showShortToast("获取验证码");
+        ToastUtils.showShort("获取验证码");
     }
 
     @Override
     public void onSetPassword(String phone, String code, String password) {
-        ToastUtils.showShortToast("重置密码成功");
+        ToastUtils.showShort("重置密码成功");
     }
 }

@@ -118,7 +118,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
         //查询本地数据搜索历史（时间倒叙）
         listSearch = mSearchHistoryHelp.querySearchDB(tempId, type);
         if (listSearch.size() == 0) {
-            ToastUtils.showShortToast("暂无搜索历史");
+            ToastUtils.showShort("暂无搜索历史");
             return;
         }
         showSearchHistory();
@@ -151,7 +151,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
     public void startPicassoToImage() {
         searchKeyWord = mView.getSearchKeyWord();
         if (Tools.isNull(searchKeyWord)) {
-            ToastUtils.showShortToast("search is null!");
+            ToastUtils.showShort("search is null!");
             return;
         }
         //保存搜索到本地数据库
@@ -204,7 +204,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
                     @Override
                     public void onError(String errStr) {
-                        ToastUtils.showShortToast(errStr);
+                        ToastUtils.showShort(errStr);
                         //数据失败
                         mAdapter.loadMoreFail();
                     }
