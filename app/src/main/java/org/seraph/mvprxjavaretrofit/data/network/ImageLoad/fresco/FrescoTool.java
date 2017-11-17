@@ -23,12 +23,24 @@ import org.seraph.mvprxjavaretrofit.R;
  **/
 public class FrescoTool {
 
-    public static void load(Uri uri, SimpleDraweeView simpleDraweeView) {
+    /**
+     * 默认加载
+     */
+    public static void load(SimpleDraweeView simpleDraweeView, Uri uri) {
+        load(simpleDraweeView, uri, -1);
+    }
+
+    /**
+     * 自定义加载中图片
+     * @param placeholderResourceId 加载中图片
+     */
+    public static void load(SimpleDraweeView simpleDraweeView, Uri uri, int placeholderResourceId) {
         //图片请求，功能支持
         ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder.newBuilderWithSource(uri);
         int width = simpleDraweeView.getMeasuredWidth();
         int height = simpleDraweeView.getMeasuredHeight();
         if (width != 0 && height != 0) {
+            //图片尺寸使用界面显示控件尺寸
             imageRequestBuilder.setResizeOptions(new ResizeOptions(width, height));
         }
         //控制器
@@ -40,9 +52,9 @@ public class FrescoTool {
         //设置改变一些占位符
         GenericDraweeHierarchy hierarchy = simpleDraweeView.getHierarchy();
         //加载中图片
-        hierarchy.setPlaceholderImage(R.mipmap.icon_placeholder, ScalingUtils.ScaleType.FIT_CENTER);
+        hierarchy.setPlaceholderImage(placeholderResourceId == -1 ? R.mipmap.icon_placeholder : placeholderResourceId, ScalingUtils.ScaleType.FIT_CENTER);
         //加载失败图片
-        hierarchy.setFailureImage(R.mipmap.icon_error, ScalingUtils.ScaleType.FIT_CENTER);
+        hierarchy.setFailureImage(placeholderResourceId == -1 ? R.mipmap.icon_error : placeholderResourceId, ScalingUtils.ScaleType.FIT_CENTER);
         //加载失败，设置点击重试后，显示的图片
         hierarchy.setRetryImage(R.mipmap.icon_error, ScalingUtils.ScaleType.FIT_CENTER);
         //加载成功显示图片的ScaleType
