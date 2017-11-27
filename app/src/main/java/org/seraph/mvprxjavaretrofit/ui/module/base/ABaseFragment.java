@@ -69,7 +69,7 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
             }
             getMVPPresenter().setView((V) this);
         } catch (ClassCastException e) {
-            throw new RuntimeException("子类必须实现IBaseContract.IBaseView接口");
+            throw new RuntimeException("子类必须实现IBaseContract.IBaseFragmentView接口");
         }
     }
 

@@ -27,7 +27,7 @@ import io.reactivex.functions.Consumer;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
-    private MainActivityContract.View mView;
+    protected MainActivityContract.View mView;
 
     private String[] titles = new String[]{"首页", "搜索", "HTTPS", "其它"};
     private int[] bgs = new int[]{R.mipmap.test_bg_fragment_one, R.mipmap.test_bg_fragment_two, R.mipmap.test_bg_fragment_three, R.mipmap.test_bg_fragment_four};

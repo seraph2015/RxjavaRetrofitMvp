@@ -25,4 +25,11 @@
         android:background="@drawable/test_bg_btn"
         android:text="跳转第二页" />
 
+    <Button
+        android:id="@+id/btn_bk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/test_bg_btn"
+        android:text="崩溃日志测试" />
+
 </LinearLayout>

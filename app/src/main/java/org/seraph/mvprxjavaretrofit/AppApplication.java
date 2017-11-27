@@ -3,7 +3,7 @@ package org.seraph.mvprxjavaretrofit;
 import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
-import com.facebook.drawee.backends.pipeline.Fresco;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.ImageFactory;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
@@ -26,6 +26,7 @@ public class AppApplication extends Application {
         initImageLoad();
         initDagger2();
         Utils.init(this);
+        CrashReport.initCrashReport(this, "c475f0a560", false);
         //注册activity回调
         registerActivityLifecycleCallbacks(new AppActivityCallbacks());
     }

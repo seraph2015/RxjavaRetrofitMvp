@@ -60,7 +60,7 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
             }
             getMVPPresenter().setView((V) this);
         } catch (ClassCastException e) {
-            throw new RuntimeException("子类必须实现IBaseContract.IBaseView接口");
+            throw new RuntimeException("子类必须实现IBaseContract.IBaseActivityView接口");
         }
     }
 

@@ -30,6 +30,8 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.V
     @BindView(R.id.tv_https_value)
     TextView tvHttpsValue;
 
+    TextView nllText;
+
     @Inject
     MainThreeFragmentPresenter mPresenter;
 
@@ -58,7 +60,7 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.V
         tvHttpsValue.setText(charSequence);
     }
 
-    @OnClick(value = {R.id.btn_https, R.id.btn_jump})
+    @OnClick(value = {R.id.btn_https, R.id.btn_jump,R.id.btn_bk})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_https:
@@ -67,6 +69,10 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.V
             case R.id.btn_jump:
                 RxBus.get().post(AppConstants.RxBusAction.TAG_MAIN_MENU, 1);
                 break;
+            case R.id.btn_bk:
+                nllText.setText("奔溃测试");
+                break;
+
         }
 
     }
