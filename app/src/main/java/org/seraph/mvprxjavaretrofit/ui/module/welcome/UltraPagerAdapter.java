@@ -30,12 +30,8 @@ class UltraPagerAdapter extends PagerAdapter {
 
     private Integer[] listImage;
 
-    private Context mContext;
-
-
     @Inject
     UltraPagerAdapter(Context context) {
-        this.mContext = context;
     }
 
     public void setListImage(Integer[] listImage) {
@@ -58,8 +54,8 @@ class UltraPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.welcome_activity_guide_pages_item, container, false);
-        ImageView imageView = (ImageView) view.findViewById(R.id.iv_guide_page);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.welcome_activity_guide_pages_item, container, false);
+        ImageView imageView = view.findViewById(R.id.iv_guide_page);
         imageView.setImageResource(listImage[position]);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

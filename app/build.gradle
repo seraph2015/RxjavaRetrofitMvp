@@ -15,7 +15,7 @@ android {
         android.defaultConfig.vectorDrawables.useSupportLibrary = true
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
 
@@ -93,7 +93,9 @@ dependencies {
     //7.0文件共享FileProvider适配
     compile 'com.zhy.base:fileprovider:1.0.0'
     //viewpager切换
-    compile 'com.alibaba.android:ultraviewpager:1.0.6'
+    compile ('com.alibaba.android:ultraviewpager:1.0.6.3@aar') {
+        transitive = true
+    }
     //一个强大的recyclerView适配器 ，文档见：http://www.jianshu.com/p/b343fcff51b0
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.33'
     //图片加载

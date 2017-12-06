@@ -95,7 +95,7 @@ public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract
     @Override
     public void setImageList(Integer[] images) {
         mUltraPagerAdapter.setListImage(images);
-        ultraViewPager.setAdapter(mUltraPagerAdapter);
+        ultraViewPager.getViewPager().getAdapter().notifyDataSetChanged();
     }
 
 }
