@@ -22,7 +22,7 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class WelcomeActivity extends ABaseActivity<WelcomeActivityContract.View, WelcomeActivityContract.Presenter> implements WelcomeActivityContract.View {
+public class WelcomeActivity extends ABaseActivity<WelcomeActivityContract.Presenter> implements WelcomeActivityContract.View {
 
 
     @Override

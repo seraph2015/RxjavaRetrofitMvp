@@ -1,6 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 
 /**
  * 第1个界面
@@ -8,7 +8,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public interface MainOneFragmentContract extends IBaseContract {
+public interface MainOneFragmentContract extends IABaseContract {
 
     interface View extends IBaseFragmentView {
 
@@ -16,15 +16,8 @@ public interface MainOneFragmentContract extends IBaseContract {
 
     }
 
-    interface Presenter extends IBaseFragmentPresenter<View> {
+    abstract class Presenter extends ABaseFragmentPresenter<View> {
 
-        void doLoginTest();
-
-        void saveUserInfo();
-
-        void queryUserInfo();
-
-        void cleanUserInfo();
 
     }
 }

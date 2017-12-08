@@ -22,7 +22,6 @@ import dagger.Component;
 @Component(dependencies = AppComponent.class, modules = MainModule.class)
 public interface MainActivityComponent extends ActivityComponent {
 
-    void inject(MainActivity mainActivity);
 
     void inject(MainOneFragment mainOneFragment);
 
@@ -32,4 +31,5 @@ public interface MainActivityComponent extends ActivityComponent {
 
     void inject(MainFourFragment mainFourFragment);
 
+    void inject(MainActivity mainActivity);
 }

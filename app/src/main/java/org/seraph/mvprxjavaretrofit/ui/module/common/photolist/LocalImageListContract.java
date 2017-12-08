@@ -1,8 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photolist;
 
-import android.content.Intent;
-
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public interface LocalImageListContract extends IBaseContract {
+public interface LocalImageListContract extends IABaseContract {
 
 
     interface View extends IBaseActivityView {
@@ -26,11 +24,8 @@ public interface LocalImageListContract extends IBaseContract {
 
     }
 
-    interface Presenter extends IBaseActivityPresenter<View> {
+    abstract class Presenter extends ABaseActivityPresenter<View> {
 
-        void save(ArrayList<String> arrayList);
-
-        void setIntent(Intent intent);
 
     }
 

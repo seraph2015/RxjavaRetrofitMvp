@@ -22,7 +22,7 @@ import butterknife.BindView;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class AgreementActivity extends ABaseActivity<AgreementActivityContract.View, AgreementActivityContract.Presenter> implements AgreementActivityContract.View {
+public class AgreementActivity extends ABaseActivity<AgreementActivityContract.Presenter> implements AgreementActivityContract.View {
 
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;

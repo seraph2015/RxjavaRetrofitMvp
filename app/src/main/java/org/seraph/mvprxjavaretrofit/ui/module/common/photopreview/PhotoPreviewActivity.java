@@ -31,7 +31,7 @@ import io.reactivex.functions.Consumer;
 /**
  * 图片查看器
  */
-public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.View, PhotoPreviewContract.Presenter> implements PhotoPreviewContract.View {
+public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Presenter> implements PhotoPreviewContract.View {
 
     @BindView(R.id.vp_photo_preview)
     ImageViewTouchViewPager vpPhotoPreview;

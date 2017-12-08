@@ -1,6 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.welcome;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 
 /**
  * 欢迎页
@@ -8,7 +8,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-interface GuidePagesActivityContract extends IBaseContract{
+interface GuidePagesActivityContract extends IABaseContract {
 
     interface View extends IBaseActivityView {
 
@@ -17,10 +17,8 @@ interface GuidePagesActivityContract extends IBaseContract{
         void setImageList(Integer[] images);
     }
 
-    interface Presenter extends IBaseActivityPresenter<View> {
+    abstract class Presenter extends ABaseActivityPresenter<View> {
 
-
-        void onItemClick(int position);
 
     }
 

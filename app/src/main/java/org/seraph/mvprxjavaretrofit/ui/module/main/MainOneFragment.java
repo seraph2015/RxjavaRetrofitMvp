@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.View, MainOneFragmentContract.Presenter> implements MainOneFragmentContract.View {
+public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Presenter> implements MainOneFragmentContract.View {
 
 
     @BindView(R.id.tv_content)

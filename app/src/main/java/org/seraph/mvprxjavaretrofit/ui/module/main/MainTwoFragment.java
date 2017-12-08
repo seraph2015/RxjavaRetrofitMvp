@@ -35,7 +35,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.View, MainTwoFragmentContract.Presenter> implements MainTwoFragmentContract.View {
+public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Presenter> implements MainTwoFragmentContract.View {
 
 
     @BindView(R.id.rv_images)

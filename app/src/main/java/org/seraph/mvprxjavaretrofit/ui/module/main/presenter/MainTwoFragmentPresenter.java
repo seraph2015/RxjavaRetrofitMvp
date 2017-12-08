@@ -40,19 +40,12 @@ import io.reactivex.functions.Function;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Presenter {
-
-    private MainTwoFragmentContract.View mView;
+public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter {
 
     private RecyclerView mRecyclerView;
 
     private Subscription mSubscription;
 
-    @Override
-    public void setView(MainTwoFragmentContract.View view) {
-        this.mView = view;
-        mRecyclerView = mView.getRecyclerView();
-    }
 
     private ApiBaiduService mApiBaiduService;
 
@@ -85,6 +78,7 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
 
     @Override
     public void start() {
+        mRecyclerView = mView.getRecyclerView();
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         mAdapter.bindToRecyclerView(mRecyclerView);
         mAdapter.addHeaderView(mView.getHeadView());
@@ -103,12 +97,10 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
     }
 
 
-    @Override
     public void showCacheFilePath() {
         mView.setTextView(FileUtils.getCacheDirectory(mView.getContext(), null).getPath());
     }
 
-    @Override
     public void searchHistory() {
         if (mUserHelp.getUserToken() == null) {
             tempId = -1;
@@ -147,7 +139,6 @@ public class MainTwoFragmentPresenter implements MainTwoFragmentContract.Present
         }).show();
     }
 
-    @Override
     public void startPicassoToImage() {
         searchKeyWord = mView.getSearchKeyWord();
         if (Tools.isNull(searchKeyWord)) {

@@ -25,9 +25,8 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class LocalImageListPresenter implements LocalImageListContract.Presenter {
+public class LocalImageListPresenter extends LocalImageListContract.Presenter {
 
-    private LocalImageListContract.View mView;
 
     private AsyncImageQueryHandler mQueryHandler;
 
@@ -43,11 +42,6 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
 
 
     private final int CODE_REQUEST = 1000;
-
-    @Override
-    public void setView(LocalImageListContract.View view) {
-        mView = view;
-    }
 
 
     @Override
@@ -74,7 +68,6 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
                 });
     }
 
-    @Override
     public void save(ArrayList<String> arrayList) {
         if (arrayList.size() == 0) {
             ToastUtils.showShort("请选择图片");
@@ -84,7 +77,6 @@ public class LocalImageListPresenter implements LocalImageListContract.Presenter
         mView.setResult(arrayList);
     }
 
-    @Override
     public void setIntent(Intent intent) {
         ArrayList<String> arrayList = intent.getStringArrayListExtra(LocalImageListActivity.SELECTED_PATH);
         mView.setSelectedPath(arrayList);

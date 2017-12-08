@@ -43,7 +43,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainActivity extends ABaseActivity<MainActivityContract.View, MainActivityContract.Presenter> implements MainActivityContract.View, IComponent<MainActivityComponent> {
+public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> implements MainActivityContract.View, IComponent<MainActivityComponent> {
 
     @BindView(R.id.ll_root)
     LinearLayout rootView;

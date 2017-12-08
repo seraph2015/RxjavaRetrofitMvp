@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hwangjr.rxbus.RxBus;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
@@ -27,7 +28,7 @@ import butterknife.Unbinder;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P extends IBaseContract.IBaseFragmentPresenter<V>> extends RxFragment implements IBaseContract.IBaseFragmentView {
+public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresenter> extends RxFragment implements IABaseContract.IBaseFragmentView {
 
     public abstract int getContextView();
 
@@ -42,12 +43,14 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
 
     private Unbinder unbinder;
 
+    protected P mPresenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(getContextView(), container, false);
         FontUtils.injectFont(rootView);
         unbinder = ButterKnife.bind(this, rootView);
+        RxBus.get().register(this);
         setupActivityComponent();
         initMVP();
         return rootView;
@@ -67,9 +70,10 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
             if (getMVPPresenter() == null) {
                 return;
             }
-            getMVPPresenter().setView((V) this);
+            mPresenter = getMVPPresenter();
+            mPresenter.setView(this);
         } catch (ClassCastException e) {
-            throw new RuntimeException("子类必须实现IBaseContract.IBaseFragmentView接口");
+            throw new RuntimeException("子类必须实现AIBaseContract.IBaseFragmentView接口");
         }
     }
 
@@ -100,6 +104,8 @@ public abstract class ABaseFragment<V extends IBaseContract.IBaseFragmentView, P
 
     @Override
     public void onDestroyView() {
+        RxBus.get().unregister(this);
+        mPresenter.onDetach();
         unbinder.unbind();
         super.onDestroyView();
     }

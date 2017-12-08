@@ -1,7 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.login.contract;
 
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 
 /**
  * 登录契约类
@@ -9,15 +9,14 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public interface LoginActivityContract extends IBaseContract {
+public interface LoginActivityContract extends IABaseContract {
 
     interface View extends IBaseActivityView{
 
     }
 
-    interface Presenter extends IBaseActivityPresenter<View>{
+    abstract class Presenter extends ABaseActivityPresenter<View>{
 
-        void onLogin();
     }
 
 }

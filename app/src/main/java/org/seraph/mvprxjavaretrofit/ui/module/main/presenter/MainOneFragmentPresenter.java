@@ -23,9 +23,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainOneFragmentPresenter implements MainOneFragmentContract.Presenter {
-
-    private MainOneFragmentContract.View mView;
+public class MainOneFragmentPresenter extends MainOneFragmentContract.Presenter {
 
     private UserBean.UserInfo mUserBean;
 
@@ -44,16 +42,10 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
 
     }
 
-    @Override
-    public void setView(MainOneFragmentContract.View view) {
-        this.mView = view;
-    }
-
 
     /**
      * test网络请求
      */
-    @Override
     public void doLoginTest() {
         mApiService.login("15172311067", "123456")
                 .compose(RxSchedulers.<UserBean>io_main_business(mView))
@@ -87,7 +79,6 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
     /**
      * 保存用户信息
      */
-    @Override
     public void saveUserInfo() {
         if (mUserBean == null) {
             ToastUtils.showShort("没有可保存数据");
@@ -105,7 +96,6 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
     /**
      * 查询用户信息
      */
-    @Override
     public void queryUserInfo() {
         UserTable userBeanTable = mUserBeanHelp.getUserBean();
         if (userBeanTable != null) {
@@ -118,7 +108,6 @@ public class MainOneFragmentPresenter implements MainOneFragmentContract.Present
     /**
      * 清理数据
      */
-    @Override
     public void cleanUserInfo() {
         mUserBeanHelp.cleanUserBean();
         queryUserInfo();

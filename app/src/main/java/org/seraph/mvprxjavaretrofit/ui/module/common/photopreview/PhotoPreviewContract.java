@@ -1,9 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
-import android.content.Intent;
-
-
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 
 import java.util.ArrayList;
 
@@ -13,7 +10,7 @@ import java.util.ArrayList;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-interface PhotoPreviewContract extends IBaseContract {
+interface PhotoPreviewContract extends IABaseContract {
 
     /**
      * 操作ui
@@ -30,13 +27,8 @@ interface PhotoPreviewContract extends IBaseContract {
 
     }
 
-    interface Presenter extends IBaseActivityPresenter<View> {
+    abstract class Presenter extends ABaseActivityPresenter<View> {
 
-        void saveImage();
-
-        void setIntent(Intent intent);
-
-        void upDataCurrentPosition(int position);
 
     }
 

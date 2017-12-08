@@ -1,10 +1,8 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 
 import java.util.ArrayList;
 
@@ -14,7 +12,7 @@ import java.util.ArrayList;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public interface MainFourFragmentContract extends IBaseContract {
+public interface MainFourFragmentContract extends IABaseContract {
 
     interface View extends IBaseFragmentView {
 
@@ -27,25 +25,8 @@ public interface MainFourFragmentContract extends IBaseContract {
         Fragment getFragment();
     }
 
-    interface Presenter extends IBaseFragmentPresenter<View> {
+    abstract class Presenter extends ABaseFragmentPresenter<View> {
 
 
-        void doTakePhoto();
-
-        void doSelectedLocalImage();
-
-        void removePath(String path);
-
-        void onLocalImageResult(Intent data);
-
-        void photoPreview(int position);
-
-        void onCameraComplete();
-
-        void uploadFile();
-
-        void onSaveInstanceState(Bundle outState);
-
-        void onViewStateRestored(Bundle savedInstanceState);
     }
 }

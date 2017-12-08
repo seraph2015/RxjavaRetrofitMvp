@@ -2,7 +2,7 @@ package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
 import android.support.v7.widget.RecyclerView;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 
 import java.util.ArrayList;
@@ -13,15 +13,10 @@ import java.util.ArrayList;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public interface MainTwoFragmentContract extends IBaseContract {
+public interface MainTwoFragmentContract extends IABaseContract {
 
-    interface Presenter extends IBaseFragmentPresenter<View> {
+    abstract class Presenter extends ABaseFragmentPresenter<View> {
 
-        void showCacheFilePath();
-
-        void searchHistory();
-
-        void startPicassoToImage();
     }
 
     interface View extends IBaseFragmentView {

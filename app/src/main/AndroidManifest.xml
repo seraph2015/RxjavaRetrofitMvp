@@ -47,6 +47,7 @@
         <activity android:name=".ui.module.login.AgreementActivity" />
         <!--重置密码（找回/修改）-->
         <activity android:name=".ui.module.login.ResetPasswordActivity" />
+        <activity android:name=".ui.module.main.MainActivity2" />
     </application>
 
 </manifest>

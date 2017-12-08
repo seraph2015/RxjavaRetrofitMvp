@@ -61,10 +61,11 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
             RxToolbar.navigationClicks(toolbar).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(@NonNull Object o) throws Exception {
-                    activity.finish();
+                    activity.onBackPressed();
                 }
             });
         }
+
     }
 
     @Override

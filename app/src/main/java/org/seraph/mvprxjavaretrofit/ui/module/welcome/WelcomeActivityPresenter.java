@@ -13,19 +13,11 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class WelcomeActivityPresenter implements WelcomeActivityContract.Presenter {
-
-    private WelcomeActivityContract.View mView;
+class WelcomeActivityPresenter extends WelcomeActivityContract.Presenter {
 
 
     @Inject
     WelcomeActivityPresenter() {
-    }
-
-
-    @Override
-    public void setView(WelcomeActivityContract.View view) {
-        mView = view;
     }
 
 

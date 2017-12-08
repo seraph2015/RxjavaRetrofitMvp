@@ -1,9 +1,8 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
-import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 
 /**
  * main契约类
@@ -11,7 +10,7 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public interface MainActivityContract extends IBaseContract {
+public interface MainActivityContract extends IABaseContract {
 
     interface View extends IBaseActivityView {
 
@@ -20,15 +19,11 @@ public interface MainActivityContract extends IBaseContract {
         void setBackgroundResource(@DrawableRes int resid);
 
     }
+    //使用接口进行中间调用设计，关闭直接使用View类的完全持有
+   abstract class Presenter extends ABaseActivityPresenter<View> {
 
-    interface Presenter extends IBaseActivityPresenter<View> {
 
-        void setSelectedFragment(int page);
 
-        void onBackPressed();
-
-        void onSaveInstanceState(Bundle outState);
-
-    }
+   }
 
 }

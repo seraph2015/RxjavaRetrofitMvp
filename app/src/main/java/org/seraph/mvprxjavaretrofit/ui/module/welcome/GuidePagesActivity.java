@@ -27,7 +27,7 @@ import butterknife.BindView;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract.View, GuidePagesActivityContract.Presenter> implements GuidePagesActivityContract.View {
+public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract.Presenter> implements GuidePagesActivityContract.View {
 
     @BindView(R.id.ultra_viewpager)
     UltraViewPager ultraViewPager;

@@ -19,10 +19,8 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainThreeFragmentPresenter implements MainThreeFragmentContract.Presenter {
+public class MainThreeFragmentPresenter extends MainThreeFragmentContract.Presenter {
 
-
-    private MainThreeFragmentContract.View mView;
 
     private Api12306Service mApi12306Service;
 
@@ -37,12 +35,7 @@ public class MainThreeFragmentPresenter implements MainThreeFragmentContract.Pre
 
     }
 
-    @Override
-    public void setView(MainThreeFragmentContract.View view) {
-        this.mView = view;
-    }
 
-    @Override
     public void post12306Https() {
         mApi12306Service.do12306Url().compose(RxSchedulers.<String>io_main(mView)).doOnSubscribe(new Consumer<Subscription>() {
             @Override

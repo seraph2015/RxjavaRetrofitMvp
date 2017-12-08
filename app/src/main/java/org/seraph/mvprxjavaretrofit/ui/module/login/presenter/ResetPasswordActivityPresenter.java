@@ -14,14 +14,8 @@ import javax.inject.Inject;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class ResetPasswordActivityPresenter implements ResetPasswordActivityContract.Presenter {
+public class ResetPasswordActivityPresenter extends ResetPasswordActivityContract.Presenter {
 
-    private ResetPasswordActivityContract.View view;
-
-    @Override
-    public void setView(ResetPasswordActivityContract.View view) {
-        this.view = view;
-    }
 
     private ApiService apiService;
 
@@ -37,13 +31,11 @@ public class ResetPasswordActivityPresenter implements ResetPasswordActivityCont
     }
 
 
-    @Override
     public void onGetCode(String phone) {
         //获取验证码
         ToastUtils.showShort("获取验证码");
     }
 
-    @Override
     public void onSetPassword(String phone, String code, String password) {
         ToastUtils.showShort("重置密码成功");
     }

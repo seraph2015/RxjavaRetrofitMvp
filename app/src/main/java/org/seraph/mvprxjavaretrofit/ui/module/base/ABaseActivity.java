@@ -18,7 +18,7 @@ import javax.inject.Inject;
  * mvp结构设计
  *
  * @see #getContextView 获取对应的加载的布局view
- * @see #getMVPPresenter() 获取实现{@link IBaseContract.IBaseActivityPresenter<V>}接口的实现类，也是mvp架构中的Presenter层
+ * @see #getMVPPresenter() 获取实现{@link IBaseContract.IBaseActivityPresenter}接口的实现类，也是mvp架构中的Presenter层
  * @see #setupActivityComponent(AppComponent, ActivityModule) () 进行dagger2的依赖注入绑定
  * @see #initCreate(Bundle) 初始化之后的第一次调用相当于activity的{@link #onCreate(Bundle)}
  * 此类设计必须实现{@link IBaseContract.IBaseActivityPresenter}或者子类接口，以完成mvp架构中的View层
@@ -26,11 +26,7 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P extends IBaseContract.IBaseActivityPresenter<V>> extends RxAppCompatActivity implements IBaseContract.IBaseActivityView {
-
-    @Inject
-    protected CustomLoadingDialog mLoadingDialog;
-
+public abstract class ABaseActivity<P extends IABaseContract.ABaseActivityPresenter> extends RxAppCompatActivity implements IABaseContract.IBaseActivityView {
 
     public abstract int getContextView();
 
@@ -39,6 +35,11 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
     protected abstract P getMVPPresenter();
 
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
+
+    @Inject
+    protected CustomLoadingDialog mLoadingDialog;
+
+    protected P mPresenter;
 
     /**
      * ActivityLifecycleCallbacks回调在super中，
@@ -58,9 +59,10 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
             if (getMVPPresenter() == null) {
                 return;
             }
-            getMVPPresenter().setView((V) this);
+            mPresenter = getMVPPresenter();
+            mPresenter.setView(this);
         } catch (ClassCastException e) {
-            throw new RuntimeException("子类必须实现IBaseContract.IBaseActivityView接口");
+            throw new RuntimeException("子类必须实现IABaseContract.IBaseActivityView接口");
         }
     }
 
@@ -83,5 +85,9 @@ public abstract class ABaseActivity<V extends IBaseContract.IBaseActivityView, P
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        mPresenter.onDetach();
+        super.onDestroy();
+    }
 }

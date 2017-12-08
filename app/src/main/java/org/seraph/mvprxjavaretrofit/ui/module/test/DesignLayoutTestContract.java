@@ -1,6 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
-import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
+import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-interface DesignLayoutTestContract extends IBaseContract{
+interface DesignLayoutTestContract extends IABaseContract {
 
     interface View extends IBaseActivityView {
 
@@ -21,9 +21,7 @@ interface DesignLayoutTestContract extends IBaseContract{
 
     }
 
-    interface Presenter extends IBaseActivityPresenter<View> {
-
-        void requestNextPage();
+    abstract class Presenter extends ABaseActivityPresenter<View> {
 
     }
 }

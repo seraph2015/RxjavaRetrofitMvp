@@ -38,7 +38,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.View, MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
+public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
 
 
     @BindView(R.id.vg_add_image_group)

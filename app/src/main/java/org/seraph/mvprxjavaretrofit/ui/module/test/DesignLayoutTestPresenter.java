@@ -24,17 +24,9 @@ import io.reactivex.functions.Function;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
-
-    private DesignLayoutTestContract.View mView;
-
-    @Override
-    public void setView(DesignLayoutTestContract.View view) {
-        this.mView = view;
-    }
+class DesignLayoutTestPresenter extends DesignLayoutTestContract.Presenter {
 
     private ApiBaiduService mApiBaiduService;
-
 
     @Inject
     DesignLayoutTestPresenter(ApiBaiduService apiBaiduService) {
@@ -61,7 +53,6 @@ class DesignLayoutTestPresenter implements DesignLayoutTestContract.Presenter {
         doBaiduImages(1);
     }
 
-    @Override
     public void requestNextPage() {
         doBaiduImages(++pageNo);
     }

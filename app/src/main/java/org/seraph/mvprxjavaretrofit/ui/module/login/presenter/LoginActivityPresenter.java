@@ -24,14 +24,7 @@ import io.reactivex.functions.Consumer;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class LoginActivityPresenter implements LoginActivityContract.Presenter {
-
-    private LoginActivityContract.View view;
-
-    @Override
-    public void setView(LoginActivityContract.View view) {
-        this.view = view;
-    }
+public class LoginActivityPresenter extends LoginActivityContract.Presenter {
 
     private ApiService apiService;
 
@@ -49,14 +42,13 @@ public class LoginActivityPresenter implements LoginActivityContract.Presenter {
     }
 
 
-    @Override
     public void onLogin() {
         Flowable.intervalRange(0,1,2,2 ,TimeUnit.SECONDS)
-                .compose(RxSchedulers.<Long>io_main(view))
+                .compose(RxSchedulers.<Long>io_main(mView))
                 .doOnSubscribe(new Consumer<Subscription>() {
                     @Override
                     public void accept(final Subscription subscription) throws Exception {
-                        view.showLoading("正在登录").setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        mView.showLoading("正在登录").setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
                                 subscription.cancel();
@@ -66,7 +58,7 @@ public class LoginActivityPresenter implements LoginActivityContract.Presenter {
                 }).subscribe(new Consumer<Long>() {
             @Override
             public void accept(Long l) throws Exception {
-                view.hideLoading();
+                mView.hideLoading();
                 //模拟用户信息
                 UserTable userTable = new UserTable();
                 userTable.setId(1);
@@ -75,7 +67,7 @@ public class LoginActivityPresenter implements LoginActivityContract.Presenter {
                 userTable.setHeadPortrait("http://img4.duitang.com/uploads/item/201212/14/20121214233012_iVvrQ.thumb.600_0.jpeg");
                 userBeanHelp.saveUserBean(userTable);
                 ToastUtils.showShort("登录成功");
-                view.finish();
+                mView.finish();
             }
         });
 

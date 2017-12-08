@@ -38,7 +38,7 @@ import io.reactivex.functions.Consumer;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class LoginActivity extends ABaseActivity<LoginActivityContract.View, LoginActivityContract.Presenter> implements LoginActivityContract.View {
+public class LoginActivity extends ABaseActivity<LoginActivityContract.Presenter> implements LoginActivityContract.View {
 
 
     @BindView(R.id.tv_toolbar_title)

@@ -1,6 +1,5 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,20 +36,11 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
+class PhotoPreviewPresenter extends PhotoPreviewContract.Presenter {
 
-    private PhotoPreviewContract.View mView;
-
-    @Override
-    public void setView(PhotoPreviewContract.View view) {
-        this.mView = view;
-    }
-
-    private Context mContext;
 
     @Inject
-    PhotoPreviewPresenter(Context context) {
-        mContext = context;
+    PhotoPreviewPresenter(){
     }
 
 
@@ -77,7 +67,6 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
     private String imageType;
 
     @SuppressWarnings("unchecked")
-    @Override
     public void setIntent(Intent intent) {
         if (intent == null || !intent.hasExtra(PhotoPreviewActivity.IMAGE_TYPE)) {
             throw new RuntimeException("PhotoPreviewActivity需要使用静态startPhotoPreview方法启动!");
@@ -126,7 +115,6 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
     }
 
 
-    @Override
     public void upDataCurrentPosition(int position) {
         this.currentPosition = position;
         mView.showPageSelected(position, mPhotoList.size());
@@ -136,7 +124,6 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
     /**
      * 保存当前图片
      */
-    @Override
     public void saveImage() {
         if (!StringUtils.equals(imageType, PhotoPreviewActivity.IMAGE_TYPE_NETWORK)) {
             return;
@@ -151,7 +138,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
             }
         });
         //此方法需要在主线程里(限制最大的宽为1080px,防止图片过大，保存oom)
-        Picasso.with(mContext).load(mSavePhoto.objURL).transform(new PicassoZoomTransformation(1080)).into(target);
+        Picasso.with(mView.getContext()).load(mSavePhoto.objURL).transform(new PicassoZoomTransformation(1080)).into(target);
     }
 
     //注意：Target 不能直接new 出来。因为Picasso 里面持有Target 用的是弱引用，要是直接new 就有很大可能被GC回收导致接收不到回调。
@@ -190,7 +177,7 @@ class PhotoPreviewPresenter implements PhotoPreviewContract.Presenter {
                 try {
                     Tools.bitmapToFile(bitmap, dcimFile);
                     // 最后通知图库更新此图片
-                    Tools.scanAppImageFile(mContext, saveImageName);
+                    Tools.scanAppImageFile(mView.getContext(), saveImageName);
                     e.onNext("保存成功");
                     e.onComplete();
                 } catch (IOException e1) {

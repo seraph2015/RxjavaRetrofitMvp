@@ -36,7 +36,7 @@ import io.reactivex.functions.Function3;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class ResetPasswordActivity extends ABaseActivity<ResetPasswordActivityContract.View, ResetPasswordActivityContract.Presenter> implements ResetPasswordActivityContract.View {
+public class ResetPasswordActivity extends ABaseActivity<ResetPasswordActivityContract.Presenter> implements ResetPasswordActivityContract.View {
 
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;

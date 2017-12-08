@@ -36,7 +36,7 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestContract.View, DesignLayoutTestContract.Presenter> implements DesignLayoutTestContract.View {
+public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestContract.Presenter> implements DesignLayoutTestContract.View {
 
     @BindView(R.id.app_bar_image)
     ImageView appBarImage;

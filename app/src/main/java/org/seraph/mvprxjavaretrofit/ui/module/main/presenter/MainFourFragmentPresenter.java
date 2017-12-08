@@ -34,9 +34,8 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainFourFragmentPresenter implements MainFourFragmentContract.Presenter {
+public class MainFourFragmentPresenter extends MainFourFragmentContract.Presenter {
 
-    private MainFourFragmentContract.View mView;
 
     private TakePhoto mTakePhoto;
     private ApiService mApiService;
@@ -57,42 +56,32 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
 
     }
 
-    @Override
-    public void setView(MainFourFragmentContract.View view) {
-        this.mView = view;
-    }
 
-    @Override
     public void doTakePhoto() {
         mTakePhoto.doTakePhoto(mView.getFragment());
     }
 
-    @Override
     public void doSelectedLocalImage() {
         //选择图片
         mView.startLocalImageActivity(imageList);
     }
 
-    @Override
     public void removePath(String path) {
         if (imageList.contains(path)) {
             imageList.remove(path);
         }
     }
 
-    @Override
     public void onLocalImageResult(Intent data) {
         imageList.clear();
         imageList.addAll(data.getStringArrayListExtra(LocalImageListActivity.SELECT_PATH));
         mView.setImageList(imageList);
     }
 
-    @Override
     public void photoPreview(int position) {
         mView.startPhotoPreview(imageList, position);
     }
 
-    @Override
     public void onCameraComplete() {
         if (mTakePhoto.getCurrentPhotoFile() == null) {
             ToastUtils.showShort("拍照异常");
@@ -103,7 +92,6 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
         mView.setImageList(imageList);
     }
 
-    @Override
     public void uploadFile() {
         if (imageList.size() == 0) {
             ToastUtils.showShort("请先选择需要上传的图片");
@@ -150,7 +138,6 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
         });
     }
 
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         //如果拍照路径不为空，则保存。
         if (mTakePhoto.getCurrentPhotoFile() != null) {
@@ -159,7 +146,6 @@ public class MainFourFragmentPresenter implements MainFourFragmentContract.Prese
         }
     }
 
-    @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             return;

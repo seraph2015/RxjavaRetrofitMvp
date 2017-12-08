@@ -25,7 +25,7 @@ import io.reactivex.functions.Consumer;
  * mail：417753393@qq.com
  **/
 
-public class MainActivityPresenter implements MainActivityContract.Presenter {
+public class MainActivityPresenter extends MainActivityContract.Presenter {
 
     protected MainActivityContract.View mView;
 
@@ -70,7 +70,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         doublePressBackToast();
     }
 
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         //保存停留的页面
         outState.putInt(MAIN_SAVE_KEY, position);

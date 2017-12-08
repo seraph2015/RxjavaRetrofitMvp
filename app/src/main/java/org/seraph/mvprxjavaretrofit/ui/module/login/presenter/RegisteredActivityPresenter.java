@@ -14,14 +14,8 @@ import javax.inject.Inject;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class RegisteredActivityPresenter implements RegisteredActivityContract.Presenter{
+public class RegisteredActivityPresenter extends RegisteredActivityContract.Presenter{
 
-    private RegisteredActivityContract.View view;
-
-    @Override
-    public void setView(RegisteredActivityContract.View view) {
-        this.view = view;
-    }
 
     private ApiService apiService;
 
@@ -39,17 +33,10 @@ public class RegisteredActivityPresenter implements RegisteredActivityContract.P
     }
 
 
-    @Override
-    public void onGetCode() {
-        ToastUtils.showShort("获取验证码");
-    }
-
-    @Override
     public void onRegistered() {
         ToastUtils.showShort("提交注册");
     }
 
-    @Override
     public void onGetCode(String phone) {
         //获取验证码
     }

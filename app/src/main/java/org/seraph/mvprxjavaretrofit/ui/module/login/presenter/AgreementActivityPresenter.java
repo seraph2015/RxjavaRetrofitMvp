@@ -12,14 +12,8 @@ import javax.inject.Inject;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class AgreementActivityPresenter implements AgreementActivityContract.Presenter{
+public class AgreementActivityPresenter extends AgreementActivityContract.Presenter{
 
-    private AgreementActivityContract.View view;
-
-    @Override
-    public void setView(AgreementActivityContract.View view) {
-        this.view = view;
-    }
 
     private ApiService apiService;
 

@@ -44,6 +44,8 @@ public interface IBaseContract {
 
         void start();
 
+        void onDetach();
+
     }
 
 
@@ -74,6 +76,8 @@ public interface IBaseContract {
 
     interface IBaseActivityPresenter<V extends IBaseActivityView> extends IBasePresenter<V> {
 
+
     }
+
 
 }

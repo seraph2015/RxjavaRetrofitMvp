@@ -25,7 +25,7 @@ import butterknife.OnClick;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.View, MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View {
+public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View {
 
     @BindView(R.id.tv_https_value)
     TextView tvHttpsValue;

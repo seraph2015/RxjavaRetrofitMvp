@@ -31,7 +31,7 @@ import io.reactivex.functions.Consumer;
 /**
  * 显示并且选择本地图片的类，结果以List传出
  */
-public class LocalImageListActivity extends ABaseActivity<LocalImageListContract.View, LocalImageListContract.Presenter> implements LocalImageListContract.View {
+public class LocalImageListActivity extends ABaseActivity<LocalImageListContract.Presenter> implements LocalImageListContract.View {
 
 
     @BindView(R.id.toolbar)
