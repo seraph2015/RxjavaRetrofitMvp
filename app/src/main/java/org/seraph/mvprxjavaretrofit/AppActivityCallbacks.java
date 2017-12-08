@@ -12,6 +12,7 @@ import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.login.LoginActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
@@ -57,7 +58,11 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
                 return;
             }
             //符合条件的布局设置统一的返回按键和监听
-            toolbar.setNavigationIcon(R.drawable.common_title_arrow_white_left);
+            if (activity instanceof LoginActivity) {
+                toolbar.setNavigationIcon(R.drawable.common_icon_close);
+            } else {
+                toolbar.setNavigationIcon(R.drawable.common_title_arrow_white_left);
+            }
             RxToolbar.navigationClicks(toolbar).subscribe(new Consumer<Object>() {
                 @Override
                 public void accept(@NonNull Object o) throws Exception {
@@ -65,7 +70,10 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
                 }
             });
         }
-
+        //如果是进入登录界面，则使用从下叠加到页面上的动画
+        if (activity instanceof LoginActivity) {
+            activity.overridePendingTransition(R.anim.anim_slide_in_from_bottom, 0);
+        }
     }
 
     @Override

@@ -1,14 +1,21 @@
 package org.seraph.mvprxjavaretrofit.ui.module.login;
 
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.RegexUtils;
+import com.jakewharton.rxbinding2.widget.RxCompoundButton;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import org.seraph.mvprxjavaretrofit.R;
@@ -16,8 +23,10 @@ import org.seraph.mvprxjavaretrofit.di.component.DaggerLoginComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.login.contract.RegisteredActivityContract;
-import org.seraph.mvprxjavaretrofit.ui.module.login.presenter.RegisteredActivityPresenter;
+import org.seraph.mvprxjavaretrofit.ui.module.login.contract.RegisteredContract;
+import org.seraph.mvprxjavaretrofit.ui.module.login.presenter.RegisteredPresenter;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -25,8 +34,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function4;
 
 /**
  * 注册
@@ -34,21 +43,32 @@ import io.reactivex.functions.Consumer;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class RegisteredActivity extends ABaseActivity<RegisteredActivityContract.Presenter> implements RegisteredActivityContract.View {
+public class RegisteredActivity extends ABaseActivity<RegisteredContract.Presenter> implements RegisteredContract.View {
 
 
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;
     @BindView(R.id.et_phone)
     EditText etPhone;
+    @BindView(R.id.iv_show_delete)
+    ImageView ivDelete;
     @BindView(R.id.et_code)
     EditText etCode;
-    @BindView(R.id.btn_get_code)
-    Button btnGetCode;
+    @BindView(R.id.tv_get_code)
+    TextView tvGetCode;
+    @BindView(R.id.et_password)
+    EditText etPassword;
+    @BindView(R.id.cb_password_mode)
+    CheckBox cbPasswordMode;
     @BindView(R.id.tv_agreement)
     TextView tvAgreement;
+    @BindView(R.id.cb_zc)
+    CheckBox cbRegistered;
     @BindView(R.id.btn_ok)
     Button btnOk;
+
+    @BindView(R.id.iv_ui_bg)
+    ImageView ivUIBg;
 
     @Override
     public int getContextView() {
@@ -61,10 +81,10 @@ public class RegisteredActivity extends ABaseActivity<RegisteredActivityContract
     }
 
     @Inject
-    RegisteredActivityPresenter mPresenter;
+    RegisteredPresenter mPresenter;
 
     @Override
-    protected RegisteredActivityContract.Presenter getMVPPresenter() {
+    protected RegisteredContract.Presenter getMVPPresenter() {
         return mPresenter;
     }
 
@@ -74,17 +94,26 @@ public class RegisteredActivity extends ABaseActivity<RegisteredActivityContract
         initListener();
     }
 
+    private boolean isPhone;
+    private boolean isCountdown;
+
     private void initListener() {
-        Observable<CharSequence> phone = RxTextView.textChanges(etPhone);
-        Observable<CharSequence> code = RxTextView.textChanges(etCode);
-        Observable.combineLatest(phone, code, new BiFunction<CharSequence, CharSequence, Boolean>() {
+        Bitmap bitmap = ConvertUtils.drawable2Bitmap(getResources().getDrawable(R.mipmap.welcome_guide_pages_two));
+        ivUIBg.setImageBitmap(ImageUtils.fastBlur(bitmap, 1, 15, true));
+        Observable<CharSequence> phone = RxTextView.textChanges(etPhone);//手机号
+        Observable<CharSequence> code = RxTextView.textChanges(etCode);//验证码
+        Observable<CharSequence> password = RxTextView.textChanges(etPassword);//密码
+        Observable<Boolean> isOk = RxCompoundButton.checkedChanges(cbRegistered);//注册协议
+        Observable.combineLatest(phone, code, password, isOk, new Function4<CharSequence, CharSequence, CharSequence, Boolean, Boolean>() {
             @Override
-            public Boolean apply(CharSequence phone, CharSequence code) throws Exception {
+            public Boolean apply(CharSequence phone, CharSequence code, CharSequence password, Boolean isOk) throws Exception {
+                ivDelete.setVisibility(phone.length() > 0 ? View.VISIBLE : View.GONE);
                 //验证手机
-                boolean isPhone = RegexUtils.isMobileSimple(phone);
-                btnGetCode.setEnabled(isPhone);
+                isPhone = RegexUtils.isMobileSimple(phone);
+
+                tvGetCode.setTextColor(isPhone && !isCountdown ? 0xff0099cc : 0xffcccccc);
                 //验证验证码
-                return isPhone && code.length() == 6;
+                return isPhone && code.length() == 6 && password.toString().trim().length() >= 6 && isOk;
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() {
             @Override
@@ -92,21 +121,43 @@ public class RegisteredActivity extends ABaseActivity<RegisteredActivityContract
                 btnOk.setEnabled(aBoolean);
             }
         });
+
+        RxCompoundButton.checkedChanges(cbPasswordMode).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) throws Exception {
+                //切换密码显示和隐藏
+                etPassword.setTransformationMethod(aBoolean ? HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
+                etPassword.setSelection(etPassword.getText().length());
+            }
+        });
     }
 
 
-    @OnClick({R.id.btn_get_code, R.id.tv_agreement, R.id.btn_ok})
+
+    @OnClick({R.id.iv_show_delete, R.id.tv_get_code, R.id.tv_agreement, R.id.btn_ok})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_get_code://获取验证码
-                mPresenter.onGetCode(etPhone.getText().toString());
+            case R.id.iv_show_delete://删除手机号
+                etPhone.setText("");
                 break;
-            case R.id.tv_agreement:
-                startActivity(new Intent(this,AgreementActivity.class));
+            case R.id.tv_get_code://获取验证码
+                if (tvGetCode.getCurrentTextColor() == 0xff0099cc) {
+                    mPresenter.onGetCode(etPhone.getText().toString().trim());
+                }
+                break;
+            case R.id.tv_agreement://注册协议
+                mPresenter.doLookAgreement();
                 break;
             case R.id.btn_ok://提交注册
-                mPresenter.onRegistered();
+                mPresenter.onRegistered(etPhone.getText().toString().trim(), etCode.getText().toString().trim(), etPassword.getText().toString().trim());
                 break;
         }
+    }
+
+    @Override
+    public void setCountdownText(long time) {
+        isCountdown = time > 0;
+        tvGetCode.setTextColor(isPhone && !isCountdown ? 0xff0099cc : 0xffcccccc);
+        tvGetCode.setText(isCountdown ? String.format(Locale.getDefault(), "%d秒后重试", time) : "获取验证码");
     }
 }

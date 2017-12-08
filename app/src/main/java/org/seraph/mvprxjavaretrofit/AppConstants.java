@@ -40,6 +40,8 @@ public class AppConstants {
         //首页菜单跳转
         public final static String TAG_MAIN_MENU = "MAIN_MENU";
 
+        //登录信息更新
+        public static final String TAG_LOGIN = "LOGIN";
     }
 
 }

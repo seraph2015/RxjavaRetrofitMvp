@@ -2,7 +2,7 @@ package org.seraph.mvprxjavaretrofit.ui.module.login.presenter;
 
 
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
-import org.seraph.mvprxjavaretrofit.ui.module.login.contract.AgreementActivityContract;
+import org.seraph.mvprxjavaretrofit.ui.module.login.contract.AgreementContract;
 
 import javax.inject.Inject;
 
@@ -12,13 +12,13 @@ import javax.inject.Inject;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class AgreementActivityPresenter extends AgreementActivityContract.Presenter{
+public class AgreementPresenter extends AgreementContract.Presenter{
 
 
     private ApiService apiService;
 
     @Inject
-    public AgreementActivityPresenter(ApiService apiService) {
+    public AgreementPresenter(ApiService apiService) {
        this.apiService = apiService;
     }
 

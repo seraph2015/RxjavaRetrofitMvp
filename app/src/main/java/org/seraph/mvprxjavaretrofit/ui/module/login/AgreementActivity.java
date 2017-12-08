@@ -9,8 +9,8 @@ import org.seraph.mvprxjavaretrofit.di.component.DaggerLoginComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.login.contract.AgreementActivityContract;
-import org.seraph.mvprxjavaretrofit.ui.module.login.presenter.AgreementActivityPresenter;
+import org.seraph.mvprxjavaretrofit.ui.module.login.contract.AgreementContract;
+import org.seraph.mvprxjavaretrofit.ui.module.login.presenter.AgreementPresenter;
 
 import javax.inject.Inject;
 
@@ -22,7 +22,7 @@ import butterknife.BindView;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class AgreementActivity extends ABaseActivity<AgreementActivityContract.Presenter> implements AgreementActivityContract.View {
+public class AgreementActivity extends ABaseActivity<AgreementContract.Presenter> implements AgreementContract.View {
 
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;
@@ -40,10 +40,10 @@ public class AgreementActivity extends ABaseActivity<AgreementActivityContract.P
     }
 
     @Inject
-    AgreementActivityPresenter mPresenter;
+    AgreementPresenter mPresenter;
 
     @Override
-    protected AgreementActivityContract.Presenter getMVPPresenter() {
+    protected AgreementContract.Presenter getMVPPresenter() {
         return mPresenter;
     }
 

@@ -22,5 +22,5 @@
         app:itemBackground="@drawable/test_main_bottom_bg"
         app:itemIconTint="@color/color_main_bottom_icon"
         app:itemTextColor="@color/color_main_bottom_text"
-        app:menu="@menu/menu_test_main" />
+        app:menu="@menu/menu_act_main" />
 </LinearLayout>

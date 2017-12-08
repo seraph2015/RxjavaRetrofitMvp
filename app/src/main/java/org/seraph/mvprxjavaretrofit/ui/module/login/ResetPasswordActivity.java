@@ -1,15 +1,19 @@
 package org.seraph.mvprxjavaretrofit.ui.module.login;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.jakewharton.rxbinding2.widget.RxCompoundButton;
 import com.jakewharton.rxbinding2.widget.RxTextView;
@@ -19,8 +23,10 @@ import org.seraph.mvprxjavaretrofit.di.component.DaggerLoginComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.login.contract.ResetPasswordActivityContract;
-import org.seraph.mvprxjavaretrofit.ui.module.login.presenter.ResetPasswordActivityPresenter;
+import org.seraph.mvprxjavaretrofit.ui.module.login.contract.ResetPasswordContract;
+import org.seraph.mvprxjavaretrofit.ui.module.login.presenter.ResetPasswordPresenter;
+
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -36,22 +42,26 @@ import io.reactivex.functions.Function3;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class ResetPasswordActivity extends ABaseActivity<ResetPasswordActivityContract.Presenter> implements ResetPasswordActivityContract.View {
+public class ResetPasswordActivity extends ABaseActivity<ResetPasswordContract.Presenter> implements ResetPasswordContract.View {
 
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;
     @BindView(R.id.et_phone)
     EditText etPhone;
+    @BindView(R.id.iv_show_delete)
+    ImageView ivDelete;
     @BindView(R.id.et_code)
     EditText etCode;
-    @BindView(R.id.btn_get_code)
-    Button btnGetCode;
+    @BindView(R.id.tv_get_code)
+    TextView tvGetCode;
     @BindView(R.id.et_new_password)
     EditText etNewPassword;
-    @BindView(R.id.switch_show)
-    Switch aSwitch;
+    @BindView(R.id.cb_password_mode)
+    CheckBox cbPasswordMode;
     @BindView(R.id.btn_ok)
     Button btnOk;
+    @BindView(R.id.iv_ui_bg)
+    ImageView ivUIBg;
 
     @Override
     public int getContextView() {
@@ -64,10 +74,10 @@ public class ResetPasswordActivity extends ABaseActivity<ResetPasswordActivityCo
     }
 
     @Inject
-    ResetPasswordActivityPresenter mPresenter;
+    ResetPasswordPresenter mPresenter;
 
     @Override
-    protected ResetPasswordActivityContract.Presenter getMVPPresenter() {
+    protected ResetPasswordContract.Presenter getMVPPresenter() {
         return mPresenter;
     }
 
@@ -77,17 +87,24 @@ public class ResetPasswordActivity extends ABaseActivity<ResetPasswordActivityCo
         initListener();
     }
 
+    private boolean isPhone;
+    private boolean isCountdown;
+
     private void initListener() {
+        Bitmap bitmap = ConvertUtils.drawable2Bitmap(getResources().getDrawable(R.mipmap.welcome_guide_pages_one));
+        ivUIBg.setImageBitmap(ImageUtils.fastBlur(bitmap, 1, 15, true));
         Observable<CharSequence> phone = RxTextView.textChanges(etPhone);
         Observable<CharSequence> code = RxTextView.textChanges(etCode);
         Observable<CharSequence> newPassword = RxTextView.textChanges(etNewPassword);
         Observable.combineLatest(phone, code, newPassword, new Function3<CharSequence, CharSequence, CharSequence, Boolean>() {
             @Override
             public Boolean apply(CharSequence phone, CharSequence code, CharSequence newPassword) throws Exception {
-                boolean isPhone = RegexUtils.isMobileSimple(phone);
-                btnGetCode.setEnabled(isPhone);
-                aSwitch.setVisibility((newPassword.length() > 0) ? View.VISIBLE : View.GONE);
-                return isPhone && code.length() == 6 && newPassword.length() >= 6;
+                ivDelete.setVisibility(phone.length() > 0 ? View.VISIBLE : View.GONE);
+                //验证手机
+                isPhone = RegexUtils.isMobileSimple(phone);
+                tvGetCode.setTextColor(isPhone && !isCountdown ? 0xff0099cc : 0xffcccccc);
+                //验证验证码
+                return isPhone && code.length() == 6 && newPassword.toString().trim().length() >= 6;
             }
         }).subscribe(new Consumer<Boolean>() {
             @Override
@@ -97,7 +114,7 @@ public class ResetPasswordActivity extends ABaseActivity<ResetPasswordActivityCo
         });
 
 
-        RxCompoundButton.checkedChanges(aSwitch).subscribe(new Consumer<Boolean>() {
+        RxCompoundButton.checkedChanges(cbPasswordMode).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 //切换密码显示和隐藏
@@ -108,17 +125,28 @@ public class ResetPasswordActivity extends ABaseActivity<ResetPasswordActivityCo
     }
 
 
-    @OnClick({R.id.btn_get_code, R.id.btn_ok})
+    @OnClick({R.id.iv_show_delete, R.id.tv_get_code, R.id.btn_ok})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_get_code://获取验证码
-                mPresenter.onGetCode(etPhone.getText().toString());
+            case R.id.iv_show_delete://删除手机号
+                etPhone.setText("");
+                break;
+            case R.id.tv_get_code://获取验证码
+                if (tvGetCode.getCurrentTextColor() == 0xff0099cc) {
+                    mPresenter.onGetCode(etPhone.getText().toString());
+                }
                 break;
             case R.id.btn_ok:
                 //提交网络
-                mPresenter.onSetPassword(etPhone.getText().toString(),etCode.getText().toString(),etNewPassword.getText().toString());
-                finish();
+                mPresenter.onSetPassword(etPhone.getText().toString(), etCode.getText().toString(), etNewPassword.getText().toString());
                 break;
         }
+    }
+
+    @Override
+    public void setCountdownText(long time) {
+        isCountdown = time > 0;
+        tvGetCode.setTextColor(isPhone && !isCountdown ? 0xff0099cc : 0xffcccccc);
+        tvGetCode.setText(isCountdown ? String.format(Locale.getDefault(), "%d秒后重试", time) : "获取验证码");
     }
 }
