@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.utlis;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -15,12 +16,17 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhy.base.fileprovider.FileProvider7;
 
 import java.io.File;
 import java.util.UUID;
 
 import javax.inject.Inject;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * 拍照相关工具
@@ -47,10 +53,12 @@ public class TakePhoto {
 
     private File mCurrentPhotoFile = null;
 
+    private RxPermissions rxPermissions;
 
     @Inject
-    public TakePhoto(Activity activity) {
+    public TakePhoto(Activity activity, RxPermissions rxPermissions) {
         this.mContext = activity;
+        this.rxPermissions = rxPermissions;
         //获取上传文件的文件路径(直接使用应用缓存文件夹)
         PHOTO_DIR = FileUtils.getCacheDirectory(mContext, null);
     }
@@ -60,19 +68,28 @@ public class TakePhoto {
      */
 
     public void doTakePhoto() {
-        try {
-            //给新照的照片文件命名
-            mCurrentPhotoFile = getNewPhotoFile();
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
-            //Uri.fromFile(mCurrentPhotoFile)
-            //适配7.0文件共享
-            Uri fileUri = FileProvider7.getUriForFile(mContext, mCurrentPhotoFile);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            mContext.startActivityForResult(intent, CAMERA_WITH_DATA);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(mContext, "没有程序执行拍照操作", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
+        rxPermissions.request(Manifest.permission.CAMERA).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(@NonNull Boolean aBoolean) throws Exception {
+                if (aBoolean) {
+                    try {
+                        //给新照的照片文件命名
+                        mCurrentPhotoFile = getNewPhotoFile();
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
+                        //Uri.fromFile(mCurrentPhotoFile)
+                        //适配7.0文件共享
+                        Uri fileUri = FileProvider7.getUriForFile(mContext, mCurrentPhotoFile);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                        mContext.startActivityForResult(intent, CAMERA_WITH_DATA);
+                    } catch (ActivityNotFoundException e) {
+                        ToastUtils.showShort("没有程序执行拍照操作");
+                        e.printStackTrace();
+                    }
+                } else {
+                    ToastUtils.showShort("获取权限失败");
+                }
+            }
+        });
     }
 
 
@@ -80,20 +97,30 @@ public class TakePhoto {
      * 请求照相机拍照
      */
 
-    public void doTakePhoto(Fragment fragment) {
-        try {
-            //给新照的照片文件命名
-            mCurrentPhotoFile = getNewPhotoFile();
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
-            //Uri.fromFile(mCurrentPhotoFile)
-            //适配7.0文件共享
-            Uri fileUri = FileProvider7.getUriForFile(fragment.getContext(), mCurrentPhotoFile);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            fragment.startActivityForResult(intent, CAMERA_WITH_DATA);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(mContext, "没有程序执行拍照操作", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
+    public void doTakePhoto(final Fragment fragment) {
+        rxPermissions.request(Manifest.permission.CAMERA)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            try {
+                                //给新照的照片文件命名
+                                mCurrentPhotoFile = getNewPhotoFile();
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
+                                //Uri.fromFile(mCurrentPhotoFile)
+                                //适配7.0文件共享
+                                Uri fileUri = FileProvider7.getUriForFile(fragment.getContext(), mCurrentPhotoFile);
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                                fragment.startActivityForResult(intent, CAMERA_WITH_DATA);
+                            } catch (ActivityNotFoundException e) {
+                                ToastUtils.showShort("没有程序执行拍照操作");
+                                e.printStackTrace();
+                            }
+                        } else {
+                            ToastUtils.showShort("获取权限失败");
+                        }
+                    }
+                });
     }
 
     /**

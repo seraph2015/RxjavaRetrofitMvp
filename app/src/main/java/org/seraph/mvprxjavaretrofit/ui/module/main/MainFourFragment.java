@@ -1,15 +1,11 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
-
-import com.blankj.utilcode.util.ToastUtils;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
@@ -29,8 +25,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 
 /**
  * 4
@@ -54,9 +48,6 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
 
     @Inject
     AlertDialogUtils mAlertDialogUtils;
-
-    @Inject
-    RxPermissions mRxPermissions;
 
     @Override
     protected MainFourFragmentContract.Presenter getMVPPresenter() {
@@ -89,17 +80,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
                             public void onSelectedItem(int position) {
                                 switch (position) {
                                     case 1:
-                                        mRxPermissions.request(Manifest.permission.CAMERA).subscribe(new Consumer<Boolean>() {
-                                            @Override
-                                            public void accept(@NonNull Boolean aBoolean) throws Exception {
-                                                if (aBoolean) {
-                                                    mPresenter.doTakePhoto();
-                                                } else {
-                                                    ToastUtils.showShort("获取权限失败");
-                                                }
-                                            }
-                                        });
-
+                                        mPresenter.doTakePhoto();
                                         break;
                                     case 2://本地相册
                                         mPresenter.doSelectedLocalImage();
