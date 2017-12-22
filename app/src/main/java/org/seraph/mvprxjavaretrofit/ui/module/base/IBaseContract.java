@@ -26,6 +26,8 @@ public interface IBaseContract {
 
         Context getContext();
 
+        Dialog showLoading();
+
         Dialog showLoading(String str);
 
         void hideLoading();

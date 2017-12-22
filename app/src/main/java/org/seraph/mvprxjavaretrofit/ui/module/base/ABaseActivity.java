@@ -73,6 +73,11 @@ public abstract class ABaseActivity<P extends IABaseContract.ABaseActivityPresen
     }
 
     @Override
+    public CustomLoadingDialog showLoading() {
+        return showLoading("");
+    }
+
+    @Override
     public CustomLoadingDialog showLoading(String str) {
         mLoadingDialog.setDialogMessage(str);
         return mLoadingDialog;

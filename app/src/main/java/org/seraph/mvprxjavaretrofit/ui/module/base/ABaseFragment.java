@@ -83,6 +83,10 @@ public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresen
         initCreate(savedInstanceState);
     }
 
+    @Override
+    public CustomLoadingDialog showLoading() {
+        return showLoading("");
+    }
 
     @Override
     public CustomLoadingDialog showLoading(String str) {

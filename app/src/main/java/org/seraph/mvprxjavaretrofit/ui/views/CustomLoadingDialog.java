@@ -7,7 +7,6 @@ import android.view.KeyEvent;
 import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import javax.inject.Inject;
 
@@ -38,7 +37,7 @@ public class CustomLoadingDialog extends Dialog {
 
     public void setDialogMessage(String message) {
         show();
-        if (!Tools.isNull(message)) {
+        if (message != null) {
             ((TextView) findViewById(R.id.tv_loading_msg)).setText(message);
         }
     }
