@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.hwangjr.rxbus.RxBus;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
-import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog2;
+import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
 import javax.inject.Inject;
@@ -39,7 +39,7 @@ public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresen
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
 
     @Inject
-    protected CustomLoadingDialog2 mLoadingDialog;
+    protected CustomLoadingDialog mLoadingDialog;
 
     private Unbinder unbinder;
 
@@ -84,14 +84,13 @@ public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresen
     }
 
     @Override
-    public CustomLoadingDialog2 showLoading() {
+    public CustomLoadingDialog showLoading() {
         return showLoading("");
     }
 
     @Override
-    public CustomLoadingDialog2 showLoading(String str) {
-       // mLoadingDialog.setDialogMessage(str);
-        mLoadingDialog.show();
+    public CustomLoadingDialog showLoading(String str) {
+        mLoadingDialog.setDialogMessage(str);
         return mLoadingDialog;
     }
 

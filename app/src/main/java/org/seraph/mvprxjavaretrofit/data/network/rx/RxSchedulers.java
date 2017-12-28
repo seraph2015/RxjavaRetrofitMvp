@@ -9,6 +9,8 @@ import org.seraph.mvprxjavaretrofit.data.network.exception.ServerErrorException;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -49,7 +51,7 @@ public class RxSchedulers {
         return new FlowableTransformer<BaseDataResponse<T>, T>() {
             @Override
             public Publisher<T> apply(@NonNull Flowable<BaseDataResponse<T>> upstream) {
-                Flowable<BaseDataResponse<T>> tempUpstream = upstream;
+                Flowable<BaseDataResponse<T>> tempUpstream = upstream.delay(2, TimeUnit.SECONDS);//延时2秒
                 //如果有传递过来需要管理绑定rxjava生命周期的view，则使用新的Transformer
                 if (view != null) {
                     if (view instanceof IBaseContract.IBaseFragmentView) {//在对应的生命周期进行关闭

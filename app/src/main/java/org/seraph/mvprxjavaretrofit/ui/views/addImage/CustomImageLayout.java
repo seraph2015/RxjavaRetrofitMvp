@@ -14,7 +14,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SizeUtils;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 
 import java.io.File;
 
@@ -73,7 +73,8 @@ public class CustomImageLayout extends LinearLayout {
     }
 
     public void setImagePath(String path) {
-        PicassoTool.loadCache(mContext, new File(path), imageView, SizeUtils.dp2px(180), SizeUtils.dp2px(180));
+        GlideApp.with(mContext).load(path.contains("http://") ? path : new File(path)).centerCrop().into(imageView);
+        //PicassoTool.loadCache(mContext, new File(path), imageView, SizeUtils.dp2px(180), SizeUtils.dp2px(180));
     }
 
     // 显示删除图标
