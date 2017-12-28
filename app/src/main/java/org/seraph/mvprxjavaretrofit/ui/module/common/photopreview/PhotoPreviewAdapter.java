@@ -1,17 +1,19 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
-import android.content.Context;
+import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.StringUtils;
 
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouch;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchBase;
-import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
 
 import java.io.File;
 import java.util.List;
@@ -29,7 +31,9 @@ class PhotoPreviewAdapter extends PagerAdapter {
         void onImageClick(int position);
     }
 
-    private Context mContext;
+    private Activity mContext;
+
+    private LayoutInflater inflater;
 
     private List<PhotoPreviewBean> mListData;
 
@@ -37,8 +41,9 @@ class PhotoPreviewAdapter extends PagerAdapter {
     private OnImageClickListener onImageClickListener;
 
     @Inject
-    PhotoPreviewAdapter(Context context) {
-        this.mContext = context;
+    PhotoPreviewAdapter(Activity activity) {
+        this.mContext = activity;
+        inflater = LayoutInflater.from(mContext);
     }
 
     @Override
@@ -47,14 +52,17 @@ class PhotoPreviewAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
-        ImageViewTouch imageView = new ImageViewTouch(mContext, null);
-        imageView.setTag(ImageViewTouchViewPager.VIEW_PAGER_OBJECT_TAG + position);
+    @NonNull
+    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
+        View view = inflater.inflate(R.layout.common_activity_photo_preview_item, container, false);
+
+        ImageViewTouch imageView = view.findViewById(R.id.ivt_image);
+        //imageView.setTag(ImageViewTouchViewPager.VIEW_PAGER_OBJECT_TAG + position);
         imageView.setMaxScale(3.0f);
         imageView.setMinScale(1.0f);
         imageView.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
@@ -68,20 +76,20 @@ class PhotoPreviewAdapter extends PagerAdapter {
         }
         PhotoPreviewBean previewBean = mListData.get(position);
         if (StringUtils.equals(previewBean.fromType, PhotoPreviewActivity.IMAGE_TYPE_LOCAL)) {
-            PicassoTool.loadNoCache(mContext, new File(mListData.get(position).objURL), imageView);
+            GlideApp.with(mContext).load(new File(mListData.get(position).objURL)).skipMemoryCache(true).into(imageView);
+            // PicassoTool.loadNoCache(mContext, new File(mListData.get(position).objURL), imageView);
         } else {
-            PicassoTool.loadNoCache(mContext, mListData.get(position).objURL, imageView);
+            GlideApp.with(mContext).load(mListData.get(position).objURL).skipMemoryCache(true).into(imageView);
+            //  PicassoTool.loadNoCache(mContext, mListData.get(position).objURL, imageView);
         }
-        container.addView(imageView, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
-        return imageView;
+        container.addView(view, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
+        return view;
     }
 
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        if (container != null && object != null) {
-            container.removeView((View) object);
-        }
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        container.removeView((View) object);
     }
 
 

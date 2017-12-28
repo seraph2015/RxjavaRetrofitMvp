@@ -8,8 +8,6 @@ import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 
-import io.reactivex.Observable;
-
 /**
  * mvp框架P层父类接口
  * date：2017/3/29 15:38
@@ -32,6 +30,7 @@ public interface IBaseContract {
 
         void hideLoading();
 
+        //rxjava生命周期交给对应的依赖actvity或者frg进行自动管理
         <T> LifecycleTransformer<T> bindToLifecycle();
 
         void finish();
@@ -56,8 +55,7 @@ public interface IBaseContract {
 
     interface IBaseActivityView extends IBaseView {
 
-        Observable<ActivityEvent> lifecycle();
-
+        //绑定在ActivityEvent中对应生命周期进行取消操作
         <T> LifecycleTransformer<T> bindUntilEvent(@NonNull ActivityEvent event);
 
     }
@@ -65,8 +63,7 @@ public interface IBaseContract {
 
     interface IBaseFragmentView extends IBaseView {
 
-        Observable<FragmentEvent> lifecycle();
-
+        //绑定在FragmentEvent中对应生命周期进行取消操作
         <T> LifecycleTransformer<T> bindUntilEvent(@NonNull FragmentEvent event);
 
     }

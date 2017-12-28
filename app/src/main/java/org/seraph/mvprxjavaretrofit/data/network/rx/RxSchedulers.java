@@ -1,6 +1,9 @@
 package org.seraph.mvprxjavaretrofit.data.network.rx;
 
 
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.android.FragmentEvent;
+
 import org.reactivestreams.Publisher;
 import org.seraph.mvprxjavaretrofit.data.network.exception.ServerErrorException;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
@@ -49,7 +52,14 @@ public class RxSchedulers {
                 Flowable<BaseDataResponse<T>> tempUpstream = upstream;
                 //如果有传递过来需要管理绑定rxjava生命周期的view，则使用新的Transformer
                 if (view != null) {
-                    tempUpstream = (Flowable<BaseDataResponse<T>>) view.<BaseDataResponse<T>>bindToLifecycle().apply(tempUpstream);
+                    if (view instanceof IBaseContract.IBaseFragmentView) {//在对应的生命周期进行关闭
+                        tempUpstream = (Flowable<BaseDataResponse<T>>) ((IBaseContract.IBaseFragmentView) view).<BaseDataResponse<T>>bindUntilEvent(FragmentEvent.DETACH).apply(tempUpstream);
+                    } else if (view instanceof IBaseContract.IBaseActivityView) {
+                        tempUpstream = (Flowable<BaseDataResponse<T>>) ((IBaseContract.IBaseActivityView) view).<BaseDataResponse<T>>bindUntilEvent(ActivityEvent.DESTROY).apply(tempUpstream);
+                    }
+//                    else {
+//                        tempUpstream = (Flowable<BaseDataResponse<T>>) view.<BaseDataResponse<T>>bindToLifecycle().apply(tempUpstream);
+//                    }
                 }
                 return tempUpstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).flatMap(new Function<BaseDataResponse<T>, Flowable<T>>() {
                     @Override

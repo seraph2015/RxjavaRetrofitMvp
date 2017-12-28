@@ -8,10 +8,12 @@ import android.graphics.drawable.Drawable;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoZoomTransformation;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -138,8 +140,19 @@ class PhotoPreviewPresenter extends PhotoPreviewContract.Presenter {
             }
         });
         //此方法需要在主线程里(限制最大的宽为1080px,防止图片过大，保存oom)
-        Picasso.with(mView.getContext()).load(mSavePhoto.objURL).transform(new PicassoZoomTransformation(1080)).into(target);
+       // Picasso.with(mView.getContext()).load(mSavePhoto.objURL).transform(new PicassoZoomTransformation(1080)).into(target);
+        GlideApp.with(mView.getContext()).asBitmap().load(mSavePhoto.objURL).into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                //保存bitmap
+                mDisposable = saveImageToDisk(resource);
+            }
+        });
     }
+
+
+
+
 
     //注意：Target 不能直接new 出来。因为Picasso 里面持有Target 用的是弱引用，要是直接new 就有很大可能被GC回收导致接收不到回调。
     private Target target = new Target() {

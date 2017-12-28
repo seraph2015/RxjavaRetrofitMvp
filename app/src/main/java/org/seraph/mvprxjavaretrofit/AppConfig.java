@@ -39,7 +39,7 @@ public class AppConfig {
      * 设置放在Assets文件夹下的证书的路径,如果不需要设置证书。此处路径使用 null 或者 ""
      * xxx.cer
      */
-    public static final String HTTPS_CER_NAME = "srca12306.cer";
+    public static final String HTTPS_CER_NAME = "";
 
     /**
      * 设置放在Assets文件夹下的字体的路径,如果不需要设置字体。此处路径使用 null 或者 ""

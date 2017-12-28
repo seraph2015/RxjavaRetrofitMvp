@@ -148,7 +148,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
         mPresenter.setSelectedFragment(showIndex);
         Fragment showFragment = fragments.get(showIndex);
         if (showFragment != null) {
-            FragmentUtils.showHide(showFragment,fragments);
+            FragmentUtils.showHide(showFragment, fragments);
         }
     }
 
@@ -165,7 +165,10 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
 
     @Override
     public void setBackgroundResource(@DrawableRes int resid) {
-        rootView.setBackgroundResource(resid);
+        //模糊图片
+        //Bitmap bitmap = ConvertUtils.drawable2Bitmap(getResources().getDrawable(resid));
+        //ConvertUtils.bitmap2Drawable(ImageUtils.fastBlur(bitmap, 1, 15, true))
+        rootView.setBackground(getResources().getDrawable(resid));
     }
 
 
@@ -197,7 +200,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
 
     @Subscribe(tags = {@Tag(AppConstants.RxBusAction.TAG_MAIN_MENU)})
     public void ClickMenuPosition(Integer position) {
-       bnvBar.setCurrentItem(position);
+        bnvBar.setCurrentItem(position);
     }
 
 

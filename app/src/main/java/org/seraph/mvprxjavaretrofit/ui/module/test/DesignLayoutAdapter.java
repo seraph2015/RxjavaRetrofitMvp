@@ -1,11 +1,12 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
-import com.blankj.utilcode.util.SizeUtils;
+import android.app.Activity;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSelfProportionImageView;
 
@@ -19,20 +20,19 @@ import javax.inject.Inject;
  **/
 public class DesignLayoutAdapter extends BaseQuickAdapter<ImageBaiduBean.BaiduImage, BaseViewHolder> {
 
-    private int targetWidth;
-    private int targetHeight;
+
+    private Activity activity;
 
     @Inject
-    DesignLayoutAdapter() {
+    DesignLayoutAdapter(Activity activity) {
         super(R.layout.test_item_design);
-        targetWidth = SizeUtils.dp2px(200);
-        targetHeight = SizeUtils.dp2px(150);
+        this.activity = activity;
     }
 
 
     @Override
     protected void convert(BaseViewHolder helper, ImageBaiduBean.BaiduImage item) {
         CustomSelfProportionImageView imageView = helper.getView(R.id.imageView);
-        PicassoTool.loadCache(mContext, item.objURL, imageView, targetWidth, targetHeight);
+        GlideApp.with(activity).load(item.objURL).into(imageView);
     }
 }

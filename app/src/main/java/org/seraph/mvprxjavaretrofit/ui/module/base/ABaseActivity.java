@@ -9,7 +9,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
-import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
+import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog2;
 
 import javax.inject.Inject;
 
@@ -37,7 +37,7 @@ public abstract class ABaseActivity<P extends IABaseContract.ABaseActivityPresen
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
 
     @Inject
-    protected CustomLoadingDialog mLoadingDialog;
+    protected CustomLoadingDialog2 mLoadingDialog;
 
     protected P mPresenter;
 
@@ -73,13 +73,13 @@ public abstract class ABaseActivity<P extends IABaseContract.ABaseActivityPresen
     }
 
     @Override
-    public CustomLoadingDialog showLoading() {
+    public CustomLoadingDialog2 showLoading() {
         return showLoading("");
     }
 
     @Override
-    public CustomLoadingDialog showLoading(String str) {
-        mLoadingDialog.setDialogMessage(str);
+    public CustomLoadingDialog2 showLoading(String str) {
+       // mLoadingDialog.setDialogMessage(str);
         return mLoadingDialog;
     }
 

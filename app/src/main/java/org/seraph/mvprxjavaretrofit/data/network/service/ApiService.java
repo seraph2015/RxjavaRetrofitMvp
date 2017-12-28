@@ -24,7 +24,7 @@ public interface ApiService {
 
     //String BASE_URL = "http://106.15.103.137:80/zycartrade-app/";
 
-    String BASE_URL = "http://106.15.103.137:80/zycartrade-app/";
+    String BASE_URL = "https://www.xingnl.live/2-4-3/Public/xingnl/";
 
     @POST("auth/login")
     @FormUrlEncoded
