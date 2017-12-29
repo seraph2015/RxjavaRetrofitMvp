@@ -1,57 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Button
-        android:id="@+id/btn_get_cache"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/test_bg_btn"
-        android:text="get cacheFile" />
+    <data>
 
-    <TextView
-        android:id="@+id/tv_cache"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textColor="@android:color/holo_red_dark" />
+        <import type="org.seraph.mvprxjavaretrofit.ui.module.main.MainTwoFragment" />
+
+        <variable
+            name="two"
+            type="MainTwoFragment" />
+
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/et_search_keyword"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="search image"
-            android:inputType="text"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:textColor="#ff0000"
-            android:textColorHint="#0000ff" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <Button
-            android:id="@+id/btn_search_history"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_get_cache"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/test_bg_btn"
-            android:text="历史搜索" />
+            android:onClick="@{two.onClick}"
+            android:text="获取缓存路径" />
+
+        <TextView
+            android:id="@+id/tv_cache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_search_keyword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="search image"
+                android:inputType="text"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="#ff0000"
+                android:textColorHint="#0000ff" />
+
+            <Button
+                android:id="@+id/btn_search_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/test_bg_btn"
+                android:onClick="@{two.onClick}"
+                android:text="历史搜索" />
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_search_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/test_bg_btn"
+            android:onClick="@{two.onClick}"
+            android:text="搜索图片" />
+
     </LinearLayout>
-
-
-    <Button
-        android:id="@+id/btn_picasso_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/test_bg_btn"
-        android:text="Picasso To Image" />
-
-</LinearLayout>
+</layout>

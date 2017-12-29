@@ -1,14 +1,17 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
 
 import com.hwangjr.rxbus.RxBus;
 
 import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.databinding.TestFragmentThreeBinding;
 import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainThreeFragmentContract;
@@ -16,8 +19,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainThreeFragmentPr
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * 第三页
@@ -27,22 +28,23 @@ import butterknife.OnClick;
  **/
 public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View {
 
-    @BindView(R.id.tv_https_value)
-    TextView tvHttpsValue;
 
-    TextView nllText;
+    TestFragmentThreeBinding binding;
 
     @Inject
     MainThreeFragmentPresenter mPresenter;
 
-    @Override
-    public int getContextView() {
-        return R.layout.test_fragment_three;
-    }
 
     @Override
     protected MainThreeFragmentContract.Presenter getMVPPresenter() {
         return mPresenter;
+    }
+
+    @Override
+    protected View initDataBinding(LayoutInflater inflater, ViewGroup container) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.test_fragment_three, container, false);
+        binding.setFragment(this);
+        return binding.getRoot();
     }
 
     @Override
@@ -57,10 +59,9 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
 
 
     public void setTextView(CharSequence charSequence) {
-        tvHttpsValue.setText(charSequence);
+        binding.tvHttpsValue.setText(charSequence);
     }
 
-    @OnClick(value = {R.id.btn_https, R.id.btn_jump,R.id.btn_bk})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_https:
@@ -68,9 +69,6 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
                 break;
             case R.id.btn_jump:
                 RxBus.get().post(AppConstants.RxBusAction.TAG_MAIN_MENU, 1);
-                break;
-            case R.id.btn_bk:
-                nllText.setText("奔溃测试");
                 break;
 
         }

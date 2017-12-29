@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,6 @@ import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
 import javax.inject.Inject;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * 基础的Fragment继承父类
@@ -30,7 +28,7 @@ import butterknife.Unbinder;
  **/
 public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresenter> extends RxFragment implements IABaseContract.IBaseFragmentView {
 
-    public abstract int getContextView();
+    protected abstract View initDataBinding(LayoutInflater inflater, ViewGroup container);
 
     public abstract void setupActivityComponent();
 
@@ -41,15 +39,13 @@ public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresen
     @Inject
     protected CustomLoadingDialog mLoadingDialog;
 
-    private Unbinder unbinder;
-
     protected P mPresenter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(getContextView(), container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = initDataBinding(inflater,container);
         FontUtils.injectFont(rootView);
-        unbinder = ButterKnife.bind(this, rootView);
+        //数据绑定
         RxBus.get().register(this);
         setupActivityComponent();
         initMVP();
@@ -110,7 +106,6 @@ public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresen
     public void onDestroyView() {
         RxBus.get().unregister(this);
         mPresenter.onDetach();
-        unbinder.unbind();
         super.onDestroyView();
     }
 

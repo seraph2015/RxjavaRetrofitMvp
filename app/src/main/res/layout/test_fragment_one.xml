@@ -1,55 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.seraph.mvprxjavaretrofit.ui.views.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/oScrollView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <data>
+
+        <variable
+            name="p"
+            type="org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainOneFragmentPresenter" />
+    </data>
+
+    <org.seraph.mvprxjavaretrofit.ui.views.ObservableScrollView
+        android:id="@+id/oScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btn_request"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/test_bg_btn"
-            android:text="request" />
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tv_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ff0000" />
+            <Button
+                android:id="@+id/btn_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/test_bg_btn"
+                android:onClick="@{()->p.doLoginTest()}"
+                android:text="请求网络" />
 
-        <Button
-            android:id="@+id/btn_sava_db"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/test_bg_btn"
-            android:text="SaveToDB" />
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0000" />
 
-        <Button
-            android:id="@+id/tv_query_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/test_bg_btn"
-            android:text="QueryUserInfo" />
+            <Button
+                android:id="@+id/btn_sava_db"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/test_bg_btn"
+                android:onClick="@{()->p.saveUserInfo()}"
+                android:text="保存数据库" />
 
-        <Button
-            android:id="@+id/tv_clean_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/test_bg_btn"
-            android:text="cleanUserInfo" />
+            <Button
+                android:id="@+id/tv_query_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->p.queryUserInfo()}"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/test_bg_btn"
+                android:text="查询数据库" />
 
-        <TextView
-            android:id="@+id/tv_db_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ff0000" />
-    </LinearLayout>
-</org.seraph.mvprxjavaretrofit.ui.views.ObservableScrollView>
+            <Button
+                android:id="@+id/tv_clean_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/test_bg_btn"
+                android:onClick="@{()->p.cleanUserInfo()}"
+                android:text="清理数据库" />
+
+            <TextView
+                android:id="@+id/tv_db_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0000" />
+        </LinearLayout>
+    </org.seraph.mvprxjavaretrofit.ui.views.ObservableScrollView>
+</layout>

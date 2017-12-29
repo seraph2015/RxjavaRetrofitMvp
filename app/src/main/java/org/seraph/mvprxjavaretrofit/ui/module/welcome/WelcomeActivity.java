@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.welcome;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -8,6 +9,7 @@ import com.blankj.utilcode.util.SPUtils;
 
 import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.databinding.WelcomeActivityBinding;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerWelcomeComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
@@ -24,12 +26,12 @@ import javax.inject.Inject;
  **/
 public class WelcomeActivity extends ABaseActivity<WelcomeActivityContract.Presenter> implements WelcomeActivityContract.View {
 
+    WelcomeActivityBinding binding;
 
     @Override
-    public int getContextView() {
-        return R.layout.welcome_activity;
+    protected void initContextView() {
+        binding = DataBindingUtil.setContentView(this, R.layout.welcome_activity);
     }
-
 
     @Inject
     WelcomeActivityPresenter mPresenter;

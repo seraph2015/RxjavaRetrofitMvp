@@ -1,18 +1,16 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
+import org.seraph.mvprxjavaretrofit.databinding.TestDesignLayoutBinding;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerTestsComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
@@ -27,9 +25,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 /**
  * Design风格布局效果测试
  * date：2017/4/12 10:21
@@ -38,18 +33,12 @@ import butterknife.OnClick;
  **/
 public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestContract.Presenter> implements DesignLayoutTestContract.View {
 
-    @BindView(R.id.app_bar_image)
-    ImageView appBarImage;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.appbar)
-    AppBarLayout appbar;
-    @BindView(R.id.rv_data)
-    RecyclerView mRecyclerView;
+
+    TestDesignLayoutBinding binding;
 
     @Override
-    public int getContextView() {
-        return R.layout.test_design_layout;
+    protected void initContextView() {
+        binding =  DataBindingUtil.setContentView(this,R.layout.test_design_layout);
     }
 
     @Inject
@@ -78,7 +67,7 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        toolbar.setTitle("Tomia相册");
+        binding.toolbar.setTitle("Tomia相册");
         initListener();
         mPresenter.start();
     }
@@ -87,8 +76,8 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
      * 初始化加载更多
      */
     public void initListener() {
-        mRecyclerView.setLayoutManager(layoutManager);
-        mDesignLayoutAdapter.bindToRecyclerView(mRecyclerView);
+        binding.rvData.setLayoutManager(layoutManager);
+        mDesignLayoutAdapter.bindToRecyclerView(binding.rvData);
         mDesignLayoutAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -100,18 +89,17 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
             public void onLoadMoreRequested() {
                 mPresenter.requestNextPage();
             }
-        }, mRecyclerView);
+        }, binding.rvData);
     }
 
 
-    @OnClick(value = {R.id.fab})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
                 if (layoutManager.findFirstVisibleItemPosition() > 5) {
-                    mRecyclerView.scrollToPosition(5);
+                    binding.rvData.scrollToPosition(5);
                 }
-                mRecyclerView.smoothScrollToPosition(0);
+                binding.rvData.smoothScrollToPosition(0);
                 break;
         }
     }
@@ -133,7 +121,8 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
 
     @Override
     public void setImageListData(List<ImageBaiduBean.BaiduImage> baiduImages, boolean isMore) {
-        PicassoTool.loadNoCache(this, baiduImages.get((int) (Math.random() * baiduImages.size())).objURL, appBarImage);
+       // PicassoTool.loadNoCache(this, baiduImages.get((int) (Math.random() * baiduImages.size())).objURL, binding.appBarImage);
+        GlideApp.with(this).load(baiduImages.get((int) (Math.random() * baiduImages.size())).objURL).into(binding.appBarImage);
         mDesignLayoutAdapter.replaceData(baiduImages);
         if (isMore) {
             mDesignLayoutAdapter.loadMoreComplete();

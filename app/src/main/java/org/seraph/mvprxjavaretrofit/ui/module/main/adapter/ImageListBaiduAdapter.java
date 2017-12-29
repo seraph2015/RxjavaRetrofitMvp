@@ -1,14 +1,10 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.adapter;
 
-import android.net.Uri;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.fresco.FrescoTool;
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSelfProportionImageView;
 
@@ -40,8 +36,8 @@ public class ImageListBaiduAdapter extends BaseQuickAdapter<ImageBaiduBean.Baidu
 //            height = Tools.getNewHeight(width, height, screenWidth);
 //            width = screenWidth;
 //        }
-        PicassoTool.loadCache(mContext, item.objURL, imageView);
-
+     //   PicassoTool.loadCache(mContext, item.objURL, imageView);
+        GlideApp.with(mContext).load(item.objURL).override(item.width, item.height).into(imageView);
 //        SimpleDraweeView mSimpleDraweeView = helper.getView(R.id.sdv_image);
 //        float ratio =  (float) item.width / (float) item.height;
 //        mSimpleDraweeView.setAspectRatio(ratio);

@@ -151,9 +151,6 @@ class PhotoPreviewPresenter extends PhotoPreviewContract.Presenter {
     }
 
 
-
-
-
     //注意：Target 不能直接new 出来。因为Picasso 里面持有Target 用的是弱引用，要是直接new 就有很大可能被GC回收导致接收不到回调。
     private Target target = new Target() {
         @Override

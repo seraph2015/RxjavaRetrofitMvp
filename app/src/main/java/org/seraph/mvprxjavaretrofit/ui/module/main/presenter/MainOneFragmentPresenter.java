@@ -39,7 +39,6 @@ public class MainOneFragmentPresenter extends MainOneFragmentContract.Presenter 
 
     @Override
     public void start() {
-
     }
 
 

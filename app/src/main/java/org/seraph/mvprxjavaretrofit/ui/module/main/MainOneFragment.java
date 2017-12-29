@@ -1,11 +1,14 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.databinding.TestFragmentOneBinding;
 import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
@@ -13,8 +16,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainOneFragmentPres
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * 主界面
@@ -25,14 +26,12 @@ import butterknife.OnClick;
 public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Presenter> implements MainOneFragmentContract.View {
 
 
-    @BindView(R.id.tv_content)
-    TextView tvContent;
-    @BindView(R.id.tv_db_user)
-    TextView tvDbUser;
+    TestFragmentOneBinding binding;
 
     @Override
-    public int getContextView() {
-        return R.layout.test_fragment_one;
+    protected View initDataBinding(LayoutInflater inflater, ViewGroup container) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.test_fragment_one, container, false);
+        return binding.getRoot();
     }
 
     @Inject
@@ -51,34 +50,17 @@ public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Prese
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-
+        binding.setP(mPresenter);
     }
 
     public void setTextViewValue(CharSequence charSequence) {
-        tvContent.setText(charSequence);
+        binding.tvContent.setText(charSequence);
     }
 
     public void setUserTextViewValue(CharSequence charSequence) {
-        tvDbUser.setText(charSequence);
+        binding.tvDbUser.setText(charSequence);
     }
 
-    @OnClick({R.id.btn_request, R.id.btn_sava_db, R.id.tv_query_user, R.id.tv_clean_user})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_request:
-                mPresenter.doLoginTest();
-                break;
-            case R.id.btn_sava_db:
-                mPresenter.saveUserInfo();
-                break;
-            case R.id.tv_query_user:
-                mPresenter.queryUserInfo();
-                break;
-            case R.id.tv_clean_user:
-                mPresenter.cleanUserInfo();
-                break;
-        }
-    }
 
 
 }

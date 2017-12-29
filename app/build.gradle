@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 27
@@ -19,6 +18,9 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
 
     buildTypes {
         release {
@@ -69,9 +71,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     //google的json解析
     compile 'com.google.code.gson:gson:2.8.0'
-    //依赖注入butterknife
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     //dagger2
     compile 'com.google.dagger:dagger:2.10'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
@@ -110,7 +109,7 @@ dependencies {
     compile 'com.github.bumptech.glide:annotations:4.4.0'
     //Glide 图片处理
     compile 'jp.wasabeef:glide-transformations:3.0.1'
-    // If you want to use the GPU Filters
+    //如果你想使用GPU滤镜
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
     //日志奔溃收集（腾讯bugly）
     compile 'com.tencent.bugly:crashreport:2.6.6.1'

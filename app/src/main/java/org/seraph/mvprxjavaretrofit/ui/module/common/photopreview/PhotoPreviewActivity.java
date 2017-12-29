@@ -3,27 +3,28 @@ package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
+import org.seraph.mvprxjavaretrofit.databinding.CommonActivityPhotoPreviewBinding;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
+import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
@@ -33,18 +34,12 @@ import io.reactivex.functions.Consumer;
  */
 public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Presenter> implements PhotoPreviewContract.View {
 
-    @BindView(R.id.vp_photo_preview)
-    ImageViewTouchViewPager vpPhotoPreview;
 
-    @BindView(R.id.tv_progress)
-    TextView tvProgress;
-    @BindView(R.id.ll_save)
-    View llSave;
-
+    CommonActivityPhotoPreviewBinding binding;
 
     @Override
-    public int getContextView() {
-        return R.layout.common_activity_photo_preview;
+    protected void initContextView() {
+        binding = DataBindingUtil.setContentView(this, R.layout.common_activity_photo_preview);
     }
 
 
@@ -104,24 +99,25 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
      * @param imageType    数据类型 { PhotoPreviewActivity.IMAGE_TYPE_LOCAL, PhotoPreviewActivity.IMAGE_TYPE_NETWORK}
      */
     public static <T> void startPhotoPreview(Activity activity, ArrayList<T> imageList, String imageType) {
-        startPhotoPreview(activity,imageList,0,imageType);
+        startPhotoPreview(activity, imageList, 0, imageType);
     }
 
     /**
      * 单张图片预览
      * 网络地址图片使用PhotoPreviewBean，本地使用String
-     * @param image     数据源IMAGE_TYPE_NETWORK对应PhotoPreviewBean，IMAGE_TYPE_LOCAL对应String
+     *
+     * @param image 数据源IMAGE_TYPE_NETWORK对应PhotoPreviewBean，IMAGE_TYPE_LOCAL对应String
      */
     public static <T> void startPhotoPreview(Activity activity, T image) {
         String imageType = PhotoPreviewActivity.IMAGE_TYPE_NETWORK;
-        if(image instanceof PhotoPreviewBean){
+        if (image instanceof PhotoPreviewBean) {
             imageType = PhotoPreviewActivity.IMAGE_TYPE_NETWORK;
-        }else if (image instanceof String){
+        } else if (image instanceof String) {
             imageType = PhotoPreviewActivity.IMAGE_TYPE_LOCAL;
         }
         ArrayList<T> imageList = new ArrayList<>();
         imageList.add(image);
-        startPhotoPreview(activity,imageList,0,imageType);
+        startPhotoPreview(activity, imageList, 0, imageType);
     }
 
 
@@ -135,7 +131,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
 
     private void initRxBinding() {
         //点击保存按钮先检查权限
-        RxView.clicks(llSave)
+        RxView.clicks(binding.llSave)
                 .compose(rxPermissions.ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
                 .subscribe(new Consumer<Boolean>() {
                     @Override
@@ -154,13 +150,13 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
 
 
     private void initViewPager() {
-        vpPhotoPreview.setOnPageSelectedListener(new ImageViewTouchViewPager.OnPageSelectedListener() {
+        binding.vpPhotoPreview.setOnPageSelectedListener(new ImageViewTouchViewPager.OnPageSelectedListener() {
             @Override
             public void onPageSelected(int position) {
                 mPresenter.upDataCurrentPosition(position);
             }
         });
-        vpPhotoPreview.setOffscreenPageLimit(5);
+        binding.vpPhotoPreview.setOffscreenPageLimit(5);
         mPhotoPreviewAdapter.setOnImageClickListener(new PhotoPreviewAdapter.OnImageClickListener() {
             @Override
             public void onImageClick(int position) {
@@ -168,7 +164,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
                 finish();
             }
         });
-        vpPhotoPreview.setAdapter(mPhotoPreviewAdapter);
+        binding.vpPhotoPreview.setAdapter(mPhotoPreviewAdapter);
     }
 
 
@@ -182,13 +178,13 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
      */
     @Override
     public void showPageSelected(int position, int size) {
-        tvProgress.setText((position + 1) + "/" + size);
-        vpPhotoPreview.setCurrentItem(position);
+        binding.tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", position + 1, size));
+        binding.vpPhotoPreview.setCurrentItem(position);
     }
 
     @Override
     public void hideSaveBtn() {
-        llSave.setVisibility(View.GONE);
+        binding.llSave.setVisibility(View.GONE);
     }
 
 

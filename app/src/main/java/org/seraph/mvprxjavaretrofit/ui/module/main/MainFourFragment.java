@@ -2,12 +2,16 @@ package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.databinding.TestFragmentFourBinding;
 import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
@@ -23,8 +27,6 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * 4
@@ -35,13 +37,7 @@ import butterknife.OnClick;
 public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
 
 
-    @BindView(R.id.vg_add_image_group)
-    CustomImageViewGroup mAddImageView;
-
-    @Override
-    public int getContextView() {
-        return R.layout.test_fragment_four;
-    }
+    TestFragmentFourBinding binding;
 
     @Inject
     MainFourFragmentPresenter mPresenter;
@@ -54,6 +50,13 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
         return mPresenter;
     }
 
+
+    @Override
+    protected View initDataBinding(LayoutInflater inflater, ViewGroup container) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.test_fragment_four, container, false);
+        binding.setFragment(this);
+        return binding.getRoot();
+    }
 
     @Override
     public void setupActivityComponent() {
@@ -70,12 +73,12 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
     }
 
     private void initListener() {
-        mAddImageView.setOnClickPicListener(new CustomImageViewGroup.OnClickPicListener() {
+        binding.vgAddImageGroup.setOnClickPicListener(new CustomImageViewGroup.OnClickPicListener() {
             @Override
             public void onPicClick(View v, int position) {
                 switch ((int) v.getTag()) {
                     case 0: //add
-                        mAlertDialogUtils.createHeadSelectedDialog(mAddImageView, new AlertDialogUtils.SelectedItemListener() {
+                        mAlertDialogUtils.createHeadSelectedDialog(binding.vgAddImageGroup, new AlertDialogUtils.SelectedItemListener() {
                             @Override
                             public void onSelectedItem(int position) {
                                 switch (position) {
@@ -95,7 +98,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
                 }
             }
         });
-        mAddImageView.setOnContentChangeListener(new CustomImageViewGroup.OnContentChangeListener() {
+        binding.vgAddImageGroup.setOnContentChangeListener(new CustomImageViewGroup.OnContentChangeListener() {
             @Override
             public void OnContentChanged(String path) {
                 mPresenter.removePath(path);
@@ -104,7 +107,6 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
     }
 
 
-    @OnClick(value = {R.id.btn_design_layout, R.id.btn_upload_test})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_design_layout:
@@ -120,8 +122,8 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
     @Override
     public void setImageList(ArrayList<String> imageList) {
         //设置图片
-        mAddImageView.setVisibility(View.VISIBLE);
-        mAddImageView.setItemPaths(imageList);
+        binding.vgAddImageGroup.setVisibility(View.VISIBLE);
+        binding.vgAddImageGroup.setItemPaths(imageList);
     }
 
     @Override

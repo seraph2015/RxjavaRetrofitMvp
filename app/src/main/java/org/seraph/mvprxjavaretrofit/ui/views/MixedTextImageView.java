@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.StringUtils;
 
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.utlis.HtmlUtils;
 
 import java.util.ArrayList;
@@ -120,7 +120,8 @@ public class MixedTextImageView extends LinearLayout {
         params.bottomMargin = SizeUtils.dp2px(12);
         imageView.setLayoutParams(params);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        PicassoTool.loadCache(getContext(), imageUrl, imageView, screenWidth, screenHeight);
+        GlideApp.with(getContext()).load(imageUrl).override(screenWidth,screenHeight).into(imageView);
+        //PicassoTool.loadCache(getContext(), imageUrl, imageView, screenWidth, screenHeight);
         listImg.add(imageUrl);
         imageView.setTag(imgIndex);
         imageView.setOnClickListener(onClickListener);

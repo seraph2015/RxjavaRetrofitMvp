@@ -1,10 +1,11 @@
 package org.seraph.mvprxjavaretrofit.ui.module.login;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.widget.TextView;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.databinding.ActLoginAgreementBinding;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerLoginComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
@@ -14,8 +15,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.login.presenter.AgreementPresenter
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-
 /**
  * 注册协议界面
  * date：2017/10/25 14:16
@@ -24,14 +23,12 @@ import butterknife.BindView;
  **/
 public class AgreementActivity extends ABaseActivity<AgreementContract.Presenter> implements AgreementContract.View {
 
-    @BindView(R.id.tv_toolbar_title)
-    TextView tvToolbarTitle;
-    @BindView(R.id.tv_agreement)
-    TextView tvAgreement;
+
+    ActLoginAgreementBinding binding;
 
     @Override
-    public int getContextView() {
-        return R.layout.act_login_agreement;
+    protected void initContextView() {
+        binding = DataBindingUtil.setContentView(this, R.layout.act_login_agreement);
     }
 
     @Override
@@ -49,7 +46,7 @@ public class AgreementActivity extends ABaseActivity<AgreementContract.Presenter
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        tvToolbarTitle.setText("注册协议");
+        binding.appbar.tvToolbarTitle.setText("注册协议");
     }
 
 }

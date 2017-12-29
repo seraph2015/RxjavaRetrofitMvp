@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.welcome;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import com.blankj.utilcode.util.ConvertUtils;
 import com.tmall.ultraviewpager.UltraViewPager;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.databinding.WelcomeActivityGuidePagesBinding;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerWelcomeComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
@@ -18,8 +20,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 
 import javax.inject.Inject;
-
-import butterknife.BindView;
 
 /**
  * 引导页
@@ -29,12 +29,12 @@ import butterknife.BindView;
  **/
 public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract.Presenter> implements GuidePagesActivityContract.View {
 
-    @BindView(R.id.ultra_viewpager)
-    UltraViewPager ultraViewPager;
+
+    WelcomeActivityGuidePagesBinding binding;
 
     @Override
-    public int getContextView() {
-        return R.layout.welcome_activity_guide_pages;
+    protected void initContextView() {
+        binding = DataBindingUtil.setContentView(this,R.layout.welcome_activity_guide_pages);
     }
 
     @Inject
@@ -66,23 +66,23 @@ public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract
                 mPresenter.onItemClick(position);
             }
         });
-        ultraViewPager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
+        binding.ultraViewpager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
         //UltraPagerAdapter 绑定子view到UltraViewPager
-        ultraViewPager.setOffscreenPageLimit(3);
-        ultraViewPager.setAdapter(mUltraPagerAdapter);
+        binding.ultraViewpager.setOffscreenPageLimit(3);
+        binding.ultraViewpager.setAdapter(mUltraPagerAdapter);
         //内置indicator初始化
-        ultraViewPager.initIndicator();
+        binding.ultraViewpager.initIndicator();
         //设置indicator样式
-        ultraViewPager.getIndicator()
+        binding.ultraViewpager.getIndicator()
                 .setOrientation(UltraViewPager.Orientation.HORIZONTAL)
                 .setFocusColor(Color.WHITE)
                 .setNormalColor(Color.GRAY)
                 .setRadius((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
         //设置indicator对齐方式
-        ultraViewPager.getIndicator().setMargin(10, 10, 10, ConvertUtils.dp2px(15));
-        ultraViewPager.getIndicator().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+        binding.ultraViewpager.getIndicator().setMargin(10, 10, 10, ConvertUtils.dp2px(15));
+        binding.ultraViewpager.getIndicator().setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
         //构造indicator,绑定到UltraViewPager
-        ultraViewPager.getIndicator().build();
+        binding.ultraViewpager.getIndicator().build();
     }
 
 
@@ -95,7 +95,7 @@ public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract
     @Override
     public void setImageList(Integer[] images) {
         mUltraPagerAdapter.setListImage(images);
-        ultraViewPager.getViewPager().getAdapter().notifyDataSetChanged();
+        binding.ultraViewpager.getViewPager().getAdapter().notifyDataSetChanged();
     }
 
 }

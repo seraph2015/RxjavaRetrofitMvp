@@ -1,19 +1,18 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photolist;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.databinding.CommonActivityLocalImageListBinding;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
@@ -25,7 +24,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -34,18 +32,11 @@ import io.reactivex.functions.Consumer;
 public class LocalImageListActivity extends ABaseActivity<LocalImageListContract.Presenter> implements LocalImageListContract.View {
 
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.tv_toolbar_title)
-    TextView toolbarTitle;
-
-    @BindView(R.id.rv_local_image_list)
-    RecyclerView mRvList;
-
+    CommonActivityLocalImageListBinding binding;
 
     @Override
-    public int getContextView() {
-        return R.layout.common_activity_local_image_list;
+    protected void initContextView() {
+        binding = DataBindingUtil.setContentView(this,R.layout.common_activity_local_image_list);
     }
 
     @Inject
@@ -75,15 +66,15 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     }
 
     private void initRxBinding() {
-        toolbarTitle.setText("选择图片");
-        RxToolbar.itemClicks(toolbar).subscribe(new Consumer<MenuItem>() {
+        binding.appbar.tvToolbarTitle.setText("选择图片");
+        RxToolbar.itemClicks(binding.appbar.toolbar).subscribe(new Consumer<MenuItem>() {
             @Override
             public void accept(MenuItem menuItem) throws Exception {
                 mPresenter.save(mImageListAdapter.getSelectedPathList());
             }
         });
-        mRvList.setLayoutManager(manager);
-        mRvList.setAdapter(mImageListAdapter);
+        binding.rvLocalImageList.setLayoutManager(manager);
+        binding.rvLocalImageList.setAdapter(mImageListAdapter);
     }
 
     @Override

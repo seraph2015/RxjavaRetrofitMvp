@@ -16,10 +16,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.login.LoginActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
-import java.io.Serializable;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
@@ -39,8 +35,6 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         AppActivityManage.getInstance().addActivity(activity);
         //设置字体，需要在设置布局之后
         FontUtils.injectFont(activity.findViewById(android.R.id.content));
-        //ButterKnife控件绑定
-        activity.getIntent().putExtra("ActivityBean", new ActivityBean(ButterKnife.bind(activity)));
         //注册事件总线
         RxBus.get().register(activity);
         //初始化公共依赖注入
@@ -105,24 +99,11 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
     public void onActivityDestroyed(Activity activity) {
         RxBus.get().unregister(activity);
         //解除ButterKnife控件绑定
-        ((ActivityBean) activity.getIntent().getSerializableExtra("ActivityBean")).getUnbinder().unbind();
+       // ((ActivityBean) activity.getIntent().getSerializableExtra("ActivityBean")).getUnbinder().unbind();
         //移除关闭activity
         AppActivityManage.getInstance().closeActivity(activity);
     }
 
-    private class ActivityBean implements Serializable {
-
-        private Unbinder unbinder;
-
-        private ActivityBean(Unbinder unbinder) {
-            this.unbinder = unbinder;
-        }
-
-        public Unbinder getUnbinder() {
-            return unbinder;
-        }
-
-    }
 
     /**
      * 获取公用的AppComponent

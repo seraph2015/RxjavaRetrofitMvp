@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.StringUtils;
 
-import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouch;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchBase;
@@ -33,8 +31,6 @@ class PhotoPreviewAdapter extends PagerAdapter {
 
     private Activity mContext;
 
-    private LayoutInflater inflater;
-
     private List<PhotoPreviewBean> mListData;
 
 
@@ -43,7 +39,6 @@ class PhotoPreviewAdapter extends PagerAdapter {
     @Inject
     PhotoPreviewAdapter(Activity activity) {
         this.mContext = activity;
-        inflater = LayoutInflater.from(mContext);
     }
 
     @Override
@@ -59,9 +54,7 @@ class PhotoPreviewAdapter extends PagerAdapter {
     @Override
     @NonNull
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
-        View view = inflater.inflate(R.layout.common_activity_photo_preview_item, container, false);
-
-        ImageViewTouch imageView = view.findViewById(R.id.ivt_image);
+        ImageViewTouch imageView = new ImageViewTouch(container.getContext());
         //imageView.setTag(ImageViewTouchViewPager.VIEW_PAGER_OBJECT_TAG + position);
         imageView.setMaxScale(3.0f);
         imageView.setMinScale(1.0f);
@@ -82,8 +75,8 @@ class PhotoPreviewAdapter extends PagerAdapter {
             GlideApp.with(mContext).load(mListData.get(position).objURL).skipMemoryCache(true).into(imageView);
             //  PicassoTool.loadNoCache(mContext, mListData.get(position).objURL, imageView);
         }
-        container.addView(view, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
-        return view;
+        container.addView(imageView, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
+        return imageView;
     }
 
 

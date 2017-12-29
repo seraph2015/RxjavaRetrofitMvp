@@ -5,12 +5,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomSquareImageView;
 
 import java.io.File;
@@ -26,12 +25,12 @@ class LocalImageListAdapter extends BaseQuickAdapter<LocalImageBean,BaseViewHold
 
     private ArrayList<String> mSelectedPathList = new ArrayList<>();
 
-    private int size;
+   // private int size;
 
     @Inject
     LocalImageListAdapter(Context context) {
         super(R.layout.common_activity_loacl_image_item);
-        size = SizeUtils.dp2px(120);
+       // size = SizeUtils.dp2px(120);
     }
 
 
@@ -39,7 +38,8 @@ class LocalImageListAdapter extends BaseQuickAdapter<LocalImageBean,BaseViewHold
     protected void convert(final BaseViewHolder holder, final LocalImageBean localImageBean) {
         CustomSquareImageView imageView = holder.getView(R.id.iv_image_item);
         final ImageView tagView = holder.getView(R.id.iv_image_item_tag);
-        PicassoTool.loadCache(mContext, new File(localImageBean.path), imageView, size, size);
+       // PicassoTool.loadCache(mContext, new File(localImageBean.path), imageView, size, size);
+        GlideApp.with(mContext).load(new File(localImageBean.path)).into(imageView);
         if (mSelectedPathList.contains(localImageBean.path)) {
             tagView.setVisibility(View.VISIBLE);
         } else {

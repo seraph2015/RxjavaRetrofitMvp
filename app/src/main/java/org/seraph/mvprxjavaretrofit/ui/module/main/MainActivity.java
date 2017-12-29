@@ -1,15 +1,12 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.LogUtils;
@@ -19,6 +16,7 @@ import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView;
 
 import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.databinding.TestActivityMainBinding;
 import org.seraph.mvprxjavaretrofit.di.component.DaggerMainActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
@@ -27,14 +25,12 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.base.IComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter;
-import org.seraph.mvprxjavaretrofit.ui.views.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -45,21 +41,11 @@ import io.reactivex.functions.Consumer;
  **/
 public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> implements MainActivityContract.View, IComponent<MainActivityComponent> {
 
-    @BindView(R.id.ll_root)
-    LinearLayout rootView;
-    @BindView(R.id.bnv_main)
-    BottomNavigationViewEx bnvBar;
-
-    @BindView(R.id.appbar)
-    AppBarLayout appbar;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.tv_toolbar_title)
-    TextView toolbarTitle;
+    TestActivityMainBinding binding;
 
     @Override
-    public int getContextView() {
-        return R.layout.test_activity_main;
+    protected void initContextView() {
+        binding = DataBindingUtil.setContentView(this, R.layout.test_activity_main);
     }
 
     @Inject
@@ -97,12 +83,12 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
     }
 
     private void initLayout() {
-        appbar.setAlpha(0.8f);
+        binding.appbar.appbar.setAlpha(0.8f);
         initFragment(0);
-        bnvBar.enableAnimation(false);
-        bnvBar.enableShiftingMode(false);
-        bnvBar.enableItemShiftingMode(false);
-        RxBottomNavigationView.itemSelections(bnvBar).subscribe(bottomNavigationConsumer);
+        binding.bnvMain.enableAnimation(false);
+        binding.bnvMain.enableShiftingMode(false);
+        binding.bnvMain.enableItemShiftingMode(false);
+        RxBottomNavigationView.itemSelections(binding.bnvMain).subscribe(bottomNavigationConsumer);
     }
 
 
@@ -160,7 +146,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
 
     @Override
     public void setTitle(String title) {
-        toolbarTitle.setText(title);
+        binding.appbar.tvToolbarTitle.setText(title);
     }
 
     @Override
@@ -168,7 +154,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
         //模糊图片
         //Bitmap bitmap = ConvertUtils.drawable2Bitmap(getResources().getDrawable(resid));
         //ConvertUtils.bitmap2Drawable(ImageUtils.fastBlur(bitmap, 1, 15, true))
-        rootView.setBackground(getResources().getDrawable(resid));
+        binding.llRoot.setBackground(getResources().getDrawable(resid));
     }
 
 
@@ -200,7 +186,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
 
     @Subscribe(tags = {@Tag(AppConstants.RxBusAction.TAG_MAIN_MENU)})
     public void ClickMenuPosition(Integer position) {
-        bnvBar.setCurrentItem(position);
+        binding.bnvMain.setCurrentItem(position);
     }
 
 

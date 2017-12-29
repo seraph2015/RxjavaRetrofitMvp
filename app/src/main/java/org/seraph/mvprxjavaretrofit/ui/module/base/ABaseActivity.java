@@ -2,6 +2,7 @@ package org.seraph.mvprxjavaretrofit.ui.module.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -28,7 +29,7 @@ import javax.inject.Inject;
  **/
 public abstract class ABaseActivity<P extends IABaseContract.ABaseActivityPresenter> extends RxAppCompatActivity implements IABaseContract.IBaseActivityView {
 
-    public abstract int getContextView();
+    protected abstract void initContextView();
 
     public abstract void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule);
 
@@ -45,13 +46,15 @@ public abstract class ABaseActivity<P extends IABaseContract.ABaseActivityPresen
      * ActivityLifecycleCallbacks回调在super中，
      * 所以加载布局需要super之前{@link org.seraph.mvprxjavaretrofit.AppActivityCallbacks#onActivityCreated(Activity, Bundle)}
      */
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setContentView(getContextView());
+        initContextView();
         super.onCreate(savedInstanceState);
         initMVP();
         initCreate(savedInstanceState);
     }
+
 
     @SuppressWarnings("unchecked")
     private void initMVP() {

@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ll_root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <include layout="@layout/common_title_layout" />
-
-    <FrameLayout
-        android:id="@+id/fl_home"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:id="@+id/ll_root"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <org.seraph.mvprxjavaretrofit.ui.views.BottomNavigationViewEx
-        android:id="@+id/bnv_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#99ffffff"
-        app:itemBackground="@drawable/test_main_bottom_bg"
-        app:itemIconTint="@color/color_main_bottom_icon"
-        app:itemTextColor="@color/color_main_bottom_text"
-        app:menu="@menu/menu_act_main" />
-</LinearLayout>
+        <include
+            android:id="@+id/appbar"
+            layout="@layout/common_title_layout" />
+
+        <FrameLayout
+            android:id="@+id/fl_home"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <org.seraph.mvprxjavaretrofit.ui.views.BottomNavigationViewEx
+            android:id="@+id/bnv_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#99ffffff"
+            app:itemBackground="@drawable/test_main_bottom_bg"
+            app:itemIconTint="@color/color_main_bottom_icon"
+            app:itemTextColor="@color/color_main_bottom_text"
+            app:menu="@menu/menu_act_main" />
+    </LinearLayout>
+</layout>

@@ -12,7 +12,7 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.picasso.PicassoTool;
+import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.BaseListAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.base.adapter.ViewHolder;
 
@@ -176,7 +176,8 @@ public class WeiBoGridView extends GridView {
             ViewGroup.LayoutParams params = photo.getLayoutParams();
             params.width = mColumnWidth;
             photo.setLayoutParams(params);
-            PicassoTool.loadCache(mContext,imageUrl,photo,mColumnWidth,mColumnWidth);
+          //  PicassoTool.loadCache(mContext,imageUrl,photo,mColumnWidth,mColumnWidth);
+            GlideApp.with(mContext).load(imageUrl).override(mColumnWidth).into(photo);
         }
     }
 }
