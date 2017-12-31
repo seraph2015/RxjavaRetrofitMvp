@@ -2,7 +2,6 @@ package org.seraph.mvprxjavaretrofit.ui.module.base;
 
 import android.app.Activity;
 import android.content.Context;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -18,7 +17,7 @@ import javax.inject.Inject;
  * 所有的activity的父类继承，包含的一系列的常用操作
  * mvp结构设计
  *
- * @see #getContextView 获取对应的加载的布局view
+ * @see #initContextView() 初始化对应的布局
  * @see #getMVPPresenter() 获取实现{@link IBaseContract.IBaseActivityPresenter}接口的实现类，也是mvp架构中的Presenter层
  * @see #setupActivityComponent(AppComponent, ActivityModule) () 进行dagger2的依赖注入绑定
  * @see #initCreate(Bundle) 初始化之后的第一次调用相当于activity的{@link #onCreate(Bundle)}
@@ -95,7 +94,9 @@ public abstract class ABaseActivity<P extends IABaseContract.ABaseActivityPresen
 
     @Override
     protected void onDestroy() {
-        mPresenter.onDetach();
+        if (mPresenter != null) {
+            mPresenter.onDetach();
+        }
         super.onDestroy();
     }
 }

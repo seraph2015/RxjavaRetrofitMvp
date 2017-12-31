@@ -43,7 +43,7 @@ public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresen
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = initDataBinding(inflater,container);
+        View rootView = initDataBinding(inflater, container);
         FontUtils.injectFont(rootView);
         //数据绑定
         RxBus.get().register(this);
@@ -105,7 +105,9 @@ public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresen
     @Override
     public void onDestroyView() {
         RxBus.get().unregister(this);
-        mPresenter.onDetach();
+        if (mPresenter != null) {
+            mPresenter.onDetach();
+        }
         super.onDestroyView();
     }
 
