@@ -104,8 +104,8 @@ public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresen
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         RxBus.get().unregister(this);
+        super.onDestroyView();
         if (mPresenter != null) {
             mPresenter.onDetach();
         }
