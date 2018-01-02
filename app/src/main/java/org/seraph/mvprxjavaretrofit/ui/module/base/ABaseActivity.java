@@ -94,9 +94,9 @@ public abstract class ABaseActivity<P extends IABaseContract.ABaseActivityPresen
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (mPresenter != null) {
             mPresenter.onDetach();
         }
-        super.onDestroy();
     }
 }
