@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/test_bg_btn"
-                android:onClick="@{()->p.doLoginTest()}"
+                android:onClick="@{()->presenter.doLoginTest()}"
                 android:text="请求网络" />
 
             <TextView
