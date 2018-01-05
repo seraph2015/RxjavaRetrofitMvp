@@ -50,7 +50,7 @@ public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Prese
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        binding.setP(mPresenter);
+        binding.setPresenter(mPresenter);
     }
 
     public void setTextViewValue(CharSequence charSequence) {
