@@ -1,7 +1,7 @@
 package org.seraph.mvprxjavaretrofit.di.component.base;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
+import org.seraph.mvprxjavaretrofit.data.db.gen.DaoSession;
 import org.seraph.mvprxjavaretrofit.data.network.service.Api12306Service;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;

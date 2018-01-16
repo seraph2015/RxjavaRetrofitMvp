@@ -53,10 +53,6 @@ public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Prese
         binding.setPresenter(mPresenter);
     }
 
-    public void setTextViewValue(CharSequence charSequence) {
-        binding.tvContent.setText(charSequence);
-    }
-
     public void setUserTextViewValue(CharSequence charSequence) {
         binding.tvDbUser.setText(charSequence);
     }

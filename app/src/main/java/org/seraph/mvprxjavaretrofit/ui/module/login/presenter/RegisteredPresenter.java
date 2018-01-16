@@ -4,7 +4,7 @@ import android.content.Intent;
 
 import com.blankj.utilcode.util.ToastUtils;
 
-import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
+import org.seraph.mvprxjavaretrofit.data.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 import org.seraph.mvprxjavaretrofit.ui.module.login.AgreementActivity;

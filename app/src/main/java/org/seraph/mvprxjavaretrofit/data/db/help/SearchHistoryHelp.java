@@ -1,8 +1,8 @@
-package org.seraph.mvprxjavaretrofit.data.local.db.help;
+package org.seraph.mvprxjavaretrofit.data.db.help;
 
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.SearchHistoryTableDao;
-import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
+import org.seraph.mvprxjavaretrofit.data.db.gen.DaoSession;
+import org.seraph.mvprxjavaretrofit.data.db.gen.SearchHistoryTableDao;
+import org.seraph.mvprxjavaretrofit.data.db.table.SearchHistoryTable;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
-package org.seraph.mvprxjavaretrofit.data.local.db;
+package org.seraph.mvprxjavaretrofit.data.db;
 
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.AppConfig;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoMaster;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
+import org.seraph.mvprxjavaretrofit.data.db.gen.DaoMaster;
+import org.seraph.mvprxjavaretrofit.data.db.gen.DaoSession;
 
 import javax.inject.Inject;
 

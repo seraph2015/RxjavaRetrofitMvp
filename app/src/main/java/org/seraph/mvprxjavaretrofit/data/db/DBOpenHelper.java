@@ -1,13 +1,13 @@
-package org.seraph.mvprxjavaretrofit.data.local.db;
+package org.seraph.mvprxjavaretrofit.data.db;
 
 import android.content.Context;
 
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
 
 import org.greenrobot.greendao.database.Database;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoMaster;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.SearchHistoryTableDao;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.UserTableDao;
+import org.seraph.mvprxjavaretrofit.data.db.gen.DaoMaster;
+import org.seraph.mvprxjavaretrofit.data.db.gen.SearchHistoryTableDao;
+import org.seraph.mvprxjavaretrofit.data.db.gen.UserTableDao;
 
 /**
  * 管理表的升级

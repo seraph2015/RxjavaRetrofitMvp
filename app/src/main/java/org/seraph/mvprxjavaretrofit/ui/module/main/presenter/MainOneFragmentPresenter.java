@@ -5,8 +5,8 @@ import android.content.DialogInterface;
 import com.blankj.utilcode.util.ToastUtils;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
-import org.seraph.mvprxjavaretrofit.data.local.db.table.UserTable;
+import org.seraph.mvprxjavaretrofit.data.db.help.UserBeanHelp;
+import org.seraph.mvprxjavaretrofit.data.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseSubscriber;

@@ -1,7 +1,6 @@
 package org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.annotation.GlideModule;
@@ -37,7 +36,7 @@ public class AppGlideConfigModule extends AppGlideModule {
                         .error(R.mipmap.icon_error)
         );
         //日志级别
-        builder.setLogLevel(Log.DEBUG);
+        //builder.setLogLevel(Log.DEBUG);
     }
 
 

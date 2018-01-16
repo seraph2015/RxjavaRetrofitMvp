@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.data.local.db.table;
+package org.seraph.mvprxjavaretrofit.data.db.table;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;

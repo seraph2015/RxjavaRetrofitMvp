@@ -1,9 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -12,9 +10,9 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.reactivestreams.Subscription;
-import org.seraph.mvprxjavaretrofit.data.local.db.help.SearchHistoryHelp;
-import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
-import org.seraph.mvprxjavaretrofit.data.local.db.table.SearchHistoryTable;
+import org.seraph.mvprxjavaretrofit.data.db.help.SearchHistoryHelp;
+import org.seraph.mvprxjavaretrofit.data.db.help.UserBeanHelp;
+import org.seraph.mvprxjavaretrofit.data.db.table.SearchHistoryTable;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseSubscriber;

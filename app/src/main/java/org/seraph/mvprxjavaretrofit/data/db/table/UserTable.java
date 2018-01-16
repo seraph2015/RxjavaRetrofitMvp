@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.data.local.db.table;
+package org.seraph.mvprxjavaretrofit.data.db.table;
 
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
@@ -7,9 +7,9 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.JoinProperty;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToMany;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.DaoSession;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.SearchHistoryTableDao;
-import org.seraph.mvprxjavaretrofit.data.local.db.gen.UserTableDao;
+import org.seraph.mvprxjavaretrofit.data.db.gen.DaoSession;
+import org.seraph.mvprxjavaretrofit.data.db.gen.SearchHistoryTableDao;
+import org.seraph.mvprxjavaretrofit.data.db.gen.UserTableDao;
 
 import java.util.List;
 

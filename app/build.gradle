@@ -37,7 +37,7 @@ android {
 
 greendao {
     schemaVersion 1
-    daoPackage 'org.seraph.mvprxjavaretrofit.data.local.db.gen'
+    daoPackage 'org.seraph.mvprxjavaretrofit.data.db.gen'
     targetGenDir 'src/main/java'
 }
 

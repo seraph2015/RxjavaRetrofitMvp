@@ -4,7 +4,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.hwangjr.rxbus.RxBus;
 
 import org.seraph.mvprxjavaretrofit.AppConstants;
-import org.seraph.mvprxjavaretrofit.data.local.db.help.UserBeanHelp;
+import org.seraph.mvprxjavaretrofit.data.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
 import org.seraph.mvprxjavaretrofit.ui.module.login.contract.ResetPasswordContract;
