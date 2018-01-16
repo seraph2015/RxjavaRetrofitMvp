@@ -6,7 +6,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.tencent.bugly.crashreport.CrashReport;
 
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.ImageFactory;
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.DaggerAppComponent;
 import org.seraph.mvprxjavaretrofit.di.module.base.AppModule;
@@ -24,7 +23,7 @@ public class AppApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        initImageLoad();
+       // initImageLoad();
         initDagger2();
         //工具初始化
         Utils.init(this);
@@ -49,13 +48,13 @@ public class AppApplication extends Application{
         this.appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
     }
 
-    /**
-     * 初始化图片加载
-     */
-    private void initImageLoad() {
-        ImageFactory.initPicasso(this);
-        //  ImageFactory.initFresco(this);
-    }
+//    /**
+//     * 初始化图片加载
+//     */
+//    private void initImageLoad() {
+//        ImageFactory.initPicasso(this);
+//        ImageFactory.initFresco(this);
+//    }
 
     /**
      * 获取AppComponent
