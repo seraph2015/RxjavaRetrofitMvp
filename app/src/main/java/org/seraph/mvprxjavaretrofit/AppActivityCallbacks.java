@@ -98,8 +98,6 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
     @Override
     public void onActivityDestroyed(Activity activity) {
         RxBus.get().unregister(activity);
-        //解除ButterKnife控件绑定
-       // ((ActivityBean) activity.getIntent().getSerializableExtra("ActivityBean")).getUnbinder().unbind();
         //移除关闭activity
         AppActivityManage.getInstance().closeActivity(activity);
     }
