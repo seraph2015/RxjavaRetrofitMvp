@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 
 import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
@@ -16,7 +17,7 @@ public interface MainActivityContract extends IABaseContract {
 
         void setTitle(String title);
 
-        void setBackgroundResource(@DrawableRes int resid);
+        void setBackgroundResource(@DrawableRes Drawable drawable);
 
     }
     //使用接口进行中间调用设计，关闭直接使用View类的完全持有

@@ -1,7 +1,11 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ToastUtils;
 
 import org.seraph.mvprxjavaretrofit.AppActivityManage;
@@ -32,6 +36,8 @@ public class MainActivityPresenter extends MainActivityContract.Presenter {
     private String[] titles = new String[]{"首页", "搜索", "HTTPS", "其它"};
     private int[] bgs = new int[]{R.mipmap.test_bg_fragment_one, R.mipmap.test_bg_fragment_two, R.mipmap.test_bg_fragment_three, R.mipmap.test_bg_fragment_four};
 
+    private Drawable[] drawablesBg = new Drawable[4];
+
     private int position = 0;
 
     @Override
@@ -52,7 +58,11 @@ public class MainActivityPresenter extends MainActivityContract.Presenter {
 
     @Override
     public void start() {
-
+        //模糊图片
+        for (int i = 0; i < drawablesBg.length; i++) {
+            Bitmap bitmap = ConvertUtils.drawable2Bitmap(mView.getContext().getResources().getDrawable(bgs[i]));
+            drawablesBg[i] = ConvertUtils.bitmap2Drawable(ImageUtils.fastBlur(bitmap, 1, 15, true));
+        }
     }
 
 
@@ -62,7 +72,7 @@ public class MainActivityPresenter extends MainActivityContract.Presenter {
     public void setSelectedFragment(int positionIndex) {
         position = positionIndex;
         mView.setTitle(titles[position]);
-        mView.setBackgroundResource(bgs[position]);
+        mView.setBackgroundResource(drawablesBg[position]);
     }
 
 
@@ -74,7 +84,6 @@ public class MainActivityPresenter extends MainActivityContract.Presenter {
         //保存停留的页面
         outState.putInt(MAIN_SAVE_KEY, position);
     }
-
 
 
     /**

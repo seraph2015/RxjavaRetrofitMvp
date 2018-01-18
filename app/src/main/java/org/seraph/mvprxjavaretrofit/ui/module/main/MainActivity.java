@@ -1,6 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
@@ -76,10 +77,9 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
+        mPresenter.start();
         //初始化layout
         initLayout();
-        mPresenter.start();
-
     }
 
     private void initLayout() {
@@ -149,12 +149,11 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
         binding.appbar.tvToolbarTitle.setText(title);
     }
 
+
+
     @Override
-    public void setBackgroundResource(@DrawableRes int resid) {
-        //模糊图片
-        //Bitmap bitmap = ConvertUtils.drawable2Bitmap(getResources().getDrawable(resid));
-        //ConvertUtils.bitmap2Drawable(ImageUtils.fastBlur(bitmap, 1, 15, true))
-        binding.llRoot.setBackground(getResources().getDrawable(resid));
+    public void setBackgroundResource(Drawable drawable) {
+        binding.llRoot.setBackground(drawable);
     }
 
 
