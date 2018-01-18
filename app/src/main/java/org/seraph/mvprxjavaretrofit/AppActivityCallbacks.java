@@ -14,6 +14,7 @@ import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.login.LoginActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.welcome.WelcomeActivity;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
 import io.reactivex.annotations.NonNull;
@@ -34,7 +35,12 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         //管理activity
         AppActivityManage.getInstance().addActivity(activity);
         //设置字体，需要在设置布局之后
-        FontUtils.injectFont(activity.findViewById(android.R.id.content));
+        View rootView = activity.findViewById(android.R.id.content);
+        //如果是欢迎页则不设置
+        if (!(activity instanceof WelcomeActivity)) {
+            rootView.setBackgroundResource(R.color.act_bg_color);
+        }
+        FontUtils.injectFont(rootView);
         //注册事件总线
         RxBus.get().register(activity);
         //初始化公共依赖注入

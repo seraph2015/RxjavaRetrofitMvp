@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.welcome;
 
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -32,7 +34,8 @@ class WelcomeActivityPresenter extends WelcomeActivityContract.Presenter {
      * 3秒倒计时转跳
      */
     private void CountDown() {
-        Observable.intervalRange(0, 1, 3, 3, TimeUnit.SECONDS).subscribe(new Consumer<Long>() {
+        Observable.intervalRange(0, 1, 3, 3, TimeUnit.SECONDS)
+                .compose(RxSchedulers.<Long>io_main2(mView)).subscribe(new Consumer<Long>() {
             @Override
             public void accept(Long aLong) throws Exception {
                 mView.jumpNextActivity();

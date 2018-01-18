@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -62,6 +64,18 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
         binding.tvHttpsValue.setText(charSequence);
     }
 
+    @Override
+    public void setDownloadProgressRate(long downloadSize, long max) {
+        if (dialog != null) {
+            dialog.setMax((int) max);
+            dialog.setProgress((int) downloadSize);
+        }
+    }
+
+
+
+    ProgressDialog dialog;
+
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_https:
@@ -71,6 +85,21 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
                 RxBus.get().post(AppConstants.RxBusAction.TAG_MAIN_MENU, 1);
                 break;
 
+            case R.id.btn_show:
+                dialog = new ProgressDialog(getActivity());
+                dialog.setIndeterminate(false);
+                dialog.setCancelable(false);
+                dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                dialog.setButton(DialogInterface.BUTTON_POSITIVE, "取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        mPresenter.cancelDownload();
+                    }
+                });
+                dialog.show();
+                mPresenter.startDownload();
+                break;
         }
 
     }

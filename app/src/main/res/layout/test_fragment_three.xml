@@ -35,5 +35,14 @@
             android:onClick="@{fragment.onViewClicked}"
             android:text="跳转第二页" />
 
+
+        <Button
+            android:id="@+id/btn_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/test_bg_btn"
+            android:onClick="@{fragment.onViewClicked}"
+            android:text="显示进度框" />
+
     </LinearLayout>
 </layout>

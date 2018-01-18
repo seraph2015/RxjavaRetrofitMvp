@@ -13,6 +13,9 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
@@ -99,12 +102,70 @@ public class RxSchedulers {
                 Flowable<T> tempUpstream = upstream;
                 //如果有传递过来需要管理绑定rxjava生命周期的view，则使用新的Transformer
                 if (view != null) {
-                    tempUpstream = (Flowable<T>) view.<T>bindToLifecycle().apply(tempUpstream);
+                    if (view instanceof IBaseContract.IBaseFragmentView) {//在对应的生命周期进行关闭
+                        tempUpstream = (Flowable<T>) ((IBaseContract.IBaseFragmentView) view).<T>bindUntilEvent(FragmentEvent.DESTROY_VIEW).apply(tempUpstream);
+                    } else if (view instanceof IBaseContract.IBaseActivityView) {
+                        tempUpstream = (Flowable<T>) ((IBaseContract.IBaseActivityView) view).<T>bindUntilEvent(ActivityEvent.DESTROY).apply(tempUpstream);
+                    }
                 }
                 return tempUpstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
             }
         };
     }
 
+    /**
+     * io线程转main线程
+     */
+    public static <T> ObservableTransformer<T, T> io_main_o() {
+        return io_main_o(null);
+    }
+
+    /**
+     * io线程转main线程
+     */
+    public static <T> ObservableTransformer<T, T> io_main_o(final IBaseContract.IBaseView view) {
+        return new ObservableTransformer<T, T>() {
+            @Override
+            public ObservableSource<T> apply(Observable<T> upstream) {
+                Observable<T> tempUpstream = upstream;
+                //如果有传递过来需要管理绑定rxjava生命周期的view，则使用新的Transformer
+                if (view != null) {
+                    if (view instanceof IBaseContract.IBaseFragmentView) {//在对应的生命周期进行关闭
+                        tempUpstream = (Observable<T>) ((IBaseContract.IBaseFragmentView) view).<T>bindUntilEvent(FragmentEvent.DESTROY_VIEW).apply(tempUpstream);
+                    } else if (view instanceof IBaseContract.IBaseActivityView) {
+                        tempUpstream = (Observable<T>) ((IBaseContract.IBaseActivityView) view).<T>bindUntilEvent(ActivityEvent.DESTROY).apply(tempUpstream);
+                    }
+                }
+                return tempUpstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+            }
+
+        };
+    }
+
+
+    /**
+     * io线程转main线程
+     */
+    public static <T> ObservableTransformer<T, T> io_main2() {
+        return io_main2(null);
+    }
+
+
+    /**
+     * io线程转main线程
+     */
+    public static <T> ObservableTransformer<T, T> io_main2(final IBaseContract.IBaseView view) {
+        return new ObservableTransformer<T, T>() {
+            @Override
+            public Observable<T> apply(@NonNull Observable<T> upstream) {
+                Observable<T> tempUpstream = upstream;
+                //如果有传递过来需要管理绑定rxjava生命周期的view，则使用新的Transformer
+                if (view != null) {
+                    tempUpstream = (Observable<T>) view.<T>bindToLifecycle().apply(tempUpstream);
+                }
+                return tempUpstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+            }
+        };
+    }
 
 }

@@ -15,6 +15,7 @@ public interface MainThreeFragmentContract extends IABaseContract {
 
         void setTextView(CharSequence charSequence);
 
+        void setDownloadProgressRate(long downloadSize, long rate);
     }
 
     abstract class Presenter extends ABaseFragmentPresenter<View> {

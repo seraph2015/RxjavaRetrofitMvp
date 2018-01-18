@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.blankj.utilcode.util.SPUtils;
 
@@ -31,6 +32,7 @@ public class WelcomeActivity extends ABaseActivity<WelcomeActivityContract.Prese
     @Override
     protected void initContextView() {
         binding = DataBindingUtil.setContentView(this, R.layout.welcome_activity);
+        binding.setActivity(this);
     }
 
     @Inject
@@ -64,5 +66,10 @@ public class WelcomeActivity extends ABaseActivity<WelcomeActivityContract.Prese
         }
         startActivity(intent);
         finish();
+    }
+
+
+    public void onViewClicked(View view) {
+        jumpNextActivity();
     }
 }
