@@ -42,7 +42,9 @@ public class LoginPresenter extends LoginContract.Presenter {
 
     @Override
     public void start() {
-        mView.setUserName(SPUtils.getInstance(AppConstants.SPAction.SP_NAME).getString(AppConstants.SPAction.USERNAME));
+        //进行账号回填
+        SPUtils spUtils = SPUtils.getInstance(AppConstants.SPAction.SP_NAME);
+        mView.setUserLoginInfo(spUtils.getString(AppConstants.SPAction.USERNAME), spUtils.getString(AppConstants.SPAction.PASSWORD));
     }
 
 

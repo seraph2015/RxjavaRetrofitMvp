@@ -13,7 +13,7 @@ public interface LoginContract extends IABaseContract {
 
     interface View extends IBaseActivityView{
 
-        void setUserName(String username);
+        void setUserLoginInfo(String username,String passWord);
     }
 
     abstract class Presenter extends ABaseActivityPresenter<View>{

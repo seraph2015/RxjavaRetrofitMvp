@@ -110,9 +110,10 @@ public class LoginActivity extends ABaseActivity<LoginContract.Presenter> implem
 
 
     @Override
-    public void setUserName(String username) {
+    public void setUserLoginInfo(String username,String passWord) {
         binding.etPhone.setText(username);
-        binding.etPhone.setSelection(username.length());
+        binding.etPassword.setText(passWord);
+        binding.etPassword.setSelection(passWord.length());
     }
 
 
