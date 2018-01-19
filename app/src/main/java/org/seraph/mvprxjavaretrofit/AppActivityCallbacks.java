@@ -72,7 +72,7 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         }
         //如果是进入登录界面，则使用从下叠加到页面上的动画
         if (activity instanceof LoginActivity) {
-            activity.overridePendingTransition(R.anim.anim_slide_in_from_bottom, 0);
+            activity.overridePendingTransition(R.anim.anim_slide_in_from_bottom, R.anim.anim_null);
         }
     }
 

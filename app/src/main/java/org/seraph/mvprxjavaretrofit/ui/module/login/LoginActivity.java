@@ -119,6 +119,6 @@ public class LoginActivity extends ABaseActivity<LoginContract.Presenter> implem
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(0, R.anim.anim_slide_out_to_bottom);
+        overridePendingTransition(R.anim.anim_null, R.anim.anim_slide_out_to_bottom);
     }
 }
