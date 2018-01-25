@@ -67,7 +67,6 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        binding.toolbar.setTitle("Tomia相册");
         initListener();
         mPresenter.start();
     }

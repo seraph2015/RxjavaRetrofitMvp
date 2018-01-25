@@ -2,6 +2,7 @@ package org.seraph.mvprxjavaretrofit;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -46,6 +47,10 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         //初始化公共依赖注入
         if (activity instanceof ABaseActivity) {
             ((ABaseActivity) activity).setupActivityComponent(getAppComponent(activity), getActivityModule(activity));
+        }
+        View appbar = activity.findViewById(R.id.appbar);
+        if (appbar != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            appbar.setOutlineProvider(null);
         }
         //todo 可以进行其他公共设置（例如布局，切换动画。）...
         //例如：如果有toolbar。则初始化部分公共设置，如果部分界面不需要，自己进行清除
