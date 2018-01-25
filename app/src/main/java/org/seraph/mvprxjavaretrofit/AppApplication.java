@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.bugly.Bugly;
 
 import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
 import org.seraph.mvprxjavaretrofit.di.component.base.DaggerAppComponent;
@@ -29,7 +29,8 @@ public class AppApplication extends Application{
         Utils.init(this);
         initToastLayout();
         //腾讯bug日志收集
-        CrashReport.initCrashReport(this, "c475f0a560", false);
+        //CrashReport.initCrashReport(this, "c475f0a560", false);
+        Bugly.init(this,"c475f0a560",false);
         //注册activity回调
         registerActivityLifecycleCallbacks(new AppActivityCallbacks());
     }
