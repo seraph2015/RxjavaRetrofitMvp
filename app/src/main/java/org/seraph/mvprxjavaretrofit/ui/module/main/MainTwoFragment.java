@@ -4,11 +4,17 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.StringUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.TestFragmentTwoBinding;
@@ -17,11 +23,14 @@ import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainTwoFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -59,9 +68,38 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Prese
         getComponent(MainActivityComponent.class).inject(this);
     }
 
+    @Inject
+    ImageListBaiduAdapter mAdapter;
+
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        mPresenter.start();
+        listBinding.refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                if (StringUtils.isEmpty(getSearchKeyWord())) {
+                    refreshlayout.finishRefresh(false);
+                    return;
+                }
+                mPresenter.getBaiduImageList(getSearchKeyWord(), 1);
+            }
+        });
+        listBinding.refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                mPresenter.doLoadMore();
+            }
+        });
+        listBinding.rvImages.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mAdapter.bindToRecyclerView(listBinding.rvImages);
+        mAdapter.addHeaderView(getHeadView());
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                mPresenter.onPhotoPreview(position);
+            }
+        });
+
         rxBinding();
     }
 
@@ -102,13 +140,17 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Prese
         PhotoPreviewActivity.startPhotoPreview(getActivity(), photoList, position, PhotoPreviewActivity.IMAGE_TYPE_NETWORK);
     }
 
-
     @Override
-    public RecyclerView getRecyclerView() {
-        return listBinding.rvImages;
+    public void setListDate(List<ImageBaiduBean.BaiduImage> baiduImages) {
+        listBinding.refreshLayout.finishRefresh();
+        listBinding.refreshLayout.finishLoadmore();
+        if (baiduImages != null) {
+            mAdapter.replaceData(baiduImages);
+        }
+
     }
 
-    @Override
+
     public View getHeadView() {
         headBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.test_fragment_two_list_head, listBinding.rvImages, false);
         headBinding.setTwo(this);

@@ -4,8 +4,10 @@ import android.support.v7.widget.RecyclerView;
 
 import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
+import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 第2页的契约类
@@ -35,8 +37,6 @@ public interface MainTwoFragmentContract extends IABaseContract {
          */
         void startPhotoPreview(ArrayList<PhotoPreviewBean> photoList, int position);
 
-        RecyclerView getRecyclerView();
-
-        android.view.View getHeadView();
+        void setListDate(List<ImageBaiduBean.BaiduImage> baiduImages);
     }
 }

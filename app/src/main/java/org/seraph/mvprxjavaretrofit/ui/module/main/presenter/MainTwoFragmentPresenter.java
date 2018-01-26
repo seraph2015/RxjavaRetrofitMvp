@@ -51,14 +51,11 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
 
     private UserBeanHelp mUserHelp;
 
-    private ImageListBaiduAdapter mAdapter;
-
     @Inject
-    MainTwoFragmentPresenter(ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp, ImageListBaiduAdapter adapter) {
+    MainTwoFragmentPresenter(ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp) {
         this.mApiBaiduService = apiBaiduService;
         this.mSearchHistoryHelp = searchHistoryHelp;
         this.mUserHelp = userHelp;
-        this.mAdapter = adapter;
     }
 
     /**
@@ -74,24 +71,12 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
     //历史记录type
     private String type = "Search Image";
 
+
+    private List<ImageBaiduBean.BaiduImage> list = new ArrayList<>();
+
     @Override
     public void start() {
-        mRecyclerView = mView.getRecyclerView();
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
-        mAdapter.bindToRecyclerView(mRecyclerView);
-        mAdapter.addHeaderView(mView.getHeadView());
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                onPhotoPreview(position);
-            }
-        });
-        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                getBaiduImageList(searchKeyWord, pageNo + 1);
-            }
-        }, mRecyclerView);
+
     }
 
 
@@ -158,7 +143,12 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
     }
 
 
-    private void getBaiduImageList(String keyWord, final int requestPageNo) {
+    public void doLoadMore(){
+        getBaiduImageList(searchKeyWord, pageNo +1);
+    }
+
+
+    public void getBaiduImageList(String keyWord, final int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
         mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
                 .compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
@@ -178,16 +168,11 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
                     @Override
                     public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {
                         if (requestPageNo == 1) {
-                            mAdapter.replaceData(baiduImages);
-                        } else {
-                            mAdapter.addData(baiduImages);
+                            list.clear();
                         }
+                        list.addAll(baiduImages);
                         //如果请求回来的数据是等于请求的分页数据，则显示加载更多按钮，反正显示没有更多数据
-                        if (baiduImages.size() >= 48) {
-                            mAdapter.loadMoreComplete();
-                        } else {
-                            mAdapter.loadMoreEnd();
-                        }
+                        mView.setListDate(list);
                         pageNo = requestPageNo;
                     }
 
@@ -195,7 +180,7 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
                     public void onError(String errStr) {
                         ToastUtils.showShort(errStr);
                         //数据失败
-                        mAdapter.loadMoreFail();
+                        mView.setListDate(null);
                     }
 
                 });
@@ -203,7 +188,7 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
 
     public void onPhotoPreview(int position) {
         ArrayList<PhotoPreviewBean> photoList = new ArrayList<>();
-        for (ImageBaiduBean.BaiduImage baiduImage : mAdapter.getData()) {
+        for (ImageBaiduBean.BaiduImage baiduImage : list) {
             PhotoPreviewBean photoPreviewBean = new PhotoPreviewBean();
             photoPreviewBean.objURL = baiduImage.objURL;
             photoPreviewBean.type = baiduImage.type;
