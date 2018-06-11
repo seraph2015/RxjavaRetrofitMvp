@@ -3,7 +3,6 @@ package org.seraph.mvprxjavaretrofit.ui.module.main;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,7 @@ import com.blankj.utilcode.util.StringUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.seraph.mvprxjavaretrofit.R;
@@ -83,10 +82,10 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Prese
                 mPresenter.getBaiduImageList(getSearchKeyWord(), 1);
             }
         });
-        listBinding.refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+        listBinding.refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
 
             @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
+            public void onLoadMore(RefreshLayout refreshlayout) {
                 mPresenter.doLoadMore();
             }
         });

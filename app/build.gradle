@@ -42,83 +42,81 @@ greendao {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:design:27.0.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:cardview-v7:27.0.2'
-    testCompile 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    testImplementation 'junit:junit:4.12'
     //greenDao数据库
-    compile 'org.greenrobot:greendao:3.2.2'
+    implementation 'org.greenrobot:greendao:3.2.2'
     //green数据库升级帮助类
-    compile 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.0.1'
+    implementation 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.0.1'
     //rxJava响应式编程
-    compile 'io.reactivex.rxjava2:rxjava:2.1.8'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.8'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     //This library allows one to automatically complete sequences based on a second lifecycle stream.
     //This capability is useful in Android, where incomplete subscriptions can cause memory leaks.
-    compile 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'
-    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
+    implementation 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'
+    implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
     //网络请求框架,添加这个依赖就默认添加了okhttp依赖
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     //retrofit2是基于okhttp，所以使用okhttp log 工具
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     //retrofit2的rxJava2，gson支持
-    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.2.0'
     //google的json解析
-    compile 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.2'
     //dagger2
-    compile 'com.google.dagger:dagger:2.10'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.10'
-    compile 'org.glassfish:javax.annotation:10.0-b28'
+    implementation 'com.google.dagger:dagger:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    implementation 'org.glassfish:javax.annotation:10.0-b28'
     //基于rxJava2的注册绑定对象
-    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
-    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
     //事件总线RxBus
-    compile 'com.hwangjr.rxbus:rxbus:2.0.0'
+    implementation 'com.hwangjr.rxbus:rxbus:2.0.0'
     //工具集
-    compile 'com.blankj:utilcode:1.10.0'
+    implementation 'com.blankj:utilcode:1.10.0'
     //RxJava系统权限管理
-    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     //RxJava 文件下载
-    compile 'zlc.season:rxdownload2:2.0.4'
+    implementation 'zlc.season:rxdownload2:2.0.4'
     //7.0文件共享FileProvider适配
-    compile 'com.zhy.base:fileprovider:1.0.0'
+    implementation 'com.zhy.base:fileprovider:1.0.0'
     //viewpager切换
-    compile ('com.alibaba.android:ultraviewpager:1.0.6.3@aar') {
+    implementation ('com.alibaba.android:ultraviewpager:1.0.6.3@aar') {
         transitive = true
     }
     //一个强大的recyclerView适配器 ，文档见：http://www.jianshu.com/p/b343fcff51b0
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.33'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.33'
     //图片加载
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.facebook.fresco:fresco:1.7.1'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.facebook.fresco:fresco:1.7.1'
     //glide图片加载
-    implementation 'com.github.bumptech.glide:glide:4.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
     //glide图片加载的OkHttp集成库的依赖
-    compile 'com.github.bumptech.glide:okhttp3-integration:4.4.0'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.4.0'
     //Glide 的注解和注解解析器的依赖
-    compile 'com.github.bumptech.glide:annotations:4.4.0'
+    implementation 'com.github.bumptech.glide:annotations:4.5.0'
     //Glide 图片处理
-    compile 'jp.wasabeef:glide-transformations:3.0.1'
+    implementation 'jp.wasabeef:glide-transformations:3.1.0'
     //如果你想使用GPU滤镜
-    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+    implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
     //日志奔溃收集（腾讯bugly）
-//    compile 'com.tencent.bugly:crashreport:2.6.6.1'
-//    compile 'com.tencent.bugly:nativecrashreport:3.3.1'
-    compile 'com.tencent.bugly:crashreport_upgrade:1.3.4'
+    implementation 'com.tencent.bugly:crashreport_upgrade:1.3.4'
     //下拉刷新控件 https://github.com/scwang90/SmartRefreshLayout
-    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-7'
-    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.4-7'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
     //gif开源控件
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
 }
 

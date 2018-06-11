@@ -19,7 +19,7 @@ import dagger.Component;
  **/
 @Singleton
 @Component(modules = {AppModule.class})
-public interface AppComponent {
+public interface AppComponent{
 
     void inject(AppApplication appApplication);
 
