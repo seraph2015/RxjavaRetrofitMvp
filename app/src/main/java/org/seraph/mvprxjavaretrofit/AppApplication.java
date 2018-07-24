@@ -1,12 +1,11 @@
 package org.seraph.mvprxjavaretrofit;
 
 import android.app.Activity;
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.tencent.bugly.Bugly;
-
 
 import org.seraph.mvprxjavaretrofit.di.DaggerAppComponent;
 
@@ -22,7 +21,7 @@ import dagger.android.HasActivityInjector;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class AppApplication extends Application implements HasActivityInjector{
+public class AppApplication extends MultiDexApplication implements HasActivityInjector{
 
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingActivityInjector;

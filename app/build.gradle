@@ -56,6 +56,9 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
 
+    //解决分包兼容
+    implementation 'com.android.support:multidex:1.0.3'
+
     //greenDao数据库
     implementation 'org.greenrobot:greendao:3.2.2'
 
