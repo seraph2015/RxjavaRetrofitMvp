@@ -11,10 +11,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.databinding.TestDesignLayoutBinding;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerTestsComponent;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.DesignLayoutModule;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
@@ -54,16 +50,6 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
 
     @Inject
     DesignLayoutAdapter mDesignLayoutAdapter;
-
-    @Override
-    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
-        DaggerTestsComponent.builder()
-                .appComponent(appComponent)
-                .activityModule(activityModule)
-                .designLayoutModule(new DesignLayoutModule())
-                .build()
-                .inject(this);
-    }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {

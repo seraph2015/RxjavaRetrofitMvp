@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit.data.network.http;
 
+import android.app.Application;
+
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -30,7 +32,7 @@ import javax.net.ssl.X509TrustManager;
  **/
 public class HttpsRequestHelp {
 
-    private AppApplication mApplication;
+    private Application mApplication;
 
     private X509TrustManager mX509TrustManager;
 
@@ -39,7 +41,7 @@ public class HttpsRequestHelp {
     private String httpsCerName = "";
 
     @Inject
-    public HttpsRequestHelp(AppApplication application) {
+    public HttpsRequestHelp(Application application) {
         this.mApplication = application;
     }
 

@@ -13,9 +13,6 @@ import com.tmall.ultraviewpager.UltraViewPager;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.WelcomeActivityGuidePagesBinding;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerWelcomeComponent;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 
@@ -43,11 +40,6 @@ public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract
     @Override
     protected GuidePagesActivityContract.Presenter getMVPPresenter() {
         return mPresenter;
-    }
-
-    @Override
-    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
-        DaggerWelcomeComponent.builder().appComponent(appComponent).activityModule(activityModule).build().inject(this);
     }
 
     @Inject

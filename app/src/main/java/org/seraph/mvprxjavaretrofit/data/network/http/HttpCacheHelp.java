@@ -1,8 +1,9 @@
 package org.seraph.mvprxjavaretrofit.data.network.http;
 
+import android.app.Application;
+
 import com.blankj.utilcode.util.NetworkUtils;
 
-import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.utlis.FileUtils;
 
@@ -24,11 +25,11 @@ import okhttp3.Response;
  **/
 public class HttpCacheHelp {
 
-    private AppApplication mApplication;
+    private Application mApplication;
 
 
     @Inject
-    public HttpCacheHelp(AppApplication application) {
+    public HttpCacheHelp(Application application) {
         this.mApplication = application;
     }
 

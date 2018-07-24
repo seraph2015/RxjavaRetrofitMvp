@@ -3,7 +3,6 @@ package org.seraph.mvprxjavaretrofit.ui.module.main;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,12 +17,7 @@ import com.jakewharton.rxbinding2.support.design.widget.RxBottomNavigationView;
 import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.TestActivityMainBinding;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerMainActivityComponent;
-import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
-import org.seraph.mvprxjavaretrofit.ui.module.base.IComponent;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter;
 
@@ -40,7 +34,7 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> implements MainActivityContract.View, IComponent<MainActivityComponent> {
+public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> implements MainActivityContract.View {
 
     TestActivityMainBinding binding;
 
@@ -58,22 +52,21 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
     }
 
 
-    private MainActivityComponent mMainActivityComponent;
-
-    @Override
-    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
-        mMainActivityComponent = DaggerMainActivityComponent.builder()
-                .appComponent(appComponent)
-                .activityModule(activityModule)
-                .build();
-        mMainActivityComponent.inject(this);
-    }
-
     //页面合集
     private List<Fragment> fragments = new ArrayList<>();
 
     @Inject
     FragmentManager fragmentManager;
+
+    @Inject
+    MainOneFragment mOneFragment;
+    @Inject
+    MainTwoFragment mTwoFragment;
+    @Inject
+    MainThreeFragment mThreeFragment;
+    @Inject
+    MainFourFragment mFourFragment;
+
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
@@ -94,10 +87,10 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
 
     private void initFragment(int showIndex) {
         fragments.clear();
-        fragments.add(new MainOneFragment());
-        fragments.add(new MainTwoFragment());
-        fragments.add(new MainThreeFragment());
-        fragments.add(new MainFourFragment());
+        fragments.add(mOneFragment);
+        fragments.add(mTwoFragment);
+        fragments.add(mThreeFragment);
+        fragments.add(mFourFragment);
         //默认显示第一个
         FragmentUtils.removeAll(fragmentManager);
         FragmentUtils.add(fragmentManager, fragments, R.id.fl_home, showIndex);
@@ -150,16 +143,9 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
     }
 
 
-
     @Override
     public void setBackgroundResource(Drawable drawable) {
         binding.llRoot.setBackground(drawable);
-    }
-
-
-    @Override
-    public MainActivityComponent getComponent() {
-        return mMainActivityComponent;
     }
 
 

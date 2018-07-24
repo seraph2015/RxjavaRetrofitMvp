@@ -13,10 +13,6 @@ import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.CommonActivityLocalImageListBinding;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.CommonModule;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 
 import java.util.ArrayList;
@@ -42,7 +38,6 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     @Inject
     LocalImageListPresenter mPresenter;
 
-    @Inject
     LocalImageListAdapter mImageListAdapter;
 
     @Inject
@@ -66,6 +61,7 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     }
 
     private void initRxBinding() {
+        mImageListAdapter = new LocalImageListAdapter(this);
         binding.appbar.tvToolbarTitle.setText("选择图片");
         RxToolbar.itemClicks(binding.appbar.toolbar).subscribe(new Consumer<MenuItem>() {
             @Override
@@ -75,16 +71,6 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
         });
         binding.rvLocalImageList.setLayoutManager(manager);
         binding.rvLocalImageList.setAdapter(mImageListAdapter);
-    }
-
-    @Override
-    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
-        DaggerCommonComponent.builder()
-                .appComponent(appComponent)
-                .activityModule(activityModule)
-                .commonModule(new CommonModule())
-                .build()
-                .inject(this);
     }
 
     @Override

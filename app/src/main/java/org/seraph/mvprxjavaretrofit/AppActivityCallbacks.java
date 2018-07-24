@@ -10,14 +10,13 @@ import android.view.View;
 import com.hwangjr.rxbus.RxBus;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.login.LoginActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.welcome.WelcomeActivity;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
+import dagger.android.AndroidInjection;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
@@ -44,10 +43,8 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         FontUtils.injectFont(rootView);
         //注册事件总线
         RxBus.get().register(activity);
-        //初始化公共依赖注入
-        if (activity instanceof ABaseActivity) {
-            ((ABaseActivity) activity).setupActivityComponent(getAppComponent(activity), getActivityModule(activity));
-        }
+        //一处声明，处处依赖注入
+        AndroidInjection.inject(activity);
         View appbar = activity.findViewById(R.id.appbar);
         if (appbar != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             appbar.setOutlineProvider(null);
@@ -113,20 +110,6 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         AppActivityManage.getInstance().closeActivity(activity);
     }
 
-
-    /**
-     * 获取公用的AppComponent
-     */
-    private AppComponent getAppComponent(Activity activity) {
-        return ((AppApplication) activity.getApplication()).getAppComponent();
-    }
-
-    /**
-     * 获取公用的ActivityModule
-     */
-    private ActivityModule getActivityModule(Activity activity) {
-        return new ActivityModule(activity);
-    }
 
 
 }

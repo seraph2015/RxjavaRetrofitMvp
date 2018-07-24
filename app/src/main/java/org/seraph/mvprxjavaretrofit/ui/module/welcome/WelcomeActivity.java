@@ -11,9 +11,6 @@ import com.blankj.utilcode.util.SPUtils;
 import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.WelcomeActivityBinding;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerWelcomeComponent;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 
@@ -42,11 +39,6 @@ public class WelcomeActivity extends ABaseActivity<WelcomeActivityContract.Prese
     @Override
     protected WelcomeActivityContract.Presenter getMVPPresenter() {
         return mPresenter;
-    }
-
-    @Override
-    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
-        DaggerWelcomeComponent.builder().appComponent(appComponent).activityModule(activityModule).build().inject(this);
     }
 
     @Override

@@ -36,7 +36,7 @@ class PhotoPreviewAdapter extends PagerAdapter {
 
     private OnImageClickListener onImageClickListener;
 
-    @Inject
+//    @Inject
     PhotoPreviewAdapter(Activity activity) {
         this.mContext = activity;
     }

@@ -1,5 +1,7 @@
 package org.seraph.mvprxjavaretrofit.data.db;
 
+import android.app.Application;
+
 import org.seraph.mvprxjavaretrofit.AppApplication;
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.data.db.gen.DaoMaster;
@@ -18,7 +20,7 @@ public class DBManager {
     private DBOpenHelper mHelper;
 
     @Inject
-    DBManager(AppApplication context) {
+    DBManager(Application context) {
         mHelper = new DBOpenHelper(context.getApplicationContext(), AppConfig.DB_NAME);
     }
 

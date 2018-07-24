@@ -14,7 +14,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import org.seraph.mvprxjavaretrofit.R;
 
 /**
- * picasso图片工具，一些常用加载配置
+ * FrescoTool图片工具，一些常用加载配置
  * 需要先在{@link org.seraph.mvprxjavaretrofit.AppApplication}中，
  * 使用{@link org.seraph.mvprxjavaretrofit.data.network.ImageLoad.ImageFactory#initFresco(Context)}方法进行初始化
  * date：2017/9/11 17:26

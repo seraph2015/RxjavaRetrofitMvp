@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.EmptyUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 
@@ -211,7 +210,7 @@ public class AlertDialogUtils {
                                 ToastUtils.showShort("没有修改内容");
                                 return;
                             }
-                            if (EmptyUtils.isEmpty(editText.getText().toString().trim())){
+                            if (StringUtils.isEmpty(editText.getText().toString().trim())){
                                 ToastUtils.showShort("输入不能为空");
                                 return;
                             }
@@ -272,7 +271,7 @@ public class AlertDialogUtils {
                                 ToastUtils.showShort("没有修改内容");
                                 return;
                             }
-                            if (EmptyUtils.isEmpty(editText.getText().toString().trim())){
+                            if (StringUtils.isEmpty(editText.getText().toString().trim())){
                                 ToastUtils.showShort("输入不能为空");
                                 return;
                             }

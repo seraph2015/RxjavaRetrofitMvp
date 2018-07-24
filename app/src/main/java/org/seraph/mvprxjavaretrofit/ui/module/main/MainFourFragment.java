@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.TestFragmentFourBinding;
-import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
+import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
@@ -34,6 +34,7 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
+@ActivityScoped
 public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
 
 
@@ -44,6 +45,10 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
 
     @Inject
     AlertDialogUtils mAlertDialogUtils;
+
+
+    @Inject
+    public MainFourFragment(){}
 
     @Override
     protected MainFourFragmentContract.Presenter getMVPPresenter() {
@@ -58,13 +63,8 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
         return binding.getRoot();
     }
 
-    @Override
-    public void setupActivityComponent() {
-        getComponent(MainActivityComponent.class).inject(this);
-    }
 
     private static final int CODE_REQUEST = 1000;
-
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {

@@ -1,6 +1,5 @@
 package org.seraph.mvprxjavaretrofit.ui.module.welcome;
 
-import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +30,7 @@ class UltraPagerAdapter extends PagerAdapter {
     private Integer[] listImage;
 
     @Inject
-    UltraPagerAdapter(Context context) {
+    UltraPagerAdapter() {
     }
 
     public void setListImage(Integer[] listImage) {

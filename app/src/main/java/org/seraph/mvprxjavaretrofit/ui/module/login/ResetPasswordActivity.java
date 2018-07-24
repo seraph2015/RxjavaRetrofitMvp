@@ -16,9 +16,6 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.ActLoginResetPasswordBinding;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerLoginComponent;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.login.contract.ResetPasswordContract;
 import org.seraph.mvprxjavaretrofit.ui.module.login.presenter.ResetPasswordPresenter;
@@ -46,11 +43,6 @@ public class ResetPasswordActivity extends ABaseActivity<ResetPasswordContract.P
     protected void initContextView() {
         binding = DataBindingUtil.setContentView(this, R.layout.act_login_reset_password);
         binding.setActivity(this);
-    }
-
-    @Override
-    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
-        DaggerLoginComponent.builder().appComponent(appComponent).activityModule(activityModule).build().inject(this);
     }
 
     @Inject

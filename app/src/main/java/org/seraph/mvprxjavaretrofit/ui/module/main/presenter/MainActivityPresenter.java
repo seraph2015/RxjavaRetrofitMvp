@@ -61,7 +61,7 @@ public class MainActivityPresenter extends MainActivityContract.Presenter {
         //模糊图片
         for (int i = 0; i < drawablesBg.length; i++) {
             Bitmap bitmap = ConvertUtils.drawable2Bitmap(mView.getContext().getResources().getDrawable(bgs[i]));
-            drawablesBg[i] = ConvertUtils.bitmap2Drawable(ImageUtils.fastBlur(bitmap, 1, 15, true));
+            drawablesBg[i] = ConvertUtils.bitmap2Drawable(ImageUtils.fastBlur(bitmap, 1, 15, false));
         }
     }
 

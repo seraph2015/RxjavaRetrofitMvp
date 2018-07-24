@@ -24,7 +24,7 @@ public class DesignLayoutAdapter extends BaseQuickAdapter<ImageBaiduBean.BaiduIm
     private Activity activity;
 
     @Inject
-    DesignLayoutAdapter(Activity activity) {
+    DesignLayoutAdapter(DesignLayoutTestActivity activity) {
         super(R.layout.test_item_design);
         this.activity = activity;
     }

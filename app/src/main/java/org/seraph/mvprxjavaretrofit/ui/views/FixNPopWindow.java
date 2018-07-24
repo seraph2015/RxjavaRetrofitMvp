@@ -17,7 +17,6 @@ import javax.inject.Inject;
  **/
 public class FixNPopWindow extends PopupWindow {
 
-
     @Inject
     public FixNPopWindow() {
         this(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

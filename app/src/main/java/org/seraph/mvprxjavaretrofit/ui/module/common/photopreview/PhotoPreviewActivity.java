@@ -14,9 +14,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.CommonActivityPhotoPreviewBinding;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerCommonComponent;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
 
@@ -61,8 +58,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
     @Inject
     PhotoPreviewPresenter mPresenter;
 
-    @Inject
-    PhotoPreviewAdapter mPhotoPreviewAdapter;
+    private PhotoPreviewAdapter mPhotoPreviewAdapter;
 
     @Inject
     RxPermissions rxPermissions;
@@ -70,11 +66,6 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
     @Override
     protected PhotoPreviewContract.Presenter getMVPPresenter() {
         return mPresenter;
-    }
-
-    @Override
-    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
-        DaggerCommonComponent.builder().appComponent(appComponent).activityModule(activityModule).build().inject(this);
     }
 
     /**
@@ -157,6 +148,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
             }
         });
         binding.vpPhotoPreview.setOffscreenPageLimit(5);
+        mPhotoPreviewAdapter = new PhotoPreviewAdapter(this);
         mPhotoPreviewAdapter.setOnImageClickListener(new PhotoPreviewAdapter.OnImageClickListener() {
             @Override
             public void onImageClick(int position) {

@@ -56,7 +56,7 @@ public class TakePhoto {
     private RxPermissions rxPermissions;
 
     @Inject
-    public TakePhoto(Activity activity, RxPermissions rxPermissions) {
+    public TakePhoto(Activity activity,RxPermissions rxPermissions) {
         this.mContext = activity;
         this.rxPermissions = rxPermissions;
         //获取上传文件的文件路径(直接使用应用缓存文件夹)

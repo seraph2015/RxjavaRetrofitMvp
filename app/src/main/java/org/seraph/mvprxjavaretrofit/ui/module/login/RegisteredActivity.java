@@ -16,9 +16,6 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.ActLoginRegisteredBinding;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerLoginComponent;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.login.contract.RegisteredContract;
 import org.seraph.mvprxjavaretrofit.ui.module.login.presenter.RegisteredPresenter;
@@ -47,11 +44,6 @@ public class RegisteredActivity extends ABaseActivity<RegisteredContract.Present
     protected void initContextView() {
         binding = DataBindingUtil.setContentView(this, R.layout.act_login_registered);
         binding.setActivity(this);
-    }
-
-    @Override
-    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
-        DaggerLoginComponent.builder().appComponent(appComponent).activityModule(activityModule).build().inject(this);
     }
 
     @Inject

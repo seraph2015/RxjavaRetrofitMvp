@@ -14,11 +14,12 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.TestFragmentTwoBinding;
 import org.seraph.mvprxjavaretrofit.databinding.TestFragmentTwoListHeadBinding;
-import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
+import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
@@ -41,11 +42,15 @@ import io.reactivex.functions.Consumer;
  * author：xiongj
  * mail：417753393@qq.com
  **/
+@ActivityScoped
 public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Presenter> implements MainTwoFragmentContract.View {
 
 
     TestFragmentTwoBinding listBinding;
     TestFragmentTwoListHeadBinding headBinding;
+
+    @Inject
+    public MainTwoFragment(){}
 
     @Override
     protected View initDataBinding(LayoutInflater inflater, ViewGroup container) {
@@ -61,35 +66,30 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Prese
         return mPresenter;
     }
 
-
-    @Override
-    public void setupActivityComponent() {
-        getComponent(MainActivityComponent.class).inject(this);
-    }
-
     @Inject
     ImageListBaiduAdapter mAdapter;
 
+    @Inject
+    StaggeredGridLayoutManager staggeredGridLayoutManager;
+
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        listBinding.refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+        listBinding.refreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                mPresenter.doLoadMore();
+            }
+
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
                 if (StringUtils.isEmpty(getSearchKeyWord())) {
-                    refreshlayout.finishRefresh(false);
+                    refreshLayout.finishRefresh(false);
                     return;
                 }
                 mPresenter.getBaiduImageList(getSearchKeyWord(), 1);
             }
         });
-        listBinding.refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-
-            @Override
-            public void onLoadMore(RefreshLayout refreshlayout) {
-                mPresenter.doLoadMore();
-            }
-        });
-        listBinding.rvImages.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        listBinding.rvImages.setLayoutManager(staggeredGridLayoutManager);
         mAdapter.bindToRecyclerView(listBinding.rvImages);
         mAdapter.addHeaderView(getHeadView());
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -142,13 +142,11 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Prese
     @Override
     public void setListDate(List<ImageBaiduBean.BaiduImage> baiduImages) {
         listBinding.refreshLayout.finishRefresh();
-        listBinding.refreshLayout.finishLoadmore();
+        listBinding.refreshLayout.finishLoadMore();
         if (baiduImages != null) {
             mAdapter.replaceData(baiduImages);
         }
-
     }
-
 
     public View getHeadView() {
         headBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.test_fragment_two_list_head, listBinding.rvImages, false);
@@ -157,7 +155,6 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Prese
         FontUtils.injectFont(headBinding.getRoot());
         return headBinding.getRoot();
     }
-
 
     public void onClick(View v) {
         switch (v.getId()) {

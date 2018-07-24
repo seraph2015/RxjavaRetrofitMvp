@@ -11,29 +11,29 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * 网络请求module
+ * app网络请求模型
  * date：2017/5/5 15:18
  * author：xiongj
  * mail：417753393@qq.com
  **/
 @Module
-public class ApiServiceModule {
+public abstract class ApiServiceModule {
 
     @Provides
     @Singleton
-    ApiService apiService(ApiBuild apiBuild) {
+    static ApiService apiService(ApiBuild apiBuild) {
         return apiBuild.buildApiInterface(ApiService.BASE_URL, ApiService.class);
     }
 
     @Provides
     @Singleton
-    ApiBaiduService apiBaiduService(ApiBuild apiBuild) {
+    static ApiBaiduService apiBaiduService(ApiBuild apiBuild) {
         return apiBuild.buildApiInterface(ApiBaiduService.BASE_URL_BAIDU, ApiBaiduService.class);
     }
 
     @Provides
     @Singleton
-    Api12306Service api12306Service(ApiBuild apiBuild) {
+    static Api12306Service api12306Service(ApiBuild apiBuild) {
         return apiBuild.buildApiInterface(Api12306Service.BASE_URL_12306, Api12306Service.class);
     }
 

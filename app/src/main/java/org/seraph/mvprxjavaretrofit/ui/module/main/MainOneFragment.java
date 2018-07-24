@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.TestFragmentOneBinding;
-import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
+import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainOneFragmentPresenter;
@@ -23,10 +23,15 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
+@ActivityScoped
 public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Presenter> implements MainOneFragmentContract.View {
 
 
     TestFragmentOneBinding binding;
+
+
+    @Inject
+    public MainOneFragment(){}
 
     @Override
     protected View initDataBinding(LayoutInflater inflater, ViewGroup container) {
@@ -40,12 +45,6 @@ public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Prese
     @Override
     protected MainOneFragmentContract.Presenter getMVPPresenter() {
         return mPresenter;
-    }
-
-
-    @Override
-    public void setupActivityComponent() {
-        this.getComponent(MainActivityComponent.class).inject(this);
     }
 
     @Override

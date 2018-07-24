@@ -27,8 +27,7 @@ class LocalImageListAdapter extends BaseQuickAdapter<LocalImageBean,BaseViewHold
 
    // private int size;
 
-    @Inject
-    LocalImageListAdapter(Context context) {
+    LocalImageListAdapter(LocalImageListActivity context) {
         super(R.layout.common_activity_loacl_image_item);
        // size = SizeUtils.dp2px(120);
     }

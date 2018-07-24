@@ -14,7 +14,7 @@ import com.hwangjr.rxbus.RxBus;
 import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.TestFragmentThreeBinding;
-import org.seraph.mvprxjavaretrofit.di.component.MainActivityComponent;
+import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainThreeFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainThreeFragmentPresenter;
@@ -28,6 +28,7 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
+@ActivityScoped
 public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View {
 
 
@@ -36,6 +37,9 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
     @Inject
     MainThreeFragmentPresenter mPresenter;
 
+
+    @Inject
+    public MainThreeFragment(){}
 
     @Override
     protected MainThreeFragmentContract.Presenter getMVPPresenter() {
@@ -47,11 +51,6 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
         binding = DataBindingUtil.inflate(inflater, R.layout.test_fragment_three, container, false);
         binding.setFragment(this);
         return binding.getRoot();
-    }
-
-    @Override
-    public void setupActivityComponent() {
-        getComponent(MainActivityComponent.class).inject(this);
     }
 
     @Override

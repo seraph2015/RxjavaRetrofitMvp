@@ -6,9 +6,6 @@ import android.support.annotation.Nullable;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.ActLoginAgreementBinding;
-import org.seraph.mvprxjavaretrofit.di.component.DaggerLoginComponent;
-import org.seraph.mvprxjavaretrofit.di.component.base.AppComponent;
-import org.seraph.mvprxjavaretrofit.di.module.base.ActivityModule;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.login.contract.AgreementContract;
 import org.seraph.mvprxjavaretrofit.ui.module.login.presenter.AgreementPresenter;
@@ -29,11 +26,6 @@ public class AgreementActivity extends ABaseActivity<AgreementContract.Presenter
     @Override
     protected void initContextView() {
         binding = DataBindingUtil.setContentView(this, R.layout.act_login_agreement);
-    }
-
-    @Override
-    public void setupActivityComponent(AppComponent appComponent, ActivityModule activityModule) {
-        DaggerLoginComponent.builder().appComponent(appComponent).activityModule(activityModule).build().inject(this);
     }
 
     @Inject
