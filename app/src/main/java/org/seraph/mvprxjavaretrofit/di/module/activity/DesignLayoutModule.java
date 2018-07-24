@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
-
 import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
-import org.seraph.mvprxjavaretrofit.ui.module.login.AgreementActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.test.DesignLayoutTestActivity;
 
 import dagger.Binds;
@@ -33,8 +30,8 @@ public abstract class DesignLayoutModule {
 
     @ActivityScoped
     @Provides
-    static LinearLayoutManager provideLinearLayoutManager(Activity mActivity) {
-        return new LinearLayoutManager(mActivity);
+    static LinearLayoutManager provideLinearLayoutManager(Context context) {
+        return new LinearLayoutManager(context);
     }
 
 }

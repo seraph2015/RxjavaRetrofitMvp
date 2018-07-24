@@ -3,14 +3,11 @@ package org.seraph.mvprxjavaretrofit.di.module.activity;
 import android.app.Activity;
 import android.content.Context;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
-
 import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
 import org.seraph.mvprxjavaretrofit.ui.module.welcome.WelcomeActivity;
 
 import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
 /**
  * 欢迎界面模型
