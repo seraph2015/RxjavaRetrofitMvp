@@ -20,10 +20,6 @@ public abstract class GuidePagesModule {
 
     @ActivityScoped
     @Binds
-    abstract Context bindContext(GuidePagesActivity activity);
-
-    @ActivityScoped
-    @Binds
     abstract Activity bindActivity(GuidePagesActivity activity);
 
 }

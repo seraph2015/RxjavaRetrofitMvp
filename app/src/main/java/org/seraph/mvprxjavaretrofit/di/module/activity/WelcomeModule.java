@@ -20,10 +20,6 @@ public abstract class WelcomeModule {
 
     @ActivityScoped
     @Binds
-    abstract Context bindContext(WelcomeActivity activity);
-
-    @ActivityScoped
-    @Binds
     abstract Activity bindActivity(WelcomeActivity activity);
 
 }

@@ -20,10 +20,6 @@ public abstract class ResetPasswordModule {
 
     @ActivityScoped
     @Binds
-    abstract Context bindContext(ResetPasswordActivity activity);
-
-    @ActivityScoped
-    @Binds
     abstract Activity bindActivity(ResetPasswordActivity activity);
 
 

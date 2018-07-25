@@ -20,11 +20,6 @@ import dagger.Provides;
 @Module(includes = ActivityModule.class)
 public abstract class DesignLayoutModule {
 
-    @ActivityScoped
-    @Binds
-    abstract Context bindContext(DesignLayoutTestActivity activity);
-
-    @ActivityScoped
     @Binds
     abstract Activity bindActivity(DesignLayoutTestActivity activity);
 

@@ -30,10 +30,6 @@ public abstract class MainModule {
 
     @ActivityScoped
     @Binds
-    abstract Context bindContext(MainActivity activity);
-
-    @ActivityScoped
-    @Binds
     abstract Activity bindActivity(MainActivity activity);
 
     @ActivityScoped

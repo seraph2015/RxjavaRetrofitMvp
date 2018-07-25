@@ -20,10 +20,6 @@ public abstract class RegisteredModule {
 
     @ActivityScoped
     @Binds
-    abstract Context bindContext(RegisteredActivity activity);
-
-    @ActivityScoped
-    @Binds
     abstract Activity bindActivity(RegisteredActivity activity);
 
 

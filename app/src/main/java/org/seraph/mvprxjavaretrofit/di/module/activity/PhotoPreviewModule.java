@@ -20,10 +20,6 @@ public abstract class PhotoPreviewModule {
 
     @ActivityScoped
     @Binds
-    abstract Context bindContext(PhotoPreviewActivity activity);
-
-    @ActivityScoped
-    @Binds
     abstract Activity bindActivity(PhotoPreviewActivity activity);
 
 

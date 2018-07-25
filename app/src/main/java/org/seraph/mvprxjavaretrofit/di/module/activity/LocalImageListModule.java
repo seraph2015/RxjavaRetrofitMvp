@@ -23,10 +23,6 @@ public abstract class LocalImageListModule {
 
     @ActivityScoped
     @Binds
-    abstract Context bindContext(LocalImageListActivity activity);
-
-    @ActivityScoped
-    @Binds
     abstract Activity bindActivity(LocalImageListActivity activity);
 
     @ActivityScoped

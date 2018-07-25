@@ -20,10 +20,6 @@ public abstract class AgreementModule {
 
     @ActivityScoped
     @Binds
-    abstract Context bindContext(AgreementActivity activity);
-
-    @ActivityScoped
-    @Binds
     abstract Activity bindActivity(AgreementActivity activity);
 
 

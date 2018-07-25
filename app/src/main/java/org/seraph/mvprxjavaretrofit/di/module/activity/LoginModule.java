@@ -20,10 +20,6 @@ public abstract class LoginModule {
 
     @ActivityScoped
     @Binds
-    abstract Context bindContext(LoginActivity activity);
-
-    @ActivityScoped
-    @Binds
     abstract Activity bindActivity(LoginActivity activity);
 
 

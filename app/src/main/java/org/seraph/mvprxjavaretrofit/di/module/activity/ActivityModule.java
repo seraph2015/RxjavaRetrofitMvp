@@ -22,6 +22,9 @@ import dagger.Provides;
 @Module
 public abstract class ActivityModule {
 
+    @ActivityScoped
+    @Binds
+    abstract Context bindContext(Activity activity);
 
     @ActivityScoped
     @Provides
