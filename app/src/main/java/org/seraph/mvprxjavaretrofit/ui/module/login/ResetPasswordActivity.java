@@ -25,8 +25,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function3;
 
 /**
  * 修改/找回密码
@@ -68,31 +66,21 @@ public class ResetPasswordActivity extends ABaseActivity<ResetPasswordContract.P
         Observable<CharSequence> phone = RxTextView.textChanges(binding.etPhone);
         Observable<CharSequence> code = RxTextView.textChanges(binding.etCode);
         Observable<CharSequence> newPassword = RxTextView.textChanges(binding.etNewPassword);
-        Observable.combineLatest(phone, code, newPassword, new Function3<CharSequence, CharSequence, CharSequence, Boolean>() {
-            @Override
-            public Boolean apply(CharSequence phone, CharSequence code, CharSequence newPassword) throws Exception {
-                binding.ivShowDelete.setVisibility(phone.length() > 0 ? View.VISIBLE : View.GONE);
-                //验证手机
-                isPhone = RegexUtils.isMobileSimple(phone);
-                binding.tvGetCode.setTextColor(isPhone && !isCountdown ? 0xff0099cc : 0xffcccccc);
-                //验证验证码
-                return isPhone && code.length() == 6 && newPassword.toString().trim().length() >= 6;
-            }
-        }).subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) throws Exception {
-                binding.btnOk.setEnabled(aBoolean);
-            }
-        });
+        Observable.combineLatest(phone, code, newPassword, (phone2, code2, newPassword2) -> {
+            binding.ivShowDelete.setVisibility(phone2.length() > 0 ? View.VISIBLE : View.GONE);
+            //验证手机
+            isPhone = RegexUtils.isMobileSimple(phone2);
+            binding.tvGetCode.setTextColor(isPhone && !isCountdown ? 0xff0099cc : 0xffcccccc);
+            //验证验证码
+            return isPhone && code2.length() == 6 && newPassword2.toString().trim().length() >= 6;
+        })
+                .subscribe(aBoolean -> binding.btnOk.setEnabled(aBoolean));
 
 
-        RxCompoundButton.checkedChanges(binding.cbPasswordMode).subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) throws Exception {
-                //切换密码显示和隐藏
-                binding.etNewPassword.setTransformationMethod(aBoolean ? HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
-                binding.etNewPassword.setSelection(binding.etNewPassword.getText().length());
-            }
+        RxCompoundButton.checkedChanges(binding.cbPasswordMode).subscribe(aBoolean -> {
+            //切换密码显示和隐藏
+            binding.etNewPassword.setTransformationMethod(aBoolean ? HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
+            binding.etNewPassword.setSelection(binding.etNewPassword.getText().length());
         });
     }
 

@@ -16,6 +16,13 @@ android {
 //            // 设置支持的SO库架构
 //            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
 //        }
+        multiDexEnabled true
+    }
+
+    dexOptions {
+        //解决第三方分包冲突之类的
+        jumboMode true
+        javaMaxHeapSize "2g"
     }
 
     dataBinding {
@@ -51,6 +58,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.android.support:appcompat-v7:27.1.1'
+
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:cardview-v7:27.1.1'
@@ -93,10 +101,8 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
     implementation 'org.glassfish:javax.annotation:10.0-b28'
     implementation 'com.google.dagger:dagger-android:2.16'
+    annotationProcessor "com.google.dagger:dagger-android-processor:2.16"
     implementation 'com.google.dagger:dagger-android-support:2.16'
-
-    // if you use the support libraries
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.16'
 
     //基于rxJava2的注册绑定对象
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
@@ -107,6 +113,9 @@ dependencies {
 
     //事件总线RxBus
     implementation 'com.hwangjr.rxbus:rxbus:2.0.0'
+
+    //下导航系统导航增强库
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 
     //工具集
     implementation 'com.blankj:utilcode:1.17.3'

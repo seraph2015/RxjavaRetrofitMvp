@@ -1,10 +1,7 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
-import android.content.DialogInterface;
-
 import com.blankj.utilcode.util.ToastUtils;
 
-import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.data.db.table.UserTable;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
@@ -14,8 +11,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContr
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
 
 import javax.inject.Inject;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * FragmentOne逻辑处理层
@@ -47,18 +42,8 @@ public class MainOneFragmentPresenter extends MainOneFragmentContract.Presenter 
      */
     public void doLoginTest() {
         mApiService.login("15172311067", "123456")
-                .compose(RxSchedulers.<UserBean>io_main_business(mView))
-                .doOnSubscribe(new Consumer<Subscription>() {
-                    @Override
-                    public void accept(final Subscription subscription) throws Exception {
-                        mView.showLoading("正在登陆...").setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                subscription.cancel();
-                            }
-                        });
-                    }
-                })
+                .compose(RxSchedulers.io_main_business(mView))
+                .doOnSubscribe(subscription-> mView.showLoading("正在登陆...").setOnDismissListener(dialog-> subscription.cancel()))
                 .subscribe(new ABaseSubscriber<UserBean>(mView) {
                     @Override
                     public void onSuccess(UserBean userBean) {

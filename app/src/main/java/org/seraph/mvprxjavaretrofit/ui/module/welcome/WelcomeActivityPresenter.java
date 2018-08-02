@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 
 /**
  * 欢迎页逻辑
@@ -35,12 +34,7 @@ class WelcomeActivityPresenter extends WelcomeActivityContract.Presenter {
      */
     private void CountDown() {
         Observable.intervalRange(0, 1, 3, 3, TimeUnit.SECONDS)
-                .compose(RxSchedulers.<Long>io_main2(mView)).subscribe(new Consumer<Long>() {
-            @Override
-            public void accept(Long aLong) throws Exception {
-                mView.jumpNextActivity();
-            }
-        });
+                .compose(RxSchedulers.io_main2(mView)).subscribe(aLong -> mView.jumpNextActivity());
     }
 
 }

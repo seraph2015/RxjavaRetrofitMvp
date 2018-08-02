@@ -9,11 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.StringUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import org.seraph.mvprxjavaretrofit.R;
@@ -34,8 +31,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Consumer;
-
 /**
  * 第二页
  * date：2017/2/21 17:06
@@ -50,7 +45,8 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Prese
     TestFragmentTwoListHeadBinding headBinding;
 
     @Inject
-    public MainTwoFragment(){}
+    public MainTwoFragment() {
+    }
 
     @Override
     protected View initDataBinding(LayoutInflater inflater, ViewGroup container) {
@@ -92,25 +88,17 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Prese
         listBinding.rvImages.setLayoutManager(staggeredGridLayoutManager);
         mAdapter.bindToRecyclerView(listBinding.rvImages);
         mAdapter.addHeaderView(getHeadView());
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                mPresenter.onPhotoPreview(position);
-            }
-        });
+        mAdapter.setOnItemClickListener((adapter, view, position) -> mPresenter.onPhotoPreview(position));
 
         rxBinding();
     }
 
     protected void rxBinding() {
-        RxTextView.textChanges(headBinding.etSearchKeyword).subscribe(new Consumer<CharSequence>() {
-            @Override
-            public void accept(CharSequence charSequence) throws Exception {
-                if (charSequence.length() > 0) {
-                    headBinding.btnSearchImage.setEnabled(true);
-                } else {
-                    headBinding.btnSearchImage.setEnabled(false);
-                }
+        RxTextView.textChanges(headBinding.etSearchKeyword).subscribe(charSequence -> {
+            if (charSequence.length() > 0) {
+                headBinding.btnSearchImage.setEnabled(true);
+            } else {
+                headBinding.btnSearchImage.setEnabled(false);
             }
         });
     }

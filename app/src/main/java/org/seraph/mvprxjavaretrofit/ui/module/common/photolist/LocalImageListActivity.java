@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
@@ -20,8 +19,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Consumer;
-
 /**
  * 显示并且选择本地图片的类，结果以List传出
  */
@@ -32,7 +29,7 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
 
     @Override
     protected void initContextView() {
-        binding = DataBindingUtil.setContentView(this,R.layout.common_activity_local_image_list);
+        binding = DataBindingUtil.setContentView(this, R.layout.common_activity_local_image_list);
     }
 
     @Inject
@@ -63,11 +60,8 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     private void initRxBinding() {
         mImageListAdapter = new LocalImageListAdapter(this);
         binding.appbar.tvToolbarTitle.setText("选择图片");
-        RxToolbar.itemClicks(binding.appbar.toolbar).subscribe(new Consumer<MenuItem>() {
-            @Override
-            public void accept(MenuItem menuItem) throws Exception {
-                mPresenter.save(mImageListAdapter.getSelectedPathList());
-            }
+        RxToolbar.itemClicks(binding.appbar.toolbar).subscribe(menuItem -> {
+            mPresenter.save(mImageListAdapter.getSelectedPathList());
         });
         binding.rvLocalImageList.setLayoutManager(manager);
         binding.rvLocalImageList.setAdapter(mImageListAdapter);
@@ -81,7 +75,7 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
 
     @Override
     public void setQueryImageList(List<LocalImageBean> localImageBeen) {
-        if (localImageBeen == null || localImageBeen.size() == 0){
+        if (localImageBeen == null || localImageBeen.size() == 0) {
             ToastUtils.showShort("获取照片失败");
             return;
         }

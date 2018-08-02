@@ -22,8 +22,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
 
 /**
  * 登录
@@ -66,20 +64,10 @@ public class LoginActivity extends ABaseActivity<LoginContract.Presenter> implem
         Observable<CharSequence> loginPhone = RxTextView.textChanges(binding.etPhone);
         Observable<CharSequence> loginPassword = RxTextView.textChanges(binding.etPassword);
 
-        Observable.combineLatest(loginPhone, loginPassword, new BiFunction<CharSequence, CharSequence, Boolean>() {
-            @Override
-            public Boolean apply(CharSequence phone, CharSequence password) throws Exception {
-
-                return RegexUtils.isMobileSimple(phone) && password.length() >= 6;
-            }
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() {
-
-            @Override
-            public void accept(Boolean aBoolean) throws Exception {
-                binding.btnLogin.setEnabled(aBoolean);
-            }
-        });
-
+        Observable.combineLatest(loginPhone, loginPassword,
+                (phone, password) -> (RegexUtils.isMobileSimple(phone) && password.length() >= 6))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> binding.btnLogin.setEnabled(aBoolean));
     }
 
 
@@ -89,7 +77,7 @@ public class LoginActivity extends ABaseActivity<LoginContract.Presenter> implem
                 binding.etPhone.setText("");
                 break;
             case R.id.tv_registered://注册
-                startActivity(new Intent(getContext(), RegisteredActivity.class));
+                startActivity(new Intent(this, RegisteredActivity.class));
                 break;
             case R.id.tv_forget_password://忘记密码
                 startActivity(new Intent(this, ResetPasswordActivity.class));
@@ -102,7 +90,7 @@ public class LoginActivity extends ABaseActivity<LoginContract.Presenter> implem
 
 
     @Override
-    public void setUserLoginInfo(String username,String passWord) {
+    public void setUserLoginInfo(String username, String passWord) {
         binding.etPhone.setText(username);
         binding.etPassword.setText(passWord);
         binding.etPassword.setSelection(passWord.length());

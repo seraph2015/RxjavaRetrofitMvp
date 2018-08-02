@@ -26,8 +26,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function4;
 
 /**
  * 注册
@@ -70,31 +68,22 @@ public class RegisteredActivity extends ABaseActivity<RegisteredContract.Present
         Observable<CharSequence> code = RxTextView.textChanges(binding.etCode);//验证码
         Observable<CharSequence> password = RxTextView.textChanges(binding.etPassword);//密码
         Observable<Boolean> isOk = RxCompoundButton.checkedChanges(binding.cbZc);//注册协议
-        Observable.combineLatest(phone, code, password, isOk, new Function4<CharSequence, CharSequence, CharSequence, Boolean, Boolean>() {
-            @Override
-            public Boolean apply(CharSequence phone, CharSequence code, CharSequence password, Boolean isOk) throws Exception {
-                binding.ivShowDelete.setVisibility(phone.length() > 0 ? View.VISIBLE : View.GONE);
-                //验证手机
-                isPhone = RegexUtils.isMobileSimple(phone);
+        Observable.combineLatest(phone, code, password, isOk, (phone2, code2, password2, isOk2) -> {
+            binding.ivShowDelete.setVisibility(phone2.length() > 0 ? View.VISIBLE : View.GONE);
+            //验证手机
+            isPhone = RegexUtils.isMobileSimple(phone2);
 
-                binding.tvGetCode.setTextColor(isPhone && !isCountdown ? 0xff0099cc : 0xffcccccc);
-                //验证验证码
-                return isPhone && code.length() == 6 && password.toString().trim().length() >= 6 && isOk;
-            }
-        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) throws Exception {
-                binding.btnOk.setEnabled(aBoolean);
-            }
-        });
+            binding.tvGetCode.setTextColor(isPhone && !isCountdown ? 0xff0099cc : 0xffcccccc);
+            //验证验证码
+            return isPhone && code2.length() == 6 && password2.toString().trim().length() >= 6 && isOk2;
+        })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> binding.btnOk.setEnabled(aBoolean));
 
-        RxCompoundButton.checkedChanges(binding.cbPasswordMode).subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) throws Exception {
-                //切换密码显示和隐藏
-                binding.etPassword.setTransformationMethod(aBoolean ? HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
-                binding.etPassword.setSelection(binding.etPassword.getText().length());
-            }
+        RxCompoundButton.checkedChanges(binding.cbPasswordMode).subscribe(aBoolean -> {
+            //切换密码显示和隐藏
+            binding.etPassword.setTransformationMethod(aBoolean ? HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
+            binding.etPassword.setSelection(binding.etPassword.getText().length());
         });
     }
 

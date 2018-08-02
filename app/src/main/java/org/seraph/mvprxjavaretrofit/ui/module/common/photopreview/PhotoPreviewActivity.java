@@ -15,15 +15,11 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.CommonActivityPhotoPreviewBinding;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
-import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchViewPager;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import javax.inject.Inject;
-
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 
 
 /**
@@ -124,16 +120,13 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
         //点击保存按钮先检查权限
         RxView.clicks(binding.llSave)
                 .compose(rxPermissions.ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(@NonNull Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            //获取权限成功
-                            mPresenter.saveImage();
-                        } else {
-                            //获取权限失败
-                            ToastUtils.showShort("缺少SD卡权限，保存图片失败");
-                        }
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        //获取权限成功
+                        mPresenter.saveImage();
+                    } else {
+                        //获取权限失败
+                        ToastUtils.showShort("缺少SD卡权限，保存图片失败");
                     }
                 });
 
@@ -141,21 +134,11 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
 
 
     private void initViewPager() {
-        binding.vpPhotoPreview.setOnPageSelectedListener(new ImageViewTouchViewPager.OnPageSelectedListener() {
-            @Override
-            public void onPageSelected(int position) {
-                mPresenter.upDataCurrentPosition(position);
-            }
-        });
+        binding.vpPhotoPreview.setOnPageSelectedListener(position -> mPresenter.upDataCurrentPosition(position));
         binding.vpPhotoPreview.setOffscreenPageLimit(5);
         mPhotoPreviewAdapter = new PhotoPreviewAdapter(this);
-        mPhotoPreviewAdapter.setOnImageClickListener(new PhotoPreviewAdapter.OnImageClickListener() {
-            @Override
-            public void onImageClick(int position) {
-                //关闭当前界面
-                finish();
-            }
-        });
+        //关闭当前界面
+        mPhotoPreviewAdapter.setOnImageClickListener(position -> finish());
         binding.vpPhotoPreview.setAdapter(mPhotoPreviewAdapter);
     }
 

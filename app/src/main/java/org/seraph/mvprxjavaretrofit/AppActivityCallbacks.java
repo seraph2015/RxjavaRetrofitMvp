@@ -65,12 +65,7 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
             } else {
                 toolbar.setNavigationIcon(R.drawable.common_title_arrow_white_left);
             }
-            RxToolbar.navigationClicks(toolbar).subscribe(new Consumer<Object>() {
-                @Override
-                public void accept(@NonNull Object o) throws Exception {
-                    activity.onBackPressed();
-                }
-            });
+            RxToolbar.navigationClicks(toolbar).subscribe(o -> activity.onBackPressed());
         }
         //如果是进入登录界面，则使用从下叠加到页面上的动画
         if (activity instanceof LoginActivity) {
@@ -109,7 +104,6 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         //移除关闭activity
         AppActivityManage.getInstance().closeActivity(activity);
     }
-
 
 
 }

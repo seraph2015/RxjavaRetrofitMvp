@@ -1,6 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -26,10 +26,8 @@ import javax.inject.Inject;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
-import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 
 /**
@@ -40,11 +38,12 @@ import io.reactivex.functions.Consumer;
  **/
 class PhotoPreviewPresenter extends PhotoPreviewContract.Presenter {
 
+    private Context context;
 
     @Inject
-    PhotoPreviewPresenter(){
+    PhotoPreviewPresenter(Context context) {
+        this.context = context;
     }
-
 
     private Disposable mDisposable;
 
@@ -57,9 +56,7 @@ class PhotoPreviewPresenter extends PhotoPreviewContract.Presenter {
      */
     private String saveImageName;
 
-
     private ArrayList<PhotoPreviewBean> mPhotoList;
-
 
     /**
      * 当前第几张照片
@@ -131,17 +128,14 @@ class PhotoPreviewPresenter extends PhotoPreviewContract.Presenter {
             return;
         }
         mSavePhoto = mPhotoList.get(currentPosition);
-        mView.showLoading("正在保存").setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (mDisposable != null) {
-                    mDisposable.dispose();
-                }
+        mView.showLoading("正在保存").setOnDismissListener(dialog -> {
+            if (mDisposable != null) {
+                mDisposable.dispose();
             }
         });
         //此方法需要在主线程里(限制最大的宽为1080px,防止图片过大，保存oom)
-       // Picasso.with(mView.getContext()).load(mSavePhoto.objURL).transform(new PicassoZoomTransformation(1080)).into(target);
-        GlideApp.with(mView.getContext()).asBitmap().load(mSavePhoto.objURL).into(new SimpleTarget<Bitmap>() {
+        // Picasso.with(mView.getContext()).load(mSavePhoto.objURL).transform(new PicassoZoomTransformation(1080)).into(target);
+        GlideApp.with(context).asBitmap().load(mSavePhoto.objURL).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
                 //保存bitmap
@@ -175,40 +169,31 @@ class PhotoPreviewPresenter extends PhotoPreviewContract.Presenter {
      */
     private Disposable saveImageToDisk(final Bitmap bitmap) {
         //使用子线程进行保存
-        return Flowable.create(new FlowableOnSubscribe<String>() {
-            @Override
-            public void subscribe(@NonNull FlowableEmitter<String> e) throws Exception {
-                String saveImageName = EncryptUtils.encryptMD5ToString(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
-                File dcimFile = Tools.getDCIMFile(saveImageName);
-                if (dcimFile != null && dcimFile.exists() && dcimFile.length() > 0) {
-                    e.onNext("图片已保存");
-                    e.onComplete();
-                }
-                try {
-                    Tools.bitmapToFile(bitmap, dcimFile);
-                    // 最后通知图库更新此图片
-                    Tools.scanAppImageFile(mView.getContext(), saveImageName);
-                    e.onNext("保存成功");
-                    e.onComplete();
-                } catch (IOException e1) {
-                    e.onError(e1);
-                }
+        return Flowable.create((@NonNull FlowableEmitter<String> e) -> {
+            String saveImageName = EncryptUtils.encryptMD5ToString(mSavePhoto.objURL) + "." + (StringUtils.isEmpty(mSavePhoto.type) ? "jpg" : mSavePhoto.type);
+            File dcimFile = Tools.getDCIMFile(saveImageName);
+            if (dcimFile != null && dcimFile.exists() && dcimFile.length() > 0) {
+                e.onNext("图片已保存");
+                e.onComplete();
+            }
+            try {
+                Tools.bitmapToFile(bitmap, dcimFile);
+                // 最后通知图库更新此图片
+                Tools.scanAppImageFile(context, saveImageName);
+                e.onNext("保存成功");
+                e.onComplete();
+            } catch (IOException e1) {
+                e.onError(e1);
             }
         }, BackpressureStrategy.BUFFER)
-                .compose(RxSchedulers.<String>io_main(mView))
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(@NonNull String s) throws Exception {
-                        ToastUtils.showShort(s);
-                        mView.hideLoading();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        ToastUtils.showShort("保存失败");
-                        mView.hideLoading();
-                    }
+                .compose(RxSchedulers.io_main(mView))
+                .subscribe(s -> {
+                    ToastUtils.showShort(s);
+                    mView.hideLoading();
+                }, throwable -> {
+                    throwable.printStackTrace();
+                    ToastUtils.showShort("保存失败");
+                    mView.hideLoading();
                 });
     }
 }

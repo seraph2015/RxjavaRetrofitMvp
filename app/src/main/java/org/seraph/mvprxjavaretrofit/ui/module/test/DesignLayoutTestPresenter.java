@@ -15,8 +15,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 /**
  * p层
@@ -60,31 +58,20 @@ class DesignLayoutTestPresenter extends DesignLayoutTestContract.Presenter {
 
     private void doBaiduImages(final int tempNo) {
         disposable = mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl("tomia", tempNo))
-                .compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
-                .map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
-                    @Override
-                    public List<ImageBaiduBean.BaiduImage> apply(ImageBaiduBean imageBaiduBean) throws Exception {
-                        return imageBaiduBean.imgs;
+                .compose(RxSchedulers.io_main(mView))
+                .map(imageBaiduBean -> imageBaiduBean.imgs)
+                .subscribe(baiduImages -> {
+                    mView.hideLoading();
+                    if (tempNo == 1) {
+                        mBaiduImages.clear();
                     }
-                }).subscribe(new Consumer<List<ImageBaiduBean.BaiduImage>>() {
-
-                    @Override
-                    public void accept(List<ImageBaiduBean.BaiduImage> baiduImages) throws Exception {
-                        mView.hideLoading();
-                        if (tempNo == 1) {
-                            mBaiduImages.clear();
-                        }
-                        mBaiduImages.addAll(baiduImages);
-                        mView.setImageListData(mBaiduImages, baiduImages.size() >= 48);
-                        pageNo = tempNo;
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        mView.hideLoading();
-                        mView.onLoadErr();
-                        ToastUtils.showShort("网络异常");
-                    }
+                    mBaiduImages.addAll(baiduImages);
+                    mView.setImageListData(mBaiduImages, baiduImages.size() >= 48);
+                    pageNo = tempNo;
+                }, throwable -> {
+                    mView.hideLoading();
+                    mView.onLoadErr();
+                    ToastUtils.showShort("网络异常");
                 });
     }
 

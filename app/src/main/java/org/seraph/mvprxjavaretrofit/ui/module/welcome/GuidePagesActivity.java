@@ -52,12 +52,7 @@ public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract
     }
 
     private void initViewPager() {
-        mUltraPagerAdapter.setOnClickListener(new UltraPagerAdapter.PagerItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                mPresenter.onItemClick(position);
-            }
-        });
+        mUltraPagerAdapter.setOnClickListener(position-> mPresenter.onItemClick(position));
         binding.ultraViewpager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
         //UltraPagerAdapter 绑定子view到UltraViewPager
         binding.ultraViewpager.setOffscreenPageLimit(3);
@@ -87,7 +82,7 @@ public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract
     @Override
     public void setImageList(Integer[] images) {
         mUltraPagerAdapter.setListImage(images);
-        binding.ultraViewpager.getViewPager().getAdapter().notifyDataSetChanged();
+        binding.ultraViewpager.refresh();
     }
 
 }

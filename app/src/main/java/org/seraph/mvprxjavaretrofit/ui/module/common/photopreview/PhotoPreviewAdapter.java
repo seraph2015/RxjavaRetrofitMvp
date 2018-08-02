@@ -16,8 +16,6 @@ import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchBase;
 import java.io.File;
 import java.util.List;
 
-import javax.inject.Inject;
-
 
 /**
  * 图片预览适配器
@@ -36,7 +34,7 @@ class PhotoPreviewAdapter extends PagerAdapter {
 
     private OnImageClickListener onImageClickListener;
 
-//    @Inject
+    //    @Inject
     PhotoPreviewAdapter(Activity activity) {
         this.mContext = activity;
     }
@@ -60,12 +58,7 @@ class PhotoPreviewAdapter extends PagerAdapter {
         imageView.setMinScale(1.0f);
         imageView.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         if (onImageClickListener != null) {
-            imageView.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
-                @Override
-                public void onSingleTapConfirmed() {
-                    onImageClickListener.onImageClick(position);
-                }
-            });
+            imageView.setSingleTapListener(() -> onImageClickListener.onImageClick(position));
         }
         PhotoPreviewBean previewBean = mListData.get(position);
         if (StringUtils.equals(previewBean.fromType, PhotoPreviewActivity.IMAGE_TYPE_LOCAL)) {

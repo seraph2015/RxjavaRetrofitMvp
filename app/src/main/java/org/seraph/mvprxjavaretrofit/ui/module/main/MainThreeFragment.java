@@ -39,7 +39,8 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
 
 
     @Inject
-    public MainThreeFragment(){}
+    public MainThreeFragment() {
+    }
 
     @Override
     protected MainThreeFragmentContract.Presenter getMVPPresenter() {
@@ -72,7 +73,6 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
     }
 
 
-
     ProgressDialog dialog;
 
     public void onViewClicked(View view) {
@@ -89,12 +89,9 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
                 dialog.setIndeterminate(false);
                 dialog.setCancelable(false);
                 dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                dialog.setButton(DialogInterface.BUTTON_POSITIVE, "取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        mPresenter.cancelDownload();
-                    }
+                dialog.setButton(DialogInterface.BUTTON_POSITIVE, "取消", (dialog, which) -> {
+                    dialog.dismiss();
+                    mPresenter.cancelDownload();
                 });
                 dialog.show();
                 mPresenter.startDownload();

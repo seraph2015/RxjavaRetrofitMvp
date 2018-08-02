@@ -16,9 +16,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-
 /**
  * 本地图库
  * date：2017/5/18 16:02
@@ -56,14 +53,11 @@ public class LocalImageListPresenter extends LocalImageListContract.Presenter {
     private void startAsyncQuery() {
         //检查读取存储卡的权限
         mRxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(@NonNull Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            mQueryHandler.startQuery(CODE_REQUEST, null, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionImages, null, null, "date_modified DESC");
-                        } else {
-                            ToastUtils.showShort("缺少SD卡权限，读取照片失败");
-                        }
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        mQueryHandler.startQuery(CODE_REQUEST, null, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projectionImages, null, null, "date_modified DESC");
+                    } else {
+                        ToastUtils.showShort("缺少SD卡权限，读取照片失败");
                     }
                 });
     }

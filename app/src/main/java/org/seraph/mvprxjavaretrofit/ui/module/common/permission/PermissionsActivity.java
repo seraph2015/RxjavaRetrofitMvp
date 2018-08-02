@@ -1,7 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.permission;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -109,18 +108,12 @@ public class PermissionsActivity extends AppCompatActivity {
         builder.setTitle("帮助");
         builder.setMessage("缺少必要权限。\n请点击\"设置\"-\"权限\"-打开所需权限。");
         // 拒绝, 退出应用
-        builder.setNegativeButton("退出", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setResult(PERMISSIONS_DENIED);
-                finish();
-            }
+        builder.setNegativeButton("退出", (dialog, which) -> {
+            setResult(PERMISSIONS_DENIED);
+            finish();
         });
-        builder.setPositiveButton("设置", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startAppSettings();
-            }
+        builder.setPositiveButton("设置", (dialog, which) -> {
+            startAppSettings();
         });
         builder.show();
     }

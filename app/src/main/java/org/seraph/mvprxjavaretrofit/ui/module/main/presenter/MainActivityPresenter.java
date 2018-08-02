@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * mian逻辑处理层
@@ -46,9 +46,11 @@ public class MainActivityPresenter extends MainActivityContract.Presenter {
     }
 
 
-    @Inject
-    MainActivityPresenter() {
+    private Context context;
 
+    @Inject
+    MainActivityPresenter(Context context) {
+        this.context = context;
     }
 
     /**
@@ -60,7 +62,7 @@ public class MainActivityPresenter extends MainActivityContract.Presenter {
     public void start() {
         //模糊图片
         for (int i = 0; i < drawablesBg.length; i++) {
-            Bitmap bitmap = ConvertUtils.drawable2Bitmap(mView.getContext().getResources().getDrawable(bgs[i]));
+            Bitmap bitmap = ConvertUtils.drawable2Bitmap(context.getResources().getDrawable(bgs[i]));
             drawablesBg[i] = ConvertUtils.bitmap2Drawable(ImageUtils.fastBlur(bitmap, 1, 15, false));
         }
     }
@@ -99,13 +101,11 @@ public class MainActivityPresenter extends MainActivityContract.Presenter {
             AppActivityManage.getInstance().appExit();
 
         }
-        Disposable disposable = Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
-            @Override
-            public void accept(Long aLong) throws Exception {
-                isBackPressed = false;
-                RxDisposableHelp.dispose();
-            }
-        });
+        Disposable disposable = Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    isBackPressed = false;
+                    RxDisposableHelp.dispose();
+                });
         RxDisposableHelp.addSubscription(disposable);
     }
 

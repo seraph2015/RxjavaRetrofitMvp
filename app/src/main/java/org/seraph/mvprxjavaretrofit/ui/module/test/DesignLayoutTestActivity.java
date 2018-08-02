@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.databinding.TestDesignLayoutBinding;
@@ -34,7 +32,7 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
 
     @Override
     protected void initContextView() {
-        binding =  DataBindingUtil.setContentView(this,R.layout.test_design_layout);
+        binding = DataBindingUtil.setContentView(this, R.layout.test_design_layout);
     }
 
     @Inject
@@ -63,18 +61,8 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
     public void initListener() {
         binding.rvData.setLayoutManager(layoutManager);
         mDesignLayoutAdapter.bindToRecyclerView(binding.rvData);
-        mDesignLayoutAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                startPhotoPreview(position);
-            }
-        });
-        mDesignLayoutAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                mPresenter.requestNextPage();
-            }
-        }, binding.rvData);
+        mDesignLayoutAdapter.setOnItemClickListener((adapter, view, position) -> startPhotoPreview(position));
+        mDesignLayoutAdapter.setOnLoadMoreListener(() -> mPresenter.requestNextPage(), binding.rvData);
     }
 
 
@@ -106,7 +94,7 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
 
     @Override
     public void setImageListData(List<ImageBaiduBean.BaiduImage> baiduImages, boolean isMore) {
-       // PicassoTool.loadNoCache(this, baiduImages.get((int) (Math.random() * baiduImages.size())).objURL, binding.appBarImage);
+        // PicassoTool.loadNoCache(this, baiduImages.get((int) (Math.random() * baiduImages.size())).objURL, binding.appBarImage);
         GlideApp.with(this).load(baiduImages.get((int) (Math.random() * baiduImages.size())).objURL).into(binding.appBarImage);
         mDesignLayoutAdapter.replaceData(baiduImages);
         if (isMore) {

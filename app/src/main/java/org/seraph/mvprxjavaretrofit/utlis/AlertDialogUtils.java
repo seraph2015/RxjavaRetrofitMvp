@@ -51,18 +51,15 @@ public class AlertDialogUtils {
         View view = View.inflate(mContext, R.layout.common_dialog_gender_selected, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(mContext).setView(view).show();
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedTextListener != null) {
-                    switch (v.getId()) {
-                        case R.id.ll_gender_female:
-                            selectedTextListener.onSelectedText("女");
-                            break;
-                        case R.id.ll_gender_male:
-                            selectedTextListener.onSelectedText("男");
-                            break;
-                    }
+        View.OnClickListener onClickListener = v -> {
+            if (selectedTextListener != null) {
+                switch (v.getId()) {
+                    case R.id.ll_gender_female:
+                        selectedTextListener.onSelectedText("女");
+                        break;
+                    case R.id.ll_gender_male:
+                        selectedTextListener.onSelectedText("男");
+                        break;
                 }
                 alertDialog.dismiss();
             }
@@ -90,29 +87,21 @@ public class AlertDialogUtils {
         pop.setFocusable(true);
         pop.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         pop.setOutsideTouchable(true);
-        pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                // 关闭蒙层效果
-                Tools.setWindowAlpha(mContext, 1f);
-            }
-        });
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pop.dismiss();
-                if (selectedItemListener != null) {
-                    switch (v.getId()) {
-                        case R.id.tv_option0:
-                            selectedItemListener.onSelectedItem(0);
-                            break;
-                        case R.id.tv_option1:
-                            selectedItemListener.onSelectedItem(1);
-                            break;
-                        case R.id.tv_option2:
-                            selectedItemListener.onSelectedItem(2);
-                            break;
-                    }
+        // 关闭蒙层效果
+        pop.setOnDismissListener(() -> Tools.setWindowAlpha(mContext, 1f));
+        View.OnClickListener onClickListener = v -> {
+            pop.dismiss();
+            if (selectedItemListener != null) {
+                switch (v.getId()) {
+                    case R.id.tv_option0:
+                        selectedItemListener.onSelectedItem(0);
+                        break;
+                    case R.id.tv_option1:
+                        selectedItemListener.onSelectedItem(1);
+                        break;
+                    case R.id.tv_option2:
+                        selectedItemListener.onSelectedItem(2);
+                        break;
                 }
             }
         };
@@ -134,35 +123,27 @@ public class AlertDialogUtils {
         pop.setFocusable(true);
         pop.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         pop.setOutsideTouchable(true);
-        pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                // 关闭蒙层效果
-                Tools.setWindowAlpha(mContext, 1f);
-            }
-        });
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pop.dismiss();
-                if (selectedItemListener != null) {
-                    switch (v.getId()) {
-                        case R.id.tv_option1:
-                            selectedItemListener.onSelectedItem(1);
-                            break;
-                        case R.id.tv_option2:
-                            selectedItemListener.onSelectedItem(2);
-                            break;
-                    }
+        // 关闭蒙层效果
+        pop.setOnDismissListener(() -> Tools.setWindowAlpha(mContext, 1f));
+        View.OnClickListener onClickListener = v -> {
+            pop.dismiss();
+            if (selectedItemListener != null) {
+                switch (v.getId()) {
+                    case R.id.tv_option1:
+                        selectedItemListener.onSelectedItem(1);
+                        break;
+                    case R.id.tv_option2:
+                        selectedItemListener.onSelectedItem(2);
+                        break;
                 }
             }
         };
-        TextView option1 = (TextView) view.findViewById(R.id.tv_option1);
+        TextView option1 = view.findViewById(R.id.tv_option1);
         if (!StringUtils.isEmpty(btn1Text)) {
             option1.setText(btn1Text);
         }
         option1.setOnClickListener(onClickListener);
-        TextView option2 = (TextView) view.findViewById(R.id.tv_option2);
+        TextView option2 = view.findViewById(R.id.tv_option2);
         if (!StringUtils.isEmpty(btn2Text)) {
             option2.setText(btn2Text);
         }
@@ -181,9 +162,9 @@ public class AlertDialogUtils {
         View view = View.inflate(mContext, R.layout.common_dialog_input_updata_layout, null);
         final AlertDialog dialog = new AlertDialog.Builder(mContext, R.style.custom_dialog_style)
                 .setView(view).show();
-        final TextView okText = (TextView) dialog.findViewById(R.id.tv_ok);
-        final EditText editText = (EditText) dialog.findViewById(R.id.tv_input_content);
-        final TextView title = (TextView) dialog.findViewById(R.id.tv_title);
+        final TextView okText = dialog.findViewById(R.id.tv_ok);
+        final EditText editText = dialog.findViewById(R.id.tv_input_content);
+        final TextView title = dialog.findViewById(R.id.tv_title);
         if (!Tools.isNull(titleText)) {
             title.setText(titleText);
         }
@@ -194,31 +175,21 @@ public class AlertDialogUtils {
             editText.setInputType(type);
         }
         okText.setTextColor(Color.parseColor("#666666"));
-        dialog.findViewById(R.id.rv_cancel).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-        okText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        if (okCallBack != null) {
-                            if (oldStr.equals(editText.getText().toString().trim())) {
-                                ToastUtils.showShort("没有修改内容");
-                                return;
-                            }
-                            if (StringUtils.isEmpty(editText.getText().toString().trim())){
-                                ToastUtils.showShort("输入不能为空");
-                                return;
-                            }
-                            okCallBack.onClick(editText);
-                        }
-                        dialog.dismiss();
-                    }
-                });
+        dialog.findViewById(R.id.rv_cancel).setOnClickListener(v -> dialog.dismiss());
+        okText.setOnClickListener(v -> {
+            if (okCallBack != null) {
+                if (oldStr.equals(editText.getText().toString().trim())) {
+                    ToastUtils.showShort("没有修改内容");
+                    return;
+                }
+                if (StringUtils.isEmpty(editText.getText().toString().trim())) {
+                    ToastUtils.showShort("输入不能为空");
+                    return;
+                }
+                okCallBack.onClick(editText);
+            }
+            dialog.dismiss();
+        });
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
@@ -249,37 +220,27 @@ public class AlertDialogUtils {
         View view = View.inflate(mContext, R.layout.common_dialog_input_layout, null);
         final AlertDialog dialog = new AlertDialog.Builder(mContext)
                 .setView(view).show();
-        final EditText editText = (EditText) dialog.findViewById(R.id.tv_input_content);
-        final TextView okText = (TextView) dialog.findViewById(R.id.tv_ok);
+        final EditText editText = dialog.findViewById(R.id.tv_input_content);
+        final TextView okText = dialog.findViewById(R.id.tv_ok);
         //回填笔记到输入框
         editText.setText(oldStr);
         editText.setHint(hintStr);
         okText.setTextColor(Color.parseColor("#666666"));
-        dialog.findViewById(R.id.rv_cancel).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-        okText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        if (okCallBack != null) {
-                            if (oldStr.equals(editText.getText().toString().trim())) {
-                                ToastUtils.showShort("没有修改内容");
-                                return;
-                            }
-                            if (StringUtils.isEmpty(editText.getText().toString().trim())){
-                                ToastUtils.showShort("输入不能为空");
-                                return;
-                            }
-                            okCallBack.onClick(editText);
-                        }
-                        dialog.dismiss();
-                    }
-                });
+        dialog.findViewById(R.id.rv_cancel).setOnClickListener(v -> dialog.dismiss());
+        okText.setOnClickListener(v -> {
+            if (okCallBack != null) {
+                if (oldStr.equals(editText.getText().toString().trim())) {
+                    ToastUtils.showShort("没有修改内容");
+                    return;
+                }
+                if (StringUtils.isEmpty(editText.getText().toString().trim())) {
+                    ToastUtils.showShort("输入不能为空");
+                    return;
+                }
+                okCallBack.onClick(editText);
+            }
+            dialog.dismiss();
+        });
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {

@@ -48,7 +48,8 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
 
 
     @Inject
-    public MainFourFragment(){}
+    public MainFourFragment() {
+    }
 
     @Override
     protected MainFourFragmentContract.Presenter getMVPPresenter() {
@@ -73,37 +74,29 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
     }
 
     private void initListener() {
-        binding.vgAddImageGroup.setOnClickPicListener(new CustomImageViewGroup.OnClickPicListener() {
-            @Override
-            public void onPicClick(View v, int position) {
-                switch ((int) v.getTag()) {
-                    case 0: //add
-                        mAlertDialogUtils.createHeadSelectedDialog(binding.vgAddImageGroup, new AlertDialogUtils.SelectedItemListener() {
-                            @Override
-                            public void onSelectedItem(int position) {
-                                switch (position) {
-                                    case 1:
-                                        mPresenter.doTakePhoto();
-                                        break;
-                                    case 2://本地相册
-                                        mPresenter.doSelectedLocalImage();
-                                        break;
-                                }
+        binding.vgAddImageGroup.setOnClickPicListener((v, position) -> {
+            switch ((int) v.getTag()) {
+                case 0: //add
+                    mAlertDialogUtils.createHeadSelectedDialog(binding.vgAddImageGroup, new AlertDialogUtils.SelectedItemListener() {
+                        @Override
+                        public void onSelectedItem(int position) {
+                            switch (position) {
+                                case 1:
+                                    mPresenter.doTakePhoto();
+                                    break;
+                                case 2://本地相册
+                                    mPresenter.doSelectedLocalImage();
+                                    break;
                             }
-                        });
-                        break;
-                    case 1: //点击
-                        mPresenter.photoPreview(position);
-                        break;
-                }
+                        }
+                    });
+                    break;
+                case 1: //点击
+                    mPresenter.photoPreview(position);
+                    break;
             }
         });
-        binding.vgAddImageGroup.setOnContentChangeListener(new CustomImageViewGroup.OnContentChangeListener() {
-            @Override
-            public void OnContentChanged(String path) {
-                mPresenter.removePath(path);
-            }
-        });
+        binding.vgAddImageGroup.setOnContentChangeListener(path -> mPresenter.removePath(path));
     }
 
 

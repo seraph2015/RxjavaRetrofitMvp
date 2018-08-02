@@ -1,13 +1,10 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.View;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.db.help.SearchHistoryHelp;
@@ -17,7 +14,6 @@ import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseSubscriber;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
-import org.seraph.mvprxjavaretrofit.ui.module.main.adapter.ImageListBaiduAdapter;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainTwoFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.FileUtils;
@@ -27,10 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 /**
  * 第二页P
@@ -44,18 +36,20 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
 
     private Subscription mSubscription;
 
-
     private ApiBaiduService mApiBaiduService;
 
     private SearchHistoryHelp mSearchHistoryHelp;
 
     private UserBeanHelp mUserHelp;
 
+    private Context context;
+
     @Inject
-    MainTwoFragmentPresenter(ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp) {
+    MainTwoFragmentPresenter(Context context, ApiBaiduService apiBaiduService, SearchHistoryHelp searchHistoryHelp, UserBeanHelp userHelp) {
         this.mApiBaiduService = apiBaiduService;
         this.mSearchHistoryHelp = searchHistoryHelp;
         this.mUserHelp = userHelp;
+        this.context = context;
     }
 
     /**
@@ -81,7 +75,7 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
 
 
     public void showCacheFilePath() {
-        mView.setTextView(FileUtils.getCacheDirectory(mView.getContext(), null).getPath());
+        mView.setTextView(FileUtils.getCacheDirectory(context, null).getPath());
     }
 
     public void searchHistory() {
@@ -104,20 +98,17 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
      * 显示选择框
      */
     private void showSearchHistory() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mView.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final String[] items = new String[listSearch.size() + 1];
         for (int i = 0; i < listSearch.size(); i++) {
             items[i] = listSearch.get(i).getSearchKey();
         }
         items[listSearch.size()] = "清除历史记录";
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == listSearch.size()) {
-                    mSearchHistoryHelp.deleteAllSearchDB(tempId, type);
-                } else {
-                    mView.setSearchInput(items[which]);
-                }
+        builder.setItems(items, (dialog, which) -> {
+            if (which == listSearch.size()) {
+                mSearchHistoryHelp.deleteAllSearchDB(tempId, type);
+            } else {
+                mView.setSearchInput(items[which]);
             }
         }).show();
     }
@@ -131,39 +122,26 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
         //保存搜索到本地数据库
         mSearchHistoryHelp.saveSearchToDB(tempId, type, searchKeyWord);
 
-        mView.showLoading("正在搜索").setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (mSubscription != null) {
-                    mSubscription.cancel();
-                }
+        mView.showLoading("正在搜索").setOnDismissListener(dialog -> {
+            if (mSubscription != null) {
+                mSubscription.cancel();
             }
         });
         getBaiduImageList(searchKeyWord, 1);
     }
 
 
-    public void doLoadMore(){
-        getBaiduImageList(searchKeyWord, pageNo +1);
+    public void doLoadMore() {
+        getBaiduImageList(searchKeyWord, pageNo + 1);
     }
 
 
     public void getBaiduImageList(String keyWord, final int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
         mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
-                .compose(RxSchedulers.<ImageBaiduBean>io_main(mView))
-                .map(new Function<ImageBaiduBean, List<ImageBaiduBean.BaiduImage>>() {
-                    @Override
-                    public List<ImageBaiduBean.BaiduImage> apply(ImageBaiduBean imageBaiduBean) throws Exception {
-                        return imageBaiduBean.imgs;
-                    }
-                })
-                .doOnSubscribe(new Consumer<Subscription>() {
-                    @Override
-                    public void accept(@NonNull Subscription subscription) throws Exception {
-                        mSubscription = subscription;
-                    }
-                })
+                .compose(RxSchedulers.io_main(mView))
+                .map(imageBaiduBean -> imageBaiduBean.imgs)
+                .doOnSubscribe(subscription -> mSubscription = subscription)
                 .subscribe(new ABaseSubscriber<List<ImageBaiduBean.BaiduImage>>(mView) {
                     @Override
                     public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {

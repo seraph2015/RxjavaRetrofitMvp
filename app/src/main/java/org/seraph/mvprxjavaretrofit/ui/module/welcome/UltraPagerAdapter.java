@@ -56,12 +56,9 @@ class UltraPagerAdapter extends PagerAdapter {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.welcome_activity_guide_pages_item, container, false);
         ImageView imageView = view.findViewById(R.id.iv_guide_page);
         imageView.setImageResource(listImage[position]);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pagerItemClickListener != null) {
-                    pagerItemClickListener.onItemClick(position);
-                }
+        imageView.setOnClickListener(v -> {
+            if (pagerItemClickListener != null) {
+                pagerItemClickListener.onItemClick(position);
             }
         });
         container.addView(view);

@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
 
 /**
  * 验证手机号逻辑
@@ -43,13 +42,8 @@ public class ResetPasswordPresenter extends ResetPasswordContract.Presenter {
     //开始倒计时
     private void startCountdown(final int count) {
         Flowable.intervalRange(1, count, 0, 1, TimeUnit.SECONDS)
-                .compose(RxSchedulers.<Long>io_main(mView))
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        mView.setCountdownText(count - aLong);
-                    }
-                });
+                .compose(RxSchedulers.io_main(mView))
+                .subscribe(aLong -> mView.setCountdownText(count - aLong));
     }
 
     public void onGetCode(String phone) {

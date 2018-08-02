@@ -84,7 +84,6 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
         RxBottomNavigationView.itemSelections(binding.bnvMain).subscribe(bottomNavigationConsumer);
     }
 
-
     private void initFragment(int showIndex) {
         fragments.clear();
         fragments.add(mOneFragment);
@@ -96,26 +95,23 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
         FragmentUtils.add(fragmentManager, fragments, R.id.fl_home, showIndex);
     }
 
-    private Consumer<MenuItem> bottomNavigationConsumer = new Consumer<MenuItem>() {
-        @Override
-        public void accept(MenuItem menuItem) throws Exception {
-            int showIndex = 0;
-            switch (menuItem.getItemId()) {
-                case R.id.item_one:
-                    showIndex = 0;
-                    break;
-                case R.id.item_two:
-                    showIndex = 1;
-                    break;
-                case R.id.item_three:
-                    showIndex = 2;
-                    break;
-                case R.id.item_four:
-                    showIndex = 3;
-                    break;
-            }
-            showIndexFragment(showIndex);
+    private Consumer<MenuItem> bottomNavigationConsumer = menuItem -> {
+        int showIndex = 0;
+        switch (menuItem.getItemId()) {
+            case R.id.item_one:
+                showIndex = 0;
+                break;
+            case R.id.item_two:
+                showIndex = 1;
+                break;
+            case R.id.item_three:
+                showIndex = 2;
+                break;
+            case R.id.item_four:
+                showIndex = 3;
+                break;
         }
+        showIndexFragment(showIndex);
     };
 
     /**

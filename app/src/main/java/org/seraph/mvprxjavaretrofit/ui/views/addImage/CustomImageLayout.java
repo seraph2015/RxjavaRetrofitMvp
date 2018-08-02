@@ -43,9 +43,9 @@ public class CustomImageLayout extends LinearLayout {
 
     private void init() {
         LayoutInflater.from(mContext).inflate(R.layout.common_add_image_layout, this);
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fl_image_root);
-        imageView = (ImageView) findViewById(R.id.iv_add_image_item);
-        ivDeleteView = (ImageView) findViewById(R.id.iv_add_image_item_delete);
+        FrameLayout frameLayout =  findViewById(R.id.fl_image_root);
+        imageView =  findViewById(R.id.iv_add_image_item);
+        ivDeleteView =  findViewById(R.id.iv_add_image_item_delete);
         //设置大小为屏幕宽 - 4* 10dp / 3
         int size = (ScreenUtils.getScreenWidth() - 4 * SizeUtils.dp2px(10)) / 3;
         frameLayout.setLayoutParams(new LinearLayout.LayoutParams(size, size));

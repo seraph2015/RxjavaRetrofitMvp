@@ -1,13 +1,11 @@
 package org.seraph.mvprxjavaretrofit.ui.module.login.presenter;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.hwangjr.rxbus.RxBus;
 
-import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.data.db.help.UserBeanHelp;
 import org.seraph.mvprxjavaretrofit.data.db.table.UserTable;
@@ -20,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Consumer;
 
 /**
  * 登录逻辑
@@ -34,10 +31,13 @@ public class LoginPresenter extends LoginContract.Presenter {
 
     private UserBeanHelp userBeanHelp;
 
+    private Activity activity;
+
     @Inject
-    public LoginPresenter(ApiService apiService, UserBeanHelp userBeanHelp) {
+    public LoginPresenter(Activity activity, ApiService apiService, UserBeanHelp userBeanHelp) {
         this.apiService = apiService;
         this.userBeanHelp = userBeanHelp;
+        this.activity = activity;
     }
 
     @Override
@@ -50,36 +50,23 @@ public class LoginPresenter extends LoginContract.Presenter {
 
     public void onLogin(final String phone, final String password) {
         Flowable.intervalRange(0, 1, 1, 1, TimeUnit.SECONDS)
-                .compose(RxSchedulers.<Long>io_main(mView))
-                .doOnSubscribe(new Consumer<Subscription>() {
-                    @Override
-                    public void accept(final Subscription subscription) throws Exception {
-                        mView.showLoading("正在登录").setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                subscription.cancel();
-                            }
-                        });
-                    }
-                }).subscribe(new Consumer<Long>() {
-            @Override
-            public void accept(Long l) throws Exception {
-                mView.hideLoading();
-                //模拟用户信息
-                UserTable userTable = new UserTable();
-                userTable.setId(1);
-                userTable.setNickName("小桃红");
-                userTable.setToken("efewgafdfhhrehe23tryr2412");
-                userTable.setHeadPortrait("http://img4.duitang.com/uploads/item/201212/14/20121214233012_iVvrQ.thumb.600_0.jpeg");
-                ToastUtils.showShort("登录成功");
-                //存储相关信息
-                saveLoginUserAccount(phone, password);
-                saveUserInfo(userTable);
-                RxBus.get().post(AppConstants.RxBusAction.TAG_LOGIN, 1);
-                ((Activity) mView.getContext()).onBackPressed();
-
-            }
-        });
+                .compose(RxSchedulers.io_main(mView))
+                .doOnSubscribe(subscription -> mView.showLoading("正在登录").setOnDismissListener(dialog -> subscription.cancel()))
+                .subscribe(l -> {
+                    mView.hideLoading();
+                    //模拟用户信息
+                    UserTable userTable = new UserTable();
+                    userTable.setId(1);
+                    userTable.setNickName("小桃红");
+                    userTable.setToken("efewgafdfhhrehe23tryr2412");
+                    userTable.setHeadPortrait("http://img4.duitang.com/uploads/item/201212/14/20121214233012_iVvrQ.thumb.600_0.jpeg");
+                    ToastUtils.showShort("登录成功");
+                    //存储相关信息
+                    saveLoginUserAccount(phone, password);
+                    saveUserInfo(userTable);
+                    RxBus.get().post(AppConstants.RxBusAction.TAG_LOGIN, 1);
+                    activity.onBackPressed();
+                });
 
     }
 
