@@ -3,7 +3,9 @@ package org.seraph.mvprxjavaretrofit.ui.module.main;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
@@ -21,12 +23,10 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.functions.Consumer;
 
 /**
  * 主界面
@@ -53,19 +53,11 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
 
 
     //页面合集
-    private List<Fragment> fragments = new ArrayList<>();
+    @Inject
+    List<Fragment> fragments;
 
     @Inject
     FragmentManager fragmentManager;
-
-    @Inject
-    MainOneFragment mOneFragment;
-    @Inject
-    MainTwoFragment mTwoFragment;
-    @Inject
-    MainThreeFragment mThreeFragment;
-    @Inject
-    MainFourFragment mFourFragment;
 
 
     @Override
@@ -81,21 +73,11 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
         binding.bnvMain.enableAnimation(false);
         binding.bnvMain.enableShiftingMode(false);
         binding.bnvMain.enableItemShiftingMode(false);
-        RxBottomNavigationView.itemSelections(binding.bnvMain).subscribe(bottomNavigationConsumer);
+        binding.bnvMain.setOnNavigationItemSelectedListener(bottomNavigation);
     }
 
-    private void initFragment(int showIndex) {
-        fragments.clear();
-        fragments.add(mOneFragment);
-        fragments.add(mTwoFragment);
-        fragments.add(mThreeFragment);
-        fragments.add(mFourFragment);
-        //默认显示第一个
-        FragmentUtils.removeAll(fragmentManager);
-        FragmentUtils.add(fragmentManager, fragments, R.id.fl_home, showIndex);
-    }
 
-    private Consumer<MenuItem> bottomNavigationConsumer = menuItem -> {
+    BottomNavigationView.OnNavigationItemSelectedListener bottomNavigation = menuItem -> {
         int showIndex = 0;
         switch (menuItem.getItemId()) {
             case R.id.item_one:
@@ -112,7 +94,16 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
                 break;
         }
         showIndexFragment(showIndex);
+        return true;
     };
+
+
+    private void initFragment(int showIndex) {
+        //默认显示第一个
+        FragmentUtils.removeAll(fragmentManager);
+        FragmentUtils.add(fragmentManager, fragments, R.id.fl_home, showIndex);
+        showIndexFragment(showIndex);
+    }
 
     /**
      * 显示对应位置的fragment

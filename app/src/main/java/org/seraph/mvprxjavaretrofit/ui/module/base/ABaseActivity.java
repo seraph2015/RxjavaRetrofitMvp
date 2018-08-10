@@ -53,6 +53,8 @@ public abstract class ABaseActivity<P extends IABaseContract.ABaseActivityPresen
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //一处声明，处处依赖注入
+        AndroidInjection.inject(this);
         initContextView();
         super.onCreate(savedInstanceState);
         initMVP();

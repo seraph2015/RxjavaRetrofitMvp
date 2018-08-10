@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '28.0.1'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
     defaultConfig {
         applicationId "org.seraph.mvprxjavaretrofit"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -57,11 +57,11 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-
-    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0-rc01'
+    implementation 'com.android.support:support-v4:28.0.0-rc01'
+    implementation 'com.android.support:animated-vector-drawable:28.0.0-rc01'
+    implementation 'com.android.support:design:28.0.0-rc01'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation 'com.android.support:cardview-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
 
     //解决分包兼容
@@ -115,7 +115,7 @@ dependencies {
     implementation 'com.hwangjr.rxbus:rxbus:2.0.0'
 
     //下导航系统导航增强库
-    implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
+   // implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
 
     //工具集
     implementation 'com.blankj:utilcode:1.17.3'
@@ -162,7 +162,9 @@ dependencies {
 
     //下拉刷新控件 https://github.com/scwang90/SmartRefreshLayout
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-12'
-    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-12'//没有使用特殊Header，可以不加这行
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-12'
+
+    //没有使用特殊Header，可以不加这行
 
     //gif开源控件
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'

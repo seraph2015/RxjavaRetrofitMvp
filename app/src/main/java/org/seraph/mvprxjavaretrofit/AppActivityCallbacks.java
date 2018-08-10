@@ -43,8 +43,6 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         FontUtils.injectFont(rootView);
         //注册事件总线
         RxBus.get().register(activity);
-        //一处声明，处处依赖注入
-        AndroidInjection.inject(activity);
         View appbar = activity.findViewById(R.id.appbar);
         if (appbar != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             appbar.setOutlineProvider(null);
