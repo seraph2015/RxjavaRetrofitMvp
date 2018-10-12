@@ -17,7 +17,7 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <org.seraph.mvprxjavaretrofit.ui.views.BottomNavigationViewEx
+        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
             android:id="@+id/bnv_main"
             android:layout_width="match_parent"
             app:labelVisibilityMode="labeled"

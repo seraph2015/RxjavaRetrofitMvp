@@ -21,7 +21,7 @@ import dagger.android.HasActivityInjector;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class AppApplication extends MultiDexApplication implements HasActivityInjector{
+public class AppApplication extends MultiDexApplication implements HasActivityInjector {
 
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingActivityInjector;
@@ -42,11 +42,9 @@ public class AppApplication extends MultiDexApplication implements HasActivityIn
     }
 
 
-    /**
-     * 初始化提弹出提示布局资源显示
-     */
     private void initToastLayout() {
         ToastUtils.setBgColor(0xFE000000);
+        ToastUtils.setMsgColor(0xFFFFFFFF);
     }
 
 
