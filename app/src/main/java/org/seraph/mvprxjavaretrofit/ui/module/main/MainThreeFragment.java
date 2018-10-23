@@ -2,9 +2,7 @@ package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +11,16 @@ import com.hwangjr.rxbus.RxBus;
 
 import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.databinding.TestFragmentThreeBinding;
+import org.seraph.mvprxjavaretrofit.databinding.ActMainFrg3Binding;
 import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainThreeFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainThreeFragmentPresenter;
 
 import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 
 
 /**
@@ -32,31 +33,32 @@ import javax.inject.Inject;
 public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View {
 
 
-    TestFragmentThreeBinding binding;
-
-    @Inject
-    MainThreeFragmentPresenter mPresenter;
-
-
     @Inject
     public MainThreeFragment() {
     }
 
+
+    @Inject
+    MainThreeFragmentPresenter presenter;
+
+
     @Override
     protected MainThreeFragmentContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        return presenter;
     }
+
+    private ActMainFrg3Binding binding;
 
     @Override
     protected View initDataBinding(LayoutInflater inflater, ViewGroup container) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.test_fragment_three, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.act_main_frg3, container, false);
         binding.setFragment(this);
         return binding.getRoot();
     }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-
+        presenter.setView(this);
     }
 
 
@@ -73,12 +75,12 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
     }
 
 
-    ProgressDialog dialog;
+    private ProgressDialog dialog;
 
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_https:
-                mPresenter.post12306Https();
+                presenter.post12306Https();
                 break;
             case R.id.btn_jump:
                 RxBus.get().post(AppConstants.RxBusAction.TAG_MAIN_MENU, 1);
@@ -91,10 +93,10 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
                 dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 dialog.setButton(DialogInterface.BUTTON_POSITIVE, "取消", (dialog, which) -> {
                     dialog.dismiss();
-                    mPresenter.cancelDownload();
+                    presenter.cancelDownload();
                 });
                 dialog.show();
-                mPresenter.startDownload();
+                presenter.startDownload();
                 break;
         }
 

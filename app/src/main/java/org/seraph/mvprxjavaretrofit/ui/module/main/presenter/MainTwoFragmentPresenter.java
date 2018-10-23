@@ -2,6 +2,7 @@ package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -32,7 +33,7 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter {
+public class MainTwoFragmentPresenter extends MainTwoFragmentContract.ABasePresenter<MainTwoFragmentContract.View> {
 
     private RecyclerView mRecyclerView;
 

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.databinding.TestFragmentOneBinding;
+import org.seraph.mvprxjavaretrofit.databinding.ActMainFrg1Binding;
 import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainOneFragmentContract;
@@ -27,7 +27,7 @@ import javax.inject.Inject;
 public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Presenter> implements MainOneFragmentContract.View {
 
 
-    TestFragmentOneBinding binding;
+    private ActMainFrg1Binding binding;
 
 
     @Inject
@@ -35,21 +35,21 @@ public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Prese
 
     @Override
     protected View initDataBinding(LayoutInflater inflater, ViewGroup container) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.test_fragment_one, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.act_main_frg1, container, false);
         return binding.getRoot();
     }
 
     @Inject
-    MainOneFragmentPresenter mPresenter;
+    MainOneFragmentPresenter presenter;
 
     @Override
     protected MainOneFragmentContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        binding.setPresenter(mPresenter);
+       binding.setPresenter(presenter);
     }
 
     public void setUserTextViewValue(CharSequence charSequence) {

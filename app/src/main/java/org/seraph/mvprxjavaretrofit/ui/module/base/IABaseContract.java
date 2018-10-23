@@ -9,7 +9,7 @@ package org.seraph.mvprxjavaretrofit.ui.module.base;
 public interface IABaseContract extends IBaseContract {
 
 
-    abstract class ABasePresenter<V extends IBaseContract.IBaseView> implements IBaseContract.IBasePresenter<V> {
+    abstract class ABasePresenter<V extends IBaseView> implements IBasePresenter<V> {
 
         protected V mView;
 
@@ -23,6 +23,8 @@ public interface IABaseContract extends IBaseContract {
             //解除绑定
             mView = null;
         }
+
+
     }
 
 }

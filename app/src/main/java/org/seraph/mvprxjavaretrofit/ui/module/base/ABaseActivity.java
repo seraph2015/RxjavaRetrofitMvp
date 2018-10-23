@@ -48,7 +48,7 @@ public abstract class ABaseActivity<P extends IABaseContract.ABasePresenter> ext
     @Inject
     protected CustomLoadingDialog mLoadingDialog;
 
-    protected P mPresenter;
+    private P mPresenter;
 
     //自动解绑rxjava（在指定的生命周期）
     public <T> AutoDisposeConverter<T> bindLifecycle(Lifecycle.Event untilEvent) {

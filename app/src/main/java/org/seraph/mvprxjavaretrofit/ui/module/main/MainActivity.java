@@ -1,22 +1,18 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
-import androidx.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 
 import org.seraph.mvprxjavaretrofit.AppConstants;
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.databinding.TestActivityMainBinding;
+import org.seraph.mvprxjavaretrofit.databinding.ActMainBinding;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresenter;
@@ -24,6 +20,11 @@ import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainActivityPresent
 import java.util.List;
 
 import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 
 /**
@@ -34,11 +35,11 @@ import javax.inject.Inject;
  **/
 public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> implements MainActivityContract.View {
 
-    TestActivityMainBinding binding;
+    ActMainBinding binding;
 
     @Override
     protected void initContextView() {
-        binding = DataBindingUtil.setContentView(this, R.layout.test_activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.act_main);
     }
 
     @Inject

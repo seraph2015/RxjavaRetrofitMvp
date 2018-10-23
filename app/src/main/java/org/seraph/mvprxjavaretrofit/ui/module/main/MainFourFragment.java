@@ -2,16 +2,13 @@ package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import android.app.Activity;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.databinding.TestFragmentFourBinding;
+import org.seraph.mvprxjavaretrofit.databinding.ActMainFrg4Binding;
 import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseFragment;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
@@ -26,6 +23,11 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 
 /**
  * 4
@@ -36,32 +38,31 @@ import javax.inject.Inject;
 @ActivityScoped
 public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
 
-
-    TestFragmentFourBinding binding;
-
-    @Inject
-    MainFourFragmentPresenter mPresenter;
-
-    @Inject
-    AlertDialogUtils mAlertDialogUtils;
-
-
     @Inject
     public MainFourFragment() {
     }
 
+    private ActMainFrg4Binding binding;
+
+
+    @Inject
+    MainFourFragmentPresenter presenter;
+
     @Override
     protected MainFourFragmentContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        return presenter;
     }
 
 
     @Override
     protected View initDataBinding(LayoutInflater inflater, ViewGroup container) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.test_fragment_four, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.act_main_frg4, container, false);
         binding.setFragment(this);
         return binding.getRoot();
     }
+
+    @Inject
+    AlertDialogUtils mAlertDialogUtils;
 
 
     private static final int CODE_REQUEST = 1000;
@@ -69,7 +70,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         initListener();
-        mPresenter.start();
+        presenter.start();
     }
 
     private void initListener() {
@@ -81,21 +82,21 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
                         public void onSelectedItem(int position) {
                             switch (position) {
                                 case 1:
-                                    mPresenter.doTakePhoto();
+                                    presenter.doTakePhoto();
                                     break;
                                 case 2://本地相册
-                                    mPresenter.doSelectedLocalImage();
+                                    presenter.doSelectedLocalImage();
                                     break;
                             }
                         }
                     });
                     break;
                 case 1: //点击
-                    mPresenter.photoPreview(position);
+                    presenter.photoPreview(position);
                     break;
             }
         });
-        binding.vgAddImageGroup.setOnContentChangeListener(path -> mPresenter.removePath(path));
+        binding.vgAddImageGroup.setOnContentChangeListener(path -> presenter.removePath(path));
     }
 
 
@@ -105,7 +106,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
                 startActivity(new Intent(getContext(), DesignLayoutTestActivity.class));
                 break;
             case R.id.btn_upload_test:
-                mPresenter.uploadFile();
+                presenter.uploadFile();
                 break;
         }
     }
@@ -141,10 +142,10 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case TakePhoto.CAMERA_WITH_DATA:
-                    mPresenter.onCameraComplete();
+                    presenter.onCameraComplete();
                     break;
                 case CODE_REQUEST://相册
-                    mPresenter.onLocalImageResult(data);
+                    presenter.onLocalImageResult(data);
                     break;
             }
 
@@ -152,15 +153,15 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        mPresenter.onSaveInstanceState(outState);
+        presenter.onSaveInstanceState(outState);
     }
 
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        mPresenter.onViewStateRestored(savedInstanceState);
+        presenter.onViewStateRestored(savedInstanceState);
     }
 }

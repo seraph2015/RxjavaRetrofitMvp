@@ -15,9 +15,6 @@ import java.util.List;
  **/
 public interface MainTwoFragmentContract extends IABaseContract {
 
-    abstract class Presenter extends ABasePresenter<View> {
-
-    }
 
     interface View extends IBaseView {
 

@@ -11,7 +11,6 @@ import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ToastUtils;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
 
 import java.util.concurrent.TimeUnit;
@@ -20,7 +19,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 
 /**
  * mian逻辑处理层
@@ -101,12 +99,9 @@ public class MainActivityPresenter extends MainActivityContract.Presenter {
             ActivityUtils.finishAllActivities();
 
         }
-        Disposable disposable = Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    isBackPressed = false;
-                    RxDisposableHelp.dispose();
-                });
-        RxDisposableHelp.addSubscription(disposable);
+        Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread())
+                .as(mView.bindLifecycle())
+                .subscribe(aLong -> isBackPressed = false);
     }
 
 
