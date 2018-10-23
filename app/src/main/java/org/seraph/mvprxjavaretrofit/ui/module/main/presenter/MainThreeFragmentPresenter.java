@@ -47,8 +47,10 @@ public class MainThreeFragmentPresenter extends MainThreeFragmentContract.Presen
 
 
     public void post12306Https() {
-        mApi12306Service.do12306Url().compose(RxSchedulers.io_main(mView))
+        mApi12306Service.do12306Url()
+                .compose(RxSchedulers.io_main())
                 .doOnSubscribe(subscription -> mView.showLoading("正在访问").setOnDismissListener(dialog -> subscription.cancel()))
+                .as(mView.bindLifecycle())
                 .subscribe(new ABaseSubscriber<String>(mView) {
                     @Override
                     public void onSuccess(String s) {

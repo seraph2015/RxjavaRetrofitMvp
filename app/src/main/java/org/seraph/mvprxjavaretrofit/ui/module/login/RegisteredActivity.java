@@ -1,9 +1,12 @@
 package org.seraph.mvprxjavaretrofit.ui.module.login;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
+
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -78,9 +81,10 @@ public class RegisteredActivity extends ABaseActivity<RegisteredContract.Present
             return isPhone && code2.length() == 6 && password2.toString().trim().length() >= 6 && isOk2;
         })
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(bindLifecycle())
                 .subscribe(aBoolean -> binding.btnOk.setEnabled(aBoolean));
 
-        RxCompoundButton.checkedChanges(binding.cbPasswordMode).subscribe(aBoolean -> {
+        RxCompoundButton.checkedChanges(binding.cbPasswordMode).as(bindLifecycle()).subscribe(aBoolean -> {
             //切换密码显示和隐藏
             binding.etPassword.setTransformationMethod(aBoolean ? HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
             binding.etPassword.setSelection(binding.etPassword.getText().length());

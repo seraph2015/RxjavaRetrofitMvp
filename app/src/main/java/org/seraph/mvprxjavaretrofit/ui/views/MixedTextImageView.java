@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.StringUtils;
 
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
+import org.seraph.mvprxjavaretrofit.data.network.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.utlis.HtmlUtils;
 
 import java.util.ArrayList;

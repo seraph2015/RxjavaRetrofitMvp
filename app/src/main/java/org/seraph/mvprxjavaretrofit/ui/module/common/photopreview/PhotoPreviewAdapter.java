@@ -1,15 +1,15 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.StringUtils;
 
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
+import org.seraph.mvprxjavaretrofit.data.network.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouch;
 import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchBase;
 

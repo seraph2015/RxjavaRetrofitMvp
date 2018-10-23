@@ -8,7 +8,7 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.v7.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
@@ -25,7 +25,6 @@ public abstract class ImageViewTouchBase extends AppCompatImageView implements I
         /**
          * Callback invoked when a new drawable has been assigned to the view
          *
-         * @param drawable
          */
         void onDrawableChanged(Drawable drawable);
     }
@@ -36,17 +35,10 @@ public abstract class ImageViewTouchBase extends AppCompatImageView implements I
         /**
          * Callback invoked when the layout bounds changed
          *
-         * @param changed
-         * @param left
-         * @param top
-         * @param right
-         * @param bottom
          */
         void onLayoutChanged(boolean changed, int left, int top, int right,
                              int bottom);
     }
-
-    ;
 
     /**
      * Use this to change the
@@ -520,10 +512,6 @@ public abstract class ImageViewTouchBase extends AppCompatImageView implements I
      * view's bounds has changed or a new Drawable has been set or the
      * {@link DisplayType} has been modified
      *
-     * @param left
-     * @param top
-     * @param right
-     * @param bottom
      */
     protected void onLayoutChanged(int left, int top, int right, int bottom) {
         if (LOG_ENABLED) {

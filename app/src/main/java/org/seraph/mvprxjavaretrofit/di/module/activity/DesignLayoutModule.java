@@ -2,7 +2,7 @@ package org.seraph.mvprxjavaretrofit.di.module.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
 import org.seraph.mvprxjavaretrofit.ui.module.test.DesignLayoutTestActivity;

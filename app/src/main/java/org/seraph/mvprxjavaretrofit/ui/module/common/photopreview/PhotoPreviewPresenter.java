@@ -3,17 +3,14 @@ package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
+import org.seraph.mvprxjavaretrofit.data.network.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -145,25 +142,6 @@ class PhotoPreviewPresenter extends PhotoPreviewContract.Presenter {
     }
 
 
-    //注意：Target 不能直接new 出来。因为Picasso 里面持有Target 用的是弱引用，要是直接new 就有很大可能被GC回收导致接收不到回调。
-    private Target target = new Target() {
-        @Override
-        public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-            mDisposable = saveImageToDisk(bitmap);
-        }
-
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
-            ToastUtils.showShort("保存失败");
-            mView.hideLoading();
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-        }
-    };
-
     /**
      * 保存到磁盘
      */
@@ -186,7 +164,8 @@ class PhotoPreviewPresenter extends PhotoPreviewContract.Presenter {
                 e.onError(e1);
             }
         }, BackpressureStrategy.BUFFER)
-                .compose(RxSchedulers.io_main(mView))
+                .compose(RxSchedulers.io_main())
+                .as(mView.bindLifecycle())
                 .subscribe(s -> {
                     ToastUtils.showShort(s);
                     mView.hideLoading();

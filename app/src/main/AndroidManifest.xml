@@ -24,8 +24,6 @@
         <activity android:name=".ui.module.main.MainActivity" />
         <!--图片预览 android:process=":picture" -->
         <activity android:name=".ui.module.common.photopreview.PhotoPreviewActivity" />
-        <!--权限设置-->
-        <activity android:name=".ui.module.common.permission.PermissionsActivity" />
         <!--通用获取本地图片-->
         <activity android:name=".ui.module.common.photolist.LocalImageListActivity" />
         <!--Design布局测试-->

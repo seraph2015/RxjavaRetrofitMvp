@@ -2,9 +2,11 @@ package org.seraph.mvprxjavaretrofit.ui.module.main.presenter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.reactivestreams.Subscription;
 import org.seraph.mvprxjavaretrofit.data.db.help.SearchHistoryHelp;
@@ -139,9 +141,10 @@ public class MainTwoFragmentPresenter extends MainTwoFragmentContract.Presenter 
     public void getBaiduImageList(String keyWord, final int requestPageNo) {
         //获取图片地址 百度图片 标签objURL
         mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl(keyWord, requestPageNo))
-                .compose(RxSchedulers.io_main(mView))
+                .compose(RxSchedulers.io_main())
                 .map(imageBaiduBean -> imageBaiduBean.imgs)
                 .doOnSubscribe(subscription -> mSubscription = subscription)
+                .as(mView.bindLifecycle())
                 .subscribe(new ABaseSubscriber<List<ImageBaiduBean.BaiduImage>>(mView) {
                     @Override
                     public void onSuccess(List<ImageBaiduBean.BaiduImage> baiduImages) {

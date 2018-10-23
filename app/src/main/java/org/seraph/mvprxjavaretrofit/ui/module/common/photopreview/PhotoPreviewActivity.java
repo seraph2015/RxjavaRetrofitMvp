@@ -3,9 +3,9 @@ package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -120,6 +120,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
         //点击保存按钮先检查权限
         RxView.clicks(binding.llSave)
                 .compose(rxPermissions.ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
+                .as(bindLifecycle())
                 .subscribe(aBoolean -> {
                     if (aBoolean) {
                         //获取权限成功

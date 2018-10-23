@@ -13,7 +13,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -24,9 +24,6 @@ import java.io.File;
 import java.util.UUID;
 
 import javax.inject.Inject;
-
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 
 /**
  * 拍照相关工具
@@ -68,7 +65,8 @@ public class TakePhoto {
      */
 
     public void doTakePhoto() {
-        rxPermissions.request(Manifest.permission.CAMERA).subscribe(aBoolean -> {
+        rxPermissions.request(Manifest.permission.CAMERA)
+                .subscribe(aBoolean -> {
             if (aBoolean) {
                 try {
                     //给新照的照片文件命名

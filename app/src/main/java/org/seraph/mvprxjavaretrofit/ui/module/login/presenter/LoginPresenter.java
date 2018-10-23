@@ -50,8 +50,9 @@ public class LoginPresenter extends LoginContract.Presenter {
 
     public void onLogin(final String phone, final String password) {
         Flowable.intervalRange(0, 1, 1, 1, TimeUnit.SECONDS)
-                .compose(RxSchedulers.io_main(mView))
+                .compose(RxSchedulers.io_main())
                 .doOnSubscribe(subscription -> mView.showLoading("正在登录").setOnDismissListener(dialog -> subscription.cancel()))
+                .as(mView.bindLifecycle())
                 .subscribe(l -> {
                     mView.hideLoading();
                     //模拟用户信息

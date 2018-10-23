@@ -10,11 +10,11 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
  **/
 public interface ResetPasswordContract extends IABaseContract {
 
-    interface View extends IBaseActivityView{
+    interface View extends IBaseView {
         void setCountdownText(long time);
     }
 
-    abstract class Presenter extends ABaseActivityPresenter<View>{
+    abstract class Presenter extends ABasePresenter<View> {
 
     }
 

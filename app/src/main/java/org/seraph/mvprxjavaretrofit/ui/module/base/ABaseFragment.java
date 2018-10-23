@@ -1,16 +1,16 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.hwangjr.rxbus.RxBus;
-import com.trello.rxlifecycle2.components.support.RxFragment;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.AutoDisposeConverter;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
@@ -18,7 +18,10 @@ import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjector;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -28,7 +31,7 @@ import dagger.android.support.AndroidSupportInjection;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresenter> extends RxFragment implements IABaseContract.IBaseFragmentView {
+public abstract class ABaseFragment<P extends IABaseContract.ABasePresenter> extends Fragment implements IABaseContract.IBaseView {
 
     protected abstract View initDataBinding(LayoutInflater inflater, ViewGroup container);
 
@@ -37,14 +40,23 @@ public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresen
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
 
     @Inject
-    protected CustomLoadingDialog mLoadingDialog;
+    CustomLoadingDialog mLoadingDialog;
 
     protected P mPresenter;
 
+    //自动解绑rxjava（在指定的生命周期）
+    public <T> AutoDisposeConverter<T> bindLifecycle(Lifecycle.Event untilEvent) {
+        return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, untilEvent));
+    }
+    //自动解绑rxjava（在结束的时候）
+    public <T> AutoDisposeConverter<T> bindLifecycle() {
+        return bindLifecycle(Lifecycle.Event.ON_DESTROY);
+    }
+
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
-        super.onAttach(activity);
+        super.onAttach(context);
     }
 
     @Override
@@ -70,7 +82,7 @@ public abstract class ABaseFragment<P extends IABaseContract.ABaseFragmentPresen
             mPresenter = getMVPPresenter();
             mPresenter.setView(this);
         } catch (ClassCastException e) {
-            throw new RuntimeException("子类必须实现AIBaseContract.IBaseFragmentView接口");
+            throw new RuntimeException("子类必须实现AIBaseContract.IBaseView接口");
         }
     }
 

@@ -2,10 +2,10 @@ package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewAc
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainFourFragmentContract;
 import org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainFourFragmentPresenter;
 import org.seraph.mvprxjavaretrofit.ui.module.test.DesignLayoutTestActivity;
-import org.seraph.mvprxjavaretrofit.ui.views.addImage.CustomImageViewGroup;
 import org.seraph.mvprxjavaretrofit.utlis.AlertDialogUtils;
 import org.seraph.mvprxjavaretrofit.utlis.TakePhoto;
 

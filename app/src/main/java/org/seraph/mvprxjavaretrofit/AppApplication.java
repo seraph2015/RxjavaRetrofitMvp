@@ -1,11 +1,10 @@
 package org.seraph.mvprxjavaretrofit;
 
 import android.app.Activity;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
-import com.tencent.bugly.Bugly;
 
 import org.seraph.mvprxjavaretrofit.di.DaggerAppComponent;
 
@@ -36,7 +35,7 @@ public class AppApplication extends MultiDexApplication implements HasActivityIn
         Utils.init(this);
         initToastLayout();
         //腾讯bug日志收集
-        Bugly.init(this, "c475f0a560", false);
+    //    Bugly.init(this, "c475f0a560", false);
         //注册activity回调
         registerActivityLifecycleCallbacks(new AppActivityCallbacks());
     }

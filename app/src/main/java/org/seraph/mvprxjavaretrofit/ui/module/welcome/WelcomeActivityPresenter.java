@@ -34,7 +34,9 @@ class WelcomeActivityPresenter extends WelcomeActivityContract.Presenter {
      */
     private void CountDown() {
         Observable.intervalRange(0, 1, 3, 3, TimeUnit.SECONDS)
-                .compose(RxSchedulers.io_main2(mView)).subscribe(aLong -> mView.jumpNextActivity());
+                .compose(RxSchedulers.io_main_o())
+                .as(mView.bindLifecycle())
+                .subscribe(aLong -> mView.jumpNextActivity());
     }
 
 }

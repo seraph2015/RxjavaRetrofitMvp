@@ -14,7 +14,7 @@ import com.blankj.utilcode.util.ScreenUtils;
 import com.blankj.utilcode.util.SizeUtils;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
+import org.seraph.mvprxjavaretrofit.data.network.glide.GlideApp;
 
 import java.io.File;
 

@@ -9,7 +9,7 @@ import android.view.KeyEvent;
 import android.widget.ImageView;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
+import org.seraph.mvprxjavaretrofit.data.network.glide.GlideApp;
 
 import javax.inject.Inject;
 

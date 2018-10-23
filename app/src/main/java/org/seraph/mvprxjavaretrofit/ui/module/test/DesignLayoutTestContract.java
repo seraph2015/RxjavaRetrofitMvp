@@ -13,7 +13,7 @@ import java.util.List;
  **/
 interface DesignLayoutTestContract extends IABaseContract {
 
-    interface View extends IBaseActivityView {
+    interface View extends IBaseView {
 
         void setImageListData(List<ImageBaiduBean.BaiduImage> baiduImages, boolean isMore);
 
@@ -21,7 +21,7 @@ interface DesignLayoutTestContract extends IABaseContract {
 
     }
 
-    abstract class Presenter extends ABaseActivityPresenter<View> {
+    abstract class Presenter extends ABasePresenter<View> {
 
     }
 }

@@ -2,11 +2,11 @@ package org.seraph.mvprxjavaretrofit.ui.module.base;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
 
-import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.trello.rxlifecycle2.android.FragmentEvent;
+import com.uber.autodispose.AutoDisposeConverter;
+
+import androidx.lifecycle.Lifecycle;
+
 
 /**
  * mvp框架P层父类接口
@@ -24,14 +24,15 @@ public interface IBaseContract {
 
         Context getContext();
 
+        <T> AutoDisposeConverter<T> bindLifecycle(Lifecycle.Event untilEvent);
+
+        <T> AutoDisposeConverter<T> bindLifecycle();
+
         Dialog showLoading();
 
         Dialog showLoading(String str);
 
         void hideLoading();
-
-        //rxjava生命周期交给对应的依赖actvity或者frg进行自动管理
-        <T> LifecycleTransformer<T> bindToLifecycle();
 
         void finish();
     }
@@ -48,35 +49,5 @@ public interface IBaseContract {
         void onDetach();
 
     }
-
-
-    /* rxJava管理*/
-
-
-    interface IBaseActivityView extends IBaseView {
-
-        //绑定在ActivityEvent中对应生命周期进行取消操作
-        <T> LifecycleTransformer<T> bindUntilEvent(@NonNull ActivityEvent event);
-
-    }
-
-
-    interface IBaseFragmentView extends IBaseView {
-
-        //绑定在FragmentEvent中对应生命周期进行取消操作
-        <T> LifecycleTransformer<T> bindUntilEvent(@NonNull FragmentEvent event);
-
-    }
-
-
-    interface IBaseFragmentPresenter<V extends IBaseFragmentView> extends IBasePresenter<V> {
-
-    }
-
-    interface IBaseActivityPresenter<V extends IBaseActivityView> extends IBasePresenter<V> {
-
-
-    }
-
 
 }

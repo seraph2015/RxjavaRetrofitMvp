@@ -1,10 +1,10 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photolist;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
 import android.view.Menu;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -60,9 +60,9 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     private void initRxBinding() {
         mImageListAdapter = new LocalImageListAdapter(this);
         binding.appbar.tvToolbarTitle.setText("选择图片");
-        RxToolbar.itemClicks(binding.appbar.toolbar).subscribe(menuItem -> {
-            mPresenter.save(mImageListAdapter.getSelectedPathList());
-        });
+        RxToolbar.itemClicks(binding.appbar.toolbar)
+                .as(bindLifecycle())
+                .subscribe(menuItem -> mPresenter.save(mImageListAdapter.getSelectedPathList()));
         binding.rvLocalImageList.setLayoutManager(manager);
         binding.rvLocalImageList.setAdapter(mImageListAdapter);
     }

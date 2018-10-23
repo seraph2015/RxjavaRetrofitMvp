@@ -15,7 +15,7 @@ interface PhotoPreviewContract extends IABaseContract {
     /**
      * 操作ui
      */
-    interface View extends IBaseActivityView {
+    interface View extends IBaseView {
 
         void finish();
 
@@ -27,7 +27,7 @@ interface PhotoPreviewContract extends IABaseContract {
 
     }
 
-    abstract class Presenter extends ABaseActivityPresenter<View> {
+    abstract class Presenter extends ABasePresenter<View> {
 
 
     }

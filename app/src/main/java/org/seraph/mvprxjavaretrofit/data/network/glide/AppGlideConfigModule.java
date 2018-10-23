@@ -1,4 +1,4 @@
-package org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide;
+package org.seraph.mvprxjavaretrofit.data.network.glide;
 
 import android.content.Context;
 
@@ -12,6 +12,8 @@ import com.bumptech.glide.request.RequestOptions;
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.R;
 
+import androidx.annotation.NonNull;
+
 /**
  * Glide加载配置
  * date：2017/12/26 15:11
@@ -23,7 +25,7 @@ public class AppGlideConfigModule extends AppGlideModule {
 
     //配置
     @Override
-    public void applyOptions(Context context, GlideBuilder builder) {
+    public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
         super.applyOptions(context, builder);
         //磁盘缓存
         builder.setDiskCache(new InternalCacheDiskCacheFactory(context, AppConfig.CACHE_MAX_SIZE));

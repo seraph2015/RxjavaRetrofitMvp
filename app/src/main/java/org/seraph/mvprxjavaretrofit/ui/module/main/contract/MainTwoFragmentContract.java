@@ -1,7 +1,5 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
-import android.support.v7.widget.RecyclerView;
-
 import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewBean;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
@@ -17,11 +15,11 @@ import java.util.List;
  **/
 public interface MainTwoFragmentContract extends IABaseContract {
 
-    abstract class Presenter extends ABaseFragmentPresenter<View> {
+    abstract class Presenter extends ABasePresenter<View> {
 
     }
 
-    interface View extends IBaseFragmentView {
+    interface View extends IBaseView {
 
         void setTextView(CharSequence charSequence);
 

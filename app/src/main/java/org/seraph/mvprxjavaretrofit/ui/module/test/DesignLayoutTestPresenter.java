@@ -1,11 +1,15 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -14,6 +18,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import androidx.lifecycle.Lifecycle;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -58,8 +63,9 @@ class DesignLayoutTestPresenter extends DesignLayoutTestContract.Presenter {
 
     private void doBaiduImages(final int tempNo) {
         disposable = mApiBaiduService.doBaiduImageUrl(Tools.getBaiduImagesUrl("tomia", tempNo))
-                .compose(RxSchedulers.io_main(mView))
+                .compose(RxSchedulers.io_main())
                 .map(imageBaiduBean -> imageBaiduBean.imgs)
+                .as(mView.bindLifecycle())
                 .subscribe(baiduImages -> {
                     mView.hideLoading();
                     if (tempNo == 1) {

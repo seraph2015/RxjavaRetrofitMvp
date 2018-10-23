@@ -1,14 +1,11 @@
 package org.seraph.mvprxjavaretrofit;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnit4;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,9 +23,6 @@ public class ExampleInstrumentedTest {
 
         assertEquals("org.seraph.mvprxjavaretrofit", appContext.getPackageName());
     }
-
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
     public void testAppContext() throws Exception {

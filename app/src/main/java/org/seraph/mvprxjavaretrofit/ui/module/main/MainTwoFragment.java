@@ -1,9 +1,12 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,13 +97,15 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.Prese
     }
 
     protected void rxBinding() {
-        RxTextView.textChanges(headBinding.etSearchKeyword).subscribe(charSequence -> {
-            if (charSequence.length() > 0) {
-                headBinding.btnSearchImage.setEnabled(true);
-            } else {
-                headBinding.btnSearchImage.setEnabled(false);
-            }
-        });
+        RxTextView.textChanges(headBinding.etSearchKeyword)
+                .as(bindLifecycle())
+                .subscribe(charSequence -> {
+                    if (charSequence.length() > 0) {
+                        headBinding.btnSearchImage.setEnabled(true);
+                    } else {
+                        headBinding.btnSearchImage.setEnabled(false);
+                    }
+                });
     }
 
 

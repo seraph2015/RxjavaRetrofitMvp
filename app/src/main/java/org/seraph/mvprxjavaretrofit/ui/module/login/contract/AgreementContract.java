@@ -11,11 +11,11 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
  **/
 public interface AgreementContract extends IABaseContract {
 
-    interface View extends IBaseActivityView{
+    interface View extends IBaseView{
 
     }
 
-    abstract class Presenter extends ABaseActivityPresenter<View>{
+    abstract class Presenter extends ABasePresenter<View>{
 
     }
 

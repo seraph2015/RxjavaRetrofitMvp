@@ -11,12 +11,12 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
  **/
 public interface LoginContract extends IABaseContract {
 
-    interface View extends IBaseActivityView{
+    interface View extends IBaseView{
 
         void setUserLoginInfo(String username,String passWord);
     }
 
-    abstract class Presenter extends ABaseActivityPresenter<View>{
+    abstract class Presenter extends ABasePresenter<View>{
 
     }
 

@@ -1,13 +1,13 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
 
 import org.seraph.mvprxjavaretrofit.R;
-import org.seraph.mvprxjavaretrofit.data.network.ImageLoad.glide.GlideApp;
+import org.seraph.mvprxjavaretrofit.data.network.glide.GlideApp;
 import org.seraph.mvprxjavaretrofit.databinding.TestDesignLayoutBinding;
 import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photopreview.PhotoPreviewActivity;
@@ -94,7 +94,6 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
 
     @Override
     public void setImageListData(List<ImageBaiduBean.BaiduImage> baiduImages, boolean isMore) {
-        // PicassoTool.loadNoCache(this, baiduImages.get((int) (Math.random() * baiduImages.size())).objURL, binding.appBarImage);
         GlideApp.with(this).load(baiduImages.get((int) (Math.random() * baiduImages.size())).objURL).into(binding.appBarImage);
         mDesignLayoutAdapter.replaceData(baiduImages);
         if (isMore) {

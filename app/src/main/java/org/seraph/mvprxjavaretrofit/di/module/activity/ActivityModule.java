@@ -2,12 +2,11 @@ package org.seraph.mvprxjavaretrofit.di.module.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
-import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 
 import dagger.Binds;
 import dagger.Module;

@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 
 import com.hwangjr.rxbus.RxBus;
@@ -15,10 +17,6 @@ import org.seraph.mvprxjavaretrofit.ui.module.login.LoginActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.welcome.WelcomeActivity;
 import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
-
-import dagger.android.AndroidInjection;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 
 /**
  * App中每个Activity的回调,处理部分公共的问题
@@ -32,8 +30,6 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
 
     @Override
     public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
-        //管理activity
-        AppActivityManage.getInstance().addActivity(activity);
         //设置字体，需要在设置布局之后
         View rootView = activity.findViewById(android.R.id.content);
         //如果是欢迎页则不设置
@@ -50,7 +46,7 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
         //todo 可以进行其他公共设置（例如布局，切换动画。）...
         //例如：如果有toolbar。则初始化部分公共设置，如果部分界面不需要，自己进行清除
         View view = activity.findViewById(R.id.toolbar);
-        if (view != null && view instanceof Toolbar && activity instanceof ABaseActivity) {
+        if (view instanceof Toolbar && activity instanceof ABaseActivity) {
             Toolbar toolbar = ((Toolbar) view);
             ((ABaseActivity) activity).setSupportActionBar(toolbar);
             //主页特殊处理。不需要进行返回键的操作
@@ -63,7 +59,8 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
             } else {
                 toolbar.setNavigationIcon(R.drawable.common_title_arrow_white_left);
             }
-            RxToolbar.navigationClicks(toolbar).subscribe(o -> activity.onBackPressed());
+            RxToolbar.navigationClicks(toolbar)
+                    .subscribe(o -> activity.onBackPressed());
         }
         //如果是进入登录界面，则使用从下叠加到页面上的动画
         if (activity instanceof LoginActivity) {
@@ -99,8 +96,6 @@ public class AppActivityCallbacks implements Application.ActivityLifecycleCallba
     @Override
     public void onActivityDestroyed(Activity activity) {
         RxBus.get().unregister(activity);
-        //移除关闭activity
-        AppActivityManage.getInstance().closeActivity(activity);
     }
 
 

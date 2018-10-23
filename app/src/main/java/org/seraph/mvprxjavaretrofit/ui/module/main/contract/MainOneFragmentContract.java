@@ -10,13 +10,13 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
  **/
 public interface MainOneFragmentContract extends IABaseContract {
 
-    interface View extends IBaseFragmentView {
+    interface View extends IBaseView {
 
         void setUserTextViewValue(CharSequence charSequence);
 
     }
 
-    abstract class Presenter extends ABaseFragmentPresenter<View> {
+    abstract class Presenter extends ABasePresenter<View> {
 
 
     }

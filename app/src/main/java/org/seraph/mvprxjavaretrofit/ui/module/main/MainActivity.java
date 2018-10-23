@@ -1,15 +1,16 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.LogUtils;
+import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 
@@ -68,7 +69,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
         binding.appbar.appbar.setAlpha(0.8f);
         initFragment(0);
         binding.bnvMain.enableAnimation(false);
-        binding.bnvMain.setLabelVisibilityMode(1);
+        binding.bnvMain.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
         binding.bnvMain.setItemHorizontalTranslationEnabled(false);
         binding.bnvMain.setOnNavigationItemSelectedListener(bottomNavigation);
     }

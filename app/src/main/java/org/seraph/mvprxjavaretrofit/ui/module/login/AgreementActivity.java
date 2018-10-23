@@ -1,8 +1,8 @@
 package org.seraph.mvprxjavaretrofit.ui.module.login;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.ActLoginAgreementBinding;

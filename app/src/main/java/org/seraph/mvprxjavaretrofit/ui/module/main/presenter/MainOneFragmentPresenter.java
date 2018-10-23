@@ -42,8 +42,9 @@ public class MainOneFragmentPresenter extends MainOneFragmentContract.Presenter 
      */
     public void doLoginTest() {
         mApiService.login("15172311067", "123456")
-                .compose(RxSchedulers.io_main_business(mView))
+                .compose(RxSchedulers.io_main_business())
                 .doOnSubscribe(subscription-> mView.showLoading("正在登陆...").setOnDismissListener(dialog-> subscription.cancel()))
+                .as(mView.bindLifecycle())
                 .subscribe(new ABaseSubscriber<UserBean>(mView) {
                     @Override
                     public void onSuccess(UserBean userBean) {

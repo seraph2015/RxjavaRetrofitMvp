@@ -9,29 +9,13 @@ package org.seraph.mvprxjavaretrofit.ui.module.base;
 public interface IABaseContract extends IBaseContract {
 
 
-    abstract class ABaseActivityPresenter<V extends IBaseContract.IBaseActivityView> implements IBaseContract.IBaseActivityPresenter<V> {
+    abstract class ABasePresenter<V extends IBaseContract.IBaseView> implements IBaseContract.IBasePresenter<V> {
 
         protected V mView;
 
         @Override
         public void setView(V v) {
             mView = v;
-        }
-
-        @Override
-        public void onDetach() {
-            //解除绑定
-            mView = null;
-        }
-    }
-
-    abstract class ABaseFragmentPresenter<V extends IBaseFragmentView> implements IBaseContract.IBaseFragmentPresenter<V> {
-
-        protected V mView;
-
-        @Override
-        public void setView(V view) {
-            this.mView = view;
         }
 
         @Override

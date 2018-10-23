@@ -1,10 +1,10 @@
 package org.seraph.mvprxjavaretrofit.ui.module.login;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import com.blankj.utilcode.util.ConvertUtils;
@@ -67,6 +67,7 @@ public class LoginActivity extends ABaseActivity<LoginContract.Presenter> implem
         Observable.combineLatest(loginPhone, loginPassword,
                 (phone, password) -> (RegexUtils.isMobileSimple(phone) && password.length() >= 6))
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(bindLifecycle())
                 .subscribe(aBoolean -> binding.btnLogin.setEnabled(aBoolean));
     }
 

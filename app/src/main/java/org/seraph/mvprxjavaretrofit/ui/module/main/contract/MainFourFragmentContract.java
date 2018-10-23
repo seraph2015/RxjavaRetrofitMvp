@@ -1,6 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  **/
 public interface MainFourFragmentContract extends IABaseContract {
 
-    interface View extends IBaseFragmentView {
+    interface View extends IBaseView {
 
         void setImageList(ArrayList<String> imageList);
 
@@ -25,7 +25,7 @@ public interface MainFourFragmentContract extends IABaseContract {
         Fragment getFragment();
     }
 
-    abstract class Presenter extends ABaseFragmentPresenter<View> {
+    abstract class Presenter extends ABasePresenter<View> {
 
 
     }

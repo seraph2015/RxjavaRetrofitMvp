@@ -54,7 +54,8 @@ public class RegisteredPresenter extends RegisteredContract.Presenter {
     //开始倒计时
     private void startCountdown(final int count) {
         Flowable.intervalRange(1, count, 0, 1, TimeUnit.SECONDS)
-                .compose(RxSchedulers.io_main(mView))
+                .compose(RxSchedulers.io_main())
+                .as(mView.bindLifecycle())
                 .subscribe(aLong -> mView.setCountdownText(count - aLong));
     }
 

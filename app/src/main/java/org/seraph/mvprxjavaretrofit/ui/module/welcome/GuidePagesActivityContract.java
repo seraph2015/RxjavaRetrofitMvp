@@ -10,14 +10,14 @@ import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
  **/
 interface GuidePagesActivityContract extends IABaseContract {
 
-    interface View extends IBaseActivityView {
+    interface View extends IBaseView {
 
         void jumpNextActivity();
 
         void setImageList(Integer[] images);
     }
 
-    abstract class Presenter extends ABaseActivityPresenter<View> {
+    abstract class Presenter extends ABasePresenter<View> {
 
 
     }

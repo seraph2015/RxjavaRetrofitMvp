@@ -5,11 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.ToastUtils;
 
-import org.seraph.mvprxjavaretrofit.AppActivityManage;
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxDisposableHelp;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainActivityContract;
@@ -98,7 +98,7 @@ public class MainActivityPresenter extends MainActivityContract.Presenter {
             isBackPressed = true;
             ToastUtils.showShort("再按一次退出程序");
         } else {
-            AppActivityManage.getInstance().appExit();
+            ActivityUtils.finishAllActivities();
 
         }
         Disposable disposable = Observable.timer(2, TimeUnit.SECONDS).subscribeOn(AndroidSchedulers.mainThread())
