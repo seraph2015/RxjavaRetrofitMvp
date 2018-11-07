@@ -117,7 +117,7 @@ dependencies {
     implementation 'com.github.ittianyu:BottomNavigationViewEx:2.0.2'
 
     //工具集
-    implementation 'com.blankj:utilcode:1.20.4'
+    implementation 'com.blankj:utilcode:1.21.2'
 
     //RxJava系统权限管理
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'

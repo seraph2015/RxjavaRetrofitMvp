@@ -3,9 +3,11 @@
 buildscript {
 
     repositories {
-        jcenter()
-        mavenCentral()
+//        jcenter()
+//        mavenCentral()
         google()
+        //的国内阿里云镜像
+        maven { url 'https://maven.aliyun.com/repository/public/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
@@ -18,10 +20,12 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
-        mavenCentral()
+//        jcenter()
+//        mavenCentral()
         maven { url "https://jitpack.io" }
         google()
+        //的国内阿里云镜像
+        maven { url 'https://maven.aliyun.com/repository/public/' }
     }
 }
 

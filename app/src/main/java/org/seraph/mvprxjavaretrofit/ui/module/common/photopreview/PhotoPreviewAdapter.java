@@ -1,9 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 
 import android.app.Activity;
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +12,10 @@ import org.seraph.mvprxjavaretrofit.ui.views.zoom.ImageViewTouchBase;
 
 import java.io.File;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 
 /**
@@ -61,12 +62,13 @@ class PhotoPreviewAdapter extends PagerAdapter {
             imageView.setSingleTapListener(() -> onImageClickListener.onImageClick(position));
         }
         PhotoPreviewBean previewBean = mListData.get(position);
-        if (StringUtils.equals(previewBean.fromType, PhotoPreviewActivity.IMAGE_TYPE_LOCAL)) {
-            GlideApp.with(mContext).load(new File(mListData.get(position).objURL)).skipMemoryCache(true).into(imageView);
-            // PicassoTool.loadNoCache(mContext, new File(mListData.get(position).objURL), imageView);
+        if (previewBean.objURL == null) {
+            previewBean.objURL = "";
+        }
+        if (StringUtils.equals(previewBean.fromType, PhotoPreviewActivity.IMAGE_TYPE_LOCAL) && !previewBean.objURL.contains("http://")) {
+            GlideApp.with(mContext).load(new File(previewBean.objURL)).skipMemoryCache(true).into(imageView);
         } else {
-            GlideApp.with(mContext).load(mListData.get(position).objURL).skipMemoryCache(true).into(imageView);
-            //  PicassoTool.loadNoCache(mContext, mListData.get(position).objURL, imageView);
+            GlideApp.with(mContext).load(previewBean.objURL).skipMemoryCache(true).into(imageView);
         }
         container.addView(imageView, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
         return imageView;
