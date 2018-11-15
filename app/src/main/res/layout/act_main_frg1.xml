@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="presenter"
             type="org.seraph.mvprxjavaretrofit.ui.module.main.presenter.MainOneFragmentPresenter" />
@@ -43,9 +46,9 @@
                 android:id="@+id/tv_query_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{()->presenter.queryUserInfo()}"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/test_bg_btn"
+                android:onClick="@{()->presenter.queryUserInfo()}"
                 android:text="查询数据库" />
 
             <Button
@@ -62,6 +65,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#ff0000" />
+
+            <Button
+                android:id="@+id/tv_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/test_bg_btn"
+                android:onClick="@{()->presenter.show()}"
+                android:text="show" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lav"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="dino_dance.json"
+                app:lottie_loop="true" />
         </LinearLayout>
     </org.seraph.mvprxjavaretrofit.ui.views.ObservableScrollView>
 </layout>

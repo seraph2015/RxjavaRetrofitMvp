@@ -1,15 +1,9 @@
 package org.seraph.mvprxjavaretrofit.ui.module.test;
 
-import android.app.Activity;
-import android.content.DialogInterface;
-
 import com.blankj.utilcode.util.ToastUtils;
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiBaiduService;
-import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.model.ImageBaiduBean;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
@@ -18,7 +12,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.Lifecycle;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -45,12 +38,9 @@ class DesignLayoutTestPresenter extends DesignLayoutTestContract.Presenter {
 
     @Override
     public void start() {
-        mView.showLoading("正在加载").setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (disposable != null) {
-                    disposable.dispose();
-                }
+        mView.showLoading("正在加载").setOnDismissListener(dialog -> {
+            if (disposable != null) {
+                disposable.dispose();
             }
         });
         doBaiduImages(1);

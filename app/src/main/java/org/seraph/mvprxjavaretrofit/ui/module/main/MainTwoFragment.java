@@ -1,13 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +11,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.databinding.ActMainFrg2Binding;
 import org.seraph.mvprxjavaretrofit.databinding.ActMainFrg3ListHeadBinding;
 import org.seraph.mvprxjavaretrofit.di.scope.ActivityScoped;
@@ -32,8 +26,15 @@ import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import io.reactivex.Flowable;
 
 /**
  * 第二页
@@ -84,7 +85,11 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.ABase
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 if (StringUtils.isEmpty(getSearchKeyWord())) {
-                    refreshLayout.finishRefresh(false);
+                    Flowable.intervalRange(0,1,3,1,TimeUnit.SECONDS)
+                            .compose(RxSchedulers.io_main())
+                            .as(bindLifecycle())
+                            .subscribe(aLong -> { refreshLayout.finishRefresh(false);});
+
                     return;
                 }
                 presenter.getBaiduImageList(getSearchKeyWord(), 1);

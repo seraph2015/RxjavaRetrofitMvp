@@ -22,7 +22,7 @@ import retrofit2.http.Url;
  **/
 public interface ApiService {
 
-    String BASE_URL = "https://www.xingnl.live/2-4-3/Public/xingnl/";
+    String BASE_URL = "http://thrust.yx.xubei.com/";
 
     @POST("auth/login")
     @FormUrlEncoded

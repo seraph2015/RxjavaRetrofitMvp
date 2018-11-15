@@ -43,7 +43,7 @@ public class MainOneFragmentPresenter extends MainOneFragmentContract.Presenter 
     public void doLoginTest() {
         mApiService.login("15172311067", "123456")
                 .compose(RxSchedulers.io_main_business())
-                .doOnSubscribe(subscription-> mView.showLoading("正在登陆...").setOnDismissListener(dialog-> subscription.cancel()))
+                .doOnSubscribe(subscription -> mView.showLoading("正在登陆...").setOnDismissListener(dialog -> subscription.cancel()))
                 .as(mView.bindLifecycle())
                 .subscribe(new ABaseSubscriber<UserBean>(mView) {
                     @Override
@@ -76,6 +76,11 @@ public class MainOneFragmentPresenter extends MainOneFragmentContract.Presenter 
         userTable.setHeadPortrait(mUserBean.headimg);
         mUserBeanHelp.save(userTable);
         ToastUtils.showShort("保存成功");
+    }
+
+
+    public void show() {
+        mView.showLoading();
     }
 
     /**

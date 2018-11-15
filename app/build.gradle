@@ -162,5 +162,8 @@ dependencies {
 
     //gif开源控件
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+
+    //lottie动画
+    implementation 'com.airbnb.android:lottie:2.8.0'
 }
 

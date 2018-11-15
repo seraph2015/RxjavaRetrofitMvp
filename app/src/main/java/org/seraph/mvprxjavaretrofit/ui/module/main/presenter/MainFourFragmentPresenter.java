@@ -7,7 +7,11 @@ import android.os.Bundle;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 
+import org.seraph.mvprxjavaretrofit.data.network.FileUploadHelp;
+import org.seraph.mvprxjavaretrofit.data.network.rx.RxSchedulers;
 import org.seraph.mvprxjavaretrofit.data.network.service.ApiService;
+import org.seraph.mvprxjavaretrofit.ui.module.base.ABaseSubscriber;
+import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
 import org.seraph.mvprxjavaretrofit.ui.module.common.photolist.LocalImageListActivity;
 import org.seraph.mvprxjavaretrofit.ui.module.main.contract.MainFourFragmentContract;
 import org.seraph.mvprxjavaretrofit.utlis.TakePhoto;
@@ -15,6 +19,7 @@ import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 
@@ -88,48 +93,39 @@ public class MainFourFragmentPresenter extends MainFourFragmentContract.Presente
             return;
         }
 
-//        HashMap<String, String> hashMap = new HashMap<>();
-//        hashMap.put("token", "a280d150b5592cf560925a6eebf56145");
-//        hashMap.put("rec_id", "1165");
-//        hashMap.put("hide_username", "0");
-//        hashMap.put("content", "测试");
-//        hashMap.put("goods_rank", "3");
-//        hashMap.put("serve_rank", "3");
-//        hashMap.put("express_rank", "3");
-//        hashMap.put("comment_rank", "3");
-//
-//        HashMap<String, File> fileMap = new HashMap<>();
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("token", "a280d150b5592cf560925a6eebf56145");
+        hashMap.put("rec_id", "1165");
+        hashMap.put("hide_username", "0");
+        hashMap.put("content", "测试");
+        hashMap.put("goods_rank", "3");
+        hashMap.put("serve_rank", "3");
+        hashMap.put("express_rank", "3");
+        hashMap.put("comment_rank", "3");
+
+        HashMap<String, File> fileMap = new HashMap<>();
 //        for (int i = 0; i < (imageList.size() > 4 ? 4 : imageList.size()); i++) {
 //            fileMap.put("image["+i+"]", new File(imageList.get(i)));
 //        }
 //
-//        mApiService.multipart("?service=goods.addComment", FileUploadHelp.multipartRequestBody(hashMap, fileMap))
-//                .compose(RxSchedulers.<BaseDataResponse>io_main())
-//                .doOnSubscribe(new Consumer<Subscription>() {
-//                    @Override
-//                    public void accept(@NonNull final Subscription subscription) throws Exception {
-//                        mView.showLoading("正在上传图片").setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                            @Override
-//                            public void onDismiss(DialogInterface dialog) {
-//                                subscription.cancel();
-//                            }
-//                        });
-//                    }
-//                }).subscribe(new ABaseSubscriber<BaseDataResponse>(mView) {
-//            @Override
-//            public void onSuccess(BaseDataResponse stringBaseDataResponse) {
-//                if (stringBaseDataResponse.status == 0) {
-//                    ToastUtils.showShort("上传成功");
-//                } else {
-//                    ToastUtils.showShort(stringBaseDataResponse.msg);
-//                }
-//            }
-//
-//            @Override
-//            public void onError(String errStr) {
-//                mView.showLoading(errStr);
-//            }
-//        });
+        fileMap.put("file",new File(imageList.get(0)));
+        mApiService.multipart("common/anon/oss/upload/image", FileUploadHelp.multipartRequestBody(hashMap, fileMap))
+                .compose(RxSchedulers.io_main())
+                .doOnSubscribe(subscription -> mView.showLoading("正在上传图片").setOnDismissListener(dialog -> subscription.cancel())).subscribe(new ABaseSubscriber<BaseDataResponse>(mView) {
+            @Override
+            public void onSuccess(BaseDataResponse stringBaseDataResponse) {
+                if (stringBaseDataResponse.status == 0) {
+                    ToastUtils.showShort("上传成功");
+                } else {
+                    ToastUtils.showShort(stringBaseDataResponse.msg);
+                }
+            }
+
+            @Override
+            public void onError(String errStr) {
+                mView.showLoading(errStr);
+            }
+        });
     }
 
     public void onSaveInstanceState(Bundle outState) {
