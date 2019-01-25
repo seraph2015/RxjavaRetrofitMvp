@@ -41,6 +41,7 @@ public class AppApplication extends MultiDexApplication implements HasActivityIn
         //工具初始化
         Utils.init(this);
         initToastLayout();
+
         //腾讯bug日志收集
         //    Bugly.init(this, "c475f0a560", false);
         //注册activity回调

@@ -57,15 +57,15 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-beta02', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     testImplementation 'junit:junit:4.12'
 
     //解决分包兼容
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     //greenDao数据库
     implementation 'org.greenrobot:greendao:3.2.2'
@@ -139,7 +139,7 @@ dependencies {
     //glide图片加载
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-    annotationProcessor 'androidx.annotation:annotation:1.0.0'
+    annotationProcessor 'androidx.annotation:annotation:1.0.1'
 
     //glide图片加载的OkHttp集成库的依赖
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.8.0'
@@ -165,5 +165,11 @@ dependencies {
 
     //lottie动画
     implementation 'com.airbnb.android:lottie:2.8.0'
+
+    //腾讯图像识别
+    implementation 'com.qcloud:qcloud-image-sdk:2.3.3'
+
+    //图片剪切
+    implementation 'com.yalantis:ucrop:2.2.0'
 }
 

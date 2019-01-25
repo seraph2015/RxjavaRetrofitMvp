@@ -72,8 +72,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/test_bg_btn"
-                android:onClick="@{()->presenter.show()}"
-                android:text="show" />
+                android:onClick="@{()->presenter.doPickPhotoFromGallery()}"
+                android:text="选择图片，识别文字" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lav"
