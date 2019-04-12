@@ -108,24 +108,24 @@ public class MainFourFragmentPresenter extends MainFourFragmentContract.Presente
 //            fileMap.put("image["+i+"]", new File(imageList.get(i)));
 //        }
 //
-        fileMap.put("file",new File(imageList.get(0)));
-        mApiService.multipart("common/anon/oss/upload/image", FileUploadHelp.multipartRequestBody(hashMap, fileMap))
-                .compose(RxSchedulers.io_main())
-                .doOnSubscribe(subscription -> mView.showLoading("正在上传图片").setOnDismissListener(dialog -> subscription.cancel())).subscribe(new ABaseSubscriber<BaseDataResponse>(mView) {
-            @Override
-            public void onSuccess(BaseDataResponse stringBaseDataResponse) {
-                if (stringBaseDataResponse.status == 0) {
-                    ToastUtils.showShort("上传成功");
-                } else {
-                    ToastUtils.showShort(stringBaseDataResponse.msg);
-                }
-            }
-
-            @Override
-            public void onError(String errStr) {
-                mView.showLoading(errStr);
-            }
-        });
+//        fileMap.put("file",new File(imageList.get(0)));
+//        mApiService.multipart("common/anon/oss/upload/image", FileUploadHelp.multipartRequestBody(hashMap, fileMap))
+//                .compose(RxSchedulers.io_main())
+//                .doOnSubscribe(subscription -> mView.showLoading("正在上传图片").setOnDismissListener(dialog -> subscription.cancel())).subscribe(new ABaseSubscriber<BaseDataResponse>(mView) {
+//            @Override
+//            public void onSuccess(BaseDataResponse stringBaseDataResponse) {
+//                if (stringBaseDataResponse.code == 0) {
+//                    ToastUtils.showShort("上传成功");
+//                } else {
+//                    ToastUtils.showShort(stringBaseDataResponse.message);
+//                }
+//            }
+//
+//            @Override
+//            public void onError(String errStr) {
+//                mView.showLoading(errStr);
+//            }
+//        });
     }
 
     public void onSaveInstanceState(Bundle outState) {

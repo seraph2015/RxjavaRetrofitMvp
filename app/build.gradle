@@ -165,5 +165,11 @@ dependencies {
 
     //lottie动画
     implementation 'com.airbnb.android:lottie:2.8.0'
+
+    //腾讯图像识别
+    implementation 'com.qcloud:qcloud-image-sdk:2.3.3'
+
+    //图片剪切
+    implementation 'com.yalantis:ucrop:2.2.0'
 }
 

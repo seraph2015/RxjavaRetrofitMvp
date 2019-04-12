@@ -13,7 +13,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+
 import androidx.fragment.app.Fragment;
+
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -67,24 +69,24 @@ public class TakePhoto {
     public void doTakePhoto() {
         rxPermissions.request(Manifest.permission.CAMERA)
                 .subscribe(aBoolean -> {
-            if (aBoolean) {
-                try {
-                    //给新照的照片文件命名
-                    mCurrentPhotoFile = getNewPhotoFile();
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
-                    //Uri.fromFile(mCurrentPhotoFile)
-                    //适配7.0文件共享
-                    Uri fileUri = FileProvider7.getUriForFile(mContext, mCurrentPhotoFile);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                    mContext.startActivityForResult(intent, CAMERA_WITH_DATA);
-                } catch (ActivityNotFoundException e) {
-                    ToastUtils.showShort("没有程序执行拍照操作");
-                    e.printStackTrace();
-                }
-            } else {
-                ToastUtils.showShort("获取权限失败");
-            }
-        });
+                    if (aBoolean) {
+                        try {
+                            //给新照的照片文件命名
+                            mCurrentPhotoFile = getNewPhotoFile();
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
+                            //Uri.fromFile(mCurrentPhotoFile)
+                            //适配7.0文件共享
+                            Uri fileUri = FileProvider7.getUriForFile(mContext, mCurrentPhotoFile);
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                            mContext.startActivityForResult(intent, CAMERA_WITH_DATA);
+                        } catch (ActivityNotFoundException e) {
+                            ToastUtils.showShort("没有程序执行拍照操作");
+                            e.printStackTrace();
+                        }
+                    } else {
+                        ToastUtils.showShort("获取权限失败");
+                    }
+                });
     }
 
 
@@ -134,16 +136,29 @@ public class TakePhoto {
     }
 
     // 请求Gallery程序
-    public void doPickPhotoFromGallery() {
-        try {
-            PHOTO_DIR.mkdirs();// 创建照片的存储目录
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            mContext.startActivityForResult(intent, PHOTO_WITH_DATA);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(mContext, "没有找到相应的程序执行该操作", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
+    public void doPickPhotoFromGallery(Fragment fragment) {
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        try {
+                            PHOTO_DIR.mkdirs();// 创建照片的存储目录
+                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            if (fragment != null) {
+                                fragment.startActivityForResult(intent, PHOTO_WITH_DATA);
+                            } else {
+                                mContext.startActivityForResult(intent, PHOTO_WITH_DATA);
+                            }
+                        } catch (ActivityNotFoundException e) {
+                            Toast.makeText(mContext, "没有找到相应的程序执行该操作", Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    } else {
+                        ToastUtils.showShort("获取权限失败");
+                    }
+                });
+
+
     }
 
 

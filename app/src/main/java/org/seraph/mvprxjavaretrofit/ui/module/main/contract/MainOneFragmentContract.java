@@ -1,6 +1,10 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main.contract;
 
+import android.net.Uri;
+
 import org.seraph.mvprxjavaretrofit.ui.module.base.IABaseContract;
+
+import androidx.fragment.app.Fragment;
 
 /**
  * 第1个界面
@@ -13,6 +17,10 @@ public interface MainOneFragmentContract extends IABaseContract {
     interface View extends IBaseView {
 
         void setUserTextViewValue(CharSequence charSequence);
+
+        void onUCropImage(Uri data, Uri fromFile);
+
+        Fragment getFragment();
 
     }
 

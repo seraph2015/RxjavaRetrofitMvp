@@ -11,13 +11,13 @@ public class BaseDataResponse<T> {
     /**
      * 业务逻辑标识
      */
-    public int status = -1;
+    public int code = -1;
     /**
      * 提示信息
      */
-    public String msg;
+    public String message;
 
 
-    public T data;
+    public T result;
 
 }

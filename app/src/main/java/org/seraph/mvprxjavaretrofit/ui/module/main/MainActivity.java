@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -162,4 +163,13 @@ public class MainActivity extends ABaseActivity implements MainActivityContract.
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if (fragments.size() > 0) {
+            for (Fragment fragment : fragments)
+                fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }

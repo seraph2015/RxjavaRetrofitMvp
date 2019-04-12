@@ -1,5 +1,6 @@
 package org.seraph.mvprxjavaretrofit.data.network.service;
 
+import org.seraph.mvprxjavaretrofit.ui.module.base.BaseData;
 import org.seraph.mvprxjavaretrofit.ui.module.base.BaseDataResponse;
 import org.seraph.mvprxjavaretrofit.ui.module.user.UserBean;
 
@@ -22,7 +23,7 @@ import retrofit2.http.Url;
  **/
 public interface ApiService {
 
-    String BASE_URL = "http://thrust.yx.xubei.com/";
+    String BASE_URL = "https://good-api.xubei.com/";
 
     @POST("auth/login")
     @FormUrlEncoded
@@ -38,4 +39,9 @@ public interface ApiService {
      */
     @POST()
     Flowable<BaseDataResponse> multipart(@Url() String url, @Body RequestBody requestBody);
+
+    //上传图片
+    @POST("goods-api/arbitration/upTemp?businessNo=xubei_android")
+    Flowable<BaseDataResponse<BaseData<String>>> upTemp(@Body RequestBody requestBody);
+
 }
