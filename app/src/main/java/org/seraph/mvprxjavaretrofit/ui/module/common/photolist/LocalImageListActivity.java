@@ -22,7 +22,7 @@ import javax.inject.Inject;
 /**
  * 显示并且选择本地图片的类，结果以List传出
  */
-public class LocalImageListActivity extends ABaseActivity<LocalImageListContract.Presenter> implements LocalImageListContract.View {
+public class LocalImageListActivity extends ABaseActivity implements LocalImageListContract.View {
 
 
     CommonActivityLocalImageListBinding binding;
@@ -33,7 +33,7 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     }
 
     @Inject
-    LocalImageListPresenter mPresenter;
+    LocalImageListPresenter presenter;
 
     LocalImageListAdapter mImageListAdapter;
 
@@ -42,7 +42,8 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
 
     @Override
     protected LocalImageListContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        presenter.setView(this);
+        return presenter;
     }
 
 
@@ -53,16 +54,16 @@ public class LocalImageListActivity extends ABaseActivity<LocalImageListContract
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         initRxBinding();
-        mPresenter.setIntent(getIntent());
-        mPresenter.start();
+        presenter.setIntent(getIntent());
+        presenter.start();
     }
 
     private void initRxBinding() {
         mImageListAdapter = new LocalImageListAdapter(this);
-        binding.appbar.tvToolbarTitle.setText("选择图片");
+        binding.appbar.toolbar.setTitle("选择图片");
         RxToolbar.itemClicks(binding.appbar.toolbar)
                 .as(bindLifecycle())
-                .subscribe(menuItem -> mPresenter.save(mImageListAdapter.getSelectedPathList()));
+                .subscribe(menuItem -> presenter.save(mImageListAdapter.getSelectedPathList()));
         binding.rvLocalImageList.setLayoutManager(manager);
         binding.rvLocalImageList.setAdapter(mImageListAdapter);
     }

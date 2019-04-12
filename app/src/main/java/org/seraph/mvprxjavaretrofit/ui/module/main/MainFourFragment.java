@@ -36,7 +36,7 @@ import androidx.fragment.app.Fragment;
  * mail：417753393@qq.com
  **/
 @ActivityScoped
-public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Presenter> implements MainFourFragmentContract.View {
+public class MainFourFragment extends ABaseFragment implements MainFourFragmentContract.View {
 
     @Inject
     public MainFourFragment() {
@@ -50,6 +50,7 @@ public class MainFourFragment extends ABaseFragment<MainFourFragmentContract.Pre
 
     @Override
     protected MainFourFragmentContract.Presenter getMVPPresenter() {
+        presenter.setView(this);
         return presenter;
     }
 

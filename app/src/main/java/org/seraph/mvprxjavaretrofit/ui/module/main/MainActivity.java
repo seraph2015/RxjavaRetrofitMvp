@@ -33,7 +33,7 @@ import androidx.fragment.app.FragmentManager;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> implements MainActivityContract.View {
+public class MainActivity extends ABaseActivity implements MainActivityContract.View {
 
     ActMainBinding binding;
 
@@ -43,11 +43,12 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
     }
 
     @Inject
-    MainActivityPresenter mPresenter;
+    MainActivityPresenter presenter;
 
     @Override
     protected MainActivityContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        presenter.setView(this);
+        return presenter;
     }
 
 
@@ -61,7 +62,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        mPresenter.start();
+        presenter.start();
         //初始化layout
         initLayout();
     }
@@ -110,7 +111,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
      * @param showIndex 位置
      */
     private void showIndexFragment(int showIndex) {
-        mPresenter.setSelectedFragment(showIndex);
+        presenter.setSelectedFragment(showIndex);
         Fragment showFragment = fragments.get(showIndex);
         if (showFragment != null) {
             FragmentUtils.showHide(showFragment, fragments);
@@ -120,12 +121,12 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
 
     @Override
     public void onBackPressed() {
-        mPresenter.onBackPressed();
+        presenter.onBackPressed();
     }
 
     @Override
     public void setTitle(String title) {
-        binding.appbar.tvToolbarTitle.setText(title);
+        binding.appbar.toolbar.setTitle(title);
     }
 
 
@@ -138,7 +139,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mPresenter.onSaveInstanceState(outState);
+        presenter.onSaveInstanceState(outState);
     }
 
     @Override
@@ -151,7 +152,7 @@ public class MainActivity extends ABaseActivity<MainActivityContract.Presenter> 
         //恢复停留的页面
         int page = (int) savedInstanceState.get(MainActivityPresenter.MAIN_SAVE_KEY);
         initFragment(page);
-        mPresenter.setSelectedFragment(page);
+        presenter.setSelectedFragment(page);
     }
 
 

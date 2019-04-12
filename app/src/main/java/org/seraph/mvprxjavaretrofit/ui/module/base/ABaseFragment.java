@@ -1,7 +1,6 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,7 @@ import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.AutoDisposeConverter;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
-import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
-import org.seraph.mvprxjavaretrofit.utlis.FontUtils;
 
 import javax.inject.Inject;
 
@@ -31,23 +28,24 @@ import dagger.android.support.AndroidSupportInjection;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class ABaseFragment<P extends IABaseContract.ABasePresenter> extends Fragment implements IABaseContract.IBaseView {
+public abstract class ABaseFragment extends Fragment implements IABaseContract.IBaseView {
 
     protected abstract View initDataBinding(LayoutInflater inflater, ViewGroup container);
 
-    protected abstract P getMVPPresenter();
+    protected abstract IABaseContract.ABasePresenter getMVPPresenter();
 
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
 
     @Inject
     CustomLoadingDialog mLoadingDialog;
 
-    private P mPresenter;
+    private IABaseContract.ABasePresenter mPresenter;
 
     //自动解绑rxjava（在指定的生命周期）
     public <T> AutoDisposeConverter<T> bindLifecycle(Lifecycle.Event untilEvent) {
         return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, untilEvent));
     }
+
     //自动解绑rxjava（在结束的时候）
     public <T> AutoDisposeConverter<T> bindLifecycle() {
         return bindLifecycle(Lifecycle.Event.ON_DESTROY);
@@ -61,33 +59,14 @@ public abstract class ABaseFragment<P extends IABaseContract.ABasePresenter> ext
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = initDataBinding(inflater, container);
-        View appbar = rootView.findViewById(R.id.appbar);
-        if (appbar != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            appbar.setOutlineProvider(null);
-        }
-        FontUtils.injectFont(rootView);
         //数据绑定
         RxBus.get().register(this);
-        initMVP();
-        return rootView;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void initMVP() {
-        try {
-            if (getMVPPresenter() == null) {
-                return;
-            }
-            mPresenter = getMVPPresenter();
-            mPresenter.setView(this);
-        } catch (ClassCastException e) {
-            throw new RuntimeException("子类必须实现AIBaseContract.IBaseView接口");
-        }
+        mPresenter = getMVPPresenter();
+        return initDataBinding(inflater, container);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initCreate(savedInstanceState);
     }
@@ -112,7 +91,9 @@ public abstract class ABaseFragment<P extends IABaseContract.ABasePresenter> ext
 
     @Override
     public void finish() {
-        getActivity().finish();
+        if (getActivity() != null) {
+            getActivity().finish();
+        }
     }
 
     @Override

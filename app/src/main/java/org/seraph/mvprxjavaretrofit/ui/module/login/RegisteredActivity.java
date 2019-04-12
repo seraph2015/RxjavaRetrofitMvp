@@ -36,7 +36,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class RegisteredActivity extends ABaseActivity<RegisteredContract.Presenter> implements RegisteredContract.View {
+public class RegisteredActivity extends ABaseActivity implements RegisteredContract.View {
 
 
     ActLoginRegisteredBinding binding;
@@ -48,16 +48,17 @@ public class RegisteredActivity extends ABaseActivity<RegisteredContract.Present
     }
 
     @Inject
-    RegisteredPresenter mPresenter;
+    RegisteredPresenter presenter;
 
     @Override
     protected RegisteredContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        presenter.setView(this);
+        return presenter;
     }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        binding.appbar.tvToolbarTitle.setText("注册");
+        binding.appbar.toolbar.setTitle("注册");
         initListener();
     }
 
@@ -99,14 +100,14 @@ public class RegisteredActivity extends ABaseActivity<RegisteredContract.Present
                 break;
             case R.id.tv_get_code://获取验证码
                 if (binding.tvGetCode.getCurrentTextColor() == 0xff0099cc) {
-                    mPresenter.onGetCode(binding.etPhone.getText().toString().trim());
+                    presenter.onGetCode(binding.etPhone.getText().toString().trim());
                 }
                 break;
             case R.id.tv_agreement://注册协议
-                mPresenter.doLookAgreement();
+                presenter.doLookAgreement();
                 break;
             case R.id.btn_ok://提交注册
-                mPresenter.onRegistered(binding.etPhone.getText().toString().trim(), binding.etCode.getText().toString().trim(), binding.etPassword.getText().toString().trim());
+                presenter.onRegistered(binding.etPhone.getText().toString().trim(), binding.etCode.getText().toString().trim(), binding.etPassword.getText().toString().trim());
                 break;
         }
     }

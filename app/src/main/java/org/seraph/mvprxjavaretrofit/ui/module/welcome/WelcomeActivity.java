@@ -22,7 +22,7 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class WelcomeActivity extends ABaseActivity<WelcomeActivityContract.Presenter> implements WelcomeActivityContract.View {
+public class WelcomeActivity extends ABaseActivity implements WelcomeActivityContract.View {
 
     WelcomeActivityBinding binding;
 
@@ -33,17 +33,18 @@ public class WelcomeActivity extends ABaseActivity<WelcomeActivityContract.Prese
     }
 
     @Inject
-    WelcomeActivityPresenter mPresenter;
+    WelcomeActivityPresenter presenter;
 
 
     @Override
     protected WelcomeActivityContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        presenter.setView(this);
+        return presenter;
     }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        mPresenter.start();
+        presenter.start();
     }
 
 

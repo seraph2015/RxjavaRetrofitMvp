@@ -1,8 +1,11 @@
 package org.seraph.mvprxjavaretrofit.ui.module.main;
 
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +27,15 @@ import javax.inject.Inject;
  * mail：417753393@qq.com
  **/
 @ActivityScoped
-public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Presenter> implements MainOneFragmentContract.View {
+public class MainOneFragment extends ABaseFragment implements MainOneFragmentContract.View {
 
 
     private ActMainFrg1Binding binding;
 
 
     @Inject
-    public MainOneFragment(){}
+    public MainOneFragment() {
+    }
 
     @Override
     protected View initDataBinding(LayoutInflater inflater, ViewGroup container) {
@@ -44,18 +48,18 @@ public class MainOneFragment extends ABaseFragment<MainOneFragmentContract.Prese
 
     @Override
     protected MainOneFragmentContract.Presenter getMVPPresenter() {
+        presenter.setView(this);
         return presenter;
     }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-       binding.setPresenter(presenter);
+        binding.setPresenter(presenter);
     }
 
     public void setUserTextViewValue(CharSequence charSequence) {
         binding.tvDbUser.setText(charSequence);
     }
-
 
 
 }

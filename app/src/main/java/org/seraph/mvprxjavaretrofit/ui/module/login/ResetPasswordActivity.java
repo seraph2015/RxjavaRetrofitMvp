@@ -35,7 +35,7 @@ import io.reactivex.Observable;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class ResetPasswordActivity extends ABaseActivity<ResetPasswordContract.Presenter> implements ResetPasswordContract.View {
+public class ResetPasswordActivity extends ABaseActivity implements ResetPasswordContract.View {
 
 
     ActLoginResetPasswordBinding binding;
@@ -47,16 +47,17 @@ public class ResetPasswordActivity extends ABaseActivity<ResetPasswordContract.P
     }
 
     @Inject
-    ResetPasswordPresenter mPresenter;
+    ResetPasswordPresenter presenter;
 
     @Override
     protected ResetPasswordContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        presenter.setView(this);
+        return presenter;
     }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        binding.appbar.tvToolbarTitle.setText("重置密码");
+        binding.appbar.toolbar.setTitle("重置密码");
         initListener();
     }
 
@@ -95,12 +96,12 @@ public class ResetPasswordActivity extends ABaseActivity<ResetPasswordContract.P
                 break;
             case R.id.tv_get_code://获取验证码
                 if (binding.tvGetCode.getCurrentTextColor() == 0xff0099cc) {
-                    mPresenter.onGetCode(binding.etPhone.getText().toString());
+                    presenter.onGetCode(binding.etPhone.getText().toString());
                 }
                 break;
             case R.id.btn_ok:
                 //提交网络
-                mPresenter.onSetPassword(binding.etPhone.getText().toString(), binding.etCode.getText().toString(), binding.etNewPassword.getText().toString());
+                presenter.onSetPassword(binding.etPhone.getText().toString(), binding.etCode.getText().toString(), binding.etNewPassword.getText().toString());
                 break;
         }
     }

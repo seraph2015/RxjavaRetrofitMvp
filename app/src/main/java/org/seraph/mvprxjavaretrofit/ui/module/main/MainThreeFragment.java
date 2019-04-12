@@ -30,7 +30,7 @@ import androidx.databinding.DataBindingUtil;
  * mail：417753393@qq.com
  **/
 @ActivityScoped
-public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.Presenter> implements MainThreeFragmentContract.View {
+public class MainThreeFragment extends ABaseFragment implements MainThreeFragmentContract.View {
 
 
     @Inject
@@ -44,6 +44,7 @@ public class MainThreeFragment extends ABaseFragment<MainThreeFragmentContract.P
 
     @Override
     protected MainThreeFragmentContract.Presenter getMVPPresenter() {
+        presenter.setView(this);
         return presenter;
     }
 

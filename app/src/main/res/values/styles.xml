@@ -18,7 +18,10 @@
         <item name="android:actionBarStyle">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
-    <style name="AppTheme" parent="AppBaseTheme" />
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- 状态栏是否透明 -->
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
 
     <!--欢迎页设置背景为欢迎图片，防止白屏-->
     <style name="AppTheme.WelcomeTheme" parent="AppTheme">
@@ -44,21 +47,6 @@
         <item name="android:windowExitAnimation">@anim/anim_slide_out_to_bottom</item>
     </style>
 
-    <!--toolbar布局配置-->
-    <style name="app_toolbar_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/toolbar_h_min</item>
-        <item name="android:paddingTop">@dimen/toolbar_top_padding_min</item>
-    </style>
-    <!--toolbar子元素布局配置-->
-    <style name="app_toolbar_child_style">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:paddingTop">@dimen/toolbar_top_padding_text_min</item>
-    </style>
 
     <!--部分通用dialog样式-->
     <style name="custom_dialog_style" parent="@android:style/Theme.Holo.Light.Dialog">

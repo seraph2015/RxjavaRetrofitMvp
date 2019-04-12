@@ -1,10 +1,14 @@
 package org.seraph.mvprxjavaretrofit.ui.module.login;
 
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.view.View;
 
 import com.blankj.utilcode.util.ConvertUtils;
@@ -29,7 +33,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class LoginActivity extends ABaseActivity<LoginContract.Presenter> implements LoginContract.View {
+public class LoginActivity extends ABaseActivity implements LoginContract.View {
 
     ActLoginBinding binding;
 
@@ -40,18 +44,20 @@ public class LoginActivity extends ABaseActivity<LoginContract.Presenter> implem
     }
 
     @Inject
-    LoginPresenter mPresenter;
+    LoginPresenter presenter;
 
     @Override
     protected LoginContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        presenter.setView(this);
+        return presenter;
     }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        binding.appbar.tvToolbarTitle.setText("登录");
+        binding.appbar.toolbar.setTitle("登录");
+        overridePendingTransition(R.anim.anim_slide_in_from_bottom, R.anim.anim_null);
         initListener();
-        mPresenter.start();
+        presenter.start();
     }
 
     /**
@@ -84,7 +90,7 @@ public class LoginActivity extends ABaseActivity<LoginContract.Presenter> implem
                 startActivity(new Intent(this, ResetPasswordActivity.class));
                 break;
             case R.id.btn_login://登录
-                mPresenter.onLogin(binding.etPhone.getText().toString().trim(), binding.etPassword.getText().toString().trim());
+                presenter.onLogin(binding.etPhone.getText().toString().trim(), binding.etPassword.getText().toString().trim());
                 break;
         }
     }

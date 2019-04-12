@@ -3,9 +3,13 @@ package org.seraph.mvprxjavaretrofit.ui.module.common.photopreview;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
+
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import android.view.View;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -25,7 +29,7 @@ import javax.inject.Inject;
 /**
  * 图片查看器
  */
-public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Presenter> implements PhotoPreviewContract.View {
+public class PhotoPreviewActivity extends ABaseActivity implements PhotoPreviewContract.View {
 
 
     CommonActivityPhotoPreviewBinding binding;
@@ -52,7 +56,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
     public final static String CURRENT_POSITION = "currentPosition";
 
     @Inject
-    PhotoPreviewPresenter mPresenter;
+    PhotoPreviewPresenter presenter;
 
     private PhotoPreviewAdapter mPhotoPreviewAdapter;
 
@@ -61,7 +65,8 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
 
     @Override
     protected PhotoPreviewContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        presenter.setView(this);
+        return presenter;
     }
 
     /**
@@ -112,8 +117,8 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
     public void initCreate(@Nullable Bundle savedInstanceState) {
         initViewPager();
         initRxBinding();
-        mPresenter.setIntent(getIntent());
-        mPresenter.start();
+        presenter.setIntent(getIntent());
+        presenter.start();
     }
 
     private void initRxBinding() {
@@ -124,7 +129,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
                 .subscribe(aBoolean -> {
                     if (aBoolean) {
                         //获取权限成功
-                        mPresenter.saveImage();
+                        presenter.saveImage();
                     } else {
                         //获取权限失败
                         ToastUtils.showShort("缺少SD卡权限，保存图片失败");
@@ -135,7 +140,7 @@ public class PhotoPreviewActivity extends ABaseActivity<PhotoPreviewContract.Pre
 
 
     private void initViewPager() {
-        binding.vpPhotoPreview.setOnPageSelectedListener(position -> mPresenter.upDataCurrentPosition(position));
+        binding.vpPhotoPreview.setOnPageSelectedListener(position -> presenter.upDataCurrentPosition(position));
         binding.vpPhotoPreview.setOffscreenPageLimit(5);
         mPhotoPreviewAdapter = new PhotoPreviewAdapter(this);
         //关闭当前界面

@@ -24,7 +24,7 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract.Presenter> implements GuidePagesActivityContract.View {
+public class GuidePagesActivity extends ABaseActivity implements GuidePagesActivityContract.View {
 
 
     WelcomeActivityGuidePagesBinding binding;
@@ -35,11 +35,12 @@ public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract
     }
 
     @Inject
-    GuidePagesActivityPresenter mPresenter;
+    GuidePagesActivityPresenter presenter;
 
     @Override
     protected GuidePagesActivityContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        presenter.setView(this);
+        return presenter;
     }
 
     @Inject
@@ -48,11 +49,11 @@ public class GuidePagesActivity extends ABaseActivity<GuidePagesActivityContract
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         initViewPager();
-        mPresenter.start();
+        presenter.start();
     }
 
     private void initViewPager() {
-        mUltraPagerAdapter.setOnClickListener(position-> mPresenter.onItemClick(position));
+        mUltraPagerAdapter.setOnClickListener(position-> presenter.onItemClick(position));
         binding.ultraViewpager.setScrollMode(UltraViewPager.ScrollMode.HORIZONTAL);
         //UltraPagerAdapter 绑定子view到UltraViewPager
         binding.ultraViewpager.setOffscreenPageLimit(3);

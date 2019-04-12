@@ -43,7 +43,7 @@ import io.reactivex.Flowable;
  * mail：417753393@qq.com
  **/
 @ActivityScoped
-public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.ABasePresenter> implements MainTwoFragmentContract.View {
+public class MainTwoFragment extends ABaseFragment implements MainTwoFragmentContract.View {
 
 
     private ActMainFrg2Binding listBinding;
@@ -65,6 +65,7 @@ public class MainTwoFragment extends ABaseFragment<MainTwoFragmentContract.ABase
 
     @Override
     protected MainTwoFragmentContract.ABasePresenter getMVPPresenter() {
+        presenter.setView(this);
         return presenter;
     }
 

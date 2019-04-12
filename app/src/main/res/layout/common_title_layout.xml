@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <org.seraph.mvprxjavaretrofit.ui.views.StatusBarView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            style="@style/app_toolbar_style"
-            app:title=" ">
-
-            <TextView
-                android:id="@+id/tv_toolbar_title"
-                style="@style/app_toolbar_child_style"
-                android:gravity="center"
-                tools:text="首页" />
-
-        </androidx.appcompat.widget.Toolbar>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title=" " />
 
     </com.google.android.material.appbar.AppBarLayout>
 </layout>

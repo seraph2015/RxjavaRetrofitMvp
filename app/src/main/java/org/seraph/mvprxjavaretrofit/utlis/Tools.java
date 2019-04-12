@@ -76,7 +76,7 @@ public class Tools {
      */
     public static File getDCIMFile(String imageName) {
         //如果sd卡不可用返回null
-        if (!SDCardUtils.isSDCardEnable()) {
+        if (!SDCardUtils.isSDCardEnableByEnvironment()) {
             return null;
         }
         //获取对应存储照片的文件夹

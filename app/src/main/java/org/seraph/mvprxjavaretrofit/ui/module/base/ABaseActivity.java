@@ -1,19 +1,25 @@
 package org.seraph.mvprxjavaretrofit.ui.module.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 
+import com.hwangjr.rxbus.RxBus;
+import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.AutoDisposeConverter;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
+import org.seraph.mvprxjavaretrofit.R;
+import org.seraph.mvprxjavaretrofit.ui.module.login.LoginActivity;
+import org.seraph.mvprxjavaretrofit.ui.module.main.MainActivity;
 import org.seraph.mvprxjavaretrofit.ui.views.CustomLoadingDialog;
 
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import dagger.android.AndroidInjection;
@@ -33,12 +39,11 @@ import dagger.android.support.HasSupportFragmentInjector;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public abstract class ABaseActivity<P extends IABaseContract.ABasePresenter> extends AppCompatActivity implements IABaseContract.IBaseView, HasSupportFragmentInjector {
-
+public abstract class ABaseActivity extends AppCompatActivity implements IABaseContract.IBaseView, HasSupportFragmentInjector {
 
     protected abstract void initContextView();
 
-    protected abstract P getMVPPresenter();
+    protected abstract IABaseContract.ABasePresenter getMVPPresenter();
 
     public abstract void initCreate(@Nullable Bundle savedInstanceState);
 
@@ -48,43 +53,51 @@ public abstract class ABaseActivity<P extends IABaseContract.ABasePresenter> ext
     @Inject
     protected CustomLoadingDialog mLoadingDialog;
 
-    private P mPresenter;
+    private IABaseContract.ABasePresenter mPresenter;
 
     //自动解绑rxjava（在指定的生命周期）
     public <T> AutoDisposeConverter<T> bindLifecycle(Lifecycle.Event untilEvent) {
         return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, untilEvent));
     }
+
     //自动解绑rxjava（在结束的时候）
     public <T> AutoDisposeConverter<T> bindLifecycle() {
         return bindLifecycle(Lifecycle.Event.ON_DESTROY);
     }
 
-    /**
-     * ActivityLifecycleCallbacks回调在super中，
-     * 所以加载布局需要super之前{@link org.seraph.mvprxjavaretrofit.AppActivityCallbacks#onActivityCreated(Activity, Bundle)}
-     */
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         //一处声明，处处依赖注入
         AndroidInjection.inject(this);
+        RxBus.get().register(this);
+        //布局
         initContextView();
-        super.onCreate(savedInstanceState);
-        initMVP();
+        //布局的配置
+        initUIConfig();
+        //逻辑层
+        mPresenter = getMVPPresenter();
         initCreate(savedInstanceState);
     }
 
 
-    @SuppressWarnings("unchecked")
-    private void initMVP() {
-        try {
-            if (getMVPPresenter() == null) {
+    //初始化界面配置
+    private void initUIConfig() {
+        //例如：如果有toolbar。则初始化部分公共设置，如果部分界面不需要，自己进行清除
+        View view = findViewById(R.id.toolbar);
+        if (view instanceof Toolbar) {
+            Toolbar toolbar = ((Toolbar) view);
+            setSupportActionBar(toolbar);
+            if (this instanceof MainActivity) {
                 return;
             }
-            mPresenter = getMVPPresenter();
-            mPresenter.setView(this);
-        } catch (ClassCastException e) {
-            throw new RuntimeException("子类必须实现IABaseContract.IBaseView接口");
+            //符合条件的布局设置统一的返回按键和监听
+            if (this instanceof LoginActivity) {
+                toolbar.setNavigationIcon(R.drawable.common_icon_close);
+            } else {
+                toolbar.setNavigationIcon(R.drawable.common_title_arrow_white_left);
+            }
+            RxToolbar.navigationClicks(toolbar).as(bindLifecycle()).subscribe(o -> onBackPressed());
         }
     }
 
@@ -114,6 +127,7 @@ public abstract class ABaseActivity<P extends IABaseContract.ABasePresenter> ext
 
     @Override
     protected void onDestroy() {
+        RxBus.get().unregister(this);
         super.onDestroy();
         if (mPresenter != null) {
             mPresenter.onDetach();

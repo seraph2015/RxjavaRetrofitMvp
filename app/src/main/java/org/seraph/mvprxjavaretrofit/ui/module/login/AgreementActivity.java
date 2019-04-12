@@ -18,7 +18,7 @@ import javax.inject.Inject;
  * author：Seraph
  * mail：417753393@qq.com
  **/
-public class AgreementActivity extends ABaseActivity<AgreementContract.Presenter> implements AgreementContract.View {
+public class AgreementActivity extends ABaseActivity implements AgreementContract.View {
 
 
     ActLoginAgreementBinding binding;
@@ -29,16 +29,17 @@ public class AgreementActivity extends ABaseActivity<AgreementContract.Presenter
     }
 
     @Inject
-    AgreementPresenter mPresenter;
+    AgreementPresenter presenter;
 
     @Override
     protected AgreementContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        presenter.setView(this);
+        return presenter;
     }
 
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
-        binding.appbar.tvToolbarTitle.setText("注册协议");
+        binding.appbar.toolbar.setTitle("注册协议");
     }
 
 }

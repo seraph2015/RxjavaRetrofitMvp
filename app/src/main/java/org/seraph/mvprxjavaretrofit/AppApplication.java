@@ -24,11 +24,16 @@ import dagger.android.HasActivityInjector;
  **/
 public class AppApplication extends MultiDexApplication implements HasActivityInjector {
 
+    static {
+        SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> new LottieHeader(context).setAnimationViewJson("trail_loading.json"));
+    }
+
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingActivityInjector;
 
-    static {
-        SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> new LottieHeader(context).setAnimationViewJson("trail_loading.json"));
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return dispatchingActivityInjector;
     }
 
 
@@ -40,23 +45,6 @@ public class AppApplication extends MultiDexApplication implements HasActivityIn
         DaggerAppComponent.builder().application(this).build().inject(this);
         //工具初始化
         Utils.init(this);
-        initToastLayout();
-        //腾讯bug日志收集
-        //    Bugly.init(this, "c475f0a560", false);
-        //注册activity回调
-        registerActivityLifecycleCallbacks(new AppActivityCallbacks());
-    }
-
-
-    private void initToastLayout() {
-        ToastUtils.setBgColor(0xFE000000);
-        ToastUtils.setMsgColor(0xFFFFFFFF);
-    }
-
-
-    @Override
-    public AndroidInjector<Activity> activityInjector() {
-        return dispatchingActivityInjector;
     }
 
 

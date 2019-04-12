@@ -25,7 +25,7 @@ import javax.inject.Inject;
  * author：xiongj
  * mail：417753393@qq.com
  **/
-public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestContract.Presenter> implements DesignLayoutTestContract.View {
+public class DesignLayoutTestActivity extends ABaseActivity implements DesignLayoutTestContract.View {
 
 
     TestDesignLayoutBinding binding;
@@ -36,11 +36,12 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
     }
 
     @Inject
-    DesignLayoutTestPresenter mPresenter;
+    DesignLayoutTestPresenter presenter;
 
     @Override
     protected DesignLayoutTestContract.Presenter getMVPPresenter() {
-        return mPresenter;
+        presenter.setView(this);
+        return presenter;
     }
 
     @Inject
@@ -52,7 +53,7 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
     @Override
     public void initCreate(@Nullable Bundle savedInstanceState) {
         initListener();
-        mPresenter.start();
+        presenter.start();
     }
 
     /**
@@ -62,7 +63,7 @@ public class DesignLayoutTestActivity extends ABaseActivity<DesignLayoutTestCont
         binding.rvData.setLayoutManager(layoutManager);
         mDesignLayoutAdapter.bindToRecyclerView(binding.rvData);
         mDesignLayoutAdapter.setOnItemClickListener((adapter, view, position) -> startPhotoPreview(position));
-        mDesignLayoutAdapter.setOnLoadMoreListener(() -> mPresenter.requestNextPage(), binding.rvData);
+        mDesignLayoutAdapter.setOnLoadMoreListener(() -> presenter.requestNextPage(), binding.rvData);
     }
 
 
