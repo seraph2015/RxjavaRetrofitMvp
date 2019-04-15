@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.hwangjr.rxbus.RxBus;
-import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
+import com.jakewharton.rxbinding3.appcompat.RxToolbar;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.AutoDisposeConverter;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;

@@ -41,11 +41,6 @@ public class RxSchedulers {
                 .flatMap(tBaseDataResponse -> {
                     switch (tBaseDataResponse.code) {
                         case SUCCESS_STATUS: //成功
-//                            T t = tBaseDataResponse.data;
-//                            if (t == null) {
-//                                //约束后台，在有对象的时候不允许返回null，最好的办法是在 tBaseDataResponse.data 泛型T 如果没有返回值则返回空对象data{}
-//                                t = (T) "";
-//                            }
                             return Flowable.just(tBaseDataResponse);
                         default://业务失败
                             return Flowable.error(new ServerErrorException(tBaseDataResponse.message, tBaseDataResponse.code));

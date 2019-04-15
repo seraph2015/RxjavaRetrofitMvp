@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import android.view.Menu;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.jakewharton.rxbinding2.support.v7.widget.RxToolbar;
+import com.jakewharton.rxbinding3.appcompat.RxToolbar;
 
 import org.seraph.mvprxjavaretrofit.R;
 import org.seraph.mvprxjavaretrofit.databinding.CommonActivityLocalImageListBinding;

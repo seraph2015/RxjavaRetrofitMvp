@@ -46,7 +46,7 @@ import io.reactivex.schedulers.Schedulers;
  **/
 public class MainOneFragmentPresenter extends MainOneFragmentContract.Presenter {
 
-    private UserBean.UserInfo mUserBean;
+    private UserBean mUserBean;
 
     private ApiService mApiService;
 
@@ -162,22 +162,22 @@ public class MainOneFragmentPresenter extends MainOneFragmentContract.Presenter 
      * test网络请求
      */
     public void doLoginTest() {
-//        mApiService.login("15172311067", "123456")
-//                .compose(RxSchedulers.io_main_business())
-//                .doOnSubscribe(subscription -> mView.showLoading("正在登陆...").setOnDismissListener(dialog -> subscription.cancel()))
-//                .as(mView.bindLifecycle())
-//                .subscribe(new ABaseSubscriber<BaseDataResponse<UserBean>>(mView) {
-//                    @Override
-//                    public void onSuccess(BaseDataResponse<UserBean> baseDataResponse) {
-//                        mUserBean = baseDataResponse.data.user;
-//                        ToastUtils.showShort("登陆成功");
-//                    }
-//
-//                    @Override
-//                    public void onError(String errStr) {
-//                        ToastUtils.showShort(errStr);
-//                    }
-//                });
+        mApiService.toLogin("15172311067", "xj199110")
+                .compose(RxSchedulers.io_main_business())
+                .doOnSubscribe(subscription -> mView.showLoading("登录中").setOnDismissListener(dialog -> subscription.cancel()))
+                .as(mView.bindLifecycle())
+                .subscribe(new ABaseSubscriber<BaseDataResponse<UserBean>>(mView) {
+                    @Override
+                    public void onSuccess(BaseDataResponse<UserBean> baseDataResponse) {
+                        mUserBean = baseDataResponse.result;
+                        ToastUtils.showShort("登陆成功");
+                    }
+
+                    @Override
+                    public void onError(String errStr) {
+                        ToastUtils.showShort(errStr);
+                    }
+                });
 
     }
 
@@ -191,10 +191,9 @@ public class MainOneFragmentPresenter extends MainOneFragmentContract.Presenter 
             return;
         }
         UserTable userTable = new UserTable();
-        userTable.setId(mUserBean.id);
-        userTable.setToken(mUserBean.token);
-        userTable.setName(mUserBean.nickname);
-        userTable.setHeadPortrait(mUserBean.headimg);
+        userTable.setToken(mUserBean.authorization);
+        userTable.setName(mUserBean.nickName);
+        userTable.setHeadPortrait(mUserBean.imgUrl);
         mUserBeanHelp.save(userTable);
         ToastUtils.showShort("保存成功");
     }

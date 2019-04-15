@@ -2,8 +2,6 @@ package org.seraph.mvprxjavaretrofit.data.network;
 
 import android.content.Context;
 
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
 import org.seraph.mvprxjavaretrofit.AppConfig;
 import org.seraph.mvprxjavaretrofit.data.network.http.HttpsRequestHelp;
 import org.seraph.mvprxjavaretrofit.utlis.FileUtils;
@@ -17,6 +15,7 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**

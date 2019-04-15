@@ -12,7 +12,9 @@ import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 /**
@@ -23,11 +25,10 @@ import retrofit2.http.Url;
  **/
 public interface ApiService {
 
-    String BASE_URL = "https://good-api.xubei.com/";
+    String BASE_URL = "https://passport-server.xubei.com/";
 
-    @POST("auth/login")
-    @FormUrlEncoded
-    Flowable<BaseDataResponse<UserBean>> login(@Field("phone") String phone, @Field("password") String password);
+    @GET("app/login/toLogin")
+    Flowable<BaseDataResponse<UserBean>> toLogin(@Query("userName") String userName, @Query("pwd") String pwd);
 
     /**
      * 通用多文件和字段上传（使用RequestBody方式）

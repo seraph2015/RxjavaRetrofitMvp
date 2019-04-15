@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import android.view.View;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding3.view.RxView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.seraph.mvprxjavaretrofit.R;

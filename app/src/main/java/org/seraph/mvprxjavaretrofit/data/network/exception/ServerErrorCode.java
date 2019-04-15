@@ -1,11 +1,11 @@
 package org.seraph.mvprxjavaretrofit.data.network.exception;
 
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
-
 import org.seraph.mvprxjavaretrofit.ui.module.base.IBaseContract;
 import org.seraph.mvprxjavaretrofit.utlis.Tools;
 
 import java.net.ConnectException;
+
+import retrofit2.HttpException;
 
 /**
  * 业务逻辑异常信息处理
